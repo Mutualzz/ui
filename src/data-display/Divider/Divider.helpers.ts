@@ -1,4 +1,4 @@
-import type { Theme } from "@mutualzz/ui/src/types";
+import type { Theme } from "@mutualzz/ui/types";
 import { isThemeColor } from "@mutualzz/ui/utils/isThemeColor";
 import { isTypographyColor } from "@mutualzz/ui/utils/isTypographyColor";
 import { formatHex8, parse } from "culori";

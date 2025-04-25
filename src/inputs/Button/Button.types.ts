@@ -1,4 +1,4 @@
-import type { ColorLike } from "@mutualzz/ui/src/types";
+import type { ColorLike } from "@mutualzz/ui/types";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
 export type ButtonColor =

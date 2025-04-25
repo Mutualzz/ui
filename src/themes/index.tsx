@@ -1,8 +1,8 @@
-import type { Theme, Themes } from "../types";
+import type { Theme } from "../types";
 import { baseDarkTheme } from "./baseDark";
 import { baseLightTheme } from "./baseLight";
 
-export const themesObj: Record<Themes, Theme> = {
+export const themesObj: Record<string, Theme> = {
     baseDark: baseDarkTheme,
     baseLight: baseLightTheme,
 };

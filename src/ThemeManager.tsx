@@ -6,24 +6,27 @@ import {
     type PropsWithChildren,
 } from "react";
 import { themesObj } from "./themes";
-import type { Theme, Themes } from "./types";
+import type { Theme } from "./types";
 
 export const ThemeContext = createContext<{
     theme: Theme;
-    changeTheme: (theme: Themes) => void;
+    changeTheme: (theme: string) => void;
 }>({
     theme: themesObj["baseDark"],
-    changeTheme: (_theme: Themes) => {},
+    changeTheme: (_theme: string) => {},
 });
 
-export const ThemeProvider = ({ children }: PropsWithChildren) => {
-    const [theme, setTheme] = useState<Themes>("baseDark");
+export const ThemeProvider = ({
+    children,
+    themes = themesObj,
+}: PropsWithChildren & { themes?: Record<string, Theme> }) => {
+    const [theme, setTheme] = useState<string>("baseDark");
 
-    const changeTheme = (theme: Themes) => {
+    const changeTheme = (theme: string) => {
         setTheme(theme);
     };
 
-    const themeObject = themesObj[theme];
+    const themeObject = themes[theme];
 
     const value = useMemo(
         () => ({

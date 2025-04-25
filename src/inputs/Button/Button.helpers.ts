@@ -3,7 +3,7 @@ import { alpha } from "@mutualzz/ui/utils/alpha";
 import { isThemeColor } from "@mutualzz/ui/utils/isThemeColor";
 import { readableTextColor } from "@mutualzz/ui/utils/readableTextColor";
 
-import type { Theme } from "@mutualzz/ui/src/types";
+import type { Theme } from "@mutualzz/ui/types";
 import { formatHex8, parse, rgb } from "culori";
 import type { ButtonColor, ButtonSize } from "./Button.types";
 
