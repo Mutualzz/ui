@@ -1,11 +1,17 @@
 {
     "name": "@mutualzz/ui",
     "version": "1.0.3",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
     "repository": {
         "type": "git",
         "url": "https://github.com/Mutualzz/ui.git"
+    },
+    "main": "dist/index.js",
+    "peerDependencies": {
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "culori": "^4.0.0",
+        "@emotion/react": "^11.0.0",
+        "@emotion/styled": "^11.0.0"
     },
     "bugs": {
         "url": "https://github.com/Mutualzz/ui.git/issues"
@@ -17,14 +23,5 @@
         "build": "tsc -p tsconfig.json",
         "prepublishOnly": "bun run build"
     },
-    "peerDependencies": {
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0",
-        "culori": "^4.0.0",
-        "@emotion/react": "^11.0.0",
-        "@emotion/styled": "^11.0.0"
-    },
-    "dependencies": {
-        "react-use": "^17.6.0"
-    }
+    "types": "dist/index.d.ts"
 }
