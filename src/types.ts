@@ -52,3 +52,5 @@ export interface Theme {
         lineHeight: number;
     };
 }
+
+export type ThemeMode = "light" | "dark" | "system";

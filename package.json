@@ -23,5 +23,8 @@
         "culori": "^4.0.0",
         "@emotion/react": "^11.0.0",
         "@emotion/styled": "^11.0.0"
+    },
+    "dependencies": {
+        "react-use": "^17.6.0"
     }
 }
