@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "build": "tsc -p tsconfig.json",
-        "prepublish": "bun build"
+        "prepublishOnly": "bun build"
     },
     "peerDependencies": {
         "react": "^18.0.0",
