@@ -2,7 +2,7 @@ import type { Theme } from "../types";
 
 export const baseLightTheme: Theme = {
     id: "baseLight",
-    name: "Light",
+    name: "Silken Dawn",
     description: "Default Light Theme",
     type: "light",
     colors: {

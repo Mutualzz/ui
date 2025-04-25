@@ -2,7 +2,7 @@ import type { Theme } from "../types";
 
 export const baseDarkTheme: Theme = {
     id: "baseDark",
-    name: "Dark",
+    name: "Ashen Dusk",
     description: "Default Dark Theme",
     type: "dark",
     colors: {
