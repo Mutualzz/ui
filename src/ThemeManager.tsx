@@ -8,8 +8,6 @@ import {
 import { themesObj } from "./themes";
 import type { Theme, ThemeMode } from "./types";
 
-import { useMedia } from "react-use";
-
 export const ThemeContext = createContext<{
     theme: Theme;
     changeTheme: (theme: string) => void;
@@ -28,7 +26,9 @@ export const ThemeProvider = ({
 }: PropsWithChildren & { themes?: Record<string, Theme> }) => {
     const [theme, setTheme] = useState<string | null>(null);
     const [mode, setMode] = useState<"light" | "dark" | "system">("system");
-    const prefersDark = useMedia("(prefers-color-scheme: dark)");
+    const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+    ).matches;
 
     const changeMode = (mode: ThemeMode) => {
         setMode(mode);
