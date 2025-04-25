@@ -1,6 +1,6 @@
 {
     "name": "@mutualzz/ui",
-    "version": "1.0.2-fix1",
+    "version": "1.0.3",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "repository": {
