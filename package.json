@@ -1,6 +1,6 @@
 {
     "name": "@mutualzz/ui",
-    "version": "1.0.2",
+    "version": "1.0.2-fix1",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "repository": {
@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "build": "tsc -p tsconfig.json",
-        "prepublishOnly": "bun build"
+        "prepublishOnly": "bun run build"
     },
     "peerDependencies": {
         "react": "^18.0.0",
