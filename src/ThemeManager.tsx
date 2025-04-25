@@ -1,6 +1,7 @@
 import { ThemeProvider as EmotionThemeProvder } from "@emotion/react";
 import {
     createContext,
+    useEffect,
     useMemo,
     useState,
     type PropsWithChildren,
@@ -26,9 +27,22 @@ export const ThemeProvider = ({
 }: PropsWithChildren & { themes?: Record<string, Theme> }) => {
     const [theme, setTheme] = useState<string | null>(null);
     const [mode, setMode] = useState<"light" | "dark" | "system">("system");
-    const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)",
-    ).matches;
+    const [prefersDark, setPrefersDark] = useState(
+        window.matchMedia("(prefers-color-scheme: dark)").matches,
+    );
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        const handler = (event: MediaQueryListEvent) => {
+            setPrefersDark(event.matches);
+            if (mode === "system")
+                setTheme(event.matches ? "baseDark" : "baseLight");
+        };
+
+        mediaQuery.addEventListener("change", handler);
+
+        return () => mediaQuery.removeEventListener("change", handler);
+    }, []);
 
     const changeMode = (mode: ThemeMode) => {
         setMode(mode);
@@ -37,7 +51,7 @@ export const ThemeProvider = ({
     };
 
     const themeObject =
-        themes[theme ? theme : mode === "dark" ? "baseDark" : "baseLight"];
+        themes[theme ? theme : prefersDark ? "baseDark" : "baseLight"];
 
     const changeTheme = (theme: string) => {
         setTheme(theme);
