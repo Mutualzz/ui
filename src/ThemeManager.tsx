@@ -1,12 +1,12 @@
 import { ThemeProvider as EmotionThemeProvder } from "@emotion/react";
-import { themesObj, type Themes } from "@themes/index";
 import {
     createContext,
     useMemo,
     useState,
     type PropsWithChildren,
 } from "react";
-import type { Theme } from "./types";
+import { themesObj } from "./themes";
+import type { Theme, Themes } from "./types";
 
 export const ThemeContext = createContext<{
     theme: Theme;

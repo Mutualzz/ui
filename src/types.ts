@@ -52,3 +52,10 @@ export interface Theme {
         lineHeight: number;
     };
 }
+
+export type ThemeType = "light" | "dark";
+
+export type LightTheme = "baseLight";
+export type DarkTheme = "baseDark";
+
+export type Themes = LightTheme | DarkTheme;

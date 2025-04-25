@@ -1,15 +1,29 @@
 {
-    "extends": "../../tsconfig.json",
+    //"extends": "../../tsconfig.json",
     "compilerOptions": {
-        "declaration": true,
-        "emitDeclarationOnly": true,
-        "outDir": "dist",
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+
+        /* Bundler mode */
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
         "jsx": "react-jsx",
-        "moduleResolution": "node",
-        "module": "esnext",
-        "target": "esnext",
-        "esModuleInterop": true,
-        "skipLibCheck": true
+        "jsxImportSource": "@emotion/react",
+        "verbatimModuleSyntax": true,
+
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+
+        "outDir": "dist"
     },
     "include": ["**/*.tsx", "**/*.ts"]
 }
