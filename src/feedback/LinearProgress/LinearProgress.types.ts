@@ -1,4 +1,4 @@
-import type { ColorLike } from "@mutualzz/ui/types";
+import type { ColorLike } from "@root/types";
 
 export type LinearProgressVariant = "plain" | "outlined" | "soft" | "solid";
 

@@ -1,5 +1,5 @@
-import { useTheme } from "@mutualzz/ui/hooks/useTheme";
-import { dynamicElevation } from "@mutualzz/ui/utils/dynamicElevation";
+import { useTheme } from "@root/hooks/useTheme";
+import { dynamicElevation } from "@root/utils/dynamicElevation";
 import type { FC } from "react";
 import type { PaperProps } from "./Paper.types";
 

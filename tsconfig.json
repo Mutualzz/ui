@@ -15,9 +15,7 @@
         "jsxImportSource": "@emotion/react",
         "baseUrl": "src",
         "paths": {
-            "@hooks/*": ["hooks/*"],
-            "@themes/*": ["themes/*"],
-            "@types": ["types.ts"]
+            "@root/*": ["*"]
         }
     },
     "include": ["src/**/*"]

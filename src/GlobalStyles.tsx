@@ -1,5 +1,5 @@
 import { css, Global } from "@emotion/react";
-import { useTheme } from "@mutualzz/ui/hooks/useTheme";
+import { useTheme } from "@root/hooks/useTheme";
 
 export const GlobalStyles = () => {
     const { theme } = useTheme();

@@ -1,6 +1,6 @@
-import type { Theme } from "@mutualzz/ui/types";
-import { isThemeColor } from "@mutualzz/ui/utils/isThemeColor";
-import { isTypographyColor } from "@mutualzz/ui/utils/isTypographyColor";
+import type { Theme } from "@root/types";
+import { isThemeColor } from "@root/utils/isThemeColor";
+import { isTypographyColor } from "@root/utils/isTypographyColor";
 import { formatHex8, parse } from "culori";
 import type {
     DividerLineColor,

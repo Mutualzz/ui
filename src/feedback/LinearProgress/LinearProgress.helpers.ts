@@ -1,5 +1,5 @@
-import type { Theme } from "@mutualzz/ui/types";
-import { isThemeColor } from "@mutualzz/ui/utils/isThemeColor";
+import type { Theme } from "@root/types";
+import { isThemeColor } from "@root/utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";
 import type {

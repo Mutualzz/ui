@@ -1,4 +1,4 @@
-import { randomHexColor } from "@mutualzz/ui/utils/randomHexColor";
+import { randomHexColor } from "@root/utils/randomHexColor";
 import { formatHex8, parse } from "culori";
 import { useState } from "react";
 import type { ColorLike } from "../types";

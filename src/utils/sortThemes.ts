@@ -1,4 +1,4 @@
-import type { Theme } from "@mutualzz/ui/types";
+import type { Theme } from "@root/types";
 
 export const sortThemes = (themes: Theme[]): Theme[] => {
     const priorityOrder: string[] = ["baseDark", "baseLight"];

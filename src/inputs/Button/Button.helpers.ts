@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
-import { alpha } from "@mutualzz/ui/utils/alpha";
-import { isThemeColor } from "@mutualzz/ui/utils/isThemeColor";
-import { readableTextColor } from "@mutualzz/ui/utils/readableTextColor";
+import { alpha } from "@root/utils/alpha";
+import { isThemeColor } from "@root/utils/isThemeColor";
+import { readableTextColor } from "@root/utils/readableTextColor";
 
-import type { Theme } from "@mutualzz/ui/types";
+import type { Theme } from "@root/types";
 import { formatHex8, parse, rgb } from "culori";
 import type { ButtonColor, ButtonSize } from "./Button.types";
 
