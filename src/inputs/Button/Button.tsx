@@ -61,7 +61,7 @@ const IconWrapper = styled.span<{
 `;
 
 export const Button: FC<ButtonProps> = ({
-    variant = "plain",
+    variant = "solid",
     color = "primary",
     size = "md",
     loading,

@@ -82,7 +82,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     label,
     disabled,
     color = "primary",
-    variant = "plain",
+    variant = "solid",
     size = "md",
     uncheckedIcon,
     checkedIcon,
