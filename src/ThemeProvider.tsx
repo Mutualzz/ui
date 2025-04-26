@@ -7,14 +7,9 @@ import {
     type PropsWithChildren,
 } from "react";
 import { themesObj } from "./themes";
-import type { Theme, ThemeMode } from "./types";
+import type { Theme, ThemeContextInterface, ThemeMode } from "./types";
 
-export const ThemeContext = createContext<{
-    theme: Theme;
-    changeTheme: (theme: string) => void;
-    mode: ThemeMode;
-    changeMode: (mode: ThemeMode) => void;
-}>({
+export const ThemeContext = createContext<ThemeContextInterface>({
     theme: themesObj["baseDark"],
     changeTheme: (_theme: string) => {},
     mode: "system",
