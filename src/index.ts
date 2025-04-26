@@ -33,5 +33,5 @@ export * from "./utils";
 
 // Misc
 export * from "./GlobalStyles";
-export * from "./ThemeManager";
+export * from "./ThemeProvider";
 export * from "./types";
