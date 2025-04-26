@@ -1,7 +1,7 @@
 import type { BoxProps } from "../Box/Box.types";
 
 export interface StackProps extends Omit<BoxProps, "display"> {
-    display?: "flex" | "grid";
+    display?: "flex" | "inline-flex";
 
     direction?: "row" | "column";
     wrap?: "nowrap" | "wrap" | "wrap-reverse";

@@ -1,6 +1,6 @@
 import type { HTMLProps } from "react";
 
-export type BoxProps = HTMLProps<HTMLDivElement> & {
+export interface BoxProps extends HTMLProps<HTMLDivElement> {
     display?: "block" | "inline-block";
     position?: "absolute" | "relative" | "fixed" | "sticky" | "static";
     top?: string | number;
@@ -26,4 +26,4 @@ export type BoxProps = HTMLProps<HTMLDivElement> & {
     ml?: string | number;
     mx?: string | number;
     my?: string | number;
-};
+}
