@@ -21,7 +21,7 @@ export interface StackProps extends Omit<BoxProps, "display"> {
         | "space-between"
         | "space-around"
         | "stretch";
-    gap?: string | number;
+    spacing?: string | number;
 
     // These props apply only when its a child element of a flex container
     order?: number;

@@ -10,21 +10,20 @@ export type BoxProps = HTMLProps<HTMLDivElement> & {
     width?: string | number;
     height?: string | number;
 
-    padding?: string | number;
-    margin?: string | number;
+    p?: string | number;
+    m?: string | number;
 
-    paddingTop?: string | number;
-    paddingRight?: string | number;
-    paddingBottom?: string | number;
-    paddingLeft?: string | number;
+    pt?: string | number;
+    pr?: string | number;
+    pb?: string | number;
+    pl?: string | number;
+    px?: string | number;
+    py?: string | number;
 
-    paddingX?: string | number;
-    paddingY?: string | number;
-    marginX?: string | number;
-    marginY?: string | number;
-
-    marginTop?: string | number;
-    marginRight?: string | number;
-    marginBottom?: string | number;
-    marginLeft?: string | number;
+    mt?: string | number;
+    mr?: string | number;
+    mb?: string | number;
+    ml?: string | number;
+    mx?: string | number;
+    my?: string | number;
 };
