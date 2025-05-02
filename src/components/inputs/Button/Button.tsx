@@ -1,11 +1,12 @@
-import styled from "@emotion/styled";
+
 import { type FC } from "react";
 
 import { CircularProgress } from "@root/components/feedback/CircularProgress/CircularProgress";
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
 import { type ButtonProps, type ButtonSize } from "./Button.types";
+import { styled } from "@root/utils/styled";
 
-const ButtonWrapper = styled.button<ButtonProps>`
+const ButtonWrapper = styled("button")<ButtonProps>`
     position: relative;
     display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
     align-items: center;
