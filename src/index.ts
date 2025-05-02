@@ -1,23 +1,23 @@
 // Components [Start]
 
 // Data Display
-export * from "./data-display/Divider/Divider";
-export * from "./data-display/Lottie/Lottie";
+export * from "./components/data-display/Divider/Divider";
+export * from "./components/data-display/Lottie/Lottie";
 
 // Feedback
-export * from "./feedback/CircularProgress/CircularProgress";
-export * from "./feedback/LinearProgress/LinearProgress";
+export * from "./components/feedback/CircularProgress/CircularProgress";
+export * from "./components/feedback/LinearProgress/LinearProgress";
 
 // Inputs
-export * from "./inputs/Button/Button";
-export * from "./inputs/Checkbox/Checkbox";
+export * from "./components/inputs/Button/Button";
+export * from "./components/inputs/Checkbox/Checkbox";
 
 // Layout
-export * from "./layout/Box/Box";
-export * from "./layout/Stack/Stack";
+export * from "./components/layout/Box/Box";
+export * from "./components/layout/Stack/Stack";
 
 // Surfaces
-export * from "./surfaces/Paper/Paper";
+export * from "./components/surfaces/Paper/Paper";
 
 // Components [End]
 

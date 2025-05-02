@@ -1,4 +1,4 @@
-import type { PaperElevation } from "@root/surfaces/Paper/Paper.types";
+import type { PaperElevation } from "@root/components/surfaces/Paper/Paper.types";
 import type { ColorLike } from "@root/types";
 import { formatHex8, oklch, parse } from "culori";
 
