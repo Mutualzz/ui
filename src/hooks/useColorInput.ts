@@ -61,8 +61,8 @@ export const useColorInput = <T = ColorLike>(
     };
 
     const setColorDirectly = (color: string) => {
-        setInputValue(color); // Update input value directly
-        const parsed = parse(color); // Parse immediately
+        setInputValue(color);
+        const parsed = parse(color);
         if (parsed) {
             setColor(formatHex8(parsed));
             setIsInvalid(false);
