@@ -14,7 +14,7 @@ export type ThemeColor =
     | "warning"
     | "info";
 
-export type TypographyColor = "primary" | "neutral" | "accent";
+export type ThemeTypographyColor = "primary" | "neutral" | "accent";
 
 export interface Theme {
     id: string;
