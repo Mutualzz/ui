@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import { type StackProps } from "./Stack.types";
 
 export const Stack = styled("div")<StackProps>`
-    display: ${({ display }) => display ?? "flex"};
-    position: ${({ position }) => position ?? "relative"};
+    display: ${({ display = "flex" }) => display};
+    position: ${({ position = "reltive" }) => position};
     padding: ${({ p }) => p};
     margin: ${({ m }) => m};
     top: ${({ top }) => top};
