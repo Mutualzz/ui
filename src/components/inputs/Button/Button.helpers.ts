@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
-import { alpha } from "@root/utils/alpha";
-import { isThemeColor } from "@root/utils/isThemeColor";
-import { readableTextColor } from "@root/utils/readableTextColor";
+import { alpha } from "../../../utils/alpha";
+import { isThemeColor } from "../../../utils/isThemeColor";
+import { readableTextColor } from "../../../utils/readableTextColor";
 
-import type { Theme } from "@root/types";
 import { formatHex8, parse, rgb } from "culori";
+import type { Theme } from "../../../types";
 import type { ButtonColor, ButtonSize } from "./Button.types";
 
 const minSize = 10,

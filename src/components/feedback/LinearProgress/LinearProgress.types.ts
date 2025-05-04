@@ -1,4 +1,4 @@
-import type { ColorLike } from "@root/types";
+import type { ColorLike } from "../../../types";
 
 export type LinearProgressVariant = "plain" | "outlined" | "soft" | "solid";
 

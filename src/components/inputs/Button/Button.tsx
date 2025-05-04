@@ -1,7 +1,7 @@
 import { type FC } from "react";
 
 import styled from "@emotion/styled";
-import { CircularProgress } from "@root/components/feedback/CircularProgress/CircularProgress";
+import { CircularProgress } from "../../feedback/CircularProgress/CircularProgress";
 
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
 import { type ButtonProps, type ButtonSize } from "./Button.types";

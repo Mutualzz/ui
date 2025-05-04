@@ -1,6 +1,6 @@
-import type { PaperElevation } from "@root/components/surfaces/Paper/Paper.types";
-import type { ColorLike } from "@root/types";
 import { formatHex8, oklch, parse } from "culori";
+import type { PaperElevation } from "../components/surfaces/Paper/Paper.types";
+import type { ColorLike } from "../types";
 
 export const dynamicElevation = (
     color: ColorLike,

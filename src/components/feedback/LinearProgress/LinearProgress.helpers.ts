@@ -1,5 +1,5 @@
-import type { Theme } from "@root/types";
-import { isThemeColor } from "@root/utils/isThemeColor";
+import type { Theme } from "../../../types";
+import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";
 import type {

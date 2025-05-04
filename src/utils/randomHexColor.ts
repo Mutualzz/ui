@@ -1,4 +1,4 @@
-import type { Hex } from "@root/types";
+import type { Hex } from "../types";
 
 export const randomHexColor = (): Hex => {
     const array = new Uint8Array(3);

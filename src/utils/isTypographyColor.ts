@@ -1,4 +1,4 @@
-import type { TypographyColor } from "@root/types";
+import type { TypographyColor } from "../types";
 
 export const isTypographyColor = (color: unknown): color is TypographyColor => {
     return (

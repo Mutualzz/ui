@@ -1,5 +1,5 @@
-import type { ColorLike } from "@root/types";
 import type { HTMLAttributes, ReactNode } from "react";
+import type { ColorLike } from "../../../types";
 
 export type CheckboxColor =
     | "primary"

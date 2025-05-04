@@ -1,7 +1,7 @@
-import { randomHexColor } from "@root/utils/randomHexColor";
 import { formatHex8, parse } from "culori";
 import { useState } from "react";
 import type { ColorLike } from "../types";
+import { randomHexColor } from "../utils/randomHexColor";
 
 /**
  * Validates HEX, RGB, RGBA, HSL, HSLA formats.
