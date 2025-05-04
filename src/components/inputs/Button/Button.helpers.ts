@@ -74,10 +74,10 @@ export const variantColors = ({ colors }: Theme, color: ButtonColor) => {
             color: formatHex8(parsedColor),
             "&:hover": {
                 backgroundColor: alpha(parsedColor, 0.2),
-                border: `1px solid ${alpha(parsedColor, 0.2)}`,
+                border: `1px solid ${alpha(parsedColor, 0.1)}`,
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.2),
+                backgroundColor: alpha(parsedColor, 0.1),
             },
             "&:disabled": {
                 color: alpha(parsedColor, 0.4),
