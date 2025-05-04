@@ -1,39 +1,76 @@
 import styled from "@emotion/styled";
 import { type StackProps } from "./Stack.types";
 
-export const Stack = styled("div")<StackProps>`
-    display: ${({ display = "flex" }) => display};
-    position: ${({ position = "reltive" }) => position};
-    padding: ${({ p }) => p};
-    margin: ${({ m }) => m};
-    top: ${({ top }) => top};
-    right: ${({ right }) => right};
-    bottom: ${({ bottom }) => bottom};
-    left: ${({ left }) => left};
-    width: ${({ width }) => width};
-    height: ${({ height }) => height};
-    flex-direction: ${({ direction }) => direction};
-    justify-content: ${({ justifyContent }) => justifyContent};
-    align-items: ${({ alignItems }) => alignItems};
-    align-content: ${({ alignContent }) => alignContent};
-    flex-wrap: ${({ wrap }) => wrap};
-    gap: ${({ spacing }) => spacing};
-    order: ${({ order }) => order};
-    flex-grow: ${({ grow }) => grow};
-    flex-shrink: ${({ shrink }) => shrink};
-    flex-basis: ${({ basis }) => basis};
-    flex: ${({ flex }) => flex};
-    align-self: ${({ alignSelf }) => alignSelf};
-    padding-top: ${({ pt }) => pt};
-    padding-right: ${({ pr }) => pr};
-    padding-bottom: ${({ pb }) => pb};
-    padding-left: ${({ pl }) => pl};
-    margin-top: ${({ mt }) => mt};
-    margin-right: ${({ mr }) => mr};
-    margin-bottom: ${({ mb }) => mb};
-    margin-left: ${({ ml }) => ml};
-    padding-block: ${({ py }) => py};
-    padding-inline: ${({ px }) => px};
-    margin-block: ${({ my }) => my};
-    margin-inline: ${({ mx }) => mx};
-`;
+export const Stack = styled("div")<StackProps>(
+    ({
+        display = "flex",
+        position = "relative",
+        top,
+        right,
+        bottom,
+        left,
+        width,
+        height,
+        direction,
+        justifyContent,
+        alignItems,
+        alignContent,
+        wrap,
+        spacing,
+        p,
+        m,
+        order,
+        grow,
+        shrink,
+        basis,
+        flex,
+        alignSelf,
+        pt,
+        pr,
+        pb,
+        pl,
+        mt,
+        mr,
+        mb,
+        ml,
+        py,
+        px,
+        my,
+        mx,
+    }) => ({
+        display,
+        position,
+        padding: p,
+        margin: m,
+        top,
+        right,
+        bottom,
+        left,
+        width,
+        height,
+        flexDirection: direction,
+        justifyContent,
+        alignItems,
+        alignContent,
+        flexWrap: wrap,
+        gap: spacing,
+        order,
+        flexGrow: grow,
+        flexShrink: shrink,
+        flexBasis: basis,
+        flex,
+        alignSelf,
+        paddingTop: pt,
+        paddingRight: pr,
+        paddingBottom: pb,
+        paddingLeft: pl,
+        marginTop: mt,
+        marginRight: mr,
+        marginBottom: mb,
+        marginLeft: ml,
+        paddingBlock: py,
+        paddingInline: px,
+        marginBlock: my,
+        marginInline: mx,
+    }),
+);

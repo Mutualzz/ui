@@ -3,6 +3,7 @@ import type { HTMLProps } from "react";
 export interface BoxProps extends HTMLProps<HTMLDivElement> {
     display?: "block" | "inline-block";
     position?: "absolute" | "relative" | "fixed" | "sticky" | "static";
+
     top?: string | number;
     right?: string | number;
     bottom?: string | number;

@@ -3,7 +3,7 @@ import type { BoxProps } from "../Box/Box.types";
 export interface StackProps extends Omit<BoxProps, "display"> {
     display?: "flex" | "inline-flex";
 
-    direction?: "row" | "column";
+    direction?: "row" | "row-reverse" | "column" | "column-reverse";
     wrap?: "nowrap" | "wrap" | "wrap-reverse";
 
     justifyContent?:
