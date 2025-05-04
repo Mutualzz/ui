@@ -1,9 +1,8 @@
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 import { isThemeColor } from "@root/utils/isThemeColor";
 
+import { alpha } from "@root/utils/alpha";
 import { parse } from "culori";
-import type { Theme } from "../../types";
-import { alpha } from "../../utils/alpha";
 import type { CheckboxColor, CheckboxSize } from "./Checkbox.types";
 
 const minSize = 16,

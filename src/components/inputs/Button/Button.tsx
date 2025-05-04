@@ -1,10 +1,10 @@
-
 import { type FC } from "react";
 
+import styled from "@emotion/styled";
 import { CircularProgress } from "@root/components/feedback/CircularProgress/CircularProgress";
+
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
 import { type ButtonProps, type ButtonSize } from "./Button.types";
-import { styled } from "@root/utils/styled";
 
 const ButtonWrapper = styled("button")<ButtonProps>`
     position: relative;
@@ -24,7 +24,7 @@ const ButtonWrapper = styled("button")<ButtonProps>`
         variantColors(theme, color)[variant]};
 `;
 
-const ButtonContent = styled.span<{ loading?: boolean }>`
+const ButtonContent = styled("span")<{ loading?: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,7 +36,7 @@ const ButtonContent = styled.span<{ loading?: boolean }>`
     box-sizing: border-box;
 `;
 
-const SpinnerOverlay = styled.span`
+const SpinnerOverlay = styled("span")`
     position: absolute;
     inset: 0;
     display: flex;
@@ -45,7 +45,7 @@ const SpinnerOverlay = styled.span`
     pointer-events: none;
 `;
 
-const IconWrapper = styled.span<{
+const IconWrapper = styled("span")<{
     position: "start" | "end";
     size?: ButtonSize;
 }>`

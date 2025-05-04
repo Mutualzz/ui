@@ -1,83 +1,39 @@
-import { type FC } from "react";
+import styled from "@emotion/styled";
 import { type StackProps } from "./Stack.types";
 
-export const Stack: FC<StackProps> = ({
-    display = "flex",
-    position = "relative",
-    top,
-    right,
-    bottom,
-    left,
-    width,
-    height,
-    direction,
-    wrap,
-    justifyContent,
-    alignItems,
-    alignContent,
-    spacing,
-    p,
-    m,
-    order,
-    grow,
-    shrink,
-    basis,
-    flex,
-    alignSelf,
-    pt,
-    pr,
-    pb,
-    pl,
-    mt,
-    mr,
-    mb,
-    ml,
-    px,
-    py,
-    mx,
-    my,
-    children,
-    ...props
-}) => (
-    <div
-        css={{
-            display,
-            position,
-            top,
-            right,
-            bottom,
-            left,
-            width,
-            height,
-            flexDirection: direction,
-            justifyContent,
-            alignItems,
-            alignContent,
-            flexWrap: wrap,
-            gap: spacing,
-            padding: p,
-            margin: m,
-            order,
-            flexGrow: grow,
-            flexShrink: shrink,
-            flexBasis: basis,
-            flex,
-            alignSelf,
-            paddingTop: pt,
-            paddingRight: pr,
-            paddingBottom: pb,
-            paddingLeft: pl,
-            marginTop: mt,
-            marginRight: mr,
-            marginBottom: mb,
-            marginLeft: ml,
-            paddingBlock: py,
-            paddingInline: px,
-            marginBlock: my,
-            marginInline: mx,
-        }}
-        {...props}
-    >
-        {children}
-    </div>
-);
+export const Stack = styled("div")<StackProps>`
+    display: ${({ display }) => display ?? "flex"};
+    position: ${({ position }) => position ?? "relative"};
+    padding: ${({ p }) => p};
+    margin: ${({ m }) => m};
+    top: ${({ top }) => top};
+    right: ${({ right }) => right};
+    bottom: ${({ bottom }) => bottom};
+    left: ${({ left }) => left};
+    width: ${({ width }) => width};
+    height: ${({ height }) => height};
+    flex-direction: ${({ direction }) => direction};
+    justify-content: ${({ justifyContent }) => justifyContent};
+    align-items: ${({ alignItems }) => alignItems};
+    align-content: ${({ alignContent }) => alignContent};
+    flex-wrap: ${({ wrap }) => wrap};
+    gap: ${({ spacing }) => spacing};
+    order: ${({ order }) => order};
+    flex-grow: ${({ grow }) => grow};
+    flex-shrink: ${({ shrink }) => shrink};
+    flex-basis: ${({ basis }) => basis};
+    flex: ${({ flex }) => flex};
+    align-self: ${({ alignSelf }) => alignSelf};
+    padding-top: ${({ pt }) => pt};
+    padding-right: ${({ pr }) => pr};
+    padding-bottom: ${({ pb }) => pb};
+    padding-left: ${({ pl }) => pl};
+    margin-top: ${({ mt }) => mt};
+    margin-right: ${({ mr }) => mr};
+    margin-bottom: ${({ mb }) => mb};
+    margin-left: ${({ ml }) => ml};
+    padding-block: ${({ py }) => py};
+    padding-inline: ${({ px }) => px};
+    margin-block: ${({ my }) => my};
+    margin-inline: ${({ mx }) => mx};
+`;

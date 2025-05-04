@@ -51,6 +51,16 @@ export interface Theme {
         fontSize: number;
         lineHeight: number;
     };
+    breakpoints: {
+        keys: string[];
+        values: Record<string, string>;
+        up: (key: string) => `@media (min-width:${string})`;
+        down: (key: string) => `@media (max-width:${string})`;
+        between: (
+            start: string,
+            end: string,
+        ) => `@media (min-width:${string}) and (max-width:${string})`;
+    };
 }
 
 export type ThemeMode = "light" | "dark" | "system";

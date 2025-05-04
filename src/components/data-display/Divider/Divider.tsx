@@ -1,7 +1,8 @@
+import styled from "@emotion/styled";
 import type { FC } from "react";
 
-import styled from "@emotion/styled";
 import { useTheme } from "@root/hooks/useTheme";
+
 import {
     resolveDividerLineColor,
     resolveDividerTextColor,
@@ -9,7 +10,7 @@ import {
 } from "./Divider.helpers";
 import type { DividerProps, DividerVariant } from "./Divider.types";
 
-const DividerWrapper = styled.div<{
+const DividerWrapper = styled("div")<{
     isVertical?: boolean;
 }>`
     position: relative;
@@ -22,7 +23,7 @@ const DividerWrapper = styled.div<{
     margin: ${({ isVertical }) => (isVertical ? "0 8px" : "8px 0")};
 `;
 
-const DividerLine = styled.span<{
+const DividerLine = styled("span")<{
     isVertical: boolean;
     lineColor: string;
     variant: DividerVariant;
@@ -36,7 +37,7 @@ const DividerLine = styled.span<{
         isVertical ? "min-height: 1rem;" : "min-width: 1rem;"}
 `;
 
-const DividerText = styled.span<{
+const DividerText = styled("span")<{
     textColor: string;
     isVertical: boolean;
 }>`

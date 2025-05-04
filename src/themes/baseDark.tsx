@@ -29,4 +29,20 @@ export const baseDarkTheme: Theme = {
         fontSize: 16,
         lineHeight: 1.5,
     },
+    breakpoints: {
+        keys: ["xs", "sm", "md", "lg", "xl"],
+        values: {
+            xs: "0px",
+            sm: "600px",
+            md: "960px",
+            lg: "1280px",
+            xl: "1920px",
+        },
+        up: (key) =>
+            `@media (min-width:${baseDarkTheme.breakpoints.values[key]})`,
+        down: (key) =>
+            `@media (max-width:${baseDarkTheme.breakpoints.values[key]})`,
+        between: (start, end) =>
+            `@media (min-width:${baseDarkTheme.breakpoints.values[start]}) and (max-width:${baseDarkTheme.breakpoints.values[end]})`,
+    },
 };

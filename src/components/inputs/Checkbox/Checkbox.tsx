@@ -1,5 +1,6 @@
-import styled from "@emotion/styled";
 import { useTheme } from "@root/hooks/useTheme";
+
+import styled from "@emotion/styled";
 import { useState, type ChangeEvent, type FC } from "react";
 import {
     resolveCheckboxStyles,
@@ -8,7 +9,7 @@ import {
 } from "./Checkbox.helpers";
 import { type CheckboxProps, type CheckboxSize } from "./Checkbox.types";
 
-const CheckboxWrapper = styled.label<CheckboxProps>`
+const CheckboxWrapper = styled("label")<CheckboxProps>`
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -20,7 +21,7 @@ const CheckboxWrapper = styled.label<CheckboxProps>`
     ${({ size = "md" }) => resolveCheckboxStyles(size)};
 `;
 
-const HiddenCheckbox = styled.input`
+const HiddenCheckbox = styled("input")`
     position: absolute;
     inset: 0;
     width: 100%;
@@ -30,7 +31,7 @@ const HiddenCheckbox = styled.input`
     opacity: 0;
 `;
 
-const CheckboxBox = styled.span<CheckboxProps>`
+const CheckboxBox = styled("span")<CheckboxProps>`
     position: relative;
     border-radius: 4px;
     width: 1em;
@@ -60,11 +61,11 @@ const CheckboxBox = styled.span<CheckboxProps>`
     }
 `;
 
-const CheckboxLabel = styled.span`
+const CheckboxLabel = styled("span")`
     margin-left: 0.5rem;
 `;
 
-const IconWrapper = styled.span<{ size?: CheckboxSize }>`
+const IconWrapper = styled("span")<{ size?: CheckboxSize }>`
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -104,7 +105,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     };
 
     return (
-        <CheckboxWrapper as="label" disabled={disabled} size={size}>
+        <CheckboxWrapper disabled={disabled} size={size}>
             <HiddenCheckbox
                 type="checkbox"
                 checked={isChecked}
@@ -117,7 +118,6 @@ export const Checkbox: FC<CheckboxProps> = ({
                 }}
             />
             <CheckboxBox
-                theme={theme}
                 role="checkbox"
                 aria-checked={isChecked}
                 color={color}
