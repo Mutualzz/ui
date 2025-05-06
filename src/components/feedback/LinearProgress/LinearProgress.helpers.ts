@@ -46,10 +46,9 @@ export const lengthMap: Record<Size, number> = {
 
 export const resolveThickness = (thickness: Size | number) => {
     let base = thickness;
-    if (typeof thickness === "string") base = thicknessMap[thickness];
-
     if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thicknessMap.md;
+    if (isNaN(base)) base = thicknessMap[thickness as Size];
+
     if (base < minThickness) base = minThickness;
     if (base > maxThickness) base = maxThickness;
 
@@ -58,10 +57,9 @@ export const resolveThickness = (thickness: Size | number) => {
 
 export const resolveLength = (length: Size | number) => {
     let base = length;
-    if (typeof length === "string") base = lengthMap[length];
-
     if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = lengthMap.md;
+    if (isNaN(base)) base = lengthMap[length as Size];
+
     if (base < minLength) base = minLength;
     if (base > maxLength) base = maxLength;
 

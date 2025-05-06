@@ -47,10 +47,9 @@ export const thicknesses: Record<Size, number> = {
 
 export const resolveCircularProgressSizes = (size: Size | number) => {
     let base = size;
-    if (typeof size === "string") base = sizes[size];
-
     if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = sizes.md;
+    if (isNaN(base)) base = sizes[size as Size];
+
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
 
@@ -59,10 +58,9 @@ export const resolveCircularProgressSizes = (size: Size | number) => {
 
 export const resolveCiruclarProgressThickness = (thickness: Size | number) => {
     let base = thickness;
-    if (typeof thickness === "string") base = thicknesses[thickness];
-
     if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thicknesses.md;
+    if (isNaN(base)) base = thicknesses[thickness as Size];
+
     if (base < minSizeThickness) base = minSizeThickness;
     if (base > maxSizeThickness) base = maxSizeThickness;
 
