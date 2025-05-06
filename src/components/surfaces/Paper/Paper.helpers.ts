@@ -1,32 +1,30 @@
-import { formatHex8, parse, rgb } from "culori";
+import { formatHex8, rgb } from "culori";
+import { getLuminance } from "utils/getLuminance";
 import { Color, ColorLike, Theme } from "../../../types";
 import {
+    adjustTextColor,
     alpha,
     dynamicElevation,
     isThemeColor,
-    readableTextColor,
 } from "../../../utils";
 import { PaperElevation } from "./Paper.types";
 
 export const variantStyles = (
-    { colors }: Theme,
+    { colors, typography, ...theme }: Theme,
     color: Color | ColorLike,
     elevation: PaperElevation,
 ) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 
-    const parsedColor = parse(resolvedColor);
+    const parsedColor = rgb(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");
 
-    const typographyPrimary = rgb(colors.common.white);
-    if (!typographyPrimary) throw new Error("Invalid color");
-
-    const textColorDefault = readableTextColor(
-        resolvedColor,
-        colors.common.white,
-        2.5,
+    const bgLuminance = getLuminance(parsedColor);
+    const textColor = rgb(
+        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
     );
+    if (!textColor) throw new Error("Invalid color");
 
     return {
         elevation: {
@@ -35,7 +33,7 @@ export const variantStyles = (
         },
         solid: {
             backgroundColor: formatHex8(parsedColor),
-            color: textColorDefault,
+            color: formatHex8(adjustTextColor(parsedColor, textColor)),
             border: "none",
         },
         outlined: {
