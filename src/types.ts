@@ -65,6 +65,12 @@ export interface Theme {
     };
     typography: {
         fontFamily: string;
+        colors: {
+            primary: ColorLike;
+            secondary: ColorLike;
+            accent: ColorLike;
+            disabled: ColorLike;
+        };
         levels: {
             [key in TypographyLevel]: TypographyLevelObj;
         };

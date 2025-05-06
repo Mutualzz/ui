@@ -26,19 +26,13 @@ export const GlobalStyles = () => {
                     line-height: ${theme.typography.levels["body-md"]
                         .lineHeight};
                     background-color: ${theme.colors.background};
-                    color: ${theme.colors.common.white};
+                    color: ${theme.typography.colors.primary};
                 }
 
                 #app {
                     min-height: 100vh;
                     width: 100%;
                     box-sizing: border-box;
-                }
-
-                p {
-                    margin: 0;
-                    line-height: ${theme.typography.levels["body-md"]
-                        .lineHeight};
                 }
 
                 ul,
