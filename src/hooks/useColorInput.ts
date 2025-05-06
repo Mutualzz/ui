@@ -1,5 +1,6 @@
-import { formatHex8, parse } from "culori";
+import { formatHex, formatHex8, parse } from "culori";
 import { useState } from "react";
+import { alpha as alphaUtil } from "utils";
 import type { ColorLike } from "../types";
 import { randomHexColor } from "../utils/randomHexColor";
 
@@ -33,6 +34,7 @@ const isValidColorInput = (value: string): boolean =>
     isValidHsla(value);
 
 export const useColorInput = <T = ColorLike>(
+    alpha = 100,
     initialColor: ColorLike = randomHexColor(),
 ) => {
     const [inputValue, setInputValue] = useState<string>(initialColor);
@@ -50,7 +52,11 @@ export const useColorInput = <T = ColorLike>(
             const parsed = parse(trimmed);
 
             if (parsed) {
-                setColor(formatHex8(parsed));
+                setColor(
+                    alpha === 100
+                        ? formatHex(parsed)
+                        : alphaUtil(parsed, alpha),
+                );
                 setIsInvalid(false);
 
                 return;
