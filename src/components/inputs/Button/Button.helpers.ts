@@ -1,9 +1,11 @@
 import { css } from "@emotion/react";
 import { alpha } from "../../../utils/alpha";
 import { isThemeColor } from "../../../utils/isThemeColor";
-import { readableTextColor } from "../../../utils/readableTextColor";
 
-import { formatHex8, parse, rgb } from "culori";
+import { formatHex8, rgb } from "culori";
+
+import { adjustTextColor } from "utils";
+import { getLuminance } from "utils/getLuminance";
 import type { Color, ColorLike, Size, Theme } from "../../../types";
 
 const minSize = 10,
@@ -17,12 +19,11 @@ export const baseSizeMap: Record<Size, number> = {
 
 export const resolveButtonStyles = (size: Size | number) => {
     let base = size;
-    if (typeof size === "string") base = baseSizeMap[size];
-
     if (typeof base === "string") base = parseFloat(base);
+    if (isNaN(base)) base = baseSizeMap[size as Size];
+
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
-    if (isNaN(base)) base = baseSizeMap.md;
 
     const verticalPadding = 10;
     const horizontalPadding = 20;
@@ -35,26 +36,26 @@ export const resolveButtonStyles = (size: Size | number) => {
     });
 };
 
-export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
+export const variantColors = (
+    { colors, typography, ...theme }: Theme,
+    color: Color | ColorLike,
+) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 
-    const parsedColor = parse(resolvedColor);
+    const parsedColor = rgb(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");
 
-    const typographyPrimary = rgb(colors.common.white);
-    if (!typographyPrimary) throw new Error("Invalid color");
-
-    const textColorDefault = readableTextColor(
-        resolvedColor,
-        colors.common.white,
-        2,
+    const bgLuminance = getLuminance(parsedColor);
+    const textColor = rgb(
+        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
     );
+    if (!textColor) throw new Error("Invalid color");
 
     return {
         solid: {
             backgroundColor: formatHex8(parsedColor),
-            color: textColorDefault,
+            color: formatHex8(adjustTextColor(parsedColor, textColor)),
             border: "none",
             "&:hover": {
                 backgroundColor: alpha(parsedColor, 0.8),
@@ -64,7 +65,7 @@ export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
             },
             "&:disabled": {
                 backgroundColor: alpha(parsedColor, 0.2),
-                color: alpha(typographyPrimary, 0.4),
+                color: alpha(textColor, 0.4),
             },
         },
         outlined: {
