@@ -1,50 +1,57 @@
 import { css } from "@emotion/react";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
-import { parse } from "culori";
+import { formatHex8, rgb } from "culori";
+import { adjustTextColor } from "utils";
+import { getLuminance } from "utils/getLuminance";
 import { Color, ColorLike, Size, Theme } from "../../../types";
 import { alpha } from "../../../utils/alpha";
 
-const minSize = 16,
-    maxSize = 40;
+const minSize = 10,
+    maxSize = 28;
 
 export const baseSizeMap: Record<Size, number> = {
-    sm: 22,
-    md: 28,
-    lg: 32,
+    sm: 14,
+    md: 16,
+    lg: 20,
 };
 
 export const resolveCheckboxStyles = (size: Size | number) => {
     let base = size;
-    if (typeof size === "string") base = baseSizeMap[size];
-
     if (typeof base === "string") base = parseFloat(base);
+    if (isNaN(base)) base = baseSizeMap[size as Size];
+
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
-    if (isNaN(base)) base = baseSizeMap.md;
 
     return css({
         padding: base * 0.2,
         lineHeight: 0,
-        fontSize: base * 0.6,
+        fontSize: base,
     });
 };
 
 export const variantColors = (
-    { colors }: Theme,
+    { colors, typography, ...theme }: Theme,
     color: Color | ColorLike,
     checked?: boolean,
 ) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 
-    const parsedColor = parse(resolvedColor);
+    const parsedColor = rgb(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");
+
+    const bgLuminance = getLuminance(parsedColor);
+    const textColor = rgb(
+        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
+    );
+    if (!textColor) throw new Error("Invalid color");
 
     return {
         solid: {
             backgroundColor: resolvedColor,
-            color: colors.common.white,
+            color: formatHex8(adjustTextColor(parsedColor, textColor)),
             border: "none",
             "&:hover": { backgroundColor: alpha(parsedColor, 0.5) },
             "&:active": { backgroundColor: resolvedColor },
@@ -66,10 +73,10 @@ export const variantColors = (
             color: resolvedColor,
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.3), // Stronger on hover
+                backgroundColor: alpha(parsedColor, 0.3),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.3), // Even stronger on active
+                backgroundColor: alpha(parsedColor, 0.3),
             },
         },
         plain: {
@@ -93,7 +100,7 @@ export const resolveIconScaling = (size: Size | number) => {
     if (base > maxSize) base = maxSize;
     if (isNaN(base)) base = baseSizeMap.md;
 
-    const scale = base * 0.4;
+    const scale = base / 2;
 
     return css({
         width: scale,
