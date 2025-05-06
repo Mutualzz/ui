@@ -1,6 +1,8 @@
 import type { Theme } from "../types";
+import { typographyCommon } from "./commonValues";
 
 export const baseDarkTheme: Theme = {
+    ...typographyCommon,
     id: "baseDark",
     name: "Ashen Dusk",
     description: "Default Dark Theme",
@@ -18,15 +20,5 @@ export const baseDarkTheme: Theme = {
         warning: "#D4A033",
         success: "#4CAF50",
         info: "#5A84B1",
-        typography: {
-            primary: "#C8C8C8",
-            neutral: "#9A9A9A",
-            accent: "#A84E68",
-        },
-    },
-    typography: {
-        fontFamily: "Inter, sans-serif",
-        fontSize: 16,
-        lineHeight: 1.5,
     },
 };

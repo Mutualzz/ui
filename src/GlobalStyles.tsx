@@ -11,6 +11,7 @@ export const GlobalStyles = () => {
                 *::before,
                 *::after {
                     box-sizing: border-box;
+                    font-family: ${theme.typography.fontFamily};
                 }
 
                 html,
@@ -21,10 +22,11 @@ export const GlobalStyles = () => {
                     overflow-x: hidden;
 
                     font-family: ${theme.typography.fontFamily};
-                    font-size: ${theme.typography.fontSize};
-                    line-height: ${theme.typography.lineHeight};
+                    font-size: ${theme.typography.levels["body-md"].fontSize};
+                    line-height: ${theme.typography.levels["body-md"]
+                        .lineHeight};
                     background-color: ${theme.colors.background};
-                    color: ${theme.colors.typography.primary};
+                    color: ${theme.colors.common.white};
                 }
 
                 #app {
@@ -35,7 +37,8 @@ export const GlobalStyles = () => {
 
                 p {
                     margin: 0;
-                    line-height: ${theme.typography.lineHeight};
+                    line-height: ${theme.typography.levels["body-md"]
+                        .lineHeight};
                 }
 
                 ul,

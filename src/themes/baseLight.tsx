@@ -1,6 +1,8 @@
 import type { Theme } from "../types";
+import { typographyCommon } from "./commonValues";
 
 export const baseLightTheme: Theme = {
+    ...typographyCommon,
     id: "baseLight",
     name: "Silken Dawn",
     description: "Default Light Theme",
@@ -18,15 +20,5 @@ export const baseLightTheme: Theme = {
         warning: "#C78F2A",
         success: "#3D9242",
         info: "#496C99",
-        typography: {
-            primary: "#121212",
-            neutral: "#5A5A5A",
-            accent: "#6B425C",
-        },
-    },
-    typography: {
-        fontFamily: "Inter, sans-serif",
-        fontSize: 16,
-        lineHeight: 1.5,
     },
 };
