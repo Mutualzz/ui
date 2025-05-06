@@ -1,13 +1,12 @@
-import { useTheme } from "../../../hooks/useTheme";
-
 import styled from "@emotion/styled";
 import { useState, type ChangeEvent, type FC } from "react";
+import { Size } from "../../../types";
 import {
     resolveCheckboxStyles,
     resolveIconScaling,
     variantColors,
 } from "./Checkbox.helpers";
-import { type CheckboxProps, type CheckboxSize } from "./Checkbox.types";
+import { type CheckboxProps } from "./Checkbox.types";
 
 const CheckboxWrapper = styled("label")<CheckboxProps>`
     position: relative;
@@ -28,6 +27,7 @@ const HiddenCheckbox = styled("input")`
     height: 100%;
     margin: 0;
     cursor: pointer;
+    padding: 0;
     opacity: 0;
 `;
 
@@ -56,7 +56,7 @@ const CheckboxBox = styled("span")<CheckboxProps>`
     }
 
     input[type="checkbox"]:focus-visible + & {
-        box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.typography.accent};
+        box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.common.white};
         outline: none;
     }
 `;
@@ -65,7 +65,7 @@ const CheckboxLabel = styled("span")`
     margin-left: 0.5rem;
 `;
 
-const IconWrapper = styled("span")<{ size?: CheckboxSize }>`
+const IconWrapper = styled("span")<{ size?: Size | number }>`
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -91,8 +91,6 @@ export const Checkbox: FC<CheckboxProps> = ({
     indeterminateIcon,
     ...props
 }) => {
-    const { theme } = useTheme();
-
     const [internalChecked, setInternalChecked] = useState(false);
     const isChecked =
         controlledChecked !== undefined ? controlledChecked : internalChecked;

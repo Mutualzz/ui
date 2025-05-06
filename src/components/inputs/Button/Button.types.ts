@@ -1,27 +1,13 @@
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
-import type { ColorLike } from "../../../types";
-
-export type ButtonColor =
-    | "primary"
-    | "neutral"
-    | "success"
-    | "danger"
-    | "warning"
-    | "info"
-    | ColorLike;
-
-export type ButtonVariant = "plain" | "outlined" | "soft" | "solid";
-
-export type ButtonSize = "sm" | "md" | "lg" | number;
+import { Color, ColorLike, Size, Variant } from "../../../types";
 
 export interface ButtonProps
     extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
-    variant?: ButtonVariant;
-    color?: ButtonColor;
-    size?: ButtonSize;
+    variant?: Variant;
+    color?: Color | ColorLike;
+    size?: Size | number;
     loading?: boolean;
     disabled?: boolean;
     startIcon?: ReactNode;
     endIcon?: ReactNode;
-    fullWidth?: boolean;
 }

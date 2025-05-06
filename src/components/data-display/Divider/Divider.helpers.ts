@@ -1,32 +1,14 @@
 import { formatHex8, parse } from "culori";
-import type { Theme } from "../../../types";
+import type { Color, ColorLike, Theme } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
-import { isTypographyColor } from "../../../utils/isTypographyColor";
-import type {
-    DividerLineColor,
-    DividerTextColor,
-    DividerVariant,
-} from "./Divider.types";
+import type { DividerVariant } from "./Divider.types";
 
-export const resolveDividerLineColor = (
+export const resolveDividerColor = (
     { colors }: Theme,
-    color: DividerLineColor,
+    color: Color | ColorLike,
 ) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = parse(resolvedColor);
-    if (!parsedColor) throw new Error("Invalid color");
-
-    return formatHex8(parsedColor);
-};
-
-export const resolveDividerTextColor = (
-    { colors }: Theme,
-    color: DividerTextColor,
-) => {
-    const isCustomColor = !isTypographyColor(color);
-    const resolvedColor = isCustomColor ? color : colors.typography[color];
 
     const parsedColor = parse(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");

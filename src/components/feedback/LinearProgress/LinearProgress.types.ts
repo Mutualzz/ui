@@ -1,19 +1,4 @@
-import type { ColorLike } from "../../../types";
-
-export type LinearProgressVariant = "plain" | "outlined" | "soft" | "solid";
-
-export type LinearProgressLength = "sm" | "md" | "lg" | number;
-
-export type LinearProgressThickness = "sm" | "md" | "lg" | number;
-
-export type LinearProgressColor =
-    | "primary"
-    | "neutral"
-    | "success"
-    | "danger"
-    | "warning"
-    | "info"
-    | ColorLike;
+import { Color, ColorLike, Size, Variant } from "../../../types";
 
 export type LinearProgressAnimation =
     | "slide"
@@ -22,10 +7,10 @@ export type LinearProgressAnimation =
     | "scale-in-out";
 
 export interface LinearProgressProps {
-    length?: LinearProgressLength;
-    thickness?: LinearProgressThickness;
-    variant?: LinearProgressVariant;
-    color?: LinearProgressColor;
+    length?: Size | number;
+    thickness?: Size | number;
+    variant?: Variant;
+    color?: Color | ColorLike;
     animation?: LinearProgressAnimation;
     determinate?: boolean;
     value?: number;

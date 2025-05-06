@@ -1,23 +1,9 @@
-import type { ColorLike } from "../../../types";
-
-export type CircularProgressVariant = "plain" | "outlined" | "soft" | "solid";
-export type CircularProgressSize = "sm" | "md" | "lg" | number;
-
-export type CircularProgressColor =
-    | "primary"
-    | "neutral"
-    | "success"
-    | "danger"
-    | "warning"
-    | "info"
-    | ColorLike;
-
-export type CircularProgressThickness = "sm" | "md" | "lg" | number;
+import { Color, ColorLike, Size, Variant } from "../../../types";
 
 export interface CircularProgressProps {
-    size?: CircularProgressSize;
-    variant?: CircularProgressVariant;
-    color?: CircularProgressColor;
+    size?: Size | number;
+    variant?: Variant;
+    color?: Color | ColorLike;
     determinate?: boolean;
     value?: number;
 }

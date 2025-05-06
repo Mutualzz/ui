@@ -1,41 +1,21 @@
 import styled from "@emotion/styled";
 import { formatHex8, parse } from "culori";
 import { alpha, isThemeColor, readableTextColor } from "utils";
-import { Theme } from "../../../../dist/types";
-import {
-    TypographyColor,
-    TypographyLevel,
-    TypographyProps,
-} from "./Typography.types";
 
-const levelSizeMap: Record<TypographyLevel, number> = {
-    h1: 32,
-    h2: 28,
-    h3: 24,
-    h4: 20,
-    "title-lg": 20,
-    "title-md": 18,
-    "title-sm": 16,
-    "body-lg": 16,
-    "body-md": 14,
-    "body-sm": 12,
-};
+import { Color, ColorLike, Theme } from "../../../types";
+import { TypographyProps } from "./Typography.types";
 
-const variantStyles = (
-    { colors }: Theme,
-    color: TypographyColor,
-    level: TypographyLevel,
-) => {
+const variantStyles = ({ colors }: Theme, color: Color | ColorLike) => {
     const isCustomColor = !isThemeColor(color);
-    let resolvedColor = isCustomColor ? color : colors[color];
+    const resolvedColor = isCustomColor ? color : colors[color];
 
     const parsedColor = parse(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");
 
-    const typographyPrimary = colors.typography.primary;
+    const typographyPrimary = colors.common.white;
     if (!typographyPrimary) throw new Error("Invalid color");
 
-    const textColor = readableTextColor(
+    const textColorDefault = readableTextColor(
         resolvedColor,
         colors.common.white,
         2.5,
@@ -44,7 +24,7 @@ const variantStyles = (
     return {
         solid: {
             backgroundColor: formatHex8(parsedColor),
-            color: textColor,
+            color: textColorDefault,
             border: "none",
         },
         outlined: {
@@ -62,14 +42,18 @@ const variantStyles = (
             color: formatHex8(parsedColor),
             border: "none",
         },
+        none: {
+            backgroundColor: "transparent",
+            color: textColorDefault,
+            border: "none",
+        },
     };
 };
 
 export const Typography = styled.span<TypographyProps>(
-    ({ theme, level = "body-md", color = "#fff", variant = "plain" }) => ({
-        ...variantStyles(theme, color, level)[variant],
-        fontSize: levelSizeMap[level],
-        lineHeight: 1.5,
+    ({ theme, level = "body-md", color = "#fff", variant = "none" }) => ({
+        ...variantStyles(theme, color)[variant],
+        ...theme.typography.levels[level],
         padding: 4,
     }),
 );

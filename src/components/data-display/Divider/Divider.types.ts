@@ -1,19 +1,8 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import type { ColorLike } from "../../../types";
+import { Color, ColorLike } from "../../../types";
 
 export type DividerOrientation = "horizontal" | "vertical";
 export type DividerInset = "none" | "start" | "end";
-
-export type DividerLineColor =
-    | "primary"
-    | "neutral"
-    | "danger"
-    | "warning"
-    | "info"
-    | "success"
-    | ColorLike;
-
-export type DividerTextColor = "primary" | "neutral" | "accent" | ColorLike;
 
 export type DividerVariant = "solid" | "dashed" | "dotted" | "double";
 
@@ -21,8 +10,8 @@ export interface DividerProps extends HTMLAttributes<HTMLHRElement> {
     orientation?: DividerOrientation;
     inset?: DividerInset;
 
-    lineColor?: DividerLineColor;
-    textColor?: DividerTextColor;
+    lineColor?: Color | ColorLike;
+    textColor?: Color | ColorLike;
     variant?: DividerVariant;
 
     children?: ReactNode;

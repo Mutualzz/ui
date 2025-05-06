@@ -3,11 +3,7 @@ import type { FC } from "react";
 
 import { useTheme } from "hooks/useTheme";
 
-import {
-    resolveDividerLineColor,
-    resolveDividerTextColor,
-    resolveDividerVariant,
-} from "./Divider.helpers";
+import { resolveDividerColor, resolveDividerVariant } from "./Divider.helpers";
 import type { DividerProps, DividerVariant } from "./Divider.types";
 
 const DividerWrapper = styled("div")<{
@@ -59,8 +55,8 @@ export const Divider: FC<DividerProps> = ({
     const { theme } = useTheme();
 
     const isVertical = orientation === "vertical";
-    const resolvedLineColor = resolveDividerLineColor(theme, lineColor);
-    const resolvedTextColor = resolveDividerTextColor(theme, textColor);
+    const resolvedLineColor = resolveDividerColor(theme, lineColor);
+    const resolvedTextColor = resolveDividerColor(theme, textColor);
 
     return (
         <DividerWrapper

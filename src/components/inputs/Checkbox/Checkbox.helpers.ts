@@ -2,25 +2,25 @@ import { css } from "@emotion/react";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { parse } from "culori";
-import { Theme } from "../../../types";
+import { Color, ColorLike, Size, Theme } from "../../../types";
 import { alpha } from "../../../utils/alpha";
-import type { CheckboxColor, CheckboxSize } from "./Checkbox.types";
 
 const minSize = 16,
     maxSize = 40;
 
-export const baseSizeMap: Record<CheckboxSize, number> = {
+export const baseSizeMap: Record<Size, number> = {
     sm: 22,
     md: 28,
     lg: 32,
 };
 
-export const resolveCheckboxStyles = (size: CheckboxSize) => {
-    let base = baseSizeMap[size] ?? size;
+export const resolveCheckboxStyles = (size: Size | number) => {
+    let base = size;
+    if (typeof size === "string") base = baseSizeMap[size];
 
+    if (typeof base === "string") base = parseFloat(base);
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
-    if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) base = baseSizeMap.md;
 
     return css({
@@ -32,7 +32,7 @@ export const resolveCheckboxStyles = (size: CheckboxSize) => {
 
 export const variantColors = (
     { colors }: Theme,
-    color: CheckboxColor,
+    color: Color | ColorLike,
     checked?: boolean,
 ) => {
     const isCustomColor = !isThemeColor(color);
@@ -84,12 +84,13 @@ export const variantColors = (
     };
 };
 
-export const resolveIconScaling = (size: CheckboxSize) => {
-    let base = baseSizeMap[size] ?? size;
+export const resolveIconScaling = (size: Size | number) => {
+    let base = size;
+    if (typeof size === "string") base = baseSizeMap[size];
 
+    if (typeof base === "string") base = parseFloat(base);
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
-    if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) base = baseSizeMap.md;
 
     const scale = base * 0.4;

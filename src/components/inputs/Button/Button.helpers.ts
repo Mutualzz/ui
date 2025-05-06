@@ -4,25 +4,24 @@ import { isThemeColor } from "../../../utils/isThemeColor";
 import { readableTextColor } from "../../../utils/readableTextColor";
 
 import { formatHex8, parse, rgb } from "culori";
-import type { Theme } from "../../../types";
-import type { ButtonColor, ButtonSize } from "./Button.types";
+import type { Color, ColorLike, Size, Theme } from "../../../types";
 
 const minSize = 10,
     maxSize = 24;
 
-export const baseSizeMap: Record<ButtonSize, number> = {
+export const baseSizeMap: Record<Size, number> = {
     sm: 12,
     md: 14,
     lg: 16,
 };
 
-export const resolveButtonStyles = (size: ButtonSize) => {
-    let base = baseSizeMap[size] ?? size;
-
-    if (base < minSize) base = minSize;
-    if (base > maxSize) base = maxSize;
+export const resolveButtonStyles = (size: Size | number) => {
+    let base = size;
+    if (typeof size === "string") base = baseSizeMap[size];
 
     if (typeof base === "string") base = parseFloat(base);
+    if (base < minSize) base = minSize;
+    if (base > maxSize) base = maxSize;
     if (isNaN(base)) base = baseSizeMap.md;
 
     const verticalPadding = 10;
@@ -36,26 +35,26 @@ export const resolveButtonStyles = (size: ButtonSize) => {
     });
 };
 
-export const variantColors = ({ colors }: Theme, color: ButtonColor) => {
+export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 
     const parsedColor = parse(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");
 
-    const typographyPrimary = rgb(colors.typography.primary);
+    const typographyPrimary = rgb(colors.common.white);
     if (!typographyPrimary) throw new Error("Invalid color");
 
-    const textColor = readableTextColor(
+    const textColorDefault = readableTextColor(
         resolvedColor,
         colors.common.white,
-        2.5,
+        2,
     );
 
     return {
         solid: {
             backgroundColor: formatHex8(parsedColor),
-            color: textColor,
+            color: textColorDefault,
             border: "none",
             "&:hover": {
                 backgroundColor: alpha(parsedColor, 0.8),

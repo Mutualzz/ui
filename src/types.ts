@@ -6,7 +6,7 @@ export type HSLA = `hsla(${number}, ${number}%, ${number}%, ${number})`;
 
 export type ColorLike = Hex | RGB | RGBA | HSL | HSLA;
 
-export type ThemeColor =
+export type Color =
     | "primary"
     | "neutral"
     | "success"
@@ -14,7 +14,31 @@ export type ThemeColor =
     | "warning"
     | "info";
 
-export type ThemeTypographyColor = "primary" | "neutral" | "accent";
+export type Variant = "plain" | "outlined" | "soft" | "solid";
+
+export type TypographyDisplayKey =
+    | "display-xs"
+    | "display-sm"
+    | "display-md"
+    | "display-lg";
+export type TypographyHeadingKey = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export type TypographyTitleKey = "title-sm" | "title-md" | "title-lg";
+export type TypographyBodyKey = "body-xs" | "body-sm" | "body-md" | "body-lg";
+
+export type TypographyLevel =
+    | TypographyBodyKey
+    | TypographyTitleKey
+    | TypographyHeadingKey
+    | TypographyDisplayKey;
+
+export type TypographyLevelObj = {
+    fontSize: string | number;
+    lineHeight: string | number;
+    fontWeight: string | number;
+    letterSpacing: string | number;
+};
+
+export type Size = "sm" | "md" | "lg";
 
 export interface Theme {
     id: string;
@@ -38,18 +62,12 @@ export interface Theme {
         warning: ColorLike;
         info: ColorLike;
         success: ColorLike;
-
-        // Typography colors
-        typography: {
-            primary: ColorLike;
-            neutral: ColorLike;
-            accent: ColorLike;
-        };
     };
     typography: {
         fontFamily: string;
-        fontSize: number;
-        lineHeight: number;
+        levels: {
+            [key in TypographyLevel]: TypographyLevelObj;
+        };
     };
 }
 

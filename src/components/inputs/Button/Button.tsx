@@ -3,16 +3,15 @@ import { type FC } from "react";
 import styled from "@emotion/styled";
 import { CircularProgress } from "../../feedback/CircularProgress/CircularProgress";
 
+import { Size } from "../../../types";
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
-import { type ButtonProps, type ButtonSize } from "./Button.types";
+import { type ButtonProps } from "./Button.types";
 
 const ButtonWrapper = styled("button")<ButtonProps>`
     position: relative;
-    display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
-    align-self: ${({ fullWidth }) => (fullWidth ? "stretch" : "auto")};
     box-sizing: border-box;
     border-radius: 6px;
     cursor: pointer;
@@ -47,7 +46,7 @@ const SpinnerOverlay = styled("span")`
 
 const IconWrapper = styled("span")<{
     position: "start" | "end";
-    size?: ButtonSize;
+    size?: Size | number;
 }>`
     display: inline-flex;
     align-items: center;
@@ -70,7 +69,6 @@ export const Button: FC<ButtonProps> = ({
     endIcon,
     disabled,
     children,
-    fullWidth = false,
     ...props
 }) => (
     <ButtonWrapper
@@ -80,7 +78,6 @@ export const Button: FC<ButtonProps> = ({
         size={size}
         disabled={loading || disabled}
         loading={loading}
-        fullWidth={fullWidth}
     >
         {loading && (
             <SpinnerOverlay>

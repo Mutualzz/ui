@@ -1,18 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import type { ColorLike } from "../../../types";
-
-export type CheckboxColor =
-    | "primary"
-    | "neutral"
-    | "success"
-    | "danger"
-    | "warning"
-    | "info"
-    | ColorLike;
-
-export type CheckboxVariant = "plain" | "outlined" | "soft" | "solid";
-
-export type CheckboxSize = "sm" | "md" | "lg" | number;
+import { Color, ColorLike, Size, Variant } from "../../../types";
 
 export interface CheckboxProps extends HTMLAttributes<HTMLInputElement> {
     label?: ReactNode;
@@ -26,7 +13,7 @@ export interface CheckboxProps extends HTMLAttributes<HTMLInputElement> {
     uncheckedIcon?: ReactNode;
     indeterminateIcon?: ReactNode;
 
-    color?: CheckboxColor;
-    size?: CheckboxSize;
-    variant?: CheckboxVariant;
+    color?: Color | ColorLike;
+    size?: Size | number;
+    variant?: Variant;
 }
