@@ -15,7 +15,11 @@ export const dynamicElevation = (
 
     const newLightness = Math.min(oklchColor.l + elevation * increment, 1);
 
-    const adjustedColor = { ...oklchColor, l: newLightness };
+    const adjustedColor = {
+        ...oklchColor,
+        l: newLightness,
+        alpha: oklchColor.alpha ?? 1,
+    };
 
     return formatHex8(adjustedColor);
 };
