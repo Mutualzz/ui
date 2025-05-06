@@ -12,6 +12,9 @@ export * from "./components/feedback/LinearProgress/LinearProgress";
 export * from "./components/inputs/Button/Button";
 export * from "./components/inputs/Checkbox/Checkbox";
 
+export * from "./components/inputs/RadioButton/RadioButton";
+export * from "./components/inputs/RadioButton/RadioButtonGroup";
+
 // Layout
 export * from "./components/layout/Box/Box";
 export * from "./components/layout/Stack/Stack";
