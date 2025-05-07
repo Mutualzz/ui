@@ -1,4 +1,5 @@
-import type { Color, ColorLike, Size, Theme } from "../../../types";
+import type { Theme } from "@emotion/react";
+import type { Color, ColorLike, Size } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";

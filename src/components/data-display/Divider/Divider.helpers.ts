@@ -1,5 +1,6 @@
+import type { Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
-import type { Color, ColorLike, Theme } from "../../../types";
+import type { Color, ColorLike } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
 import type { DividerVariant } from "./Divider.types";
 

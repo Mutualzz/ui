@@ -78,10 +78,3 @@ export interface Theme {
 }
 
 export type ThemeMode = "light" | "dark" | "system";
-
-export interface ThemeContextInterface {
-    theme: Theme;
-    changeTheme: (theme: string) => void;
-    mode: ThemeMode;
-    changeMode: (mode: ThemeMode) => void;
-}

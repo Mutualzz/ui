@@ -1,12 +1,7 @@
-import { css } from "@emotion/react";
+import { css, type Theme } from "@emotion/react";
 
 import { formatHex8, rgb } from "culori";
-import {
-    type Color,
-    type ColorLike,
-    type Size,
-    type Theme,
-} from "../../../types";
+import { type Color, type ColorLike, type Size } from "../../../types";
 import {
     adjustTextColor,
     alpha,

@@ -1,5 +1,6 @@
+import type { Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
-import type { Color, ColorLike, Size, Theme } from "../../../types";
+import type { Color, ColorLike, Size } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
 const minSize = 16,

@@ -1,4 +1,4 @@
-import type { Theme } from "../types";
+import type { Theme } from "@emotion/react";
 import { baseDarkTheme } from "./baseDark";
 import { baseLightTheme } from "./baseLight";
 

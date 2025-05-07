@@ -1,4 +1,7 @@
-import { ThemeProvider as EmotionThemeProvder } from "@emotion/react";
+import {
+    ThemeProvider as EmotionThemeProvder,
+    type Theme,
+} from "@emotion/react";
 import {
     createContext,
     useEffect,
@@ -7,9 +10,9 @@ import {
     type PropsWithChildren,
 } from "react";
 import { themesObj } from "./themes";
-import type { Theme, ThemeContextInterface, ThemeMode } from "./types";
+import type { ThemeMode } from "./types";
 
-export const ThemeContext = createContext<ThemeContextInterface | null>({
+export const ThemeContext = createContext({
     theme: themesObj["baseDark"],
     changeTheme: (_theme: string) => {},
     mode: "system",

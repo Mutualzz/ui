@@ -1,4 +1,4 @@
-import type { Theme } from "../types";
+import type { Theme } from "@emotion/react";
 
 export const sortThemes = (themes: Theme[]): Theme[] => {
     const priorityOrder: string[] = ["baseDark", "baseLight"];
