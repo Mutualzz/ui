@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import type { FC } from "react";
 
-import { useTheme } from "hooks/useTheme";
+import { useTheme } from "../../../hooks/useTheme";
 
 import { resolveDividerColor, resolveDividerVariant } from "./Divider.helpers";
 import type { DividerProps, DividerVariant } from "./Divider.types";
