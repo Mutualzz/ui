@@ -9,7 +9,7 @@ import {
 import { themesObj } from "./themes";
 import type { Theme, ThemeContextInterface, ThemeMode } from "./types";
 
-export const ThemeContext = createContext<ThemeContextInterface>({
+export const ThemeContext = createContext<ThemeContextInterface | null>({
     theme: themesObj["baseDark"],
     changeTheme: (_theme: string) => {},
     mode: "system",
