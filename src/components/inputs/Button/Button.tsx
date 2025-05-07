@@ -3,7 +3,7 @@ import { type FC } from "react";
 import styled from "@emotion/styled";
 import { CircularProgress } from "../../feedback/CircularProgress/CircularProgress";
 
-import { Size } from "../../../types";
+import { type Size } from "../../../types";
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 

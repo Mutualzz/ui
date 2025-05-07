@@ -1,4 +1,4 @@
-import { Rgb } from "culori";
+import type { Rgb } from "culori";
 
 const toLuminance = (channel: number) =>
     channel <= 0.03928

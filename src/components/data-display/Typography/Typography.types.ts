@@ -1,5 +1,10 @@
-import { HTMLAttributes } from "react";
-import { Color, ColorLike, TypographyLevel, Variant } from "../../../types";
+import { type HTMLAttributes } from "react";
+import {
+    type Color,
+    type ColorLike,
+    type TypographyLevel,
+    type Variant,
+} from "../../../types";
 
 export type TypographyVariant = Variant | "none";
 

@@ -1,4 +1,4 @@
-import { Rgb } from "culori";
+import type { Rgb } from "culori";
 import { adjustLightness } from "./adjustLightness";
 import { getContrastRatio } from "./getContrastRatio";
 import { getLuminance } from "./getLuminance";

@@ -1,4 +1,4 @@
-import { Theme } from "../types";
+import type { Theme } from "../types";
 
 export const sortThemes = (themes: Theme[]): Theme[] => {
     const priorityOrder: string[] = ["baseDark", "baseLight"];

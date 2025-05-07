@@ -1,4 +1,9 @@
-import { Color, ColorLike, Size, Variant } from "../../../types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type Variant,
+} from "../../../types";
 
 export interface CircularProgressProps {
     size?: Size | number;

@@ -1,13 +1,16 @@
 import styled from "@emotion/styled";
 import {
-    ChangeEvent,
+    type ChangeEvent,
     Children,
     cloneElement,
-    FC,
+    type FC,
     isValidElement,
     useState,
 } from "react";
-import { RadioButtonGroupProps, RadioButtonProps } from "./RadioButton.types";
+import {
+    type RadioButtonGroupProps,
+    type RadioButtonProps,
+} from "./RadioButton.types";
 
 const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
     display: inline-flex;

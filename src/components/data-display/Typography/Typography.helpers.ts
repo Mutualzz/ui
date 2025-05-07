@@ -1,19 +1,23 @@
 import { formatHex8, rgb } from "culori";
-import { Color, ColorLike, Theme } from "../../../types";
-import { alpha, isThemeColor } from "../../../utils";
-import { adjustTextColor } from "../../../utils/adjustTextColor";
+import { type Color, type ColorLike, type Theme } from "../../../types";
+import {
+    adjustTextColor,
+    alpha,
+    getLuminance,
+    isThemeColor,
+} from "../../../utils";
 
-export const variantStyles = (
-    { colors, typography, ...theme }: Theme,
-    color: Color | ColorLike,
-) => {
+export const variantStyles = ({ colors }: Theme, color: Color | ColorLike) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 
     const parsedColor = rgb(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");
 
-    const textColor = rgb(typography.colors.primary);
+    const bgLuminance = getLuminance(parsedColor);
+    const textColor = rgb(
+        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
+    );
     if (!textColor) throw new Error("Invalid color");
 
     return {

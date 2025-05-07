@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
-import { Color, ColorLike } from "../../../types";
+import { type Color, type ColorLike } from "../../../types";
 
 export type DividerOrientation = "horizontal" | "vertical";
 export type DividerInset = "none" | "start" | "end";

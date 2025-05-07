@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useState, type ChangeEvent, type FC } from "react";
-import { Size } from "../../../types";
+import { type Size } from "../../../types";
 import {
     resolveCheckboxStyles,
     resolveIconScaling,

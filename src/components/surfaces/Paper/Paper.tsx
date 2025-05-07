@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { variantStyles } from "./Paper.helpers";
-import { PaperProps } from "./Paper.types";
+import { type PaperProps } from "./Paper.types";
 
 export const Paper = styled.div<PaperProps>(
     ({

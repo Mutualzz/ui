@@ -1,12 +1,14 @@
 import { css } from "@emotion/react";
-import { alpha } from "../../../utils/alpha";
-import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, rgb } from "culori";
 
-import { adjustTextColor } from "utils";
-import { getLuminance } from "utils/getLuminance";
 import type { Color, ColorLike, Size, Theme } from "../../../types";
+import {
+    adjustTextColor,
+    alpha,
+    getLuminance,
+    isThemeColor,
+} from "../../../utils";
 
 const minSize = 10,
     maxSize = 24;
@@ -36,10 +38,7 @@ export const resolveButtonStyles = (size: Size | number) => {
     });
 };
 
-export const variantColors = (
-    { colors, typography, ...theme }: Theme,
-    color: Color | ColorLike,
-) => {
+export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 

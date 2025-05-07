@@ -1,5 +1,10 @@
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
-import { Color, ColorLike, Size, Variant } from "../../../types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type Variant,
+} from "../../../types";
 
 export interface ButtonProps
     extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {

@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import { ChangeEvent, FC, useState } from "react";
-import { Size } from "../../../types";
+import { type ChangeEvent, type FC, useState } from "react";
+import type { Size } from "../../../types";
 import {
     resolveIconScaling,
     resolveRadioStyles,
     variantColors,
 } from "./RadioButton.helpers";
-import { RadioButtonProps } from "./RadioButton.types";
+import type { RadioButtonProps } from "./RadioButton.types";
 
 const RadioWrapper = styled("label")<RadioButtonProps>`
     position: relative;

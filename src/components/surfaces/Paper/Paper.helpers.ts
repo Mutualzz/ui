@@ -1,18 +1,17 @@
 import { formatHex8, rgb } from "culori";
-import { getLuminance } from "utils/getLuminance";
-import { Color, ColorLike, Theme } from "../../../types";
+import { type Color, type ColorLike, type Theme } from "../../../types";
 import {
     adjustTextColor,
     alpha,
     dynamicElevation,
+    getLuminance,
     isThemeColor,
 } from "../../../utils";
-import { PaperElevation } from "./Paper.types";
 
 export const variantStyles = (
-    { colors, typography, ...theme }: Theme,
+    { colors }: Theme,
     color: Color | ColorLike,
-    elevation: PaperElevation,
+    elevation: number,
 ) => {
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];

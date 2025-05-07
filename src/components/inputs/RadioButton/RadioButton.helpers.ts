@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Size } from "../../../types";
+import { type Size } from "../../../types";
 
 const minSize = 10,
     maxSize = 28;

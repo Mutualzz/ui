@@ -1,11 +1,7 @@
 import { formatHex8, oklch, parse } from "culori";
-import type { PaperElevation } from "../components/surfaces/Paper/Paper.types";
 import type { ColorLike } from "../types";
 
-export const dynamicElevation = (
-    color: ColorLike,
-    elevation: PaperElevation,
-) => {
+export const dynamicElevation = (color: ColorLike, elevation: number) => {
     const parsedColor = parse(color);
     if (!parsedColor) return color;
 

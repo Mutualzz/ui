@@ -1,6 +1,14 @@
-import { ReactNode } from "@tanstack/react-router";
-import { ChangeEvent, InputHTMLAttributes } from "react";
-import { Color, ColorLike, Size, Variant } from "../../../types";
+import {
+    type ChangeEvent,
+    type InputHTMLAttributes,
+    type ReactNode,
+} from "react";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type Variant,
+} from "../../../types";
 
 export interface RadioButtonProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {

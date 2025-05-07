@@ -1,4 +1,4 @@
-import { Rgb } from "culori";
+import type { Rgb } from "culori";
 import { getLuminance } from "./getLuminance";
 
 export const getContrastRatio = (color1: Rgb, color2: Rgb): number => {

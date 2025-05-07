@@ -1,5 +1,10 @@
 import type { ChangeEvent, InputHTMLAttributes, ReactNode } from "react";
-import { Color, ColorLike, Size, Variant } from "../../../types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type Variant,
+} from "../../../types";
 
 export interface CheckboxProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {

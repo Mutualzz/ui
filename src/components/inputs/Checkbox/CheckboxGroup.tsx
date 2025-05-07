@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import {
-    ChangeEvent,
+    type ChangeEvent,
     Children,
     cloneElement,
-    FC,
+    type FC,
     isValidElement,
     useState,
 } from "react";
-import { CheckboxGroupProps, CheckboxProps } from "./Checkbox.types";
+import { type CheckboxGroupProps, type CheckboxProps } from "./Checkbox.types";
 
 const CheckboxGroupWrapper = styled("div")<{ row?: boolean }>`
     display: inline-flex;

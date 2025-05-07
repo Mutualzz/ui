@@ -1,11 +1,18 @@
 import { css } from "@emotion/react";
-import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, rgb } from "culori";
-import { adjustTextColor } from "utils";
-import { getLuminance } from "utils/getLuminance";
-import { Color, ColorLike, Size, Theme } from "../../../types";
-import { alpha } from "../../../utils/alpha";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type Theme,
+} from "../../../types";
+import {
+    adjustTextColor,
+    alpha,
+    getLuminance,
+    isThemeColor,
+} from "../../../utils";
 
 const minSize = 10,
     maxSize = 28;
@@ -32,7 +39,7 @@ export const resolveCheckboxStyles = (size: Size | number) => {
 };
 
 export const variantColors = (
-    { colors, typography, ...theme }: Theme,
+    { colors }: Theme,
     color: Color | ColorLike,
     checked?: boolean,
 ) => {
