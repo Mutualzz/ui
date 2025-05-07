@@ -2,5 +2,6 @@ import "@emotion/react";
 import { type Theme as MzTheme } from "./types";
 
 declare module "@emotion/react" {
-    export type Theme = MzTheme;
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    export interface Theme extends MzTheme {}
 }
