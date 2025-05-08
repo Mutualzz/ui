@@ -133,7 +133,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                     }
                 }}
             />
-            {rtl && label && <CheckboxLabel>{label}</CheckboxLabel>}
+            {rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
             <CheckboxBox
                 role="checkbox"
                 aria-checked={isChecked}
@@ -184,7 +184,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                     <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
                 ) : null}
             </CheckboxBox>
-            {!rtl && label && <CheckboxLabel>{label}</CheckboxLabel>}
+            {!rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
         </CheckboxWrapper>
     );
 };
