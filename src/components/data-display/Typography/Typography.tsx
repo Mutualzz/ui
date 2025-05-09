@@ -7,6 +7,6 @@ export const Typography = styled("span")<TypographyProps>(
     ({ theme, level = "body-md", color = "#fff", variant = "none" }) => ({
         ...variantStyles(theme, color)[variant],
         ...theme.typography.levels[level],
-        padding: 4,
+        padding: 8,
     }),
 );
