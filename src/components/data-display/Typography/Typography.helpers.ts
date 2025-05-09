@@ -44,7 +44,6 @@ export const variantStyles = ({ colors }: Theme, color: Color | ColorLike) => {
         },
         none: {
             backgroundColor: "transparent",
-            color: formatHex8(textColor),
             border: "none",
         },
     };
