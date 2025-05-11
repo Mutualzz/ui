@@ -7,7 +7,7 @@ function flattenThemeToCssVars(
     return Object.entries(theme).reduce(
         (acc, [key, val]) => {
             const varName = `--mz-${prefix}${key}`;
-            if (val != null && typeof val === "object") {
+            if (val && typeof val === "object") {
                 Object.assign(
                     acc,
                     flattenThemeToCssVars(val, `${prefix}${key}-`),
