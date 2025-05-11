@@ -1,3 +1,5 @@
+import type { Breakpoint } from "types";
+
 export const typographyLevels = {
     "body-xs": {
         fontSize: "0.75rem",
@@ -101,4 +103,49 @@ export const typographyLevels = {
         fontWeight: 700,
         letterSpacing: "-0.02em",
     },
+};
+
+export const breakpoints = {
+    xs: 0,
+    sm: 600,
+    md: 900,
+    lg: 1200,
+    xl: 1536,
+};
+
+export const spacing = {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+};
+
+const breakpointKeys = Object.keys(breakpoints);
+
+export const mediaUp = (breakpoint: Breakpoint) =>
+    `@media (min-width: ${breakpoints[breakpoint]}px)`;
+
+export const mediaDown = (breakpoint: Breakpoint) => {
+    const next = breakpointKeys[breakpointKeys.indexOf(breakpoint) + 1];
+    return next
+        ? `@media (max-width: ${breakpoints[next as keyof typeof breakpoints] - 0.05}px)`
+        : "";
+};
+
+export const mediaBetween = (start: Breakpoint, end: Breakpoint) =>
+    `@media (min-width: ${breakpoints[start]}px) and (max-width: ${breakpoints[end] - 0.05}px)`;
+
+export const mediaOnly = (key: Breakpoint) => {
+    const next = breakpointKeys[breakpointKeys.indexOf(key) + 1];
+    return next
+        ? `@media (min-width: ${breakpoints[key]}px) and (max-width: ${breakpoints[next as keyof typeof breakpoints] - 0.05}px)`
+        : mediaUp(key);
+};
+
+export const mediaNot = (key: Breakpoint) => {
+    const next = breakpointKeys[breakpointKeys.indexOf(key) + 1];
+    return next
+        ? `@media (min-width: ${breakpoints[key]}px) and (max-width: ${breakpoints[next as keyof typeof breakpoints] - 0.05}px)`
+        : mediaDown(key);
 };

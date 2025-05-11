@@ -40,6 +40,9 @@ export type TypographyLevelObj = {
 
 export type Size = "sm" | "md" | "lg";
 
+export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
+export type Spacing = "xs" | "sm" | "md" | "lg" | "xl";
+
 export interface Theme {
     id: string;
     name: string;
@@ -75,6 +78,18 @@ export interface Theme {
             [key in TypographyLevel]: TypographyLevelObj;
         };
     };
+    breakpoints: {
+        [key in Breakpoint]: number;
+    };
+    spacing: {
+        [key in Spacing]: string | number;
+    };
+
+    up: (key: Breakpoint) => string;
+    down: (key: Breakpoint) => string;
+    between: (start: Breakpoint, end: Breakpoint) => string;
+    only: (key: Breakpoint) => string;
+    not: (key: Breakpoint) => string;
 }
 
 export type ThemeMode = "light" | "dark" | "system";

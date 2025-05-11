@@ -1,5 +1,14 @@
 import type { Theme } from "@emotion/react";
-import { typographyLevels } from "./commonValues";
+import {
+    breakpoints,
+    mediaBetween,
+    mediaDown,
+    mediaNot,
+    mediaOnly,
+    mediaUp,
+    spacing,
+    typographyLevels,
+} from "./commonValues";
 
 export const baseDarkTheme: Theme = {
     id: "baseDark",
@@ -17,6 +26,7 @@ export const baseDarkTheme: Theme = {
         success: "#4CAF50",
         info: "#5A84B1",
     },
+
     typography: {
         levels: { ...typographyLevels },
         fontFamily: "Inter, sans-serif",
@@ -27,4 +37,13 @@ export const baseDarkTheme: Theme = {
             disabled: "#5A5A5A",
         },
     },
+
+    breakpoints,
+    spacing,
+
+    up: mediaUp,
+    down: mediaDown,
+    between: mediaBetween,
+    only: mediaOnly,
+    not: mediaNot,
 };

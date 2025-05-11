@@ -1,5 +1,14 @@
 import type { Theme } from "@emotion/react";
-import { typographyLevels } from "./commonValues";
+import {
+    breakpoints,
+    mediaBetween,
+    mediaDown,
+    mediaNot,
+    mediaOnly,
+    mediaUp,
+    spacing,
+    typographyLevels,
+} from "./commonValues";
 
 export const baseLightTheme: Theme = {
     id: "baseLight",
@@ -28,4 +37,13 @@ export const baseLightTheme: Theme = {
             disabled: "#A0A0A0",
         },
     },
+
+    breakpoints,
+    spacing,
+
+    up: mediaUp,
+    down: mediaDown,
+    between: mediaBetween,
+    only: mediaOnly,
+    not: mediaNot,
 };
