@@ -1,6 +1,7 @@
-import type { HTMLProps } from "react";
+import type { HTMLAttributes } from "react";
+import type { SxProps } from "utils/sxToCss";
 
-export interface BoxProps extends HTMLProps<HTMLDivElement> {
+export interface BoxProps extends HTMLAttributes<HTMLDivElement> {
     display?: "block" | "inline-block";
     position?: "absolute" | "relative" | "fixed" | "sticky" | "static";
 
@@ -27,4 +28,6 @@ export interface BoxProps extends HTMLProps<HTMLDivElement> {
     ml?: string | number;
     mx?: string | number;
     my?: string | number;
+
+    sx?: SxProps;
 }

@@ -1,14 +1,6 @@
 import type { Theme } from "@emotion/react";
-import {
-    breakpoints,
-    mediaBetween,
-    mediaDown,
-    mediaNot,
-    mediaOnly,
-    mediaUp,
-    spacing,
-    typographyLevels,
-} from "./commonValues";
+import type { Breakpoint } from "types";
+import { typographyLevels } from "./commonValues";
 
 export const baseDarkTheme: Theme = {
     id: "baseDark",
@@ -38,12 +30,25 @@ export const baseDarkTheme: Theme = {
         },
     },
 
-    breakpoints,
-    spacing,
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+        },
+        up: (key: Breakpoint) =>
+            `@media (min-width:${baseDarkTheme.breakpoints.values[key]}px)`,
+        down: (key: Breakpoint) =>
+            `@media (max-width:${baseDarkTheme.breakpoints.values[key]}px)`,
+        between: (start: Breakpoint, end: Breakpoint) =>
+            `@media (min-width:${baseDarkTheme.breakpoints.values[start]}px) and (max-width:${baseDarkTheme.breakpoints.values[end]}px)`,
+        only: (key: Breakpoint) =>
+            `@media (min-width:${baseDarkTheme.breakpoints.values[key]}px) and (max-width:${baseDarkTheme.breakpoints.values[key] + 0.02}px)`,
+        not: (key: Breakpoint) =>
+            `@media not all and (min-width:${baseDarkTheme.breakpoints.values[key]}px)`,
+    },
 
-    up: mediaUp,
-    down: mediaDown,
-    between: mediaBetween,
-    only: mediaOnly,
-    not: mediaNot,
+    spacing: (factor: number) => `${0.25 * factor}rem`,
 };

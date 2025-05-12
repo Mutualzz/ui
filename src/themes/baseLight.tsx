@@ -1,14 +1,5 @@
 import type { Theme } from "@emotion/react";
-import {
-    breakpoints,
-    mediaBetween,
-    mediaDown,
-    mediaNot,
-    mediaOnly,
-    mediaUp,
-    spacing,
-    typographyLevels,
-} from "./commonValues";
+import { typographyLevels } from "./commonValues";
 
 export const baseLightTheme: Theme = {
     id: "baseLight",
@@ -38,12 +29,25 @@ export const baseLightTheme: Theme = {
         },
     },
 
-    breakpoints,
-    spacing,
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+        },
+        up: (key) =>
+            `@media (min-width:${baseLightTheme.breakpoints.values[key]}px)`,
+        down: (key) =>
+            `@media (max-width:${baseLightTheme.breakpoints.values[key]}px)`,
+        between: (start, end) =>
+            `@media (min-width:${baseLightTheme.breakpoints.values[start]}px) and (max-width:${baseLightTheme.breakpoints.values[end]}px)`,
+        only: (key) =>
+            `@media (min-width:${baseLightTheme.breakpoints.values[key]}px) and (max-width:${baseLightTheme.breakpoints.values[key] + 0.02}px)`,
+        not: (key) =>
+            `@media not all and (min-width:${baseLightTheme.breakpoints.values[key]}px)`,
+    },
 
-    up: mediaUp,
-    down: mediaDown,
-    between: mediaBetween,
-    only: mediaOnly,
-    not: mediaNot,
+    spacing: (factor: number) => `${0.25 * factor}rem`,
 };

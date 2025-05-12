@@ -38,3 +38,5 @@ export * from "./utils";
 export * from "./GlobalStyles";
 export * from "./ThemeProvider";
 export * from "./types";
+
+export type { SxProps } from "./utils/sxToCss";

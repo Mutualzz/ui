@@ -79,17 +79,14 @@ export interface Theme {
         };
     };
     breakpoints: {
-        [key in Breakpoint]: number;
+        values: { [key in Breakpoint]: number };
+        up: (key: Breakpoint) => string;
+        down: (key: Breakpoint) => string;
+        between: (start: Breakpoint, end: Breakpoint) => string;
+        only: (key: Breakpoint) => string;
+        not: (key: Breakpoint) => string;
     };
-    spacing: {
-        [key in Spacing]: string | number;
-    };
-
-    up: (key: Breakpoint) => string;
-    down: (key: Breakpoint) => string;
-    between: (start: Breakpoint, end: Breakpoint) => string;
-    only: (key: Breakpoint) => string;
-    not: (key: Breakpoint) => string;
+    spacing: (factor: number) => string;
 }
 
 export type ThemeMode = "light" | "dark" | "system";

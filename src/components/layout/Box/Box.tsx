@@ -1,6 +1,5 @@
-import type { BoxProps } from "./Box.types";
-
 import styled from "@emotion/styled";
+import type { BoxProps } from "./Box.types";
 
 export const Box = styled("div")<BoxProps>(
     ({
