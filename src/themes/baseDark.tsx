@@ -1,5 +1,5 @@
 import type { Theme } from "@emotion/react";
-import type { Breakpoint } from "types";
+import type { Breakpoint } from "../types";
 import { typographyLevels } from "./commonValues";
 
 export const baseDarkTheme: Theme = {

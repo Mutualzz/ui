@@ -1,5 +1,5 @@
-import type { BoxProps } from "components/layout/Box/Box.types";
 import { type Color, type ColorLike, type Variant } from "../../../types";
+import type { BoxProps } from "../../layout/Box/Box.types";
 
 export type PaperVariant = Variant | "elevation";
 

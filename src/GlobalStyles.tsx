@@ -1,6 +1,6 @@
 import { css, Global } from "@emotion/react";
-import { generateCssVars } from "utils/cssVars";
 import { useTheme } from "./hooks/useTheme";
+import { generateCssVars } from "./utils/cssVars";
 
 export const GlobalStyles = () => {
     const { theme } = useTheme();
