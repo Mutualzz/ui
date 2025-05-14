@@ -1,48 +1,47 @@
-import styled from "@emotion/styled";
 import type { FC } from "react";
 
 import { useTheme } from "../../../hooks/useTheme";
 
+import styled from "../../../utils/styled";
 import { resolveDividerColor, resolveDividerVariant } from "./Divider.helpers";
 import type { DividerProps, DividerVariant } from "./Divider.types";
 
-const DividerWrapper = styled("div")<{
-    isVertical?: boolean;
-}>`
-    position: relative;
-    display: flex;
-    flex-direction: ${({ isVertical }) => (isVertical ? "column" : "row")};
-    align-items: center;
-    ${({ isVertical }) =>
-        isVertical ? "height: 100%; width: 1px;" : "width: 100%; height: 1px;"}
-
-    margin: ${({ isVertical }) => (isVertical ? "0 8px" : "8px 0")};
-`;
+const DividerWrapper = styled("div")<{ isVertical?: boolean }>(
+    ({ isVertical }) => ({
+        position: "relative",
+        display: "flex",
+        flexDirection: isVertical ? "column" : "row",
+        alignItems: "center",
+        ...(isVertical
+            ? { height: "100%", width: "1px" }
+            : { width: "100%", height: "1px" }),
+        margin: isVertical ? "0 8px" : "8px 0",
+    }),
+);
 
 const DividerLine = styled("span")<{
     isVertical: boolean;
     lineColor: string;
     variant: DividerVariant;
     grow?: boolean;
-}>`
-    ${({ isVertical, variant, lineColor }) =>
-        resolveDividerVariant(isVertical, lineColor, variant)}
+}>(({ isVertical, variant, lineColor, grow }) => ({
+    ...resolveDividerVariant(isVertical, lineColor)[variant],
 
-    flex-grow: ${({ grow }) => (grow ? 1 : 0)};
-    ${({ isVertical }) =>
-        isVertical ? "min-height: 1rem;" : "min-width: 1rem;"}
-`;
+    flexGrow: grow ? 1 : 0,
+
+    ...(isVertical ? { minHeight: "1rem" } : { minWidth: "1rem" }),
+}));
 
 const DividerText = styled("span")<{
     textColor: string;
     isVertical: boolean;
-}>`
-    color: ${({ textColor }) => textColor};
-    padding: ${({ isVertical }) => (isVertical ? "8px 0" : "0 8px")};
+}>(({ isVertical, textColor }) => ({
+    color: textColor,
+    padding: isVertical ? "8px 0" : "0 8px",
 
-    white-space: nowrap;
-    font-size: 14px;
-`;
+    whiteSpace: "nowrap",
+    fontSize: "14px",
+}));
 
 export const Divider: FC<DividerProps> = ({
     orientation = "horizontal",

@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import { type Size } from "../../../types";
 
 const minSize = 10,
@@ -18,11 +17,11 @@ export const resolveRadioStyles = (size: Size | number) => {
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
 
-    return css({
+    return {
         padding: base * 0.2,
         lineHeight: 0,
         fontSize: base,
-    });
+    };
 };
 
 export {

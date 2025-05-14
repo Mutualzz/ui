@@ -1,4 +1,4 @@
-import { css, type Theme } from "@emotion/react";
+import { type Theme } from "@emotion/react";
 
 import { formatHex8, rgb } from "culori";
 import { type Color, type ColorLike, type Size } from "../../../types";
@@ -26,11 +26,11 @@ export const resolveCheckboxStyles = (size: Size | number) => {
     if (base < minSize) base = minSize;
     if (base > maxSize) base = maxSize;
 
-    return css({
+    return {
         padding: base * 0.2,
         lineHeight: 0,
         fontSize: base,
-    });
+    };
 };
 
 export const variantColors = (
@@ -104,8 +104,8 @@ export const resolveIconScaling = (size: Size | number) => {
 
     const scale = base / 2;
 
-    return css({
+    return {
         width: scale,
         height: scale,
-    });
+    };
 };

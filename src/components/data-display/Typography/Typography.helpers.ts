@@ -9,8 +9,7 @@ import {
 } from "../../../utils";
 
 export const variantStyles = ({ colors }: Theme, color: Color | ColorLike) => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
+    const resolvedColor = isThemeColor(color) ? colors[color] : color;
 
     const parsedColor = rgb(resolvedColor);
     if (!parsedColor) throw new Error("Invalid color");

@@ -1,4 +1,4 @@
-import { css, type Theme } from "@emotion/react";
+import { type Theme } from "@emotion/react";
 
 import { formatHex8, rgb } from "culori";
 
@@ -30,12 +30,12 @@ export const resolveButtonStyles = (size: Size | number) => {
     const verticalPadding = 10;
     const horizontalPadding = 20;
 
-    return css({
+    return {
         height: `${base + verticalPadding * 2}px`,
         fontSize: base,
         lineHeight: 1,
         padding: `0 ${horizontalPadding}px`,
-    });
+    };
 };
 
 export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {

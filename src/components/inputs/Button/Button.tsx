@@ -1,64 +1,71 @@
 import { type FC } from "react";
 
-import styled from "@emotion/styled";
+import styled from "../../../utils/styled";
 import { CircularProgress } from "../../feedback/CircularProgress/CircularProgress";
 
 import { type Size } from "../../../types";
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 
-const ButtonWrapper = styled("button")<ButtonProps>`
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+const ButtonWrapper = styled("button")<ButtonProps>(
+    ({
+        disabled,
+        size = "md",
+        theme,
+        color = "primary",
+        variant = "plain",
+    }) => ({
+        position: "relative",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        boxSizing: "border-box",
+        borderRadius: "6px",
+        cursor: "pointer",
+        transition: "all 0.3s ease",
+        ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
+        ...resolveButtonStyles(size),
+        ...variantColors(theme, color)[variant],
+    }),
+);
 
-    ${({ disabled }) => disabled && "opacity: 0.5; pointer-events: none;"}
-    ${({ size = "md" }) => resolveButtonStyles(size)};
-    ${({ theme, color = "primary", variant = "plain" }) =>
-        variantColors(theme, color)[variant]};
-`;
+const ButtonContent = styled("span")<{
+    loading?: boolean;
+}>(({ loading }) => ({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexGrow: 0,
+    flexShrink: 0,
+    width: "auto",
+    height: "100%",
+    opacity: loading ? 0 : 1,
+    boxSizing: "border-box",
+}));
 
-const ButtonContent = styled("span")<{ loading?: boolean }>`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 0;
-    flex-shrink: 0;
-    width: auto;
-    height: 100%;
-    opacity: ${({ loading }) => (loading ? 0 : 1)};
-    box-sizing: border-box;
-`;
-
-const SpinnerOverlay = styled("span")`
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-`;
+const SpinnerOverlay = styled("span")({
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    pointerEvents: "none",
+});
 
 const IconWrapper = styled("span")<{
     position: "start" | "end";
     size?: Size | number;
-}>`
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    font-size: ${({ size }) =>
-        size === "sm" ? "1.2em" : size === "lg" ? "1.5em" : "1.3em"};
-    margin-left: ${({ position }) => (position === "end" ? "0.5em" : "0")};
-    margin-right: ${({ position }) => (position === "start" ? "0.5em" : "0")};
-    flex-shrink: 0;
-    flex-grow: 0;
-`;
+}>(({ position, size }) => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    lineHeight: 1,
+    fontSize: size === "sm" ? "1.2em" : size === "lg" ? "1.5em" : "1.3em",
+    marginLeft: position === "end" ? "0.5em" : "0",
+    marginRight: position === "start" ? "0.5em" : "0",
+    flexShrink: 0,
+    flexGrow: 0,
+}));
 
 export const Button: FC<ButtonProps> = ({
     variant = "solid",

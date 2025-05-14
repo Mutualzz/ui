@@ -2,7 +2,6 @@ import type { Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
 import type { Color, ColorLike } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
-import type { DividerVariant } from "./Divider.types";
 
 export const resolveDividerColor = (
     { colors }: Theme,
@@ -20,25 +19,25 @@ export const resolveDividerColor = (
 export const resolveDividerVariant = (
     isVertical: boolean,
     lineColor: string,
-    variant: DividerVariant,
 ) => {
-    switch (variant) {
-        case "dashed":
-            return isVertical
-                ? `width: 1px; background-image: repeating-linear-gradient(to bottom,${lineColor},${lineColor} 4px,transparent 4px,transparent 8px);`
-                : `height: 1px; background-image: repeating-linear-gradient(to right,${lineColor},${lineColor} 4px,transparent 4px,transparent 8px);`;
-        case "dotted":
-            return isVertical
-                ? `width: 1px; background-image: repeating-linear-gradient(to bottom,${lineColor},${lineColor} 1px,transparent 1px,transparent 4px);`
-                : `height: 1px; background-image: repeating-linear-gradient(to right,${lineColor},${lineColor} 1px,transparent 1px,transparent 4px);`;
-        case "double":
-            return isVertical
-                ? `width: 1px; border-left: 3px double ${lineColor}; background: none; box-sizing: content-box;`
-                : `height: 0; border-top: 3px double ${lineColor}; background: none; box-sizing: content-box;`;
-        case "solid":
-        default:
-            return isVertical
-                ? `width: 1px; background-color: ${lineColor};`
-                : `height: 1px; background-color: ${lineColor};`;
-    }
+    return {
+        dashed: {
+            ...(isVertical ? { width: "1px" } : { height: "1px" }),
+            backgroundImage: `repeating-linear-gradient(to right,${lineColor},${lineColor} 4px,transparent 4px,transparent 8px)`,
+        },
+        dotted: {
+            ...(isVertical ? { width: "1px" } : { height: "1px" }),
+            backgroundImage: `repeating-linear-gradient(to right,${lineColor},${lineColor} 1px,transparent 1px,transparent 4px)`,
+        },
+        double: {
+            ...(isVertical ? { width: "1px" } : { height: "0" }),
+            borderLeft: `3px double ${lineColor}`,
+            background: "none",
+            boxSizing: "content-box" as const,
+        },
+        solid: {
+            ...(isVertical ? { width: "1px" } : { height: "1px" }),
+            backgroundColor: lineColor,
+        },
+    };
 };
