@@ -39,4 +39,6 @@ export * from "./GlobalStyles";
 export * from "./ThemeProvider";
 export * from "./types";
 
+export { default as styled } from "./utils/styled";
+
 export type { SxProps } from "./utils/sxToCss";

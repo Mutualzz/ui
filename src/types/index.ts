@@ -1,3 +1,14 @@
+import type { HTMLAttributes } from "react";
+import type { BorderProps } from "./Border.props";
+import type { DisplayProps } from "./Display.props";
+import type { FlexboxProps } from "./Flexbox.props";
+import type { PalleteProps } from "./Palette.props";
+import type { PositionsProps } from "./Positions.props";
+import type { ShadowsProps } from "./Shadows.props";
+import type { SizingProps } from "./Sizing.props";
+import type { SpacingProps } from "./Spacing.props";
+import type { TypographyProps } from "./Typography.props";
+
 export type Hex = `#${string}`;
 export type RGB = `rgb(${number}, ${number}, ${number})`;
 export type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
@@ -13,6 +24,8 @@ export type Color =
     | "danger"
     | "warning"
     | "info";
+
+export type TypographyColor = "primary" | "secondary" | "accent" | "disabled";
 
 export type Variant = "plain" | "outlined" | "soft" | "solid";
 
@@ -42,6 +55,20 @@ export type Size = "sm" | "md" | "lg";
 
 export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
 export type Spacing = "xs" | "sm" | "md" | "lg" | "xl";
+
+export type Responsive<T> = T | Partial<Record<Breakpoint, T>>;
+export type ThemeMode = "light" | "dark" | "system";
+
+export type SystemProps = HTMLAttributes<HTMLElement> &
+    BorderProps &
+    DisplayProps &
+    FlexboxProps &
+    PalleteProps &
+    PositionsProps &
+    ShadowsProps &
+    SizingProps &
+    SpacingProps &
+    TypographyProps;
 
 export interface Theme {
     id: string;
@@ -79,6 +106,7 @@ export interface Theme {
         };
     };
     breakpoints: {
+        keys: Breakpoint[];
         values: { [key in Breakpoint]: number };
         up: (key: Breakpoint) => string;
         down: (key: Breakpoint) => string;
@@ -87,6 +115,17 @@ export interface Theme {
         not: (key: Breakpoint) => string;
     };
     spacing: (factor: number) => string;
-}
 
-export type ThemeMode = "light" | "dark" | "system";
+    shadows: string[];
+
+    zIndex: {
+        mobileStepper: number;
+        fab: number;
+        speedDial: number;
+        appBar: number;
+        drawer: number;
+        modal: number;
+        snackbar: number;
+        tooltip: number;
+    };
+}
