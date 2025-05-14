@@ -1,0 +1,19 @@
+import { css, type Theme } from "@emotion/react";
+import type { SystemProps } from "../types/index";
+import { aliasToStyles } from "./aliasToStyles";
+import { aliasMaps } from "./aliases";
+
+export function systemToCss(props: SystemProps, theme: Theme) {
+    const relevant: Record<string, any> = {};
+    const filteredKeys = Object.keys(aliasMaps).filter(
+        (key) => !["color", "bgColor", "backgroundColor"].includes(key),
+    ) as (keyof typeof aliasMaps)[];
+
+    for (const key of filteredKeys) {
+        if ((props as any)[key] != null) {
+            relevant[key] = (props as any)[key];
+        }
+    }
+
+    return css(aliasToStyles(relevant, theme));
+}
