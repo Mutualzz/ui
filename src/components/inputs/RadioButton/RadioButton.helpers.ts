@@ -4,9 +4,9 @@ const minSize = 10,
     maxSize = 28;
 
 export const baseSizeMap: Record<Size, number> = {
-    sm: 14,
-    md: 16,
-    lg: 20,
+    sm: 16,
+    md: 20,
+    lg: 24,
 };
 
 export const resolveRadioStyles = (size: Size | number) => {
@@ -20,7 +20,7 @@ export const resolveRadioStyles = (size: Size | number) => {
     return {
         padding: base * 0.2,
         lineHeight: 0,
-        fontSize: base,
+        fontSize: base * 0.8,
     };
 };
 

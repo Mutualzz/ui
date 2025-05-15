@@ -71,20 +71,6 @@ const RadioControl = styled("span")<RadioButtonProps>(({
             boxShadow: `0 0 0 3px ${variantColors(theme, color, true).solid.backgroundColor}`,
             outline: "none",
         },
-
-        "&::before": {
-            content: '""',
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            width: "0.5em",
-            height: "0.5em",
-            transform: "translate(-50%, -50%)",
-            borderRadius: "50%",
-            backgroundColor: "currentColor",
-            opacity: checked ? 1 : 0,
-            transition: "opacity 0.2s ease",
-        },
     };
 });
 
@@ -140,6 +126,7 @@ export const RadioButton: FC<RadioButtonProps> = ({
             />
             {rtl && label && <RadioLabel>{label}</RadioLabel>}
             <RadioControl
+                name={name}
                 role="radio"
                 aria-checked={isChecked}
                 color={color}
@@ -152,7 +139,20 @@ export const RadioButton: FC<RadioButtonProps> = ({
                 {isChecked ? (
                     checkedIcon ? (
                         <IconWrapper size={size}>{checkedIcon}</IconWrapper>
-                    ) : null
+                    ) : (
+                        <svg>
+                            <circle
+                                cx="50%"
+                                cy="50%"
+                                r="50%"
+                                fill="currentColor"
+                                style={{
+                                    transform: "scale(0.08)",
+                                    transformOrigin: "center",
+                                }}
+                            />
+                        </svg>
+                    )
                 ) : uncheckedIcon ? (
                     <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
                 ) : null}
