@@ -2,7 +2,6 @@ import type { HTMLAttributes } from "react";
 import type { BorderProps } from "./Border.props";
 import type { DisplayProps } from "./Display.props";
 import type { FlexboxProps } from "./Flexbox.props";
-import type { PalleteProps } from "./Palette.props";
 import type { PositionsProps } from "./Positions.props";
 import type { ShadowsProps } from "./Shadows.props";
 import type { SizingProps } from "./Sizing.props";
@@ -63,7 +62,7 @@ export type SystemProps = HTMLAttributes<HTMLElement> &
     BorderProps &
     DisplayProps &
     FlexboxProps &
-    PalleteProps &
+    // PalleteProps &
     PositionsProps &
     ShadowsProps &
     SizingProps &

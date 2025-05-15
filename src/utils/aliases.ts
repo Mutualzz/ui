@@ -87,12 +87,15 @@ export const flexAliasMap = {
 } as const;
 
 // Palette shorthands
+// NOTE - This causes issues with colors on components like CircularProgress for example.
+/**
 export const paletteAliasMap = {
     color: ["color"],
 
     backgroundColor: ["backgroundColor"],
     bgColor: ["backgroundColor"],
-} as const;
+} as const; 
+*/
 
 // Position shorthands
 export const positionAliasMap = {
@@ -188,7 +191,7 @@ export const aliasMaps = {
     ...borderStyleAliasMap,
     ...borderRadiusAliasMap,
     ...displayAliasMap,
-    ...paletteAliasMap,
+    //...paletteAliasMap,
     ...positionAliasMap,
     ...spacingAliasMap,
     ...sizingAliasMap,
@@ -202,7 +205,7 @@ export type AliasMap = typeof flexAliasMap &
     typeof borderStyleAliasMap &
     typeof borderRadiusAliasMap &
     typeof displayAliasMap &
-    typeof paletteAliasMap &
+    // typeof paletteAliasMap &
     typeof positionAliasMap &
     typeof spacingAliasMap &
     typeof sizingAliasMap &

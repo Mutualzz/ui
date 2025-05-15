@@ -58,7 +58,7 @@ const styled = new Proxy(styledBase, {
             ...(options ?? {}),
             shouldForwardProp,
         };
-        const factory = (styledBase as any)(component, mergedOptions);
+        const factory = styledBase(component, mergedOptions);
 
         return (...styles: any[]) => {
             const sysStyle = (props: any) =>
@@ -72,7 +72,7 @@ const styled = new Proxy(styledBase, {
     },
 
     get(_target, prop: string) {
-        const orig = (styledBase as any)[prop];
+        const orig = styledBase[prop as keyof StyledWithSxInterface];
         if (typeof orig === "function") {
             return new Proxy(orig, {
                 apply(_fn, _thisArg, args: any[]) {
