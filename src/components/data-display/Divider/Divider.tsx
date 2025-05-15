@@ -12,9 +12,18 @@ const DividerWrapper = styled("div")<{ isVertical?: boolean }>(
         display: "flex",
         flexDirection: isVertical ? "column" : "row",
         alignItems: "center",
+
         ...(isVertical
-            ? { height: "100%", width: "1px" }
-            : { width: "100%", height: "1px" }),
+            ? {
+                  width: "auto",
+                  height: "100%",
+                  flex: "0 0 auto",
+              }
+            : {
+                  width: "100%",
+                  height: "1px",
+              }),
+
         margin: isVertical ? "0 8px" : "8px 0",
     }),
 );
