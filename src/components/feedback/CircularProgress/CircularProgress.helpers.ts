@@ -6,7 +6,7 @@ import { isThemeColor } from "../../../utils/isThemeColor";
 const minSize = 16,
     maxSize = 64;
 
-const minSizeThickness = 2,
+const minSizeThickness = 1,
     maxSizeThickness = 10;
 
 export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
@@ -65,5 +65,5 @@ export const resolveCiruclarProgressThickness = (thickness: Size | number) => {
     if (base < minSizeThickness) base = minSizeThickness;
     if (base > maxSizeThickness) base = maxSizeThickness;
 
-    return base;
+    return Object.values(thicknesses).includes(base) ? base : base / 2;
 };
