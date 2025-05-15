@@ -22,18 +22,41 @@ export const resolveDividerVariant = (
 ) => {
     return {
         dashed: {
-            ...(isVertical ? { width: "1px" } : { height: "1px" }),
-            backgroundImage: `repeating-linear-gradient(to right,${lineColor},${lineColor} 4px,transparent 4px,transparent 8px)`,
+            ...(isVertical
+                ? {
+                      width: "1px",
+                      backgroundImage: `repeating-linear-gradient(to bottom,${lineColor},${lineColor} 4px,transparent 4px,transparent 8px);`,
+                  }
+                : {
+                      height: "1px",
+                      backgroundImage: `repeating-linear-gradient(to right,${lineColor},${lineColor} 4px,transparent 4px,transparent 8px)`,
+                  }),
         },
         dotted: {
-            ...(isVertical ? { width: "1px" } : { height: "1px" }),
-            backgroundImage: `repeating-linear-gradient(to right,${lineColor},${lineColor} 1px,transparent 1px,transparent 4px)`,
+            ...(isVertical
+                ? {
+                      width: "1px",
+                      backgroundImage: `repeating-linear-gradient(to bottom,${lineColor},${lineColor} 1px,transparent 1px,transparent 4px)`,
+                  }
+                : {
+                      height: "1px",
+                      backgroundImage: `repeating-linear-gradient(to right,${lineColor},${lineColor} 1px,transparent 1px,transparent 4px)`,
+                  }),
         },
         double: {
-            ...(isVertical ? { width: "1px" } : { height: "0" }),
-            borderLeft: `3px double ${lineColor}`,
-            background: "none",
-            boxSizing: "content-box" as const,
+            ...(isVertical
+                ? {
+                      width: "1px",
+                      borderLeft: `3px double ${lineColor}`,
+                      background: "none",
+                      boxSizing: "content-box" as const,
+                  }
+                : {
+                      height: "0",
+                      borderTop: `3px double ${lineColor}`,
+                      background: "none",
+                      boxSizing: "content-box" as const,
+                  }),
         },
         solid: {
             ...(isVertical ? { width: "1px" } : { height: "1px" }),
