@@ -1,8 +1,10 @@
 import { useTheme } from "../../../hooks/useTheme";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
+import { css } from "@emotion/react";
 import { formatHex8 } from "culori";
 import type { FC } from "react";
+import styled from "../../../utils/styled";
 import {
     resolveLength,
     resolveThickness,
@@ -13,6 +15,76 @@ import type {
     LinearProgressAnimation,
     LinearProgressProps,
 } from "./LinearProgress.types";
+
+const ProgressWrapper = styled("div")<{
+    width: string | number;
+    height: string | number;
+    background: string;
+    outlinedColor: string;
+    variant: LinearProgressProps["variant"];
+}>`
+    position: relative;
+    width: ${({ width }) => width};
+    height: ${({ height }) => height};
+    background: ${({ background }) => background};
+    border-radius: 0.5rem;
+    overflow: hidden;
+    ${({ variant, outlinedColor }) =>
+        variant === "outlined" && `border: 1px solid ${outlinedColor};`}
+`;
+
+const DeterminateBar = styled("div")<{
+    barColor: string;
+    value: number;
+}>`
+    height: 100%;
+    background: ${({ barColor }) => barColor};
+    border-radius: inherit;
+    width: ${({ value }) => Math.min(Math.max(value, 0), 100)}%;
+    transition: width 0.3s ease;
+`;
+
+const IndeterminateBar = styled("div")<{
+    barColor: string;
+    animation: LinearProgressAnimation;
+}>`
+    height: 100%;
+    background: ${({ barColor }) => barColor};
+    border-radius: inherit;
+
+    ${({ animation }) =>
+        animation === "slide" &&
+        css`
+            position: absolute;
+            width: 50%;
+            animation: ${slide} 1.5s infinite ease-in-out;
+        `}
+
+    ${({ animation }) =>
+        animation === "wave" &&
+        css`
+            width: 100%;
+            animation: ${wave} 1.5s infinite ease-in-out;
+        `}
+
+  ${({ animation, barColor }) =>
+        animation === "bounce" &&
+        css`
+            position: absolute;
+            height: 100%;
+            width: 30%;
+            background: ${barColor};
+            border-radius: inherit;
+            animation: ${bounce} 1.5s infinite ease-in-out;
+        `}
+
+  ${({ animation }) =>
+        animation === "scale-in-out" &&
+        css`
+            width: 100%;
+            animation: ${scaleInOut} 1.5s infinite ease-in-out;
+        `}
+`;
 
 export const LinearProgress: FC<LinearProgressProps> = ({
     thickness = "md",
@@ -27,76 +99,29 @@ export const LinearProgress: FC<LinearProgressProps> = ({
 
     const height = resolveThickness(thickness);
     const width = resolveLength(length);
-
     const background = variantColors(theme, color)[variant];
+
     const barColor = isThemeColor(color)
-        ? theme.colors[color]
-        : formatHex8(color);
+        ? formatHex8(theme.colors[color])!
+        : formatHex8(color)!;
 
     const outlinedColor = isThemeColor(color)
-        ? formatHex8(theme.colors[color])
-        : formatHex8(color);
-
-    const baseBarStyle = {
-        height: "100%",
-        background: barColor,
-        borderRadius: "inherit",
-    };
-
-    const animationStyles: Record<LinearProgressAnimation, any> = {
-        slide: {
-            position: "absolute",
-            width: "50%",
-            animation: `${slide} 1.5s infinite ease-in-out`,
-        },
-        wave: {
-            width: "100%",
-            animation: `${wave} 1.5s infinite ease-in-out`,
-        },
-        bounce: {
-            position: "absolute",
-            height: "100%",
-            width: "30%",
-            background: barColor,
-            borderRadius: "inherit",
-            animation: `${bounce} 1.5s infinite ease-in-out`,
-        },
-        "scale-in-out": {
-            width: "100%",
-            animation: `${scaleInOut} 1.5s infinite ease-in-out`,
-        },
-    };
+        ? formatHex8(theme.colors[color])!
+        : formatHex8(color)!;
 
     return (
-        <div
-            css={{
-                position: "relative",
-                width,
-                height,
-                background,
-                borderRadius: "0.5rem",
-                overflow: "hidden",
-                ...(variant === "outlined" && {
-                    border: `1px solid ${outlinedColor}`,
-                }),
-            }}
+        <ProgressWrapper
+            width={width}
+            height={height}
+            background={background}
+            outlinedColor={outlinedColor}
+            variant={variant}
         >
             {determinate ? (
-                <div
-                    css={{
-                        ...baseBarStyle,
-                        width: `${Math.min(Math.max(value, 0), 100)}%`,
-                        transition: "width 0.3s ease",
-                    }}
-                />
+                <DeterminateBar barColor={barColor} value={value} />
             ) : (
-                <div
-                    css={{
-                        ...baseBarStyle,
-                        ...animationStyles[animation],
-                    }}
-                />
+                <IndeterminateBar barColor={barColor} animation={animation} />
             )}
-        </div>
+        </ProgressWrapper>
     );
 };
