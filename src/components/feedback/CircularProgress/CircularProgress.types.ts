@@ -1,3 +1,4 @@
+import type { ReactNode } from "@tanstack/react-router";
 import {
     type Color,
     type ColorLike,
@@ -11,4 +12,6 @@ export interface CircularProgressProps {
     color?: Color | ColorLike;
     determinate?: boolean;
     value?: number;
+
+    children?: ReactNode;
 }

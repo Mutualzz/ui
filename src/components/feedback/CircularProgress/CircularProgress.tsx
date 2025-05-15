@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { useTheme } from "../../../hooks/useTheme";
 
 import { isThemeColor } from "../../../utils/isThemeColor";
@@ -18,20 +18,37 @@ export const CircularProgress: FC<CircularProgressProps> = ({
     color = "primary",
     determinate = false,
     value = 0,
+    children,
     ...props
 }) => {
     const { theme } = useTheme();
+    const contentRef = useRef<HTMLDivElement>(null);
+    const [contentDiameter, setContentDiameter] = useState(0);
 
-    const pixelSize = resolveCircularProgressSizes(size);
+    useEffect(() => {
+        if (!contentRef.current) return;
+        const ro = new ResizeObserver(([entry]) => {
+            const { width, height } = entry.contentRect;
+            setContentDiameter(Math.max(width, height));
+        });
+        ro.observe(contentRef.current);
+        return () => ro.disconnect();
+    }, []);
+
+    const contentPadding = 8;
+
+    const strokeWidth = resolveCiruclarProgressThickness(size);
+
+    const diameter = contentDiameter
+        ? contentDiameter + strokeWidth + contentPadding * 2
+        : resolveCircularProgressSizes(size);
+
+    const radius = (diameter - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    const dashOffset = ((100 - value) / 100) * circumference;
 
     const outerStroke = variantColors(theme, color)[variant];
     const innerStroke = isThemeColor(color) ? theme.colors[color] : color;
-    const strokeWidth = resolveCiruclarProgressThickness(size);
-    const radius = (pixelSize - strokeWidth) / 2;
-    const circumference = 2 * Math.PI * radius;
-
-    const strokeDashOffset = ((100 - value) / 100) * circumference;
-
     const outlinedStroke = formatHex8(
         isThemeColor(color) ? theme.colors[color] : color,
     );
@@ -41,78 +58,101 @@ export const CircularProgress: FC<CircularProgressProps> = ({
             css={{
                 position: "relative",
                 display: "inline-flex",
-                width: pixelSize,
-                height: pixelSize,
+                width: diameter,
+                height: diameter,
                 justifyContent: "center",
                 alignItems: "center",
-                alignSelf: "center",
-                ...(variant === "outlined" && {
-                    "::before": {
-                        content: '""',
-                        position: "absolute",
-                        top: strokeWidth / 2,
-                        left: strokeWidth / 2,
-                        right: strokeWidth / 2,
-                        bottom: strokeWidth / 2,
-                        borderRadius: "50%",
-                        border: `1px solid ${outlinedStroke}`,
-                        boxSizing: "border-box",
-                    },
-                    "::after": {
-                        content: '""',
-                        position: "absolute",
-                        top: -1,
-                        left: -1,
-                        right: -1,
-                        bottom: -1,
-                        borderRadius: "50%",
-                        border: `1px solid ${outlinedStroke}`,
-                        boxSizing: "border-box",
-                    },
-                }),
+                padding: 0,
+
+                ...(variant === "outlined" && diameter > 0
+                    ? {
+                          "::before": {
+                              content: '""',
+                              position: "absolute",
+                              top: strokeWidth / 2,
+                              left: strokeWidth / 2,
+                              right: strokeWidth / 2,
+                              bottom: strokeWidth / 2,
+                              borderRadius: "50%",
+                              border: `1px solid ${outlinedStroke}`,
+                              boxSizing: "border-box",
+                          },
+                          "::after": {
+                              content: '""',
+                              position: "absolute",
+                              top: -1,
+                              left: -1,
+                              right: -1,
+                              bottom: -1,
+                              borderRadius: "50%",
+                              border: `1px solid ${outlinedStroke}`,
+                              boxSizing: "border-box",
+                          },
+                      }
+                    : {}),
             }}
         >
-            <svg
-                {...props}
-                width={pixelSize}
-                height={pixelSize}
-                viewBox={`0 0 ${pixelSize} ${pixelSize}`}
+            <div
                 css={{
-                    animation: !determinate
-                        ? `${spin} 1s linear infinite`
-                        : undefined,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    boxSizing: "border-box",
+                    padding: 8,
                 }}
+                ref={contentRef}
             >
-                <circle
-                    cx={pixelSize / 2}
-                    cy={pixelSize / 2}
-                    r={radius}
-                    stroke={variant === "outlined" ? "tranparent" : outerStroke}
-                    strokeWidth={strokeWidth}
-                    fill="none"
-                />
-                <circle
-                    cx={pixelSize / 2}
-                    cy={pixelSize / 2}
-                    r={radius}
-                    stroke={innerStroke}
-                    strokeWidth={strokeWidth}
-                    fill="none"
-                    strokeDasharray={
-                        determinate
-                            ? circumference
-                            : `${circumference * 0.25} ${circumference}`
-                    }
-                    strokeDashoffset={determinate ? strokeDashOffset : 0}
-                    strokeLinecap="round"
+                {children}
+            </div>
+
+            {diameter > 0 && (
+                <svg
+                    {...props}
+                    width={diameter}
+                    height={diameter}
+                    viewBox={`0 0 ${diameter} ${diameter}`}
                     css={{
-                        transform: "rotate(-90deg)",
-                        transformOrigin: "center",
-                        transition:
-                            "stroke-dasharray 0.3s ease, stroke-dashoffset 0.3s ease, transform 0.3s ease",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        animation: !determinate
+                            ? `${spin} 1s linear infinite`
+                            : undefined,
                     }}
-                />
-            </svg>
+                >
+                    <circle
+                        cx={diameter / 2}
+                        cy={diameter / 2}
+                        r={radius}
+                        stroke={
+                            variant === "outlined" ? "transparent" : outerStroke
+                        }
+                        strokeWidth={strokeWidth}
+                        fill="none"
+                    />
+                    <circle
+                        cx={diameter / 2}
+                        cy={diameter / 2}
+                        r={radius}
+                        stroke={innerStroke}
+                        strokeWidth={strokeWidth}
+                        fill="none"
+                        strokeDasharray={
+                            determinate
+                                ? circumference
+                                : `${circumference * 0.25} ${circumference}`
+                        }
+                        strokeDashoffset={determinate ? dashOffset : 0}
+                        strokeLinecap="round"
+                        css={{
+                            transform: "rotate(-90deg)",
+                            transformOrigin: "center",
+                            transition:
+                                "stroke-dasharray 0.3s ease, stroke-dashoffset 0.3s ease, transform 0.3s ease",
+                        }}
+                    />
+                </svg>
+            )}
         </div>
     );
 };
