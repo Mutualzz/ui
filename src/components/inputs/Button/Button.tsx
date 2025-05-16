@@ -62,8 +62,8 @@ const IconWrapper = styled("span")<{
     justifyContent: "center",
     lineHeight: 1,
     fontSize: size === "sm" ? "1.2em" : size === "lg" ? "1.5em" : "1.3em",
-    marginLeft: childrenContent && position === "end" ? "0.5em" : 0,
-    marginRight: childrenContent && position === "start" ? "0.5em" : 0,
+    marginLeft: childrenContent && position === "end" ? "0.25em" : 0,
+    marginRight: childrenContent && position === "start" ? "0.25em" : 0,
     flexShrink: 0,
     flexGrow: 0,
 }));
@@ -102,7 +102,11 @@ export const Button: FC<ButtonProps> = ({
         )}
 
         {startIcon && (
-            <IconWrapper position="start" size={size}>
+            <IconWrapper
+                childrenContent={children}
+                position="start"
+                size={size}
+            >
                 {startIcon}
             </IconWrapper>
         )}
