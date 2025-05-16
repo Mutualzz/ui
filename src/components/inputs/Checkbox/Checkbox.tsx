@@ -51,11 +51,12 @@ const CheckboxBox = styled("span")<CheckboxProps>(({
         padding: 0,
     };
 
-    const styleObj = variantColors(theme, color, checked)[variant];
+    const variantStyle = variantColors(theme, color, checked)[variant];
 
     return {
         ...base,
-        ...styleObj,
+        ...variantStyle,
+
         'input[type="checkbox"]:hover + &': variantColors(theme, color, true)[
             variant
         ],
