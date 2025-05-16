@@ -22,7 +22,7 @@ export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
             outlined: "transparent",
         };
 
-    const solid = { ...parsedColor, alpha: 0.4 };
+    const solid = { ...parsedColor, alpha: 0.6 };
     const soft = { ...parsedColor, alpha: 0.1 };
 
     return {
