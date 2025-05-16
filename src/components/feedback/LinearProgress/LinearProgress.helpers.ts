@@ -3,6 +3,7 @@ import type { Color, ColorLike, Size } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";
+import { alpha } from "utils";
 
 const minLength = 80,
     maxLength = 240;
@@ -22,13 +23,10 @@ export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
             outlined: "transparent",
         };
 
-    const solid = { ...parsedColor, alpha: 0.6 };
-    const soft = { ...parsedColor, alpha: 0.1 };
-
     return {
         plain: "transparent",
-        solid: formatHex8(solid),
-        soft: formatHex8(soft),
+        solid: formatHex8(alpha(parsedColor, 0.5))!,
+        soft: formatHex8(alpha(parsedColor, 0.1))!,
         outlined: "transparent",
     };
 };
