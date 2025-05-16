@@ -2,8 +2,8 @@ import { useTheme } from "../../../hooks/useTheme";
 
 import { formatHex8 } from "culori";
 import { type FC } from "react";
-import { isThemeColor } from "utils";
 import type { Variant } from "../../../types";
+import { isThemeColor } from "../../../utils";
 import styled from "../../../utils/styled";
 import {
     resolveLength,

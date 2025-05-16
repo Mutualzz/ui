@@ -3,7 +3,7 @@ import type { Color, ColorLike, Size } from "../../../types";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";
-import { alpha } from "utils";
+import { alpha } from "../../../utils";
 
 const minLength = 80,
     maxLength = 240;

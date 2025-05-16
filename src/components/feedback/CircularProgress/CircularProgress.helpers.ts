@@ -1,6 +1,7 @@
 import type { Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
 import type { Color, ColorLike, Size } from "../../../types";
+import { alpha } from "../../../utils/alpha";
 import { isThemeColor } from "../../../utils/isThemeColor";
 
 const minSize = 16,
@@ -23,13 +24,10 @@ export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
             outlined: "transparent",
         };
 
-    const solid = { ...parsedColor, alpha: 0.4 };
-    const soft = { ...parsedColor, alpha: 0.2 };
-
     return {
         plain: "transparent",
-        solid: formatHex8(solid),
-        soft: formatHex8(soft),
+        solid: formatHex8(alpha(parsedColor, 0.5))!,
+        soft: formatHex8(alpha(parsedColor, 0.1))!,
         outlined: "transparent",
     };
 };
