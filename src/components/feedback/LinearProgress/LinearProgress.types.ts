@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import {
     type Color,
     type ColorLike,
@@ -20,6 +19,4 @@ export interface LinearProgressProps {
     animation?: LinearProgressAnimation;
     determinate?: boolean;
     value?: number;
-
-    children?: ReactNode;
 }
