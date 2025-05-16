@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { type FC, type ReactNode } from "react";
 
 import styled from "../../../utils/styled";
 import { CircularProgress } from "../../feedback/CircularProgress/CircularProgress";
@@ -55,14 +55,15 @@ const SpinnerOverlay = styled("span")({
 const IconWrapper = styled("span")<{
     position: "start" | "end";
     size?: Size | number;
-}>(({ position, size }) => ({
+    childrenContent?: ReactNode;
+}>(({ position, size, childrenContent }) => ({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     lineHeight: 1,
     fontSize: size === "sm" ? "1.2em" : size === "lg" ? "1.5em" : "1.3em",
-    marginLeft: position === "end" ? "0.5em" : "0",
-    marginRight: position === "start" ? "0.5em" : "0",
+    marginLeft: childrenContent && position === "end" ? "0.5em" : "0",
+    marginRight: childrenContent && position === "start" ? "0.5em" : "0",
     flexShrink: 0,
     flexGrow: 0,
 }));
@@ -107,7 +108,7 @@ export const Button: FC<ButtonProps> = ({
         )}
         <ButtonContent loading={loading}>{children}</ButtonContent>
         {endIcon && (
-            <IconWrapper position="end" size={size}>
+            <IconWrapper childrenContent={children} position="end" size={size}>
                 {endIcon}
             </IconWrapper>
         )}

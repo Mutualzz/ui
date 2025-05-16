@@ -28,7 +28,7 @@ export const resolveButtonStyles = (size: Size | number) => {
     if (base > maxSize) base = maxSize;
 
     const verticalPadding = 10;
-    const horizontalPadding = 20;
+    const horizontalPadding = 10;
 
     return {
         height: `${base + verticalPadding * 2}px`,
