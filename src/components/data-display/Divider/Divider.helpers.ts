@@ -52,7 +52,7 @@ export const resolveDividerVariant = (
                       boxSizing: "content-box" as const,
                   }
                 : {
-                      height: "0",
+                      height: 0,
                       borderTop: `3px double ${lineColor}`,
                       background: "none",
                       boxSizing: "content-box" as const,
