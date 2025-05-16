@@ -140,18 +140,21 @@ export const RadioButton: FC<RadioButtonProps> = ({
                     checkedIcon ? (
                         <IconWrapper size={size}>{checkedIcon}</IconWrapper>
                     ) : (
-                        <svg>
-                            <circle
-                                cx="50%"
-                                cy="50%"
-                                r="50%"
-                                fill="currentColor"
-                                style={{
-                                    transform: "scale(0.08)",
-                                    transformOrigin: "center",
+                        <IconWrapper size={size}>
+                            <svg
+                                viewBox="0 0 24 24"
+                                css={{
+                                    fill: "currentColor",
+                                    width: "100%",
+                                    height: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                 }}
-                            />
-                        </svg>
+                            >
+                                <circle cx="12" cy="12" r={8} />
+                            </svg>
+                        </IconWrapper>
                     )
                 ) : uncheckedIcon ? (
                     <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
