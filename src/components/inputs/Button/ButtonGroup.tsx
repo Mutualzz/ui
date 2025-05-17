@@ -15,6 +15,7 @@ const ButtonGroupRoot = styled("div")<{
     variant?: Variant;
 }>(({ theme, color, variant, orientation, spacing }) => ({
     display: "inline-flex",
+    flexWrap: "wrap",
     flexDirection: orientation === "vertical" ? "column" : "row",
     alignItems: "stretch",
     ...(spacing > 0 && { gap: spacing }),
