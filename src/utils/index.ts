@@ -1,3 +1,4 @@
+import { clampChroma, lch, type Color } from "culori";
 import { adjustLightness } from "./adjustLightness";
 import { adjustTextColor } from "./adjustTextColor";
 import { alpha } from "./alpha";
@@ -20,4 +21,20 @@ export {
     isThemeColor,
     randomHexColor,
     sortThemes,
+};
+
+export const darken = (color: Color, factor: number) => {
+    const colorLch = lch(color);
+
+    colorLch.l = Math.max(0, colorLch.l * (1 - factor));
+
+    return clampChroma(colorLch);
+};
+
+export const lighten = (color: Color, factor: number) => {
+    const colorLch = lch(color);
+
+    colorLch.l = Math.min(100, colorLch.l + (100 - colorLch.l) * factor);
+
+    return clampChroma(colorLch);
 };

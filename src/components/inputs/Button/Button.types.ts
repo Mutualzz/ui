@@ -6,6 +6,8 @@ import {
     type Variant,
 } from "../../../types";
 
+export type ButtonGroupOrientation = "horizontal" | "vertical";
+
 export interface ButtonProps
     extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
     variant?: Variant;
@@ -15,4 +17,20 @@ export interface ButtonProps
     disabled?: boolean;
     startIcon?: ReactNode;
     endIcon?: ReactNode;
+}
+
+export interface ButtonGroupProps {
+    color?: Color | ColorLike;
+    disabled?: boolean;
+    orientation?: ButtonGroupOrientation;
+
+    size?: Size | number;
+    variant?: Variant;
+    loading?: boolean;
+
+    separatorColor?: Color | ColorLike;
+
+    spacing?: number;
+
+    children: ReactNode;
 }

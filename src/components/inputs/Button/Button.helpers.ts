@@ -1,14 +1,16 @@
-import { type Theme } from "@emotion/react";
+import { type CSSObject, type Theme } from "@emotion/react";
 
 import { formatHex8, rgb } from "culori";
 
-import type { Color, ColorLike, Size } from "../../../types";
+import type { Color, ColorLike, Size, Variant } from "../../../types";
 import {
     adjustTextColor,
     alpha,
+    darken,
     getLuminance,
     isThemeColor,
 } from "../../../utils";
+import type { ButtonGroupOrientation } from "./Button.types";
 
 const minSize = 10,
     maxSize = 24;
@@ -31,11 +33,88 @@ export const resolveButtonStyles = (size: Size | number) => {
     const horizontalPadding = 10;
 
     return {
-        height: `${base + verticalPadding * 2}px`,
         fontSize: base,
         lineHeight: 1,
-        padding: `0 ${horizontalPadding}px`,
+        padding: `${verticalPadding}px ${horizontalPadding}px`,
+        minHeight: `${base + verticalPadding * 2}px`,
+        whiteSpace: "nowrap",
+        flexShrink: 0,
     };
+};
+
+export const resolveButtonGroupStyles = (
+    { colors }: Theme,
+    orientation: ButtonGroupOrientation,
+    color: Color | ColorLike = "primary",
+    variant: Variant = "solid",
+): CSSObject => {
+    const isCustomColor = !isThemeColor(color);
+    const resolvedColor = isCustomColor ? color : colors[color];
+
+    const parsedColor = rgb(resolvedColor);
+    if (!parsedColor) throw new Error("Invalid color");
+
+    const horizontalBorders: Record<Variant, CSSObject> = {
+        solid: {
+            borderLeft: `1px solid ${formatHex8(darken(parsedColor, 0.5))}`,
+        },
+        outlined: {},
+        plain: {
+            borderLeft: `1px solid ${formatHex8(darken(parsedColor, 0.3))}`,
+        },
+        soft: {
+            borderLeft: `1px solid ${formatHex8(darken(parsedColor, 0.1))}`,
+        },
+    };
+
+    const verticalBorders: Record<Variant, CSSObject> = {
+        solid: {
+            borderTop: `1px solid ${formatHex8(darken(parsedColor, 0.5))}`,
+        },
+        outlined: {},
+        plain: {
+            borderTop: `1px solid ${formatHex8(darken(parsedColor, 0.3))}`,
+        },
+        soft: {
+            borderTop: `1px solid ${formatHex8(darken(parsedColor, 0.1))}`,
+        },
+    };
+
+    return orientation === "horizontal"
+        ? {
+              "&:first-of-type": {
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+              },
+              "&:not(:first-of-type):not(:last-of-type)": {
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+              },
+              "&:last-of-type": {
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+              },
+              "&:not(:first-of-type)": horizontalBorders[variant],
+          }
+        : {
+              "&:first-child": {
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+              },
+              "&:not(:first-child):not(:last-child)": {
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+              },
+              "&:last-child": {
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+              },
+              "&:not(:first-child)": verticalBorders[variant],
+          };
 };
 
 export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
