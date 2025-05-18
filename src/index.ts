@@ -35,7 +35,7 @@ export * from "./themes";
 export * from "./utils";
 
 // Misc
-export * from "./GlobalStyles";
+export * from "./CssBaseline";
 export * from "./ThemeProvider";
 export * from "./types";
 
