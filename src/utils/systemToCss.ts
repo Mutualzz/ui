@@ -10,9 +10,8 @@ export function systemToCss(props: SystemProps, theme: Theme) {
     ) as (keyof typeof aliasMaps)[];
 
     for (const key of filteredKeys) {
-        if ((props as any)[key] != null) {
-            relevant[key] = (props as any)[key];
-        }
+        if ((props as any)[key] != null)
+            relevant[key] = props[key as keyof typeof props];
     }
 
     return css(aliasToStyles(relevant, theme));

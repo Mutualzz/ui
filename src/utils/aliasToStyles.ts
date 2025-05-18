@@ -11,12 +11,10 @@ export function aliasToStyles(props: Record<string, any>, theme: Theme) {
             return theme.spacing(raw);
         }*/
 
-        // shadows
         if (key === "boxShadow" && typeof raw === "number") {
             return theme.shadows[raw] ?? raw;
         }
 
-        // zIndex
         if (key === "zIndex" && typeof raw === "string") {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             return theme.zIndex[raw as keyof typeof theme.zIndex] ?? raw;
@@ -34,7 +32,6 @@ export function aliasToStyles(props: Record<string, any>, theme: Theme) {
             key,
         ];
 
-        // object → responsive
         if (typeof raw === "object" && !Array.isArray(raw)) {
             for (const bp in raw) {
                 const val = raw[bp];
@@ -46,7 +43,6 @@ export function aliasToStyles(props: Record<string, any>, theme: Theme) {
                 });
             }
         } else {
-            // single
             const resolved = resolveValue(key, raw);
             cssProps.forEach((prop) => {
                 output[prop] = resolved;
