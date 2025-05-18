@@ -38,6 +38,7 @@ export const baseLightTheme: Theme = {
             lg: 1200,
             xl: 1536,
         },
+
         up: (key) =>
             `@media (min-width:${baseLightTheme.breakpoints.values[key]}px)`,
         down: (key) =>

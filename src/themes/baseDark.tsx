@@ -39,6 +39,7 @@ export const baseDarkTheme: Theme = {
             lg: 1200,
             xl: 1536,
         },
+
         up: (key: Breakpoint) =>
             `@media (min-width:${baseDarkTheme.breakpoints.values[key]}px)`,
         down: (key: Breakpoint) =>
