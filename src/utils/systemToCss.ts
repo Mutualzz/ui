@@ -10,7 +10,7 @@ export function systemToCss(props: SystemProps, theme: Theme) {
     ) as (keyof typeof aliasMaps)[];
 
     for (const key of filteredKeys) {
-        if ((props as any)[key] != null)
+        if (props[key as keyof typeof props] != null)
             relevant[key] = props[key as keyof typeof props];
     }
 
