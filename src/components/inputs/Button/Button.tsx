@@ -1,4 +1,4 @@
-import { type FC, type ReactNode } from "react";
+import { type ReactNode, type Ref } from "react";
 
 import styled from "../../../utils/styled";
 import { CircularProgress } from "../../feedback/CircularProgress/CircularProgress";
@@ -68,19 +68,23 @@ const IconWrapper = styled("span")<{
     flexGrow: 0,
 }));
 
-export const Button: FC<ButtonProps> = ({
-    variant = "solid",
-    color = "primary",
-    size = "md",
-    loading,
-    startIcon,
-    endIcon,
-    disabled,
-    children,
-    ...props
-}) => (
+export const Button = (
+    {
+        variant = "solid",
+        color = "primary",
+        size = "md",
+        loading,
+        startIcon,
+        endIcon,
+        disabled,
+        children,
+        ...props
+    }: ButtonProps & { children?: ReactNode },
+    ref: Ref<HTMLButtonElement>,
+) => (
     <ButtonWrapper
         {...props}
+        ref={ref}
         variant={variant}
         color={color}
         size={size}

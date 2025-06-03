@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FC } from "react";
+import { useEffect, useState, type ChangeEvent, type Ref } from "react";
 import { type Size } from "../../../types";
 import styled from "../../../utils/styled";
 import {
@@ -98,25 +98,35 @@ const IconWrapper = styled("span")<{ size?: Size | number }>(
     }),
 );
 
-export const Checkbox: FC<CheckboxProps> = ({
-    checked: controlledChecked,
-    onChange,
-    label,
-    disabled,
-    color = "primary",
-    variant = "solid",
-    size = "md",
-    name,
-    value,
-    uncheckedIcon,
-    checkedIcon,
-    indeterminate,
-    indeterminateIcon,
-    rtl,
-    ...props
-}) => {
+export const Checkbox = (
+    {
+        checked: controlledChecked,
+        onChange,
+        label,
+        disabled,
+        color = "primary",
+        variant = "solid",
+        size = "md",
+        name,
+        value,
+        uncheckedIcon,
+        checkedIcon,
+        indeterminate,
+        indeterminateIcon,
+        rtl,
+        ...props
+    }: CheckboxProps,
+    ref: Ref<HTMLInputElement>,
+) => {
     const [internalChecked, setInternalChecked] = useState(false);
     const isChecked = controlledChecked ?? internalChecked;
+
+    useEffect(() => {
+        if (typeof ref === "function") return;
+        if (ref && "current" in ref && ref.current) {
+            ref.current.indeterminate = !!indeterminate;
+        }
+    }, [ref, indeterminate]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (!controlledChecked) setInternalChecked(e.target.checked);
@@ -132,11 +142,8 @@ export const Checkbox: FC<CheckboxProps> = ({
                 checked={isChecked}
                 onChange={handleChange}
                 disabled={disabled}
-                ref={(el) => {
-                    if (el) {
-                        el.indeterminate = indeterminate ?? false;
-                    }
-                }}
+                ref={ref}
+                {...props}
             />
             {rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
             <CheckboxBox
@@ -147,7 +154,6 @@ export const Checkbox: FC<CheckboxProps> = ({
                 checked={isChecked}
                 disabled={disabled}
                 size={size}
-                {...props}
             >
                 {indeterminate ? (
                     indeterminateIcon ? (

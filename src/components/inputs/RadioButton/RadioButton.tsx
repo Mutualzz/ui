@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FC, useState } from "react";
+import { type ChangeEvent, type Ref, useState } from "react";
 import type { Size } from "../../../types";
 import styled from "../../../utils/styled";
 
@@ -91,21 +91,24 @@ const IconWrapper = styled("span")<{ size?: Size | number }>(
     }),
 );
 
-export const RadioButton: FC<RadioButtonProps> = ({
-    checked: controlledChecked,
-    onChange,
-    label,
-    disabled,
-    color = "primary",
-    variant = "solid",
-    size = "md",
-    name,
-    value,
-    checkedIcon,
-    uncheckedIcon,
-    rtl,
-    ...props
-}) => {
+export const RadioButton = (
+    {
+        checked: controlledChecked,
+        onChange,
+        label,
+        disabled,
+        color = "primary",
+        variant = "solid",
+        size = "md",
+        name,
+        value,
+        checkedIcon,
+        uncheckedIcon,
+        rtl,
+        ...props
+    }: RadioButtonProps,
+    ref?: Ref<HTMLInputElement>,
+) => {
     const [internalChecked, setInternalChecked] = useState(false);
     const isChecked = controlledChecked ?? internalChecked;
 
@@ -123,6 +126,8 @@ export const RadioButton: FC<RadioButtonProps> = ({
                 checked={isChecked}
                 onChange={handleChange}
                 disabled={disabled}
+                ref={ref}
+                {...props}
             />
             {rtl && label && <RadioLabel>{label}</RadioLabel>}
             <RadioControl
@@ -134,7 +139,6 @@ export const RadioButton: FC<RadioButtonProps> = ({
                 checked={isChecked}
                 disabled={disabled}
                 size={size}
-                {...props}
             >
                 {isChecked ? (
                     checkedIcon ? (
