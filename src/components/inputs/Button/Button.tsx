@@ -80,7 +80,7 @@ export const Button = (
         children,
         ...props
     }: ButtonProps & { children?: ReactNode },
-    ref: Ref<HTMLButtonElement>,
+    ref?: Ref<HTMLButtonElement>,
 ) => (
     <ButtonWrapper
         {...props}

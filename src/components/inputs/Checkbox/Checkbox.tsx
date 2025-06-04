@@ -116,7 +116,7 @@ export const Checkbox = (
         rtl,
         ...props
     }: CheckboxProps,
-    ref: Ref<HTMLInputElement>,
+    ref?: Ref<HTMLInputElement>,
 ) => {
     const [internalChecked, setInternalChecked] = useState(false);
     const isChecked = controlledChecked ?? internalChecked;
