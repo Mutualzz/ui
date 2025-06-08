@@ -1,4 +1,4 @@
-import { clampChroma, lch, type Color } from "culori";
+import { clampChroma, lch, type Color, type Lch } from "culori";
 import { adjustLightness } from "./adjustLightness";
 import { adjustTextColor } from "./adjustTextColor";
 import { alpha } from "./alpha";
@@ -23,13 +23,16 @@ export {
     sortThemes,
 };
 
-export const darken = (color: Color, factor: number) => {
+export function darken(color: string, factor: number): Lch;
+export function darken(color: Color, factor: number): Lch;
+export function darken(color: Color | string, factor: number): Lch {
     const colorLch = lch(color);
+    if (!colorLch) throw new Error("Invalid color provided to darken function");
 
     colorLch.l = Math.max(0, colorLch.l * (1 - factor));
 
     return clampChroma(colorLch);
-};
+}
 
 export const lighten = (color: Color, factor: number) => {
     const colorLch = lch(color);
