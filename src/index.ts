@@ -2,7 +2,6 @@
 
 // Data Display
 export * from "./components/data-display/Divider/Divider";
-export * from "./components/data-display/Lottie/Lottie";
 
 // Feedback
 export * from "./components/feedback/CircularProgress/CircularProgress";
