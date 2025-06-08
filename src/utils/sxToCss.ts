@@ -1,4 +1,4 @@
-import { css, type Theme } from "@emotion/react";
+import { type Theme } from "@emotion/react";
 import type { Properties as CSSProperties } from "csstype";
 import type { Responsive } from "../types";
 import { type AliasKey } from "./aliases";
@@ -11,5 +11,5 @@ export type SxProps = {
 };
 
 export function sxToCss(sx: SxProps = {}, theme: Theme) {
-    return css(aliasToStyles(sx, theme));
+    return aliasToStyles(sx, theme);
 }

@@ -1,4 +1,4 @@
-import { css, type Theme } from "@emotion/react";
+import { type Theme } from "@emotion/react";
 import type { SystemProps } from "../types/index";
 import { aliasToStyles } from "./aliasToStyles";
 import { aliasMaps } from "./aliases";
@@ -14,5 +14,5 @@ export function systemToCss(props: SystemProps, theme: Theme) {
             relevant[key] = props[key as keyof typeof props];
     }
 
-    return css(aliasToStyles(relevant, theme));
+    return aliasToStyles(relevant, theme);
 }
