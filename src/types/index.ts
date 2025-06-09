@@ -47,7 +47,7 @@ export type TypographyLevelObj = {
     fontSize: number;
     lineHeight: string | number;
     fontWeight: string | number;
-    letterSpacing: number;
+    letterSpacing: string | number;
 };
 
 export type Size = "sm" | "md" | "lg";
