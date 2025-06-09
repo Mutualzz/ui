@@ -44,10 +44,10 @@ export type TypographyLevel =
     | TypographyDisplayKey;
 
 export type TypographyLevelObj = {
-    fontSize: string | number;
+    fontSize: number;
     lineHeight: string | number;
     fontWeight: string | number;
-    letterSpacing: string | number;
+    letterSpacing: number;
 };
 
 export type Size = "sm" | "md" | "lg";
