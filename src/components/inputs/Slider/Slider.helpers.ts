@@ -6,18 +6,12 @@ import { alpha, isThemeColor, lighten } from "../../../utils";
 const minThumbSize = 10,
     maxThumbSize = 24;
 const minTrackThickness = 2,
-    maxTrackThickness = 12;
+    maxTrackThickness = 10;
 
 const thumbSizeMap: Record<Size, number> = {
     sm: 14,
     md: 16,
     lg: 20,
-};
-
-const trackThicknessMap: Record<Size, number> = {
-    sm: 4,
-    md: 6,
-    lg: 8,
 };
 
 export const resolveSliderThumbSize = (size: Size | number) => {
@@ -34,7 +28,9 @@ export const resolveSliderThumbSize = (size: Size | number) => {
 export const resolveSliderTrackThickness = (size: Size | number) => {
     let base = size;
     if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = trackThicknessMap[size as Size];
+    if (isNaN(base)) base = thumbSizeMap[size as Size];
+
+    base /= 2.5;
 
     if (base < minTrackThickness) base = minTrackThickness;
     if (base > maxTrackThickness) base = maxTrackThickness;
@@ -46,21 +42,34 @@ export const resolveSliderTickSize = (size: Size | number) => {
     let base = size;
     if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) base = thumbSizeMap[size as Size];
+
     if (base < minThumbSize) base = minThumbSize;
     if (base > maxThumbSize) base = maxThumbSize;
 
     return base * 0.5;
 };
 
-export const resolveSliderLabelSize = (size: Size | number) => {
+export const resolveSliderLabelSize = (theme: Theme, size: Size | number) => {
     let base = size;
     if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thumbSizeMap[size as Size];
+    if (isNaN(base)) {
+        switch (size) {
+            case "sm":
+                base = theme.typography.levels["body-xs"].fontSize;
+                break;
+            case "md":
+                base = theme.typography.levels["body-sm"].fontSize;
+                break;
+            case "lg":
+                base = theme.typography.levels["body-md"].fontSize;
+                break;
+        }
+    }
 
     if (base < minThumbSize) base = minThumbSize;
     if (base > maxThumbSize) base = maxThumbSize;
 
-    return base * 0.75;
+    return base;
 };
 
 export const resolveSliderTrackStyles = (

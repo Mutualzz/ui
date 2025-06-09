@@ -9,7 +9,7 @@ import {
     type FC,
     type MouseEvent,
 } from "react";
-import type { Color, ColorLike, Variant } from "../../../types";
+import type { Color, ColorLike, Size, Variant } from "../../../types";
 import { darken } from "../../../utils";
 import styled from "../../../utils/styled";
 import {
@@ -47,14 +47,19 @@ const SliderRoot = styled("div")<{
 
 const TrackContainer = styled("div")<{
     orientation: SliderOrientation;
-}>(({ orientation }) => ({
-    position: "relative",
-    flexGrow: 1,
-    borderRadius: 9999,
-    ...(orientation === "horizontal"
-        ? { height: 4, width: "100%" }
-        : { width: 4, height: "100%" }),
-}));
+    size: Size | number;
+}>(({ orientation, size }) => {
+    const trackThickness = resolveSliderTrackThickness(size);
+
+    return {
+        position: "relative",
+        flexGrow: 1,
+        borderRadius: 9999,
+        ...(orientation === "horizontal"
+            ? { height: trackThickness, width: "100%" }
+            : { width: trackThickness, height: "100%" }),
+    };
+});
 
 const TrackSegment = styled("div")<{
     orientation: SliderOrientation;
@@ -149,12 +154,12 @@ const Thumb = styled("div")<{
     ...resolveSliderThumbStyles(theme, color, hovered)[variant],
 }));
 
-const Label = styled("div")(({ theme }) => ({
+const Label = styled("div")<{ size: Size | number }>(({ theme, size }) => ({
     position: "absolute",
     top: "-1.5rem",
     color: theme.typography.colors.primary,
     whiteSpace: "nowrap",
-    ...theme.typography.levels["body-xs"],
+    fontSize: resolveSliderLabelSize(theme, size),
 }));
 
 const HiddenInput = styled("input")({
@@ -352,9 +357,7 @@ export const Slider: FC<SliderProps> = ({
         step === null ? "any" : typeof step === "number" ? step : 1;
 
     const tickSize = resolveSliderTickSize(size);
-    const labelSize = resolveSliderLabelSize(size);
     const thumbSize = resolveSliderThumbSize(size);
-    const trackThickness = resolveSliderTrackThickness(size);
 
     return (
         <SliderRoot
@@ -366,14 +369,7 @@ export const Slider: FC<SliderProps> = ({
             onMouseDown={handleTrackStart}
             onTouchStart={handleTrackStart as any}
         >
-            <TrackContainer
-                orientation={orientation}
-                css={{
-                    height:
-                        orientation === "horizontal" ? trackThickness : "100%",
-                    width: orientation === "vertical" ? trackThickness : "100%",
-                }}
-            >
+            <TrackContainer orientation={orientation} size={size}>
                 {isRange ? (
                     <>
                         <TrackSegmentFilled
@@ -438,8 +434,8 @@ export const Slider: FC<SliderProps> = ({
                             {mark.label != null && (
                                 <Label
                                     key={`label-${i}`}
+                                    size={size}
                                     css={{
-                                        fontSize: labelSize,
                                         left:
                                             orientation === "horizontal"
                                                 ? `${percent}%`
@@ -484,6 +480,7 @@ export const Slider: FC<SliderProps> = ({
                         />
                         {valueLabelDisplay !== "off" && (
                             <Label
+                                size={size}
                                 style={{
                                     left:
                                         orientation === "horizontal"
