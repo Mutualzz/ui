@@ -4,17 +4,18 @@ import type { Color, ColorLike, Size, Variant } from "../../../types";
 import { alpha, isThemeColor, lighten } from "../../../utils";
 
 const minThumbSize = 10,
-    maxThumbSize = 24;
-const minTrackThickness = 2,
-    maxTrackThickness = 10;
+    maxThumbSize = 28;
+
+const minFontSize = 10,
+    maxFontSize = 16;
 
 const thumbSizeMap: Record<Size, number> = {
     sm: 14,
-    md: 16,
-    lg: 20,
+    md: 18,
+    lg: 24,
 };
 
-export const resolveSliderThumbSize = (size: Size | number) => {
+export const resolveSliderThumbSize = (size: Size | number): CSSObject => {
     let base = size;
     if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) base = thumbSizeMap[size as Size];
@@ -22,7 +23,11 @@ export const resolveSliderThumbSize = (size: Size | number) => {
     if (base < minThumbSize) base = minThumbSize;
     if (base > maxThumbSize) base = maxThumbSize;
 
-    return base;
+    return {
+        width: base,
+        height: base,
+        borderRadius: base / 2,
+    };
 };
 
 export const resolveSliderTrackThickness = (size: Size | number) => {
@@ -30,15 +35,10 @@ export const resolveSliderTrackThickness = (size: Size | number) => {
     if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) base = thumbSizeMap[size as Size];
 
-    base /= 2.5;
-
-    if (base < minTrackThickness) base = minTrackThickness;
-    if (base > maxTrackThickness) base = maxTrackThickness;
-
-    return base;
+    return Math.round(base / 2.5);
 };
 
-export const resolveSliderTickSize = (size: Size | number) => {
+export const resolveSliderTickSize = (size: Size | number): CSSObject => {
     let base = size;
     if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) base = thumbSizeMap[size as Size];
@@ -46,7 +46,12 @@ export const resolveSliderTickSize = (size: Size | number) => {
     if (base < minThumbSize) base = minThumbSize;
     if (base > maxThumbSize) base = maxThumbSize;
 
-    return base * 0.5;
+    const tickSize = Math.round(base * 0.2);
+
+    return {
+        width: tickSize,
+        height: tickSize,
+    };
 };
 
 export const resolveSliderLabelSize = (theme: Theme, size: Size | number) => {
@@ -66,8 +71,8 @@ export const resolveSliderLabelSize = (theme: Theme, size: Size | number) => {
         }
     }
 
-    if (base < minThumbSize) base = minThumbSize;
-    if (base > maxThumbSize) base = maxThumbSize;
+    if (base < minFontSize) base = minFontSize;
+    if (base > maxFontSize) base = maxFontSize;
 
     return base;
 };

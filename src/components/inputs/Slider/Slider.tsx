@@ -43,6 +43,7 @@ const SliderRoot = styled("div")<{
     opacity: disabled ? 0.5 : 1,
     cursor: disabled ? "not-allowed" : "pointer",
     touchAction: "none",
+    userSelect: "none",
 }));
 
 const TrackContainer = styled("div")<{
@@ -112,54 +113,147 @@ const TrackSegmentFilled = styled("div")<{
 
 const Tick = styled("div")<{
     orientation: SliderOrientation;
+    size: Size | number;
     percent: number;
-}>(({ theme, percent, orientation }) => ({
-    position: "absolute",
-    backgroundColor: theme.colors.common.white,
-    ...(orientation === "horizontal"
-        ? {
-              left: `${percent}%`,
-              top: "50%",
-              width: 1,
-              height: 2,
-              transform: "translate(-50%, -50%)",
-          }
-        : {
-              bottom: `${percent}%`,
-              left: "50%",
-              width: 2,
-              height: 1,
-              transform: "translate(-50%, 50%)",
-          }),
-}));
+}>(({ theme, percent, orientation, size }) => {
+    const minClamp = 1; // percentage (in % of 100%)
+    const maxClamp = 99; // clamp within [0.5%, 99.5%]
+    const clampedPercent = Math.min(maxClamp, Math.max(minClamp, percent));
+    const shift =
+        percent <= minClamp ? "0%" : percent >= maxClamp ? "-100%" : "-50%";
+
+    return {
+        position: "absolute",
+        backgroundColor: theme.colors.common.white,
+        borderRadius: "50%",
+        ...resolveSliderTickSize(size),
+
+        ...(orientation === "horizontal"
+            ? {
+                  left: `${clampedPercent}%`,
+                  top: "50%",
+                  transform: `translate(${shift}, -50%)`,
+              }
+            : {
+                  bottom: `${clampedPercent}%`,
+                  left: "50%",
+                  transform: "translate(-50%, 50%)",
+              }),
+    };
+});
 
 const Thumb = styled("div")<{
     color: Color | ColorLike;
     variant: Variant;
+    size: Size | number;
     percent: number;
     orientation: SliderOrientation;
     hovered: boolean;
-}>(({ theme, color, variant, percent, orientation, hovered = false }) => ({
-    position: "absolute",
-    width: 20,
-    height: 20,
-    borderRadius: "50%",
-    backgroundClip: "content-box",
-    boxSizing: "border-box",
-    transform: "translate(-50%, -50%)",
-    zIndex: 1,
-    ...(orientation === "horizontal"
-        ? { left: `${percent}%`, top: "50%" }
-        : { top: `${100 - percent}%`, left: "50%" }),
-    ...resolveSliderThumbStyles(theme, color, hovered)[variant],
-}));
+}>(
+    ({
+        theme,
+        color,
+        variant,
+        percent,
+        orientation,
+        size,
+        hovered = false,
+    }) => ({
+        position: "absolute",
+        borderRadius: "50%",
+        backgroundClip: "content-box",
+        boxSizing: "border-box",
+        transform: "translate(-50%, -50%)",
+        zIndex: 1,
+        ...(orientation === "horizontal"
+            ? { left: `${percent}%`, top: "50%" }
+            : { top: `${100 - percent}%`, left: "50%" }),
+        ...resolveSliderThumbStyles(theme, color, hovered)[variant],
+        ...resolveSliderThumbSize(size),
+    }),
+);
 
-const Label = styled("div")<{ size: Size | number }>(({ theme, size }) => ({
+const ValueLabel = styled("span")<{
+    orientation: SliderOrientation;
+    percent: number;
+    size: Size | number;
+}>(({ theme, orientation, percent, size }) => {
+    const thumbSize = Number(resolveSliderThumbSize(size).width);
+    const labelOffset = thumbSize + 20;
+    const fontSize = resolveSliderLabelSize(theme, size);
+    const clampPercent = Math.min(Math.max(percent, 0), 100);
+
+    return {
+        textOverflow: "ellipsis",
+        position: "absolute",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        transform:
+            orientation === "horizontal"
+                ? "translate(-50%, 0)"
+                : "translate(-150%, 50%)",
+        left: orientation === "horizontal" ? `${clampPercent}%` : 0,
+        top: orientation === "horizontal" ? `-${labelOffset}px` : undefined,
+        bottom: orientation === "vertical" ? `${clampPercent}%` : undefined,
+        fontSize,
+        color: theme.typography.colors.primary,
+        backgroundColor: theme.colors.neutral,
+        padding: "2px 6px",
+        borderRadius: 4,
+        whiteSpace: "nowrap",
+        zIndex: 2,
+        pointerEvents: "none",
+        userSelect: "none",
+
+        "::after": {
+            content: '""',
+            position: "absolute",
+            width: 0,
+            height: 0,
+            ...(orientation === "horizontal"
+                ? {
+                      top: "100%",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      borderLeft: "5px solid transparent",
+                      borderRight: "5px solid transparent",
+                      borderTop: `5px solid ${theme.colors.neutral}`,
+                  }
+                : {
+                      top: "50%",
+                      right: 0,
+                      transform: "translate(100%, -50%)",
+                      borderTop: "5px solid transparent",
+                      borderBottom: "5px solid transparent",
+                      borderLeft: `5px solid ${theme.colors.neutral}`,
+                  }),
+        },
+    };
+});
+
+const MarkLabel = styled("span")<{
+    orientation: SliderOrientation;
+    percent: number;
+    size: Size | number;
+}>(({ theme, orientation, percent, size }) => ({
     position: "absolute",
-    top: "-1.5rem",
-    color: theme.typography.colors.primary,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 4,
+    left: orientation === "horizontal" ? `${percent}%` : "100%",
+    top: orientation === "vertical" ? `${100 - percent}%` : undefined,
+    transform:
+        orientation === "horizontal"
+            ? "translate(-50%, 0.75rem)"
+            : "translate(0.75rem, -50%)",
+    color: theme.typography.colors.accent,
     whiteSpace: "nowrap",
     fontSize: resolveSliderLabelSize(theme, size),
+    backgroundColor: "transparent",
+    pointerEvents: "none",
+    userSelect: "none",
 }));
 
 const HiddenInput = styled("input")({
@@ -178,7 +272,7 @@ export const Slider: FC<SliderProps> = ({
     size = "md",
     min = 0,
     max = 100,
-    step = 1,
+    step = null,
     defaultValue,
     value,
     onChange,
@@ -187,7 +281,6 @@ export const Slider: FC<SliderProps> = ({
     disabled,
     full,
     length,
-
     marks,
     valueLabelDisplay = "off",
     getAriaLabel,
@@ -224,7 +317,12 @@ export const Slider: FC<SliderProps> = ({
             }
             return out;
         } else if (Array.isArray(marks)) {
-            return marks;
+            const seen = new Set<number>();
+            return marks.filter((mark) => {
+                if (seen.has(mark.value)) return false;
+                seen.add(mark.value);
+                return true;
+            });
         }
         return [];
     }, [marks, min, max, step]);
@@ -232,7 +330,11 @@ export const Slider: FC<SliderProps> = ({
     const snapToMarks = useCallback(
         (val: number) => {
             if (!Array.isArray(marks)) return val;
-            const sorted = [...marks].map((m) => m.value).sort((a, b) => a - b);
+
+            const sorted = [min, max, ...marks.map((m) => m.value)]
+                .filter((v, i, a) => a.indexOf(v) === i) // deduplicate
+                .sort((a, b) => a - b);
+
             return sorted.reduce(
                 (closest, curr) =>
                     Math.abs(curr - val) < Math.abs(closest - val)
@@ -246,11 +348,16 @@ export const Slider: FC<SliderProps> = ({
 
     const updateValue = useCallback(
         (index: number, newVal: number) => {
-            newVal = snapToMarks(newVal);
+            if (disabled) return;
+            if (newVal < min) newVal = min;
+            if (newVal > max) newVal = max;
+            if (step === null) newVal = snapToMarks(newVal);
+
             if (isRange && disableSwap) {
                 if (index === 0 && newVal > currentValue[1]) return;
                 if (index === 1 && newVal < currentValue[0]) return;
             }
+
             const newValue: number[] = [...currentValue];
             newValue[index] = newVal;
             if (!isControlled) setInternalValue(newValue);
@@ -263,8 +370,8 @@ export const Slider: FC<SliderProps> = ({
             currentValue,
             isControlled,
             isRange,
-            onChange,
             snapToMarks,
+            onChange,
             disableSwap,
         ],
     );
@@ -281,7 +388,10 @@ export const Slider: FC<SliderProps> = ({
                 orientation === "horizontal" ? rect.width : rect.height;
             const percent = Math.min(Math.max(pos / size, 0), 1);
             const raw = percent * (max - min) + min;
-            return Math.round(raw / step!) * step!;
+            const stepped =
+                step == null ? Math.round(raw) : Math.round(raw / step) * step;
+
+            return Math.min(Math.max(stepped, min), max);
         },
         [orientation, min, max, step],
     );
@@ -353,12 +463,6 @@ export const Slider: FC<SliderProps> = ({
         setDraggingIndex(indexToDrag);
     };
 
-    const htmlStep =
-        step === null ? "any" : typeof step === "number" ? step : 1;
-
-    const tickSize = resolveSliderTickSize(size);
-    const thumbSize = resolveSliderThumbSize(size);
-
     return (
         <SliderRoot
             ref={ref}
@@ -420,35 +524,17 @@ export const Slider: FC<SliderProps> = ({
                                 key={`tick-${i}`}
                                 orientation={orientation}
                                 percent={percent}
-                                css={{
-                                    width:
-                                        orientation === "horizontal"
-                                            ? 1
-                                            : tickSize,
-                                    height:
-                                        orientation === "horizontal"
-                                            ? tickSize
-                                            : 1,
-                                }}
+                                size={size}
                             />
-                            {mark.label != null && (
-                                <Label
-                                    key={`label-${i}`}
+                            {marks !== true && (
+                                <MarkLabel
+                                    percent={percent}
+                                    orientation={orientation}
+                                    key={`markLabel-${i}`}
                                     size={size}
-                                    css={{
-                                        left:
-                                            orientation === "horizontal"
-                                                ? `${percent}%`
-                                                : undefined,
-                                        bottom:
-                                            orientation === "vertical"
-                                                ? `${percent}%`
-                                                : undefined,
-                                        transform: "translate(-50%, 0)",
-                                    }}
                                 >
                                     {mark.label ?? mark.value}
-                                </Label>
+                                </MarkLabel>
                             )}
                         </>
                     );
@@ -459,6 +545,7 @@ export const Slider: FC<SliderProps> = ({
                         <Thumb
                             color={color}
                             variant={variant}
+                            size={size}
                             key={i}
                             percent={percents[i]}
                             hovered={hoveredIndex === i}
@@ -473,27 +560,24 @@ export const Slider: FC<SliderProps> = ({
                                 e.stopPropagation();
                                 setDraggingIndex(i);
                             }}
-                            css={{
-                                width: thumbSize,
-                                height: thumbSize,
-                            }}
                         />
-                        {valueLabelDisplay !== "off" && (
-                            <Label
+                        {(valueLabelDisplay === "on" ||
+                            (valueLabelDisplay === "auto" &&
+                                (draggingIndex === i ||
+                                    hoveredIndex === i))) && (
+                            <ValueLabel
+                                orientation={orientation}
+                                percent={percents[i]}
                                 size={size}
-                                style={{
-                                    left:
-                                        orientation === "horizontal"
-                                            ? `${percents[i]}%`
-                                            : undefined,
-                                    top:
-                                        orientation === "vertical"
-                                            ? `${100 - percents[i]}%`
-                                            : undefined,
-                                }}
                             >
-                                {Math.round(val)}
-                            </Label>
+                                {getAriaValueText
+                                    ? getAriaValueText(val, i)
+                                    : getAriaLabel
+                                      ? getAriaLabel(i)
+                                      : typeof val === "number"
+                                        ? val.toFixed(0)
+                                        : val}
+                            </ValueLabel>
                         )}
                     </>
                 ))}
@@ -502,7 +586,7 @@ export const Slider: FC<SliderProps> = ({
                 type="range"
                 min={min}
                 max={max}
-                step={htmlStep}
+                step={step ?? 1}
                 value={isRange ? undefined : currentValue[0]}
                 onChange={(e: any) => {
                     const newVal = parseFloat(e.target.value);
