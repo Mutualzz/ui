@@ -22,7 +22,7 @@ export const CssBaseline = () => {
                     overflow-x: hidden;
 
                     font-family: ${theme.typography.fontFamily};
-                    font-size: ${theme.typography.levels["body-md"].fontSize};
+                    font-size: ${theme.typography.levels["body-md"].fontSize}px;
                     line-height: ${theme.typography.levels["body-md"]
                         .lineHeight};
                     background-color: ${theme.colors.background};
