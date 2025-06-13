@@ -88,6 +88,7 @@ export const Divider: FC<DividerProps> = ({
                     {children}
                 </DividerText>
             )}
+
             <DividerLine
                 isVertical={isVertical}
                 lineColor={resolvedLineColor}
