@@ -13,7 +13,10 @@ export interface ButtonProps
     variant?: Variant;
     color?: Color | ColorLike;
     size?: Size | number;
+
     loading?: boolean;
+    loadingIndicator?: ReactNode;
+
     disabled?: boolean;
     startIcon?: ReactNode;
     endIcon?: ReactNode;

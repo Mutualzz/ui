@@ -34,8 +34,8 @@ const HiddenCheckbox = styled("input")({
 
 const CheckboxBox = styled("span")<CheckboxProps>(({
     theme,
-    color = "primary",
-    variant = "plain",
+    color = "neutral",
+    variant = "solid",
     checked,
 }) => {
     const base = {
@@ -104,7 +104,7 @@ export const Checkbox = (
         onChange,
         label,
         disabled,
-        color = "primary",
+        color = "neutral",
         variant = "solid",
         size = "md",
         name,

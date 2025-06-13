@@ -5,7 +5,7 @@ import { type PaperProps } from "./Paper.types";
 export const Paper = styled("div")<PaperProps>(
     ({
         theme,
-        variant = "elevation",
+        variant = "plain",
         elevation = 0,
         color = "neutral",
         inline,

@@ -70,10 +70,11 @@ const IconWrapper = styled("span")<{
 
 export const Button = (
     {
-        variant = "solid",
+        variant = "outlined",
         color = "primary",
         size = "md",
         loading,
+        loadingIndicator,
         startIcon,
         endIcon,
         disabled,
@@ -93,15 +94,19 @@ export const Button = (
     >
         {loading && (
             <SpinnerOverlay>
-                <CircularProgress
-                    variant={
-                        variant === "solid" || variant === "soft"
-                            ? "plain"
-                            : "soft"
-                    }
-                    color={color}
-                    size="sm"
-                />
+                {loadingIndicator ? (
+                    loadingIndicator
+                ) : (
+                    <CircularProgress
+                        variant={
+                            variant === "solid" || variant === "soft"
+                                ? "plain"
+                                : "soft"
+                        }
+                        color={color}
+                        size="sm"
+                    />
+                )}
             </SpinnerOverlay>
         )}
 
