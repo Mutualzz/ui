@@ -30,7 +30,7 @@ export const CssBaseline = () => {
                 }
 
                 #app {
-                    min-height: 100vh;
+                    height: 100vh;
                     width: 100%;
                     box-sizing: border-box;
                 }
