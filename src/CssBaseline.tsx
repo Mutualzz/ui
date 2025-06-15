@@ -29,12 +29,6 @@ export const CssBaseline = () => {
                     color: ${theme.typography.colors.primary};
                 }
 
-                #app {
-                    height: 100vh;
-                    width: 100%;
-                    box-sizing: border-box;
-                }
-
                 ul,
                 ol {
                     padding: 0;
