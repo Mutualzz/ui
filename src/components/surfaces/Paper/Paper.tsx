@@ -11,8 +11,7 @@ export const Paper = styled("div")<PaperProps>(
         inline,
     }) => ({
         ...variantStyles(theme, color, elevation)[variant],
-        borderRadius: "0.75rem",
-        transition: "all 0.2 ease",
+        transition: "background-color 0.2 ease",
         display: inline ? "inline-flex" : "flex",
     }),
 );
