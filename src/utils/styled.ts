@@ -16,7 +16,7 @@ const shouldForwardProp = (prop: string) =>
     isPropValid(prop) && !blockedProps.includes(prop);
 
 // what the consumer sees (no theme in their props)
-type PublicProps<P> = P & SystemProps & { sx?: SxProps };
+type PublicProps<P> = P & SystemProps & { sx?: SxProps; theme?: Theme };
 
 // what your style callbacks receive (adds theme)
 type CallbackProps<P> = PublicProps<P> & { theme: Theme };
