@@ -11,9 +11,9 @@ export const Typography = styled("span")<TypographyProps>(
         variant = "none",
         weight,
     }) => ({
-        ...variantStyles(theme, color)[variant],
         ...theme.typography.levels[level],
         padding: 8,
         fontWeight: weight,
+        ...variantStyles(theme, color)[variant],
     }),
 );

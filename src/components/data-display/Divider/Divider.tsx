@@ -34,11 +34,10 @@ const DividerLine = styled("span")<{
     variant: DividerVariant;
     grow?: boolean;
 }>(({ isVertical, variant, lineColor, grow }) => ({
-    ...resolveDividerVariant(isVertical, lineColor)[variant],
-
     flexGrow: grow ? 1 : 0,
 
     ...(isVertical ? { minHeight: "1rem" } : { minWidth: "1rem" }),
+    ...resolveDividerVariant(isVertical, lineColor)[variant],
 }));
 
 const DividerText = styled("span")<{
@@ -47,7 +46,6 @@ const DividerText = styled("span")<{
 }>(({ isVertical, textColor }) => ({
     color: textColor,
     padding: isVertical ? "8px 0" : "0 8px",
-
     whiteSpace: "nowrap",
     fontSize: "14px",
 }));
