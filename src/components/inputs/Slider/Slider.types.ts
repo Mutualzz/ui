@@ -54,9 +54,4 @@ export interface SliderProps
 
     getAriaLabel?: (index: number) => string;
     getAriaValueText?: (value: number, index: number) => string;
-
-    // Takes up the full width of the parent container
-    full?: boolean;
-    // Custom length for the slider, useful for horizontal sliders
-    length?: number;
 }

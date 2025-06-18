@@ -29,17 +29,14 @@ import type {
 const SliderRoot = styled("div")<{
     orientation: SliderOrientation;
     disabled?: boolean;
-    full?: boolean;
-    length?: number;
-}>(({ orientation, full, length, disabled }) => ({
+}>(({ orientation, disabled }) => ({
     position: "relative",
     display: "flex",
     flexDirection: orientation === "vertical" ? "column" : "row",
     alignItems: "center",
     justifyContent: "center",
-    height: orientation === "vertical" ? (length ?? 120) : 40,
-    width:
-        orientation === "horizontal" ? (full ? "100%" : (length ?? 200)) : 40,
+    height: orientation === "vertical" ? 120 : 40,
+    width: orientation === "horizontal" ? 200 : 40,
     opacity: disabled ? 0.5 : 1,
     cursor: disabled ? "not-allowed" : "pointer",
     touchAction: "none",
@@ -279,8 +276,6 @@ export const Slider: FC<SliderProps> = ({
     onChangeCommitted,
     orientation = "horizontal",
     disabled,
-    full,
-    length,
     marks,
     valueLabelDisplay = "off",
     valueLabelFormat,
@@ -469,8 +464,6 @@ export const Slider: FC<SliderProps> = ({
             ref={ref}
             disabled={disabled}
             orientation={orientation}
-            full={full}
-            length={length}
             onMouseDown={handleTrackStart}
             onTouchStart={handleTrackStart as any}
         >
