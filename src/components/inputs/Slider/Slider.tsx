@@ -31,16 +31,22 @@ const SliderRoot = styled("div")<{
     disabled?: boolean;
 }>(({ orientation, disabled }) => ({
     position: "relative",
-    display: "flex",
+    display: "inline-block",
+    boxSizing: "border-box",
     flexDirection: orientation === "vertical" ? "column" : "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "100%",
-    height: "100%",
     opacity: disabled ? 0.5 : 1,
     cursor: disabled ? "not-allowed" : "pointer",
     touchAction: "none",
     userSelect: "none",
+    ...(orientation === "horizontal"
+        ? {
+              width: "100%",
+          }
+        : {
+              height: "100%",
+          }),
 }));
 
 const TrackContainer = styled("div")<{
