@@ -40,6 +40,7 @@ export interface SliderProps
     marks?: boolean | SliderMark[];
 
     valueLabelDisplay?: SliderValueLabelDisplay;
+    valueLabelFormat?: string | ((value: number, index: number) => ReactNode);
 
     onChange?: (
         event: ChangeEvent<HTMLInputElement>,

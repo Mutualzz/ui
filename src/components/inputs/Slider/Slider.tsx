@@ -283,6 +283,7 @@ export const Slider: FC<SliderProps> = ({
     length,
     marks,
     valueLabelDisplay = "off",
+    valueLabelFormat,
     getAriaLabel,
     getAriaValueText,
     disableSwap,
@@ -570,13 +571,34 @@ export const Slider: FC<SliderProps> = ({
                                 percent={percents[i]}
                                 size={size}
                             >
-                                {getAriaValueText
-                                    ? getAriaValueText(val, i)
-                                    : getAriaLabel
-                                      ? getAriaLabel(i)
-                                      : typeof val === "number"
+                                {(() => {
+                                    if (valueLabelFormat) {
+                                        if (
+                                            typeof valueLabelFormat ===
+                                            "function"
+                                        )
+                                            return valueLabelFormat(val, i);
+                                        else
+                                            return valueLabelFormat
+                                                .replace(
+                                                    "{value}",
+                                                    val.toString(),
+                                                )
+                                                .replace(
+                                                    "{index}",
+                                                    i.toString(),
+                                                );
+                                    }
+
+                                    if (getAriaValueText)
+                                        return getAriaValueText(val, i);
+
+                                    if (getAriaLabel) return getAriaLabel(i);
+
+                                    return typeof val === "number"
                                         ? val.toFixed(0)
-                                        : val}
+                                        : val;
+                                })()}
                             </ValueLabel>
                         )}
                     </>
