@@ -1,4 +1,5 @@
 import type { Theme } from "@emotion/react";
+import type { Breakpoint } from "../types";
 import { aliasMaps } from "./aliases";
 
 export function aliasToStyles(props: Record<string, any>, theme: Theme) {
@@ -23,6 +24,20 @@ export function aliasToStyles(props: Record<string, any>, theme: Theme) {
         return raw;
     };
 
+    const findNextLargerValue = (
+        currentIndex: number,
+        allBreakpoints: Breakpoint[],
+        sortedBreakpoints: Breakpoint[],
+        raw: any,
+    ) => {
+        for (const bp of sortedBreakpoints) {
+            const index = allBreakpoints.indexOf(bp);
+            if (index > currentIndex) return raw[bp];
+        }
+
+        return raw[sortedBreakpoints[sortedBreakpoints.length - 1]];
+    };
+
     for (const key in props) {
         const raw = props[key];
         if (raw == null) continue;
@@ -33,14 +48,45 @@ export function aliasToStyles(props: Record<string, any>, theme: Theme) {
         ];
 
         if (typeof raw === "object" && !Array.isArray(raw)) {
-            for (const bp in raw) {
-                const val = raw[bp];
-                const media = theme.breakpoints.up(bp as any);
-                output[media] = output[media] ?? {};
-                const resolved = resolveValue(key, val);
-                cssProps.forEach((prop) => {
-                    output[media][prop] = resolved;
-                });
+            const allBreakpoints = theme.breakpoints.keys;
+            const definedBreakpoints = Object.keys(raw) as Breakpoint[];
+
+            const sortedBreakpoints = definedBreakpoints.toSorted(
+                (a, b) => allBreakpoints.indexOf(a) - allBreakpoints.indexOf(b),
+            );
+
+            const smallestBreakpoint = sortedBreakpoints[0];
+            const smallestIndex = allBreakpoints.indexOf(smallestBreakpoint);
+
+            for (let i = 0; i < allBreakpoints.length; i++) {
+                const currentBreakpoint = allBreakpoints[i];
+                let value: any = undefined;
+
+                if (raw[currentBreakpoint] !== undefined)
+                    value = raw[currentBreakpoint];
+                else if (i < smallestIndex) value = raw[smallestBreakpoint];
+                else
+                    value = findNextLargerValue(
+                        i,
+                        allBreakpoints,
+                        sortedBreakpoints,
+                        raw,
+                    );
+
+                if (value !== undefined) {
+                    const resolved = resolveValue(key, value);
+                    if (i === 0) {
+                        cssProps.forEach((prop) => {
+                            output[prop] = resolved;
+                        });
+                    } else {
+                        const media = theme.breakpoints.up(currentBreakpoint);
+                        output[media] = output[media] ?? {};
+                        cssProps.forEach((prop) => {
+                            output[media][prop] = resolved;
+                        });
+                    }
+                }
             }
         } else {
             const resolved = resolveValue(key, raw);
