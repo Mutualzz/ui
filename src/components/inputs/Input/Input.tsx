@@ -27,9 +27,10 @@ const IconWrapper = styled("span")<{
 }));
 
 const StyledInput = styled("input")<InputProps>(
-    ({ theme, color = "neutral", size, variant = "outlined" }) => ({
+    ({ theme, color = "neutral", size, variant = "outlined", fullWidth }) => ({
         ...resolveInputSize(size as Size | number),
         ...resolveInputStyles(theme, color)[variant],
+        ...(fullWidth && { width: "100%" }),
     }),
 );
 
