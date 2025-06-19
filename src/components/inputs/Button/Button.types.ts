@@ -17,7 +17,6 @@ export interface ButtonProps
     loading?: boolean;
     loadingIndicator?: ReactNode;
 
-    disabled?: boolean;
     startDecorator?: ReactNode;
     endDecorator?: ReactNode;
 }
