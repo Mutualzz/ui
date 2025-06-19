@@ -7,7 +7,7 @@ import {
     resolveRadioStyles,
     variantColors,
 } from "./Radio.helpers";
-import type { RadioProps } from "./Radiotypes";
+import type { RadioProps } from "./Radio.types";
 
 const RadioWrapper = styled("label")<RadioProps>(
     ({ disabled, size = "md" }) => ({
