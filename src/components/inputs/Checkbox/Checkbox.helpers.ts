@@ -8,6 +8,7 @@ import {
     getLuminance,
     isThemeColor,
 } from "../../../utils";
+import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 10,
     maxSize = 28;
@@ -19,17 +20,12 @@ export const baseSizeMap: Record<Size, number> = {
 };
 
 export const resolveCheckboxStyles = (size: Size | number) => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = baseSizeMap[size as Size];
-
-    if (base < minSize) base = minSize;
-    if (base > maxSize) base = maxSize;
+    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
     return {
-        padding: base * 0.2,
+        padding: sizeVal * 0.2,
         lineHeight: 0,
-        fontSize: base * 0.8,
+        fontSize: sizeVal * 0.8,
     };
 };
 
@@ -94,15 +90,9 @@ export const variantColors = (
 };
 
 export const resolveIconScaling = (size: Size | number) => {
-    let base = size;
-    if (typeof size === "string") base = baseSizeMap[size];
+    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
-    if (typeof base === "string") base = parseFloat(base);
-    if (base < minSize) base = minSize;
-    if (base > maxSize) base = maxSize;
-    if (isNaN(base)) base = baseSizeMap.md;
-
-    const scale = base / 2;
+    const scale = sizeVal / 2;
 
     return {
         width: scale,

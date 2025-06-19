@@ -4,6 +4,7 @@ import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";
 import { alpha } from "../../../utils";
+import { resolveSize } from "../../../utils/resolveSize";
 
 const minLength = 80,
     maxLength = 240;
@@ -43,24 +44,8 @@ export const lengthMap: Record<Size, number> = {
     lg: 200,
 };
 
-export const resolveThickness = (thickness: Size | number) => {
-    let base = thickness;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thicknessMap[thickness as Size];
+export const resolveThickness = (thickness: Size | number) =>
+    resolveSize(thickness, minThickness, maxThickness, thicknessMap);
 
-    if (base < minThickness) base = minThickness;
-    if (base > maxThickness) base = maxThickness;
-
-    return base;
-};
-
-export const resolveLength = (length: Size | number) => {
-    let base = length;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = lengthMap[length as Size];
-
-    if (base < minLength) base = minLength;
-    if (base > maxLength) base = maxLength;
-
-    return base;
-};
+export const resolveLength = (length: Size | number) =>
+    resolveSize(length, minLength, maxLength, lengthMap);

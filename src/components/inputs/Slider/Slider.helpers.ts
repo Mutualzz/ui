@@ -2,6 +2,7 @@ import type { CSSObject, Theme } from "@emotion/react";
 import { formatHex8, rgb } from "culori";
 import type { Color, ColorLike, Size, Variant } from "../../../types";
 import { alpha, isThemeColor, lighten } from "../../../utils";
+import { resolveSize } from "../../../utils/resolveSize";
 
 const minThumbSize = 10,
     maxThumbSize = 28;
@@ -16,37 +17,25 @@ const thumbSizeMap: Record<Size, number> = {
 };
 
 export const resolveSliderThumbSize = (size: Size | number): CSSObject => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thumbSizeMap[size as Size];
-
-    if (base < minThumbSize) base = minThumbSize;
-    if (base > maxThumbSize) base = maxThumbSize;
+    const sizeVal = resolveSize(size, minThumbSize, maxThumbSize, thumbSizeMap);
 
     return {
-        width: base,
-        height: base,
-        borderRadius: base / 2,
+        width: sizeVal,
+        height: sizeVal,
+        borderRadius: sizeVal / 2,
     };
 };
 
 export const resolveSliderTrackThickness = (size: Size | number) => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thumbSizeMap[size as Size];
+    const sizeVal = resolveSize(size, minThumbSize, maxThumbSize, thumbSizeMap);
 
-    return Math.round(base / 2.5);
+    return Math.round(sizeVal / 2.5);
 };
 
 export const resolveSliderTickSize = (size: Size | number): CSSObject => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thumbSizeMap[size as Size];
+    const sizeVal = resolveSize(size, minThumbSize, maxThumbSize, thumbSizeMap);
 
-    if (base < minThumbSize) base = minThumbSize;
-    if (base > maxThumbSize) base = maxThumbSize;
-
-    const tickSize = Math.round(base * 0.2);
+    const tickSize = Math.round(sizeVal * 0.2);
 
     return {
         width: tickSize,

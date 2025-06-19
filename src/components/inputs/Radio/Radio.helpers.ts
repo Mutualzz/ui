@@ -1,4 +1,5 @@
 import { type Size } from "../../../types";
+import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 10,
     maxSize = 28;
@@ -10,17 +11,12 @@ export const baseSizeMap: Record<Size, number> = {
 };
 
 export const resolveRadioStyles = (size: Size | number) => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = baseSizeMap[size as Size];
-
-    if (base < minSize) base = minSize;
-    if (base > maxSize) base = maxSize;
+    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
     return {
-        padding: base * 0.2,
+        padding: sizeVal * 0.2,
         lineHeight: 0,
-        fontSize: base * 0.8,
+        fontSize: sizeVal * 0.8,
     };
 };
 

@@ -10,6 +10,7 @@ import {
     getLuminance,
     isThemeColor,
 } from "../../../utils";
+import { resolveSize } from "../../../utils/resolveSize";
 import type { ButtonGroupOrientation } from "./Button.types";
 
 const minSize = 10,
@@ -22,21 +23,14 @@ export const baseSizeMap: Record<Size, number> = {
 };
 
 export const resolveButtonStyles = (size: Size | number) => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = baseSizeMap[size as Size];
-
-    if (base < minSize) base = minSize;
-    if (base > maxSize) base = maxSize;
-
-    const verticalPadding = 10;
-    const horizontalPadding = 10;
+    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+    const padding = 10;
 
     return {
-        fontSize: base,
+        fontSize: sizeVal,
         lineHeight: 1,
-        padding: `${verticalPadding}px ${horizontalPadding}px`,
-        minHeight: `${base + verticalPadding * 2}px`,
+        padding: `${padding}px ${padding}px`,
+        minHeight: `${sizeVal + padding * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
     };

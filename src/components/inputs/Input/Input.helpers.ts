@@ -2,6 +2,7 @@ import type { CSSObject, Theme } from "@emotion/react";
 import { formatHex8, rgb } from "culori";
 import type { Color, ColorLike, Size, Variant } from "../../../types";
 import { darken, isThemeColor, lighten } from "../../../utils";
+import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 6,
     maxSize = 24;
@@ -13,21 +14,13 @@ const baseSizeMap: Record<Size, number> = {
 };
 
 export const resolveInputSize = (size: Size | number) => {
-    let base: number;
-    if (typeof size === "number") base = size;
-    else if (size in baseSizeMap) base = baseSizeMap[size];
-    else {
-        const parsed = parseFloat(size);
-        base = isNaN(parsed) ? baseSizeMap.md : parsed;
-    }
-
-    base = Math.max(minSize, Math.min(maxSize, base));
+    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
     return {
-        fontSize: base,
+        fontSize: sizeVal,
         lineHeight: 1,
-        padding: `${base / 2}px ${base / 2}px`,
-        minHeight: `${base + (base / 2) * 2}px`,
+        padding: `${sizeVal / 2}px ${sizeVal / 2}px`,
+        minHeight: `${sizeVal + (sizeVal / 2) * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
     };

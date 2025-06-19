@@ -3,6 +3,7 @@ import { formatHex8, parse } from "culori";
 import type { Color, ColorLike, Size } from "../../../types";
 import { alpha } from "../../../utils/alpha";
 import { isThemeColor } from "../../../utils/isThemeColor";
+import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 16,
     maxSize = 64;
@@ -44,24 +45,16 @@ export const thicknesses: Record<Size, number> = {
     lg: 8,
 };
 
-export const resolveCircularProgressSizes = (size: Size | number) => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = sizes[size as Size];
-
-    if (base < minSize) base = minSize;
-    if (base > maxSize) base = maxSize;
-
-    return base;
-};
+export const resolveCircularProgressSizes = (size: Size | number) =>
+    resolveSize(size, minSize, maxSize, sizes);
 
 export const resolveCiruclarProgressThickness = (thickness: Size | number) => {
-    let base = thickness;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) base = thicknesses[thickness as Size];
+    const sizeVal = resolveSize(
+        thickness,
+        minSizeThickness,
+        maxSizeThickness,
+        thicknesses,
+    );
 
-    if (base < minSizeThickness) base = minSizeThickness;
-    if (base > maxSizeThickness) base = maxSizeThickness;
-
-    return Object.values(thicknesses).includes(base) ? base : base / 2;
+    return Object.values(thicknesses).includes(sizeVal) ? sizeVal : sizeVal / 2;
 };
