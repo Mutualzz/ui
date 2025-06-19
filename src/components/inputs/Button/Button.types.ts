@@ -18,8 +18,8 @@ export interface ButtonProps
     loadingIndicator?: ReactNode;
 
     disabled?: boolean;
-    startIcon?: ReactNode;
-    endIcon?: ReactNode;
+    startDecorator?: ReactNode;
+    endDecorator?: ReactNode;
 }
 
 export interface ButtonGroupProps {

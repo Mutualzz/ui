@@ -75,8 +75,8 @@ export const Button = (
         size = "md",
         loading,
         loadingIndicator,
-        startIcon,
-        endIcon,
+        startDecorator,
+        endDecorator,
         disabled,
         children,
         ...props
@@ -110,19 +110,19 @@ export const Button = (
             </SpinnerOverlay>
         )}
 
-        {startIcon && (
+        {startDecorator && (
             <IconWrapper
                 childrenContent={children}
                 position="start"
                 size={size}
             >
-                {startIcon}
+                {startDecorator}
             </IconWrapper>
         )}
         <ButtonContent loading={loading}>{children}</ButtonContent>
-        {endIcon && (
+        {endDecorator && (
             <IconWrapper childrenContent={children} position="end" size={size}>
-                {endIcon}
+                {endDecorator}
             </IconWrapper>
         )}
     </ButtonWrapper>
