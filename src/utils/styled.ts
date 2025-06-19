@@ -9,7 +9,14 @@ import type { SxProps } from "./sxToCss";
 import { sxToCss } from "./sxToCss";
 import { systemToCss } from "./systemToCss";
 
-const blockedProps = ["sx", "as", "theme", ...Object.keys(aliasMaps)];
+const blockedProps = [
+    "sx",
+    "as",
+    "theme",
+    "size",
+    "color",
+    ...Object.keys(aliasMaps),
+];
 
 // don’t forward sx, theme, as, or any of your system-prop keys
 const shouldForwardProp = (prop: string) =>
