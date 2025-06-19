@@ -18,7 +18,7 @@ export type SliderValueLabelDisplay = "off" | "on" | "auto";
 export interface SliderProps
     extends Omit<
         InputHTMLAttributes<HTMLInputElement>,
-        "size" | "step" | "onChange" | "value" | "defaultValue"
+        "size" | "step" | "onChange" | "value" | "defaultValue" | "type"
     > {
     color?: Color | ColorLike;
     size?: Size | number;
