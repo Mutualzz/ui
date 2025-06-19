@@ -15,8 +15,8 @@ export * from "./components/inputs/Button/ButtonGroup";
 export * from "./components/inputs/Checkbox/Checkbox";
 export * from "./components/inputs/Checkbox/CheckboxGroup";
 
-export * from "./components/inputs/RadioButton/RadioButton";
-export * from "./components/inputs/RadioButton/RadioButtonGroup";
+export * from "./components/inputs/Radio/Radio";
+export * from "./components/inputs/Radio/RadioGroup";
 
 export * from "./components/inputs/Slider/Slider";
 

@@ -6,10 +6,10 @@ import {
     resolveIconScaling,
     resolveRadioStyles,
     variantColors,
-} from "./RadioButton.helpers";
-import type { RadioButtonProps } from "./RadioButton.types";
+} from "./Radio.helpers";
+import type { RadioProps } from "./Radiotypes";
 
-const RadioWrapper = styled("label")<RadioButtonProps>(
+const RadioWrapper = styled("label")<RadioProps>(
     ({ disabled, size = "md" }) => ({
         position: "relative",
         display: "inline-flex",
@@ -33,7 +33,7 @@ const HiddenRadio = styled("input")({
     opacity: 0,
 });
 
-const RadioControl = styled("span")<RadioButtonProps>(({
+const RadioControl = styled("span")<RadioProps>(({
     theme,
     color = "primary",
     variant = "plain",
@@ -91,7 +91,7 @@ const IconWrapper = styled("span")<{ size?: Size | number }>(
     }),
 );
 
-export const RadioButton = (
+export const Radio = (
     {
         checked: controlledChecked,
         onChange,
@@ -106,7 +106,7 @@ export const RadioButton = (
         uncheckedIcon,
         rtl,
         ...props
-    }: RadioButtonProps,
+    }: RadioProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
     const [internalChecked, setInternalChecked] = useState(false);

@@ -10,7 +10,7 @@ import {
     type Variant,
 } from "../../../types";
 
-export interface RadioButtonProps
+export interface RadioProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
     checked?: boolean;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -27,7 +27,7 @@ export interface RadioButtonProps
     rtl?: boolean;
 }
 
-export interface RadioButtonGroupProps {
+export interface RadioGroupProps {
     name: string;
     value?: string;
     defaultValue?: string;

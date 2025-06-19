@@ -7,10 +7,7 @@ import {
     isValidElement,
     useState,
 } from "react";
-import {
-    type RadioButtonGroupProps,
-    type RadioButtonProps,
-} from "./RadioButton.types";
+import { type RadioGroupProps, type RadioProps } from "./Radiotypes";
 
 const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
     display: inline-flex;
@@ -21,7 +18,7 @@ const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
             : "& > * + * { margin-top: 0.5rem; }"};
 `;
 
-export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
+export const RadioGroup: FC<RadioGroupProps> = ({
     name,
     value: controlledValue,
     defaultValue,
@@ -41,7 +38,7 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
     };
 
     const items = Children.map(children, (child) => {
-        if (!isValidElement<RadioButtonProps>(child)) return child;
+        if (!isValidElement<RadioProps>(child)) return child;
         return cloneElement(child, {
             name,
             disabled: disabled ?? child.props.disabled,
