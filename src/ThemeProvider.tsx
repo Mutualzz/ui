@@ -25,35 +25,49 @@ export const ThemeProvider = ({
 }: PropsWithChildren & { themes?: Record<string, Theme> }) => {
     const [theme, setTheme] = useState<string | null>(null);
     const [mode, setMode] = useState<"light" | "dark" | "system">("system");
-    const [prefersDark, setPrefersDark] = useState(
-        window.matchMedia("(prefers-color-scheme: dark)").matches,
-    );
+    const [prefersDark, setPrefersDark] = useState<boolean | null>(null);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
+        if (typeof window === "undefined") return;
+
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        const handler = (event: MediaQueryListEvent) => {
-            setPrefersDark(event.matches);
-            if (mode === "system")
-                setTheme(event.matches ? "baseDark" : "baseLight");
+        const updatePrefersDark = () => {
+            const isDark = mediaQuery.matches;
+            setPrefersDark(isDark);
+            if (mode === "system") {
+                setTheme(isDark ? "baseDark" : "baseLight");
+            }
         };
 
-        mediaQuery.addEventListener("change", handler);
-
-        return () => mediaQuery.removeEventListener("change", handler);
-    }, []);
+        updatePrefersDark(); // initialize on mount
+        mediaQuery.addEventListener("change", updatePrefersDark);
+        return () =>
+            mediaQuery.removeEventListener("change", updatePrefersDark);
+    }, [mode]);
 
     const changeMode = (mode: ThemeMode) => {
         setMode(mode);
-        if (mode === "system") setTheme(prefersDark ? "baseDark" : "baseLight");
-        else setTheme(mode === "dark" ? "baseDark" : "baseLight");
+        if (mode === "system" && prefersDark !== null)
+            setTheme(prefersDark ? "baseDark" : "baseLight");
+        else if (mode === "dark") setTheme("baseDark");
+        else setTheme("baseLight");
     };
-
-    const themeObject =
-        themes[theme ? theme : prefersDark ? "baseDark" : "baseLight"];
 
     const changeTheme = (theme: string) => {
         setTheme(theme);
     };
+
+    const finalThemeKey =
+        theme ??
+        (prefersDark != null
+            ? prefersDark
+                ? "baseDark"
+                : "baseLight"
+            : "baseDark");
+
+    const themeObject = themes[finalThemeKey];
 
     const value = useMemo(
         () => ({
@@ -62,8 +76,10 @@ export const ThemeProvider = ({
             mode,
             changeMode,
         }),
-        [theme, mode],
+        [mode, themeObject],
     );
+
+    if (!mounted) return null;
 
     return (
         <ThemeContext.Provider value={value}>
