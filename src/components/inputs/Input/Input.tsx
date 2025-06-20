@@ -54,6 +54,7 @@ export const Input = (
         fullWidth = false,
         error = false,
         disabled = false,
+        type = "text",
         children,
         ...props
     }: InputProps,
@@ -78,6 +79,7 @@ export const Input = (
                 fullWidth={fullWidth}
                 error={error}
                 disabled={disabled}
+                type={type}
                 {...props}
             />
             {endDecorator && (
