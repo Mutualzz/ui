@@ -70,7 +70,7 @@ const IconWrapper = styled("span")<{
 
 export const Button = (
     {
-        variant = "outlined",
+        variant = "solid",
         color = "primary",
         size = "md",
         loading,
