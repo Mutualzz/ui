@@ -15,7 +15,7 @@ export type InputType =
     | "url"
     | "week";
 
-export interface InputProps
+export interface InputBaseProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
     color?: Color | ColorLike;
     variant?: Variant;
@@ -28,4 +28,18 @@ export interface InputProps
     error?: boolean;
 
     type?: InputType;
+}
+
+export interface InputPasswordProps extends Omit<InputBaseProps, "type"> {
+    type?: "password";
+
+    visible?: boolean;
+    iconVisible?: boolean;
+
+    showPasswordIcon?: ReactNode;
+    hidePasswordIcon?: ReactNode;
+
+    onTogglePassword?: () => void;
+    onShowPassword?: () => void;
+    onHidePassword?: () => void;
 }

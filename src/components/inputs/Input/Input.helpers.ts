@@ -1,5 +1,6 @@
-import type { CSSObject, Theme } from "@emotion/react";
+import type { CSSObject } from "@emotion/react";
 import { formatHex8, rgb } from "culori";
+import { useTheme } from "../../../hooks/useTheme";
 import type { Color, ColorLike, Size, Variant } from "../../../types";
 import { darken, isThemeColor, lighten } from "../../../utils";
 import { resolveSize } from "../../../utils/resolveSize";
@@ -19,7 +20,7 @@ export const resolveInputSize = (size: Size | number) => {
     return {
         fontSize: sizeVal,
         lineHeight: 1,
-        padding: `${sizeVal / 2}px ${sizeVal / 2}px`,
+        paddingInline: `${sizeVal / 2}px ${sizeVal / 2}px`,
         minHeight: `${sizeVal + (sizeVal / 2) * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
@@ -27,9 +28,11 @@ export const resolveInputSize = (size: Size | number) => {
 };
 
 export const resolveInputStyles = (
-    { colors }: Theme,
     color: Color | ColorLike,
 ): Record<Variant, CSSObject> => {
+    const {
+        theme: { colors },
+    } = useTheme();
     const isCustomColor = !isThemeColor(color);
     const resolvedColor = isCustomColor ? color : colors[color];
 
