@@ -16,10 +16,8 @@ export const CssBaseline = () => {
 
                 html,
                 body {
-                    height: 100%;
                     margin: 0;
                     padding: 0;
-                    overflow-x: hidden;
 
                     font-family: ${theme.typography.fontFamily};
                     font-size: ${theme.typography.levels["body-md"].fontSize}px;
