@@ -35,6 +35,11 @@ export const InputNumber = ({
             newChar +
             nextValue.slice(selectionEnd);
 
+        if (newChar === "-" && selectionStart !== 0) {
+            input.preventDefault();
+            return;
+        }
+
         // Regex: allows "", "-", "-123", "-123.45", "0.5", "123."
         // Improved regex to avoid super-linear backtracking
         const isValid = /^-?(?:\d+(\.\d*)?|\.\d*)?$/.test(proposedValue);
