@@ -1,5 +1,5 @@
 import type { Theme } from "@emotion/react";
-import { formatHex8, parse, rgb } from "culori";
+import { formatHex8, parse } from "culori";
 import { type Color, type ColorLike } from "../../../types";
 import {
     adjustTextColor,
@@ -20,7 +20,7 @@ export const variantStyles = (
     if (!parsedColor) throw new Error("Invalid color");
 
     const bgLuminance = getLuminance(parsedColor);
-    const textColor = rgb(
+    const textColor = parse(
         bgLuminance < 0.5 ? colors.common.white : colors.common.black,
     );
     if (!textColor) throw new Error("Invalid color");
