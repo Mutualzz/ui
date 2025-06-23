@@ -1,15 +1,10 @@
 import { type CSSObject, type Theme } from "@emotion/react";
 
-import { formatHex8, rgb } from "culori";
+import { formatHex8, parse, rgb } from "culori";
 
 import type { Color, ColorLike, Size, Variant } from "../../../types";
-import {
-    adjustTextColor,
-    alpha,
-    darken,
-    getLuminance,
-    isThemeColor,
-} from "../../../utils";
+import { adjustTextColor, alpha, darken, getLuminance } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 import type { ButtonGroupOrientation } from "./Button.types";
 
@@ -37,15 +32,12 @@ export const resolveButtonStyles = (size: Size | number) => {
 };
 
 export const resolveButtonGroupStyles = (
-    { colors }: Theme,
+    theme: Theme,
     orientation: ButtonGroupOrientation,
     color: Color | ColorLike = "primary",
     variant: Variant = "solid",
 ): CSSObject => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
     const horizontalBorders: Record<Variant, CSSObject> = {
@@ -111,11 +103,10 @@ export const resolveButtonGroupStyles = (
           };
 };
 
-export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
+export const variantColors = (theme: Theme, color: Color | ColorLike) => {
+    const { colors } = theme;
 
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
     const bgLuminance = getLuminance(parsedColor);

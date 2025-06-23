@@ -14,6 +14,7 @@ export const InputRoot = styled("div")<{ fullWidth: boolean }>(
 
 export const InputBase = styled("input")<InputBaseProps>(
     ({
+        theme,
         color = "neutral",
         size,
         variant = "outlined",
@@ -21,7 +22,7 @@ export const InputBase = styled("input")<InputBaseProps>(
         disabled,
     }) => ({
         ...resolveInputSize(size as Size | number),
-        ...resolveInputStyles(color)[variant],
+        ...resolveInputStyles(theme, color)[variant],
         ...(fullWidth && { width: "100%" }),
         ...(disabled && {
             opacity: 0.5,

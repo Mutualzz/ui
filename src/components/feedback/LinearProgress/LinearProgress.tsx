@@ -1,9 +1,8 @@
 import { useTheme } from "../../../hooks/useTheme";
 
-import { formatHex8 } from "culori";
 import { type FC } from "react";
 import type { Variant } from "../../../types";
-import { isThemeColor } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 import styled from "../../../utils/styled";
 import {
     resolveLength,
@@ -91,26 +90,23 @@ export const LinearProgress: FC<LinearProgressProps> = ({
 
     const background = variantColors(theme, color)[variant];
 
-    const barColor = isThemeColor(color)
-        ? formatHex8(theme.colors[color])!
-        : formatHex8(color)!;
-
-    const outlinedColor = isThemeColor(color)
-        ? formatHex8(theme.colors[color])!
-        : formatHex8(color)!;
+    const sharedColor = resolveColor(color, theme);
 
     return (
         <ProgressWrapper
             width={width}
             height={height}
             background={background}
-            outlinedColor={outlinedColor}
+            outlinedColor={sharedColor}
             variant={variant}
         >
             {determinate ? (
-                <DeterminateBar barColor={barColor} value={value} />
+                <DeterminateBar barColor={sharedColor} value={value} />
             ) : (
-                <IndeterminateBar barColor={barColor} animation={animation} />
+                <IndeterminateBar
+                    barColor={sharedColor}
+                    animation={animation}
+                />
             )}
         </ProgressWrapper>
     );

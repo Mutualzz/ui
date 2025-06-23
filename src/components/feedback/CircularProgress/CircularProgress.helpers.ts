@@ -2,7 +2,7 @@ import type { Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
 import type { Color, ColorLike, Size } from "../../../types";
 import { alpha } from "../../../utils/alpha";
-import { isThemeColor } from "../../../utils/isThemeColor";
+import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 16,
@@ -11,11 +11,8 @@ const minSize = 16,
 const minSizeThickness = 1,
     maxSizeThickness = 10;
 
-export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = parse(resolvedColor);
+export const variantColors = (theme: Theme, color: Color | ColorLike) => {
+    const parsedColor = parse(resolveColor(color, theme));
 
     if (!parsedColor)
         return {

@@ -1,16 +1,10 @@
 import type { Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
 import type { Color, ColorLike } from "../../../types";
-import { isThemeColor } from "../../../utils/isThemeColor";
+import { resolveColor } from "../../../utils/resolveColor";
 
-export const resolveDividerColor = (
-    { colors }: Theme,
-    color: Color | ColorLike,
-) => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = parse(resolvedColor);
+export const resolveDividerColor = (theme: Theme, color: Color | ColorLike) => {
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
     return formatHex8(parsedColor);

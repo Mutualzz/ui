@@ -1,13 +1,9 @@
 import { type Theme } from "@emotion/react";
 
-import { formatHex8, rgb } from "culori";
+import { formatHex8, parse, rgb } from "culori";
 import { type Color, type ColorLike, type Size } from "../../../types";
-import {
-    adjustTextColor,
-    alpha,
-    getLuminance,
-    isThemeColor,
-} from "../../../utils";
+import { adjustTextColor, alpha, getLuminance } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 10,
@@ -30,15 +26,16 @@ export const resolveCheckboxStyles = (size: Size | number) => {
 };
 
 export const variantColors = (
-    { colors }: Theme,
+    theme: Theme,
     color: Color | ColorLike,
     checked?: boolean,
 ) => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
+    const { colors } = theme;
 
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
+
+    const resolvedColor = formatHex8(parsedColor);
 
     const bgLuminance = getLuminance(parsedColor);
     const textColor = rgb(

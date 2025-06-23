@@ -1,15 +1,15 @@
-import type { Rgb } from "culori";
+import type { Color } from "culori";
 import { adjustLightness } from "./adjustLightness";
 import { getContrastRatio } from "./getContrastRatio";
 import { getLuminance } from "./getLuminance";
 
 export const adjustTextColor = (
-    background: Rgb,
-    textColor: Rgb,
+    background: Color,
+    textColor: Color,
     targetRatio = 4.5,
     maxIterations = 10,
     adjustmentStep = 0.05,
-): Rgb => {
+): Color => {
     let contrast = getContrastRatio(background, textColor);
     if (contrast >= targetRatio) return textColor;
 

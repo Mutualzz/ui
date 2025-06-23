@@ -1,6 +1,6 @@
-import { oklch, rgb, type Rgb } from "culori";
+import { type Color, oklch, rgb } from "culori";
 
-export const adjustLightness = (color: Rgb, amount: number): Rgb => {
+export const adjustLightness = (color: Color, amount: number) => {
     const oklchColor = oklch(color);
 
     const newLightness = Math.min(Math.max(oklchColor.l + amount, 0), 1);

@@ -13,7 +13,7 @@ export const Typography = styled("span")<TypographyProps>(
     }) => ({
         ...theme.typography.levels[level],
         padding: 8,
-        fontWeight: weight,
         ...variantStyles(theme, color)[variant],
+        fontWeight: weight,
     }),
 );

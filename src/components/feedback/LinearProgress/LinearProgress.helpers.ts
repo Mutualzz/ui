@@ -1,9 +1,9 @@
 import type { Theme } from "@emotion/react";
 import type { Color, ColorLike, Size } from "../../../types";
-import { isThemeColor } from "../../../utils/isThemeColor";
 
 import { formatHex8, parse } from "culori";
 import { alpha } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 
 const minLength = 80,
@@ -11,11 +11,8 @@ const minLength = 80,
 const minThickness = 4,
     maxThickness = 16;
 
-export const variantColors = ({ colors }: Theme, color: Color | ColorLike) => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = parse(resolvedColor);
+export const variantColors = (theme: Theme, color: Color | ColorLike) => {
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor)
         return {
             plain: "transparent",

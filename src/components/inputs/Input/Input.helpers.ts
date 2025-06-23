@@ -1,8 +1,8 @@
-import type { CSSObject } from "@emotion/react";
-import { formatHex8, rgb } from "culori";
-import { useTheme } from "../../../hooks/useTheme";
+import type { CSSObject, Theme } from "@emotion/react";
+import { formatHex8, parse } from "culori";
 import type { Color, ColorLike, Size, Variant } from "../../../types";
-import { darken, isThemeColor, lighten } from "../../../utils";
+import { darken, lighten } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 6,
@@ -28,15 +28,10 @@ export const resolveInputSize = (size: Size | number) => {
 };
 
 export const resolveInputStyles = (
+    theme: Theme,
     color: Color | ColorLike,
 ): Record<Variant, CSSObject> => {
-    const {
-        theme: { colors },
-    } = useTheme();
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
     return {

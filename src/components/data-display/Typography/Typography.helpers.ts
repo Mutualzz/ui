@@ -1,21 +1,17 @@
 import type { Theme } from "@emotion/react";
-import { formatHex8, rgb } from "culori";
+import { formatHex8, parse } from "culori";
 import { type Color, type ColorLike } from "../../../types";
-import {
-    adjustTextColor,
-    alpha,
-    getLuminance,
-    isThemeColor,
-} from "../../../utils";
+import { adjustTextColor, alpha, getLuminance } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 
-export const variantStyles = ({ colors }: Theme, color: Color | ColorLike) => {
-    const resolvedColor = isThemeColor(color) ? colors[color] : color;
+export const variantStyles = (theme: Theme, color: Color | ColorLike) => {
+    const { colors } = theme;
 
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
     const bgLuminance = getLuminance(parsedColor);
-    const textColor = rgb(
+    const textColor = parse(
         bgLuminance < 0.5 ? colors.common.white : colors.common.black,
     );
     if (!textColor) throw new Error("Invalid color");

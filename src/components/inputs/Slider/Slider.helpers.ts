@@ -1,7 +1,8 @@
 import type { CSSObject, Theme } from "@emotion/react";
-import { formatHex8, rgb } from "culori";
+import { formatHex8, parse } from "culori";
 import type { Color, ColorLike, Size, Variant } from "../../../types";
-import { alpha, isThemeColor, lighten } from "../../../utils";
+import { alpha, lighten } from "../../../utils";
+import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 
 const minThumbSize = 10,
@@ -67,14 +68,11 @@ export const resolveSliderLabelSize = (theme: Theme, size: Size | number) => {
 };
 
 export const resolveSliderTrackStyles = (
-    { colors }: Theme,
+    theme: Theme,
     color: Color | ColorLike,
     hovered: boolean,
 ): Record<Variant, CSSObject> => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
-
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error(`Invalid color: ${color}`);
 
     return {
@@ -105,14 +103,13 @@ export const resolveSliderTrackStyles = (
 };
 
 export const resolveSliderThumbStyles = (
-    { colors }: Theme,
+    theme: Theme,
     color: Color | ColorLike,
     hovered: boolean,
 ): Record<Variant, CSSObject> => {
-    const isCustomColor = !isThemeColor(color);
-    const resolvedColor = isCustomColor ? color : colors[color];
+    const { colors } = theme;
 
-    const parsedColor = rgb(resolvedColor);
+    const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error(`Invalid color: ${color}`);
 
     return {
