@@ -33,7 +33,7 @@ const EyeClosedIcon = () => (
     </svg>
 );
 
-export const PasswordInput = (
+export const InputPassword = (
     {
         color = "neutral",
         variant = "outlined",

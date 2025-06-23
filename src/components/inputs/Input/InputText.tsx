@@ -2,7 +2,7 @@ import type { Ref } from "react";
 import type { InputBaseProps } from "./Input.types";
 import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 
-export const TextInput = (
+export const InputText = (
     {
         color = "neutral",
         variant = "outlined",

@@ -31,6 +31,14 @@ export const InputBase = styled("input")<InputBaseProps>(
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
+
+        "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+            WebkitAppearance: "none",
+            margin: 0,
+        },
+        "&[type='number']": {
+            MozAppearance: "textfield",
+        },
     }),
 );
 

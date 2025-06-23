@@ -43,3 +43,10 @@ export interface InputPasswordProps extends Omit<InputBaseProps, "type"> {
     onShowPassword?: () => void;
     onHidePassword?: () => void;
 }
+
+export interface InputNumberProps extends Omit<InputBaseProps, "type"> {
+    type?: "number";
+
+    onIncrement?: () => void;
+    onDecrement?: () => void;
+}

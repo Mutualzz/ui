@@ -1,12 +1,21 @@
-import type { InputBaseProps, InputPasswordProps } from "./Input.types";
-import { PasswordInput } from "./InputPassword";
-import { TextInput } from "./InputText";
+import type {
+    InputBaseProps,
+    InputNumberProps,
+    InputPasswordProps,
+} from "./Input.types";
+import { InputNumber } from "./InputNumber";
+import { InputPassword } from "./InputPassword";
+import { InputText } from "./InputText";
 
-export const Input = (props: InputBaseProps | InputPasswordProps) => {
+export const Input = (
+    props: InputBaseProps | InputPasswordProps | InputNumberProps,
+) => {
     switch (props.type) {
+        case "number":
+            return <InputNumber {...(props as InputNumberProps)} />;
         case "password":
-            return <PasswordInput {...(props as InputPasswordProps)} />;
+            return <InputPassword {...(props as InputPasswordProps)} />;
         default:
-            return <TextInput {...(props as InputBaseProps)} />;
+            return <InputText {...(props as InputBaseProps)} />;
     }
 };
