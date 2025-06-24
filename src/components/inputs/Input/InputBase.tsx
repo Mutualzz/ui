@@ -17,15 +17,18 @@ export const InputRoot = styled("div")<InputBaseProps>(
         ...(disabled && {
             opacity: 0.5,
         }),
-        width: fullWidth ? "100%" : "auto",
 
         display: "flex",
         alignItems: "center",
-        borderRadius: 8,
-        paddingInline: "0.5em",
-        gap: "0.375em",
+        width: fullWidth ? "100%" : "auto",
         minHeight: "2.25em",
+        paddingInline: "0.5em", // here is your layout spacing
+        gap: "0.375em",
+        borderRadius: 8,
         boxSizing: "border-box",
+        flexGrow: fullWidth ? 1 : undefined,
+        flexShrink: 1,
+        minWidth: 0,
     }),
 );
 
@@ -44,13 +47,13 @@ export const DecoratorWrapper = styled("div")<{
 
 export const InputBase = styled("input")({
     flex: 1,
+    minWidth: 0,
     border: "none",
     outline: "none",
     background: "transparent",
     color: "inherit",
     font: "inherit",
     padding: 0,
-    minWidth: 0,
 
     "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
         WebkitAppearance: "none",

@@ -20,7 +20,6 @@ export const resolveInputSize = (size: Size | number) => {
     return {
         fontSize: sizeVal,
         lineHeight: 1,
-        paddingInline: `${sizeVal / 2}px ${sizeVal / 2}px`,
         minHeight: `${sizeVal + (sizeVal / 2) * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
