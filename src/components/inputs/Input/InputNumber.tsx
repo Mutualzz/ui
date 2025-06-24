@@ -19,9 +19,6 @@ export const InputNumber = ({
 }: InputNumberProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const hasStart = !!startDecorator;
-    const hasEnd = !!endDecorator;
-
     const handleBeforeInput = (e: FormEvent<HTMLInputElement>) => {
         const input = e as unknown as InputEvent;
         const nextValue = inputRef.current?.value ?? "";
@@ -55,30 +52,31 @@ export const InputNumber = ({
     };
 
     return (
-        <InputRoot fullWidth={fullWidth}>
-            {hasStart && (
-                <DecoratorWrapper position="start" size={size}>
+        <InputRoot
+            color={color}
+            variant={variant}
+            size={size as number}
+            fullWidth={fullWidth}
+            error={error}
+            disabled={disabled}
+        >
+            {startDecorator && (
+                <DecoratorWrapper size={size}>
                     {startDecorator}
                 </DecoratorWrapper>
             )}
+
             <InputBase
                 ref={inputRef}
-                color={color}
-                variant={variant}
-                size={size as number}
-                fullWidth={fullWidth}
-                error={error}
-                disabled={disabled}
                 {...props}
                 type="text"
                 inputMode="decimal"
                 onChange={handleChange}
                 onBeforeInput={handleBeforeInput as any}
             />
-            {hasEnd && (
-                <DecoratorWrapper position="end" size={size}>
-                    {endDecorator}
-                </DecoratorWrapper>
+
+            {endDecorator && (
+                <DecoratorWrapper size={size}>{endDecorator}</DecoratorWrapper>
             )}
         </InputRoot>
     );

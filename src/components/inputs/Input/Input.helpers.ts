@@ -27,6 +27,21 @@ export const resolveInputSize = (size: Size | number) => {
     };
 };
 
+export const resolvePasswordIconColor = (
+    theme: Theme,
+    color: Color | ColorLike,
+): Record<Variant, string> => {
+    const parsedColor = parse(resolveColor(color, theme));
+    if (!parsedColor) throw new Error("Invalid color");
+
+    return {
+        outlined: formatHex8(parsedColor),
+        solid: formatHex8(lighten(parsedColor, 1)),
+        plain: formatHex8(parsedColor),
+        soft: formatHex8(lighten(parsedColor, 0.25)),
+    };
+};
+
 export const resolveInputStyles = (
     theme: Theme,
     color: Color | ColorLike,

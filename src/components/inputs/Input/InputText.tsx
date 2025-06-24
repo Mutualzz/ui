@@ -18,31 +18,25 @@ export const InputText = (
     }: InputBaseProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
-    const hasStart = !!startDecorator;
-    const hasEnd = !!endDecorator;
-
     return (
-        <InputRoot fullWidth={fullWidth}>
-            {hasStart && (
-                <DecoratorWrapper position="start" size={size}>
+        <InputRoot
+            color={color}
+            variant={variant}
+            size={size as number}
+            fullWidth={fullWidth}
+            error={error}
+            disabled={disabled}
+        >
+            {startDecorator && (
+                <DecoratorWrapper size={size}>
                     {startDecorator}
                 </DecoratorWrapper>
             )}
-            <InputBase
-                ref={ref}
-                color={color}
-                variant={variant}
-                size={size as number}
-                fullWidth={fullWidth}
-                error={error}
-                disabled={disabled}
-                type={type}
-                {...props}
-            />
-            {hasEnd && (
-                <DecoratorWrapper position="end" size={size}>
-                    {endDecorator}
-                </DecoratorWrapper>
+
+            <InputBase ref={ref} type={type} {...props} />
+
+            {endDecorator && (
+                <DecoratorWrapper size={size}>{endDecorator}</DecoratorWrapper>
             )}
         </InputRoot>
     );

@@ -3,57 +3,60 @@ import styled from "../../../utils/styled";
 import { resolveInputSize, resolveInputStyles } from "./Input.helpers";
 import type { InputBaseProps } from "./Input.types";
 
-export const InputRoot = styled("div")<{ fullWidth: boolean }>(
-    ({ fullWidth }) => ({
-        position: "relative",
-        display: "flex",
-        alignItems: "center",
-        width: fullWidth ? "100%" : "auto",
-    }),
-);
-
-export const InputBase = styled("input")<InputBaseProps>(
+export const InputRoot = styled("div")<InputBaseProps>(
     ({
         theme,
         color = "neutral",
-        size,
+        size = "md",
         variant = "outlined",
         fullWidth,
         disabled,
     }) => ({
-        ...resolveInputSize(size as Size | number),
+        ...resolveInputSize(size),
         ...resolveInputStyles(theme, color)[variant],
-        ...(fullWidth && { width: "100%" }),
         ...(disabled && {
             opacity: 0.5,
         }),
+        width: fullWidth ? "100%" : "auto",
 
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-
-        "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
-            WebkitAppearance: "none",
-            margin: 0,
-        },
-        "&[type='number']": {
-            MozAppearance: "textfield",
-        },
+        display: "flex",
+        alignItems: "center",
+        borderRadius: 8,
+        paddingInline: "0.5em",
+        gap: "0.375em",
+        minHeight: "2.25em",
+        boxSizing: "border-box",
     }),
 );
 
 export const DecoratorWrapper = styled("div")<{
-    position: "start" | "end";
     size: Size | number;
-}>(({ position, size }) => ({
-    position: "absolute",
-    top: "50%",
-    transform: "translateY(-50%)",
-    left: position === "start" ? "0.25em" : undefined,
-    right: position === "end" ? "0.25em" : undefined,
+}>(({ size }) => ({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 1,
+    minWidth: "2em",
+    fontSize: size === "sm" ? "0.875rem" : size === "md" ? "1rem" : "1.125rem",
     width: size === "sm" ? "1.5em" : size === "md" ? "2em" : "2.5em",
+    flexShrink: 0,
+    color: "inherit",
 }));
+
+export const InputBase = styled("input")({
+    flex: 1,
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    color: "inherit",
+    font: "inherit",
+    padding: 0,
+    minWidth: 0,
+
+    "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+        WebkitAppearance: "none",
+        margin: 0,
+    },
+    "&[type='number']": {
+        MozAppearance: "textfield",
+    },
+});
