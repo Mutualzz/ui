@@ -94,5 +94,13 @@ export function parseBlocks(input: string): BlockToken[] {
         });
     }
 
+    if (inCode && codeBuffer.length > 0) {
+        blocks.push({
+            type: "codeBlock",
+            content: codeBuffer.join("\n"),
+            language: currentLang,
+        });
+    }
+
     return blocks;
 }
