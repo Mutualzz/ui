@@ -3,8 +3,14 @@ import { variantStyles } from "./Paper.helpers";
 import { type PaperProps } from "./Paper.types";
 
 export const Paper = styled("div")<PaperProps>(
-    ({ theme, variant = "elevation", elevation = 0, color = "neutral" }) => ({
-        display: "flex",
+    ({
+        theme,
+        display,
+        variant = "elevation",
+        elevation = 0,
+        color = "neutral",
+    }) => ({
+        ...(!display && { display: "flex" }),
         transition: "background-color 0.2s ease",
         ...variantStyles(theme, color, elevation)[variant],
     }),
