@@ -43,5 +43,11 @@
         "prepublishOnly": "npm run build"
     },
     "types": "dist/index.d.ts",
-    "version": "2.3.9"
+    "version": "2.3.9",
+    "dependencies": {
+        "emoji-regex": "^10.4.0",
+        "emojibase": "^16.0.0",
+        "emojibase-data": "^16.0.3",
+        "shiki": "^3.7.0"
+    }
 }
