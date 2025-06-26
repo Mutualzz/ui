@@ -44,8 +44,15 @@ export interface InputPasswordProps extends Omit<InputBaseProps, "type"> {
     onHidePassword?: () => void;
 }
 
-export interface InputNumberProps extends Omit<InputBaseProps, "type"> {
+export interface InputNumberProps
+    extends Omit<InputBaseProps, "type" | "value"> {
     type?: "number";
+
+    step?: number;
+    min?: number;
+    max?: number;
+
+    value?: string;
 
     onIncrement?: () => void;
     onDecrement?: () => void;
