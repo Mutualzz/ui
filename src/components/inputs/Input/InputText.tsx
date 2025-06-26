@@ -28,15 +28,13 @@ export const InputText = (
             disabled={disabled}
         >
             {startDecorator && (
-                <DecoratorWrapper size={size}>
-                    {startDecorator}
-                </DecoratorWrapper>
+                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
 
             <InputBase ref={ref} type={type} {...props} />
 
             {endDecorator && (
-                <DecoratorWrapper size={size}>{endDecorator}</DecoratorWrapper>
+                <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
             )}
         </InputRoot>
     );

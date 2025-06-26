@@ -1,4 +1,3 @@
-import type { Size } from "../../../types";
 import styled from "../../../utils/styled";
 import { resolveInputSize, resolveInputStyles } from "./Input.helpers";
 import type { InputBaseProps } from "./Input.types";
@@ -14,40 +13,43 @@ export const InputRoot = styled("div")<InputBaseProps>(
     }) => ({
         ...resolveInputSize(size),
         ...resolveInputStyles(theme, color)[variant],
-        ...(disabled && {
-            opacity: 0.5,
-        }),
+        ...(disabled && { opacity: 0.5 }),
 
         display: "flex",
         alignItems: "center",
+
         width: fullWidth ? "100%" : "auto",
-        minHeight: "2.25em",
-        paddingInline: "0.5em", // here is your layout spacing
+        maxWidth: "100%",
+        minWidth: 0,
+        flexShrink: 1,
+        flexGrow: fullWidth ? 1 : 0,
+        boxSizing: "border-box",
+        overflow: "hidden",
+
+        paddingInline: "0.5em",
         gap: "0.375em",
         borderRadius: 8,
-        boxSizing: "border-box",
-        flexGrow: fullWidth ? 1 : undefined,
-        flexShrink: 1,
-        minWidth: 0,
     }),
 );
 
-export const DecoratorWrapper = styled("div")<{
-    size: Size | number;
-}>(({ size }) => ({
+export const DecoratorWrapper = styled("div")({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    minWidth: "2em",
-    fontSize: size === "sm" ? "0.875rem" : size === "md" ? "1rem" : "1.125rem",
-    width: size === "sm" ? "1.5em" : size === "md" ? "2em" : "2.5em",
+
     flexShrink: 0,
-    color: "inherit",
-}));
+    overflow: "hidden",
+    minWidth: 0,
+    maxWidth: "25%",
+
+    position: "relative",
+    zIndex: 1,
+});
 
 export const InputBase = styled("input")({
     flex: 1,
     minWidth: 0,
+    width: "100%",
     border: "none",
     outline: "none",
     background: "transparent",

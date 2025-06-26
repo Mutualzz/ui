@@ -55,9 +55,7 @@ export const InputPassword = (
             disabled={disabled}
         >
             {startDecorator && (
-                <DecoratorWrapper size={size}>
-                    {startDecorator}
-                </DecoratorWrapper>
+                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
             <InputBase
                 {...props}
@@ -66,18 +64,29 @@ export const InputPassword = (
             />
 
             {endDecorator ? (
-                <DecoratorWrapper size={size}>{endDecorator}</DecoratorWrapper>
+                <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
             ) : showToggleIcon ? (
                 <DecoratorWrapper
-                    size={size}
                     onClick={togglePassword}
                     css={{ cursor: "pointer", userSelect: "none" }}
                 >
                     {passwordVisible
                         ? (hidePasswordIcon ?? (
                               <svg
-                                  width="50%"
-                                  height="50%"
+                                  width={
+                                      size === "sm"
+                                          ? 14
+                                          : size === "md"
+                                            ? 16
+                                            : 20
+                                  }
+                                  height={
+                                      size === "sm"
+                                          ? 14
+                                          : size === "md"
+                                            ? 16
+                                            : 20
+                                  }
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   strokeWidth={2}
@@ -91,8 +100,20 @@ export const InputPassword = (
                           ))
                         : (showPasswordIcon ?? (
                               <svg
-                                  width="50%"
-                                  height="50%"
+                                  width={
+                                      size === "sm"
+                                          ? 14
+                                          : size === "md"
+                                            ? 16
+                                            : 20
+                                  }
+                                  height={
+                                      size === "sm"
+                                          ? 14
+                                          : size === "md"
+                                            ? 16
+                                            : 20
+                                  }
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   stroke={strokeColor}

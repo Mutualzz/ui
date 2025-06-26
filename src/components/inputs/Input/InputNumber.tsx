@@ -37,8 +37,6 @@ export const InputNumber = ({
             return;
         }
 
-        // Regex: allows "", "-", "-123", "-123.45", "0.5", "123."
-        // Improved regex to avoid super-linear backtracking
         const isValid = /^-?(?:\d+(\.\d*)?|\.\d*)?$/.test(proposedValue);
 
         if (!isValid) input.preventDefault(); // blocks invalid char
@@ -61,9 +59,7 @@ export const InputNumber = ({
             disabled={disabled}
         >
             {startDecorator && (
-                <DecoratorWrapper size={size}>
-                    {startDecorator}
-                </DecoratorWrapper>
+                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
 
             <InputBase
@@ -76,7 +72,7 @@ export const InputNumber = ({
             />
 
             {endDecorator && (
-                <DecoratorWrapper size={size}>{endDecorator}</DecoratorWrapper>
+                <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
             )}
         </InputRoot>
     );
