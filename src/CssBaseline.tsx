@@ -11,7 +11,6 @@ export const CssBaseline = () => {
                 *::before,
                 *::after {
                     box-sizing: border-box;
-                    font-family: ${theme.typography.fontFamily};
                 }
 
                 html,
@@ -40,6 +39,13 @@ export const CssBaseline = () => {
                     max-width: 100%;
                     height: auto;
                     display: block;
+                }
+
+                button,
+                input,
+                textarea,
+                select {
+                    font-family: inherit;
                 }
             `}
         />
