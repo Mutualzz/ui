@@ -17,10 +17,5 @@
         "baseUrl": "src",
         "rootDir": "src"
     },
-    "include": [
-        "src/**/*",
-        "../components/Markdown",
-        "../types/slate.d.ts",
-        "../utils/emojis.ts"
-    ]
+    "include": ["src/**/*"]
 }
