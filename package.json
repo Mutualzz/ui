@@ -55,5 +55,5 @@
         "prepublishOnly": "npm run build"
     },
     "types": "dist/index.d.ts",
-    "version": "2.4.0"
+    "version": "2.4.1"
 }
