@@ -20,7 +20,7 @@ export const baseLightTheme: Theme = {
 
     typography: {
         levels: { ...typographyLevels },
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "Inter, system-ui, sans-serif",
         colors: {
             primary: "#333333",
             secondary: "#555555",

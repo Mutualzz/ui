@@ -21,7 +21,7 @@ export const baseDarkTheme: Theme = {
 
     typography: {
         levels: { ...typographyLevels },
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "Inter, system-ui, sans-serif",
         colors: {
             primary: "#E8E8E8",
             secondary: "#B5B5B5",
