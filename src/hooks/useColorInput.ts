@@ -69,7 +69,7 @@ export const useColorInput = <T = ColorLike>(
         setInputValue(color);
         const parsed = parse(color);
         if (parsed) {
-            setColor(formatHex8(parsed));
+            setColor(alpha === 100 ? formatHex(parsed) : formatHex8(parsed));
             setIsInvalid(false);
         } else {
             setIsInvalid(true);
