@@ -1,8 +1,17 @@
 import type { CSSObject, Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
-import type { Color, ColorLike, Size, Variant } from "../../../types";
+import type {
+    Color,
+    ColorLike,
+    Size,
+    TypographyColor,
+    Variant,
+} from "../../../types";
 import { darken, lighten } from "../../../utils";
-import { resolveColor } from "../../../utils/resolveColor";
+import {
+    resolveColor,
+    resolveTypographyColor,
+} from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 
 const minSize = 6,
@@ -44,14 +53,21 @@ export const resolvePasswordIconColor = (
 export const resolveInputStyles = (
     theme: Theme,
     color: Color | ColorLike,
+    textColor: TypographyColor | "inherit",
 ): Record<Variant, CSSObject> => {
     const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
+    const parsedTextColor =
+        textColor === "inherit"
+            ? parsedColor
+            : parse(resolveTypographyColor(textColor, theme));
+    if (!parsedTextColor) throw new Error("Invalid text color");
+
     return {
         outlined: {
             background: "transparent",
-            color: formatHex8(lighten(parsedColor, 0.5)),
+            color: formatHex8(lighten(parsedTextColor, 0.5)),
             border: `1px solid ${formatHex8(parsedColor)}`,
             borderRadius: 8,
             ":focus": {
@@ -60,7 +76,7 @@ export const resolveInputStyles = (
         },
         solid: {
             background: formatHex8(parsedColor),
-            color: formatHex8(lighten(parsedColor, 0.75)),
+            color: formatHex8(lighten(parsedTextColor, 0.75)),
             border: "none",
             borderRadius: 8,
             ":focus": {
@@ -69,7 +85,7 @@ export const resolveInputStyles = (
         },
         plain: {
             background: "transparent",
-            color: formatHex8(lighten(parsedColor, 0.25)),
+            color: formatHex8(lighten(parsedTextColor, 0.25)),
             border: "none",
             borderRadius: 8,
             ":focus": {
@@ -78,7 +94,7 @@ export const resolveInputStyles = (
         },
         soft: {
             background: formatHex8(darken(parsedColor, 0.5)),
-            color: formatHex8(lighten(parsedColor, 0.5)),
+            color: formatHex8(lighten(parsedTextColor, 0.5)),
             border: "none",
             borderRadius: 8,
             ":focus": {

@@ -5,6 +5,7 @@ import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 export const InputText = (
     {
         color = "neutral",
+        textColor = "inherit",
         variant = "outlined",
         size = "md",
         startDecorator,
@@ -21,6 +22,7 @@ export const InputText = (
     return (
         <InputRoot
             color={color}
+            textColor={textColor}
             variant={variant}
             size={size as number}
             fullWidth={fullWidth}

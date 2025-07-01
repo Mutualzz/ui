@@ -7,6 +7,7 @@ import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 export const InputPassword = (
     {
         color = "neutral",
+        textColor = "inherit",
         variant = "outlined",
         size = "md",
         startDecorator,
@@ -48,6 +49,7 @@ export const InputPassword = (
     return (
         <InputRoot
             color={color}
+            textColor={textColor}
             variant={variant}
             size={size}
             fullWidth={fullWidth}

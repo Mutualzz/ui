@@ -1,5 +1,11 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import type { Color, ColorLike, Size, Variant } from "../../../types";
+import type {
+    Color,
+    ColorLike,
+    Size,
+    TypographyColor,
+    Variant,
+} from "../../../types";
 
 export type InputType =
     | "date"
@@ -18,6 +24,7 @@ export type InputType =
 export interface InputBaseProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
     color?: Color | ColorLike;
+    textColor?: TypographyColor | "inherit";
     variant?: Variant;
     size?: Size | number;
 
