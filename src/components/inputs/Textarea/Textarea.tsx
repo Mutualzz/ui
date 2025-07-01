@@ -7,12 +7,13 @@ const TextareaRoot = styled("div")<TextareaProps>(
     ({
         theme,
         color = "neutral",
+        textColor = "inherit",
         size = "md",
         variant = "outlined",
         disabled,
     }) => ({
         ...resolveTextareaSize(size),
-        ...resolveTextareaStyles(theme, color)[variant],
+        ...resolveTextareaStyles(theme, color, textColor)[variant],
         ...(disabled && {
             opacity: 0.5,
         }),
@@ -46,6 +47,7 @@ const TextareaInput = styled("textarea")<{
 
 export const Textarea = ({
     color = "neutral",
+    textColor = "inherit",
     variant = "outlined",
     size = "md",
     disabled = false,
@@ -94,6 +96,7 @@ export const Textarea = ({
     return (
         <TextareaRoot
             color={color}
+            textColor={textColor}
             variant={variant}
             size={size}
             disabled={disabled}
