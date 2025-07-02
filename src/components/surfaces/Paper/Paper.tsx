@@ -9,9 +9,10 @@ export const Paper = styled("div")<PaperProps>(
         variant = "elevation",
         elevation = 0,
         color = "neutral",
+        textColor = "inherit",
     }) => ({
         ...(!display && { display: "flex" }),
         transition: "background-color 0.2s ease",
-        ...variantStyles(theme, color, elevation)[variant],
+        ...variantStyles(theme, color, textColor, elevation)[variant],
     }),
 );
