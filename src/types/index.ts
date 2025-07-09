@@ -1,5 +1,4 @@
 import type { HTMLAttributes } from "react";
-import type { BundledLanguage } from "shiki";
 import type { BorderProps } from "./Border.props";
 import type { DisplayProps } from "./Display.props";
 import type { FlexboxProps } from "./Flexbox.props";
@@ -134,16 +133,3 @@ export interface EmojiSuggestion {
     shortcode: string;
     emoji: string;
 }
-
-export type InlineToken =
-    | { type: "text"; content: string }
-    | { type: "bold" | "italic" | "strike" | "spoiler"; content: InlineToken[] }
-    | { type: "inlineCode"; content: string }
-    | { type: "emoji"; name: string }
-    | { type: "link"; label: string; href: string };
-
-export type BlockToken =
-    | { type: "paragraph"; content: InlineToken[] }
-    | { type: "heading"; level: number; content: InlineToken[] }
-    | { type: "blockquote"; content: BlockToken[] }
-    | { type: "codeBlock"; content: string; language?: BundledLanguage };
