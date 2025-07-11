@@ -1,6 +1,8 @@
 import type { Color, ColorLike, TypographyColor } from "../types";
 
-export const isThemeColor = (color: Color | ColorLike): color is Color => {
+export const isThemeColor = (
+    color: Color | ColorLike | TypographyColor,
+): color is Color => {
     return (
         typeof color === "string" &&
         ["primary", "neutral", "success", "danger", "warning", "info"].includes(
@@ -10,7 +12,7 @@ export const isThemeColor = (color: Color | ColorLike): color is Color => {
 };
 
 export const isTypographyColor = (
-    color: TypographyColor | ColorLike,
+    color: Color | TypographyColor | ColorLike,
 ): color is TypographyColor => {
     return (
         typeof color === "string" &&
