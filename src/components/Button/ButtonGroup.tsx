@@ -13,17 +13,39 @@ const ButtonGroupRoot = styled("div")<{
     spacing: number;
     color?: Color | ColorLike;
     variant?: Variant;
-}>(({ theme, color, variant, orientation, spacing }) => ({
-    display: "inline-flex",
-    flexWrap: "wrap",
-    flexDirection: orientation === "vertical" ? "column" : "row",
-    alignItems: "stretch",
-    ...(spacing > 0 && { gap: spacing }),
+    separatorColor?: Color | ColorLike;
+    disabled?: boolean;
+}>(
+    ({
+        theme,
+        color,
+        variant,
+        orientation,
+        spacing,
+        separatorColor,
+        disabled,
+    }) => ({
+        display: "inline-flex",
+        flexWrap: "wrap",
+        flexDirection: orientation === "vertical" ? "column" : "row",
+        alignItems: "stretch",
+        ...(spacing > 0 && { gap: spacing }),
+        ...(disabled && {
+            pointerEvents: "none",
+            opacity: 0.5,
+        }),
 
-    "& > button": spacing === 0 && {
-        ...resolveButtonGroupStyles(theme, orientation, color, variant),
-    },
-}));
+        "& > button": spacing === 0 && {
+            ...resolveButtonGroupStyles(
+                theme,
+                orientation,
+                color,
+                variant,
+                separatorColor,
+            ),
+        },
+    }),
+);
 
 export const ButtonGroup = ({
     orientation = "horizontal",
@@ -33,6 +55,7 @@ export const ButtonGroup = ({
     variant,
     disabled,
     loading,
+    separatorColor,
     children,
 }: ButtonGroupProps) => {
     const items = Children.map(children, (child) => {
@@ -53,6 +76,7 @@ export const ButtonGroup = ({
             orientation={orientation}
             color={color}
             variant={variant}
+            separatorColor={separatorColor}
         >
             {items}
         </ButtonGroupRoot>

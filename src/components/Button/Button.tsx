@@ -13,7 +13,7 @@ const ButtonWrapper = styled("button")<ButtonProps>(
         size = "md",
         theme,
         color = "primary",
-        variant = "plain",
+        variant = "solid",
     }) => ({
         position: "relative",
         display: "inline-flex",

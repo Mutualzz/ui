@@ -42,33 +42,36 @@ export const resolveButtonGroupStyles = (
     orientation: ButtonGroupOrientation,
     color: Color | ColorLike = "primary",
     variant: Variant = "solid",
+    separatorColor?: Color | ColorLike,
 ): CSSObject => {
-    const parsedColor = parse(resolveColor(color, theme));
+    const parsedColor = separatorColor
+        ? parse(resolveColor(separatorColor, theme))
+        : parse(resolveColor(color, theme));
     if (!parsedColor) throw new Error("Invalid color");
 
     const horizontalBorders: Record<Variant, CSSObject> = {
         solid: {
-            borderLeft: `1px solid ${formatHex8(darken(parsedColor, 0.5))}`,
+            borderLeft: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.5))}`,
         },
         outlined: {},
         plain: {
-            borderLeft: `1px solid ${formatHex8(darken(parsedColor, 0.3))}`,
+            borderLeft: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.3))}`,
         },
         soft: {
-            borderLeft: `1px solid ${formatHex8(darken(parsedColor, 0.1))}`,
+            borderLeft: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.1))}`,
         },
     };
 
     const verticalBorders: Record<Variant, CSSObject> = {
         solid: {
-            borderTop: `1px solid ${formatHex8(darken(parsedColor, 0.5))}`,
+            borderTop: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.5))}`,
         },
         outlined: {},
         plain: {
-            borderTop: `1px solid ${formatHex8(darken(parsedColor, 0.3))}`,
+            borderTop: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.3))}`,
         },
         soft: {
-            borderTop: `1px solid ${formatHex8(darken(parsedColor, 0.1))}`,
+            borderTop: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.1))}`,
         },
     };
 
