@@ -3,7 +3,13 @@ import { type CSSObject, type Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
 
 import type { Color, ColorLike, Size, Variant } from "../../../types";
-import { adjustTextColor, alpha, darken, getLuminance } from "../../../utils";
+import {
+    adjustTextColor,
+    alpha,
+    darken,
+    getLuminance,
+    lighten,
+} from "../../../utils";
 import { resolveColor } from "../../../utils/resolveColor";
 import { resolveSize } from "../../../utils/resolveSize";
 import type { ButtonGroupOrientation } from "./Button.types";
@@ -152,13 +158,13 @@ export const variantColors = (theme: Theme, color: Color | ColorLike) => {
             border: "none",
             color: formatHex8(parsedColor),
             "&:hover": {
-                color: alpha(parsedColor, 0.8),
+                color: formatHex8(lighten(parsedColor, 0.6)),
             },
             "&:active": {
-                color: alpha(parsedColor, 0.5),
+                color: formatHex8(lighten(parsedColor, 0.5)),
             },
             "&:disabled": {
-                color: alpha(parsedColor, 0.4),
+                color: formatHex8(lighten(parsedColor, 0.4)),
             },
         },
         soft: {
