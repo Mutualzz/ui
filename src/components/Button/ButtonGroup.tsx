@@ -47,7 +47,18 @@ const ButtonGroupRoot = styled("div")<{
     }),
 );
 
-export const ButtonGroup = ({
+ButtonGroupRoot.displayName = "ButtonGroupRoot";
+
+/**
+ * ButtonGroup component that renders a group of buttons with shared styles and properties.
+ * It allows for customization of color, variant, size, orientation, and spacing.
+ * The buttons can be disabled and can show a loading state.
+ * The component automatically applies styles to its children based on the provided props.
+ * It supports both horizontal and vertical orientations, with optional separator colors.
+ * The buttons in the group can inherit properties from the Button component, such as size, color, variant, and loading state.
+ * The `children` prop should contain Button components or valid React elements.
+ */
+const ButtonGroup = ({
     orientation = "horizontal",
     spacing = 0,
     color,
@@ -82,3 +93,7 @@ export const ButtonGroup = ({
         </ButtonGroupRoot>
     );
 };
+
+ButtonGroup.displayName = "ButtonGroup";
+
+export { ButtonGroup };

@@ -2,7 +2,10 @@ import type { Ref } from "react";
 import type { InputBaseProps } from "./Input.types";
 import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 
-export const InputText = (
+/**
+ * InputText component for entering text.
+ */
+const InputText = (
     {
         color = "neutral",
         textColor = "inherit",
@@ -41,3 +44,7 @@ export const InputText = (
         </InputRoot>
     );
 };
+
+InputText.displayName = "InputText";
+
+export { InputText };

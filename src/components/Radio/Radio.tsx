@@ -22,6 +22,8 @@ const RadioWrapper = styled("label")<RadioProps>(
     }),
 );
 
+RadioWrapper.displayName = "RadioWrapper";
+
 const HiddenRadio = styled("input")({
     position: "absolute",
     inset: 0,
@@ -32,6 +34,8 @@ const HiddenRadio = styled("input")({
     padding: 0,
     opacity: 0,
 });
+
+HiddenRadio.displayName = "HiddenRadio";
 
 const RadioControl = styled("span")<RadioProps>(({
     theme,
@@ -74,9 +78,13 @@ const RadioControl = styled("span")<RadioProps>(({
     };
 });
 
+RadioControl.displayName = "RadioControl";
+
 const RadioLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
     ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
 }));
+
+RadioLabel.displayName = "RadioLabel";
 
 const IconWrapper = styled("span")<{ size?: Size | number }>(
     ({ size = "md" }) => ({
@@ -91,7 +99,22 @@ const IconWrapper = styled("span")<{ size?: Size | number }>(
     }),
 );
 
-export const Radio = (
+IconWrapper.displayName = "IconWrapper";
+
+/**
+ *  Radio component for selecting options.
+ *  It supports different sizes, colors, and variants.
+ *  The component can be controlled or uncontrolled.
+ *  It can display custom icons for checked and unchecked states.
+ *  The component can be used with a label and supports RTL layout.
+ *  The `onChange` event handler is called when the radio state changes.
+ *  The `disabled` prop can be used to disable the radio input.
+ *  The `name` and `value` props are used to group radio inputs and set the value.
+ *  The `checkedIcon` and `uncheckedIcon` props allow for custom icons
+ *  to be displayed in the checked and unchecked states, respectively.
+ *  The `rtl` prop can be used to control the layout direction.
+ */
+const Radio = (
     {
         checked: controlledChecked,
         onChange,
@@ -168,3 +191,7 @@ export const Radio = (
         </RadioWrapper>
     );
 };
+
+Radio.displayName = "Radio";
+
+export { Radio };

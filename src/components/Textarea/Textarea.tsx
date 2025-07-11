@@ -29,6 +29,8 @@ const TextareaRoot = styled("div")<TextareaProps>(
     }),
 );
 
+TextareaRoot.displayName = "TextareaRoot";
+
 const TextareaInput = styled("textarea")<{
     resizable?: boolean;
 }>(({ resizable }) => ({
@@ -45,7 +47,16 @@ const TextareaInput = styled("textarea")<{
     resize: resizable ? "both" : "none",
 }));
 
-export const Textarea = ({
+TextareaInput.displayName = "TextareaInput";
+
+/**
+ * Textarea component for entering multi-line text.
+ * It supports various styles, sizes, and states.
+ * The component can be resizable or fixed height based on the `resizable` prop.
+ * It automatically adjusts its height based on the content when `resizable` is false.
+ * It can also have a minimum and maximum number of rows defined by `minRows` and `maxRows` props.
+ */
+const Textarea = ({
     color = "neutral",
     textColor = "inherit",
     variant = "outlined",
@@ -111,3 +122,7 @@ export const Textarea = ({
         </TextareaRoot>
     );
 };
+
+Textarea.displayName = "Textarea";
+
+export { Textarea };

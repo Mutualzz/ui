@@ -21,6 +21,8 @@ const CheckboxWrapper = styled("label")<CheckboxProps>(
     }),
 );
 
+CheckboxWrapper.displayName = "CheckboxWrapper";
+
 const HiddenCheckbox = styled("input")({
     position: "absolute",
     inset: 0,
@@ -31,6 +33,8 @@ const HiddenCheckbox = styled("input")({
     padding: 0,
     opacity: 0,
 });
+
+HiddenCheckbox.displayName = "HiddenCheckbox";
 
 const CheckboxBox = styled("span")<CheckboxProps>(({
     theme,
@@ -81,9 +85,13 @@ const CheckboxBox = styled("span")<CheckboxProps>(({
     };
 });
 
+CheckboxBox.displayName = "CheckboxBox";
+
 const CheckboxLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
     ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
 }));
+
+CheckboxLabel.displayName = "CheckboxLabel";
 
 const IconWrapper = styled("span")<{ size?: Size | number }>(
     ({ size = "md" }) => ({
@@ -98,7 +106,16 @@ const IconWrapper = styled("span")<{ size?: Size | number }>(
     }),
 );
 
-export const Checkbox = (
+IconWrapper.displayName = "IconWrapper";
+
+/**
+ * Checkbox component that renders a styled checkbox input with label support.
+ * It supports various properties such as checked state, disabled state, color, variant, size,
+ * and custom icons for checked, unchecked, and indeterminate states.
+ * The component can be controlled via props or managed internally.
+ * It also supports RTL label alignment.
+ */
+const Checkbox = (
     {
         checked: controlledChecked,
         onChange,
@@ -199,3 +216,7 @@ export const Checkbox = (
         </CheckboxWrapper>
     );
 };
+
+Checkbox.displayName = "Checkbox";
+
+export { Checkbox };

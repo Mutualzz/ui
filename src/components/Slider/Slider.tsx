@@ -6,7 +6,6 @@ import {
     useRef,
     useState,
     type ChangeEvent,
-    type FC,
     type MouseEvent,
 } from "react";
 import type { Color, ColorLike, Size, Variant } from "../../types";
@@ -49,6 +48,8 @@ const SliderRoot = styled("div")<{
           }),
 }));
 
+SliderRoot.displayName = "SliderRoot";
+
 const TrackContainer = styled("div")<{
     orientation: SliderOrientation;
     size: Size | number;
@@ -64,6 +65,8 @@ const TrackContainer = styled("div")<{
             : { width: trackThickness, height: "100%" }),
     };
 });
+
+TrackContainer.displayName = "TrackContainer";
 
 const TrackSegment = styled("div")<{
     orientation: SliderOrientation;
@@ -87,6 +90,8 @@ const TrackSegment = styled("div")<{
               width: "100%",
           }),
 }));
+
+TrackSegment.displayName = "TrackSegment";
 
 const TrackSegmentFilled = styled("div")<{
     color: Color | ColorLike;
@@ -113,6 +118,8 @@ const TrackSegmentFilled = styled("div")<{
           }),
     ...resolveSliderTrackStyles(theme, color, hovered)[variant],
 }));
+
+TrackSegmentFilled.displayName = "TrackSegmentFilled";
 
 const Tick = styled("div")<{
     orientation: SliderOrientation;
@@ -145,6 +152,8 @@ const Tick = styled("div")<{
     };
 });
 
+Tick.displayName = "Tick";
+
 const Thumb = styled("div")<{
     color: Color | ColorLike;
     variant: Variant;
@@ -175,6 +184,8 @@ const Thumb = styled("div")<{
         ...resolveSliderThumbSize(size),
     }),
 );
+
+Thumb.displayName = "Thumb";
 
 const ValueLabel = styled("span")<{
     orientation: SliderOrientation;
@@ -235,6 +246,8 @@ const ValueLabel = styled("span")<{
     };
 });
 
+ValueLabel.displayName = "ValueLabel";
+
 const MarkLabel = styled("span")<{
     orientation: SliderOrientation;
     percent: number;
@@ -259,6 +272,8 @@ const MarkLabel = styled("span")<{
     userSelect: "none",
 }));
 
+MarkLabel.displayName = "MarkLabel";
+
 const HiddenInput = styled("input")({
     position: "absolute",
     width: 0,
@@ -269,7 +284,23 @@ const HiddenInput = styled("input")({
     pointerEvents: "none",
 });
 
-export const Slider: FC<SliderProps> = ({
+HiddenInput.displayName = "HiddenInput";
+
+/**
+ * Slider component for selecting a value within a range.
+ * It supports both single and range selection.
+ * It can be oriented horizontally or vertically.
+ * It supports marks, value labels, and various styles.
+ * The slider can be customized with different colors, variants, and sizes.
+ * The component handles mouse and touch events for dragging the thumb.
+ * It also supports controlled and uncontrolled states.
+ * The `onChange` and `onChangeCommitted` callbacks are triggered during interaction.
+ * The `disabled` prop can be used to disable the slider.
+ * The `marks` prop can be used to display ticks at specific values.
+ * The `valueLabelDisplay` prop controls when the value label is shown.
+ * The `valueLabelFormat` prop can be used to format the value label text.
+ */
+const Slider = ({
     color = "primary",
     variant = "solid",
     size = "md",
@@ -289,7 +320,7 @@ export const Slider: FC<SliderProps> = ({
     getAriaValueText,
     disableSwap,
     ...rest
-}) => {
+}: SliderProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const isRange = Array.isArray(value ?? defaultValue);
     const [internalValue, setInternalValue] = useState<number[]>(
@@ -619,3 +650,7 @@ export const Slider: FC<SliderProps> = ({
         </SliderRoot>
     );
 };
+
+Slider.displayName = "Slider";
+
+export { Slider };

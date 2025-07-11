@@ -3,7 +3,6 @@ import {
     type ChangeEvent,
     Children,
     cloneElement,
-    type FC,
     isValidElement,
     useState,
 } from "react";
@@ -18,7 +17,20 @@ const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
             : "& > * + * { margin-top: 0.5rem; }"};
 `;
 
-export const RadioGroup: FC<RadioGroupProps> = ({
+RadioGroupButtonWrapper.displayName = "RadioGroupButtonWrapper";
+
+/**
+ * RadioGroup component for grouping radio buttons.
+ * It allows for selecting one option from a set of radio buttons.
+ * The component can be controlled or uncontrolled.
+ * It supports different layouts (row or column) and can handle disabled states.
+ * The `onChange` event handler is called when the selected radio button changes.
+ * The `name` prop is used to group radio inputs, and the `value` prop
+ * is used to set the selected value.
+ * The `defaultValue` prop can be used to set the initial selected value.
+ * The `children` prop allows for passing in radio button components.
+ */
+const RadioGroup = ({
     name,
     value: controlledValue,
     defaultValue,
@@ -26,7 +38,7 @@ export const RadioGroup: FC<RadioGroupProps> = ({
     disabled,
     row,
     children,
-}) => {
+}: RadioGroupProps) => {
     const [internalValue, setInternalValue] = useState(defaultValue ?? "");
     const currentValue = controlledValue ?? internalValue;
 
@@ -49,3 +61,7 @@ export const RadioGroup: FC<RadioGroupProps> = ({
 
     return <RadioGroupButtonWrapper row={row}>{items}</RadioGroupButtonWrapper>;
 };
+
+RadioGroup.displayName = "RadioGroup";
+
+export { RadioGroup };

@@ -1,6 +1,5 @@
 import { useTheme } from "../../hooks/useTheme";
 
-import { type FC } from "react";
 import type { Variant } from "../../types";
 import { resolveColor } from "../../utils/resolveColor";
 import styled from "../../utils/styled";
@@ -26,6 +25,8 @@ const ProgressWrapper = styled("div")<{
     ...(variant === "outlined" && { border: `1px solid ${outlinedColor}` }),
 }));
 
+ProgressWrapper.displayName = "ProgressWrapper";
+
 const DeterminateBar = styled("div")<{
     barColor: string;
     value: number;
@@ -35,6 +36,8 @@ const DeterminateBar = styled("div")<{
     background: barColor,
     transition: "width 0.3s ease",
 }));
+
+DeterminateBar.displayName = "DeterminateBar";
 
 const IndeterminateBar = styled("div")<{
     barColor: string;
@@ -74,7 +77,16 @@ const IndeterminateBar = styled("div")<{
     }
 });
 
-export const LinearProgress: FC<LinearProgressProps> = ({
+IndeterminateBar.displayName = "IndeterminateBar";
+
+/**
+ * LinearProgress component for displaying progress.
+ * It supports both determinate and indeterminate states.
+ * The determinate state shows a progress bar that fills based on a value.
+ * The indeterminate state shows an animated bar that indicates ongoing progress.
+ * The component can be styled with different thicknesses, lengths, variants, and colors.
+ */
+const LinearProgress = ({
     thickness = "md",
     length = "md",
     variant = "soft",
@@ -82,7 +94,7 @@ export const LinearProgress: FC<LinearProgressProps> = ({
     animation = "bounce",
     determinate = false,
     value = 0,
-}) => {
+}: LinearProgressProps) => {
     const { theme } = useTheme();
 
     const height = resolveThickness(thickness);
@@ -111,3 +123,7 @@ export const LinearProgress: FC<LinearProgressProps> = ({
         </ProgressWrapper>
     );
 };
+
+LinearProgress.displayName = "LinearProgress";
+
+export { LinearProgress };

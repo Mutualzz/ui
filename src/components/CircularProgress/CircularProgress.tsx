@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 import { resolveColor } from "../../utils/resolveColor";
@@ -10,7 +10,13 @@ import {
 import { spin } from "./CircularProgress.keyframes";
 import type { CircularProgressProps } from "./CircularProgress.types";
 
-export const CircularProgress: FC<CircularProgressProps> = ({
+/**
+ * CircularProgress component that renders a circular progress indicator.
+ * It supports both determinate and indeterminate states, with customizable size, variant, and color.
+ * The component can display children content inside the circular progress.
+ * It uses SVG for rendering the progress circle and applies styles based on the provided props.
+ */
+const CircularProgress = ({
     size = "md",
     variant = "soft",
     color = "primary",
@@ -18,7 +24,7 @@ export const CircularProgress: FC<CircularProgressProps> = ({
     value = 0,
     children,
     ...props
-}) => {
+}: CircularProgressProps) => {
     const { theme } = useTheme();
     const contentRef = useRef<HTMLDivElement>(null);
     const [contentDiameter, setContentDiameter] = useState(0);
@@ -152,3 +158,7 @@ export const CircularProgress: FC<CircularProgressProps> = ({
         </div>
     );
 };
+
+CircularProgress.displayName = "CircularProgress";
+
+export { CircularProgress };

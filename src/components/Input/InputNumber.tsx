@@ -1,4 +1,6 @@
+import { formatHex8 } from "culori";
 import { useRef, type ClipboardEvent, type KeyboardEvent } from "react";
+import { useTheme } from "../../hooks/useTheme";
 import type { Size } from "../../types";
 import { Stack } from "../Stack/Stack";
 import type { InputNumberProps } from "./Input.types";
@@ -16,6 +18,7 @@ const SpinnerButtons = ({
     disabled,
     size = "md",
 }: InputNumberProps) => {
+    const { theme } = useTheme();
     const { width, fontSize } = sizeMap[typeof size === "number" ? "sm" : size];
 
     return (
@@ -49,7 +52,9 @@ const SpinnerButtons = ({
                     cursor: "pointer",
                     backgroundColor: "transparent",
                     "& svg": { width: 12, height: 12 },
-                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.05)" },
+                    "&:hover": {
+                        backgroundColor: formatHex8(theme.colors.surface),
+                    },
                 }}
             >
                 <svg
@@ -82,7 +87,9 @@ const SpinnerButtons = ({
                     cursor: "pointer",
                     backgroundColor: "transparent",
                     "& svg": { width: 12, height: 12 },
-                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.05)" },
+                    "&:hover": {
+                        backgroundColor: formatHex8(theme.colors.surface),
+                    },
                 }}
             >
                 <svg
@@ -102,7 +109,14 @@ const SpinnerButtons = ({
     );
 };
 
-export const InputNumber = ({
+SpinnerButtons.displayName = "SpinnerButtons";
+
+/**
+ * InputNumber component for entering numeric values.
+ * It includes increment and decrement buttons for adjusting the value.
+ * It supports various styles, sizes, and states.
+ */
+const InputNumber = ({
     color = "neutral",
     textColor = "inherit",
     variant = "outlined",
@@ -228,3 +242,7 @@ export const InputNumber = ({
         </InputRoot>
     );
 };
+
+InputNumber.displayName = "InputNumber";
+
+export { InputNumber };

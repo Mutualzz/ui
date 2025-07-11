@@ -17,7 +17,17 @@ const CheckboxGroupWrapper = styled("div")<{ row?: boolean }>`
             : "& > * + * { margin-top: 0.5rem; }"};
 `;
 
-export const CheckboxGroup = ({
+CheckboxGroupWrapper.displayName = "CheckboxGroupWrapper";
+
+/**
+ * CheckboxGroup component that renders a group of checkboxes.
+ * It allows for controlled or uncontrolled state management of the checkboxes.
+ * The component supports a `name` prop for grouping checkboxes, a `value` prop for controlled state,
+ * a `defaultValue` for uncontrolled state, and an `onChange` callback for handling changes.
+ * It also supports disabling all checkboxes in the group and arranging them in a row or column layout.
+ * The `children` prop should contain Checkbox components or valid React elements
+ */
+const CheckboxGroup = ({
     name,
     value: controlledValue,
     defaultValue,
@@ -48,3 +58,7 @@ export const CheckboxGroup = ({
 
     return <CheckboxGroupWrapper row={row}>{items}</CheckboxGroupWrapper>;
 };
+
+CheckboxGroup.displayName = "CheckboxGroup";
+
+export { CheckboxGroup };

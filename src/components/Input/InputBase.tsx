@@ -2,7 +2,7 @@ import styled from "../../utils/styled";
 import { resolveInputSize, resolveInputStyles } from "./Input.helpers";
 import type { InputBaseProps } from "./Input.types";
 
-export const InputRoot = styled("div")<InputBaseProps>(
+const InputRoot = styled("div")<InputBaseProps>(
     ({
         theme,
         color = "neutral",
@@ -33,7 +33,9 @@ export const InputRoot = styled("div")<InputBaseProps>(
     }),
 );
 
-export const DecoratorWrapper = styled("div")({
+InputRoot.displayName = "InputRoot";
+
+const DecoratorWrapper = styled("div")({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
@@ -47,7 +49,9 @@ export const DecoratorWrapper = styled("div")({
     zIndex: 1,
 });
 
-export const InputBase = styled("input")({
+DecoratorWrapper.displayName = "DecoratorWrapper";
+
+const InputBase = styled("input")({
     flex: 1,
     minWidth: 0,
     width: "100%",
@@ -66,3 +70,7 @@ export const InputBase = styled("input")({
         MozAppearance: "textfield",
     },
 });
+
+InputBase.displayName = "InputBase";
+
+export { DecoratorWrapper, InputBase, InputRoot };

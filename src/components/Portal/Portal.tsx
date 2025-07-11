@@ -10,7 +10,10 @@ function getContainer(container: PortalProps["container"]) {
     return typeof container === "function" ? container() : container;
 }
 
-export const Portal = (
+/**
+ * Portal component for rendering children into a different part of the DOM.
+ */
+const Portal = (
     { children, container, disablePortal = false }: PortalProps,
     forwardedRef?: Ref<HTMLElement>,
 ) => {
@@ -52,3 +55,7 @@ export const Portal = (
 
     return mountNode ? createPortal(children, mountNode) : mountNode;
 };
+
+Portal.displayName = "Portal";
+
+export { Portal };

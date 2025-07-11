@@ -3,7 +3,12 @@ import styled from "../../utils/styled";
 import { variantStyles } from "./Typography.helpers";
 import { type TypographyProps } from "./Typography.types";
 
-export const Typography = styled("span")<TypographyProps>(
+/**
+ * Typography component for displaying text with different styles.
+ * It supports various levels, colors, variants, and weights.
+ * The component can be used for headings, body text, captions, and more.
+ */
+const Typography = styled("span")<TypographyProps>(
     ({
         theme,
         level = "body-md",
@@ -16,3 +21,7 @@ export const Typography = styled("span")<TypographyProps>(
         fontWeight: weight,
     }),
 );
+
+Typography.displayName = "Typography";
+
+export { Typography };

@@ -4,7 +4,14 @@ import { resolvePasswordIconColor } from "./Input.helpers";
 import type { InputPasswordProps } from "./Input.types";
 import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 
-export const InputPassword = (
+/**
+ * InputPassword component for entering passwords.
+ * It includes a toggle button to show or hide the password.
+ * It supports various styles, sizes, and states.
+ * The component can display start and end decorators for additional content.
+ * The password visibility can be toggled with a button that changes its icon based on the visibility state.
+ */
+const InputPassword = (
     {
         color = "neutral",
         textColor = "inherit",
@@ -131,3 +138,8 @@ export const InputPassword = (
         </InputRoot>
     );
 };
+
+// eslint-disable-next-line sonarjs/no-hardcoded-passwords
+InputPassword.displayName = "InputPassword";
+
+export { InputPassword };

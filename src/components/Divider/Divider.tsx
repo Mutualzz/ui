@@ -1,5 +1,3 @@
-import type { FC } from "react";
-
 import { useTheme } from "../../hooks/useTheme";
 
 import styled from "../../utils/styled";
@@ -28,6 +26,8 @@ const DividerWrapper = styled("div")<{ isVertical?: boolean }>(
     }),
 );
 
+DividerWrapper.displayName = "DividerWrapper";
+
 const DividerLine = styled("span")<{
     isVertical: boolean;
     lineColor: string;
@@ -40,6 +40,8 @@ const DividerLine = styled("span")<{
     ...resolveDividerVariant(isVertical, lineColor)[variant],
 }));
 
+DividerLine.displayName = "DividerLine";
+
 const DividerText = styled("span")<{
     textColor: string;
     isVertical: boolean;
@@ -50,14 +52,26 @@ const DividerText = styled("span")<{
     fontSize: "14px",
 }));
 
-export const Divider: FC<DividerProps> = ({
+DividerText.displayName = "DividerText";
+
+/**
+ * Divider component for separating content.
+ * It can be oriented horizontally or vertically.
+ * It can also have different visual styles and colors.
+ * It supports text content that can be placed in the middle of the divider.
+ * The divider can be styled with different variants and colors.
+ * The `inset` prop allows for controlling the placement of the text relative to the divider.
+ * The `lineColor` and `textColor` props allow for customizing the colors of the divider line and text, respectively.
+ * The `variant` prop allows for different visual styles of the divider.
+ */
+const Divider = ({
     orientation = "horizontal",
     inset = "none",
     lineColor = "neutral",
     textColor = "neutral",
     variant = "solid",
     children,
-}) => {
+}: DividerProps) => {
     const { theme } = useTheme();
 
     const isVertical = orientation === "vertical";
@@ -96,3 +110,7 @@ export const Divider: FC<DividerProps> = ({
         </DividerWrapper>
     );
 };
+
+Divider.displayName = "Divider";
+
+export { Divider };

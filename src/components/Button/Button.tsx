@@ -29,6 +29,8 @@ const ButtonWrapper = styled("button")<ButtonProps>(
     }),
 );
 
+ButtonWrapper.displayName = "ButtonWrapper";
+
 const ButtonContent = styled("span")<{
     loading?: boolean;
 }>(({ loading }) => ({
@@ -43,6 +45,8 @@ const ButtonContent = styled("span")<{
     boxSizing: "border-box",
 }));
 
+ButtonContent.displayName = "ButtonContent";
+
 const SpinnerOverlay = styled("span")({
     position: "absolute",
     inset: 0,
@@ -51,6 +55,8 @@ const SpinnerOverlay = styled("span")({
     justifyContent: "center",
     pointerEvents: "none",
 });
+
+SpinnerOverlay.displayName = "SpinnerOverlay";
 
 const IconWrapper = styled("span")<{
     position: "start" | "end";
@@ -68,7 +74,14 @@ const IconWrapper = styled("span")<{
     flexGrow: 0,
 }));
 
-export const Button = (
+IconWrapper.displayName = "IconWrapper";
+
+/**
+ * Button component that renders a styled button element with various properties.
+ * It supports different variants, colors, sizes, and loading states.
+ * The button can also include start and end decorators for additional content.
+ */
+const Button = (
     {
         variant = "solid",
         color = "primary",
@@ -127,3 +140,7 @@ export const Button = (
         )}
     </ButtonWrapper>
 );
+
+Button.displayName = "Button";
+
+export { Button };
