@@ -172,10 +172,12 @@ export const variantColors = (theme: Theme, color: Color | ColorLike) => {
             color: formatHex8(parsedColor),
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.3),
+                backgroundColor: alpha(parsedColor, 0.2),
+                color: formatHex8(lighten(parsedColor, 0.2)),
             },
             "&:active": {
                 backgroundColor: alpha(parsedColor, 0.2),
+                color: formatHex8(lighten(parsedColor, 0.1)),
             },
             "&:disabled": {
                 backgroundColor: alpha(parsedColor, 0.2),
