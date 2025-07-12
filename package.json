@@ -3,15 +3,7 @@
         "url": "https://github.com/Mutualzz/ui.git/issues"
     },
     "dependencies": {
-        "emoji-regex": "^10.4.0",
-        "emojibase": "^16.0.0",
-        "emojibase-data": "^16.0.3",
-        "emojibase-regex": "^16.0.0",
-        "is-hotkey": "^0.2.0",
-        "shiki": "^3.7.0",
-        "slate": "^0.117.2",
-        "slate-history": "^0.113.1",
-        "slate-react": "^0.117.2"
+        "culori": "^4.0.1"
     },
     "devDependencies": {
         "@types/is-hotkey": "^0.1.10",
@@ -45,7 +37,6 @@
     "peerDependencies": {
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
-        "culori": "^4.0.1",
         "react": "^19.1.0",
         "react-dom": "^19.1.0"
     },
@@ -58,8 +49,5 @@
         "prepublishOnly": "npm run build"
     },
     "types": "dist/index.d.ts",
-    "version": "2.5.0",
-    "patchedDependencies": {
-        "typedoc-json-parser@10.2.0": "patches/typedoc-json-parser@10.2.0.patch"
-    }
+    "version": "2.5.1"
 }
