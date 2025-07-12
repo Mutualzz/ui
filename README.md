@@ -1,4 +1,8 @@
-<h1 style="margin-bottom: 0">Mutualzz UI</h2>
+<div style="display: flex; align-items: center; justify-content: space-between">
+  <h1>Mutualzz UI</h1> 
+  <img alt="NPM Downloads" src="https://img.shields.io/npm/d18m/%40mutualzz%2Fui?style=for-the-badge&logo=npm&color=red&link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2F%40mutualzz%2Fui">
+</div>
+
 
 [Mutualzz UI](https://mutualzz.com/ui) is built for React and with [Emotion](https://emotion.sh/docs/introduction). It takes inspiration from [MUI Joy](https://mui.com/joy-ui/getting-started/) and [MUI Material](https://mui.com/material-ui/getting-started/)
 
