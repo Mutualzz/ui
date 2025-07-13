@@ -1,43 +1,43 @@
-import type { Responsive } from "./index";
+import type { AllowNumber, Responsive } from "./index";
 
 import { Properties } from "csstype";
 
 export interface HTMLSpacingProps {
-    gap?: Responsive<Properties["gap"]>;
-    spacing?: Responsive<Properties["gap"]>;
+    gap?: Responsive<AllowNumber<Properties["gap"]>>;
+    spacing?: Responsive<AllowNumber<Properties["gap"]>>;
 
-    rowGap?: Responsive<Properties["rowGap"]>;
-    columnGap?: Responsive<Properties["columnGap"]>;
+    rowGap?: Responsive<AllowNumber<Properties["rowGap"]>>;
+    columnGap?: Responsive<AllowNumber<Properties["columnGap"]>>;
 
-    m?: Responsive<Properties["margin"]>;
-    mt?: Responsive<Properties["marginTop"]>;
-    mr?: Responsive<Properties["marginRight"]>;
-    mb?: Responsive<Properties["marginBottom"]>;
-    ml?: Responsive<Properties["marginLeft"]>;
-    mx?: Responsive<Properties["marginInline"]>;
-    my?: Responsive<Properties["marginBlock"]>;
+    m?: Responsive<AllowNumber<Properties["margin"]>>;
+    mt?: Responsive<AllowNumber<Properties["marginTop"]>>;
+    mr?: Responsive<AllowNumber<Properties["marginRight"]>>;
+    mb?: Responsive<AllowNumber<Properties["marginBottom"]>>;
+    ml?: Responsive<AllowNumber<Properties["marginLeft"]>>;
+    mx?: Responsive<AllowNumber<Properties["marginInline"]>>;
+    my?: Responsive<AllowNumber<Properties["marginBlock"]>>;
 
-    p?: Responsive<Properties["padding"]>;
-    pt?: Responsive<Properties["paddingTop"]>;
-    pr?: Responsive<Properties["paddingRight"]>;
-    pb?: Responsive<Properties["paddingBottom"]>;
-    pl?: Responsive<Properties["paddingLeft"]>;
-    px?: Responsive<Properties["paddingInline"]>;
-    py?: Responsive<Properties["paddingBlock"]>;
+    p?: Responsive<AllowNumber<Properties["padding"]>>;
+    pt?: Responsive<AllowNumber<Properties["paddingTop"]>>;
+    pr?: Responsive<AllowNumber<Properties["paddingRight"]>>;
+    pb?: Responsive<AllowNumber<Properties["paddingBottom"]>>;
+    pl?: Responsive<AllowNumber<Properties["paddingLeft"]>>;
+    px?: Responsive<AllowNumber<Properties["paddingInline"]>>;
+    py?: Responsive<AllowNumber<Properties["paddingBlock"]>>;
 
-    margin?: Responsive<Properties["margin"]>;
-    marginTop?: Responsive<Properties["marginTop"]>;
-    marginRight?: Responsive<Properties["marginRight"]>;
-    marginBottom?: Responsive<Properties["marginBottom"]>;
-    marginLeft?: Responsive<Properties["marginLeft"]>;
-    marginX?: Responsive<Properties["marginInline"]>;
-    marginY?: Responsive<Properties["marginBlock"]>;
+    margin?: Responsive<AllowNumber<Properties["margin"]>>;
+    marginTop?: Responsive<AllowNumber<Properties["marginTop"]>>;
+    marginRight?: Responsive<AllowNumber<Properties["marginRight"]>>;
+    marginBottom?: Responsive<AllowNumber<Properties["marginBottom"]>>;
+    marginLeft?: Responsive<AllowNumber<Properties["marginLeft"]>>;
+    marginX?: Responsive<AllowNumber<Properties["marginInline"]>>;
+    marginY?: Responsive<AllowNumber<Properties["marginBlock"]>>;
 
-    padding?: Responsive<Properties["padding"]>;
-    paddingTop?: Responsive<Properties["paddingTop"]>;
-    paddingRight?: Responsive<Properties["paddingRight"]>;
-    paddingBottom?: Responsive<Properties["paddingBottom"]>;
-    paddingLeft?: Responsive<Properties["paddingLeft"]>;
-    paddingX?: Responsive<Properties["paddingInline"]>;
-    paddingY?: Responsive<Properties["paddingBlock"]>;
+    padding?: Responsive<AllowNumber<Properties["padding"]>>;
+    paddingTop?: Responsive<AllowNumber<Properties["paddingTop"]>>;
+    paddingRight?: Responsive<AllowNumber<Properties["paddingRight"]>>;
+    paddingBottom?: Responsive<AllowNumber<Properties["paddingBottom"]>>;
+    paddingLeft?: Responsive<AllowNumber<Properties["paddingLeft"]>>;
+    paddingX?: Responsive<AllowNumber<Properties["paddingInline"]>>;
+    paddingY?: Responsive<AllowNumber<Properties["paddingBlock"]>>;
 }

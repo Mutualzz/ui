@@ -58,6 +58,8 @@ export type Spacing = "xs" | "sm" | "md" | "lg" | "xl";
 export type Responsive<T> = T | Partial<Record<Breakpoint, T>>;
 export type ThemeMode = "light" | "dark" | "system";
 
+export type AllowNumber<T> = T | number;
+
 export type SystemProps = HTMLAttributes<HTMLElement> &
     HTMLBorderProps &
     HTMLDisplayProps &

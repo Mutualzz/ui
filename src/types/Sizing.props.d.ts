@@ -1,14 +1,14 @@
-import type { Responsive } from "./index";
+import type { AllowNumber, Responsive } from "./index";
 
 import { Properties } from "csstype";
 
 export interface HTMLSizingProps {
-    width?: Responsive<Properties["width"]>;
-    minWidth?: Responsive<Properties["minWidth"]>;
-    maxWidth?: Responsive<Properties["maxWidth"]>;
-    height?: Responsive<Properties["height"]>;
-    minHeight?: Responsive<Properties["minHeight"]>;
-    maxHeight?: Responsive<Properties["maxHeight"]>;
+    width?: Responsive<AllowNumber<Properties["width"]>>;
+    minWidth?: Responsive<AllowNumber<Properties["minWidth"]>>;
+    maxWidth?: Responsive<AllowNumber<Properties["maxWidth"]>>;
+    height?: Responsive<AllowNumber<Properties["height"]>>;
+    minHeight?: Responsive<AllowNumber<Properties["minHeight"]>>;
+    maxHeight?: Responsive<AllowNumber<Properties["maxHeight"]>>;
 
     boxSizing?: Responsive<Properties["boxSizing"]>;
 }

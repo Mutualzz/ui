@@ -1,4 +1,4 @@
-import type { Responsive } from "./index";
+import type { AllowNumber, Responsive } from "./index";
 
 import type { Properties } from "csstype";
 
@@ -13,15 +13,15 @@ export interface HTMLFlexboxProps {
     alignItems?: Responsive<Properties["alignItems"]>;
     alignContent?: Responsive<Properties["alignContent"]>;
 
-    order?: Responsive<Properties["order"]>;
+    order?: Responsive<AllowNumber<Properties["order"]>>;
 
-    flex?: Responsive<Properties["flex"]>;
+    flex?: Responsive<AllowNumber<Properties["flex"]>>;
 
-    flexGrow?: Responsive<Properties["flexGrow"]>;
-    grow?: Responsive<Properties["flexGrow"]>;
+    flexGrow?: Responsive<AllowNumber<Properties["flexGrow"]>>;
+    grow?: Responsive<AllowNumber<Properties["flexGrow"]>>;
 
-    flexShrink?: Responsive<Properties["flexShrink"]>;
-    shrink?: Responsive<Properties["flexShrink"]>;
+    flexShrink?: Responsive<AllowNumber<Properties["flexShrink"]>>;
+    shrink?: Responsive<AllowNumber<Properties["flexShrink"]>>;
 
     alignSelf?: Responsive<Properties["alignSelf"]>;
 }

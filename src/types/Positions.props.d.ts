@@ -1,12 +1,14 @@
 import type { Theme } from "@emotion/react";
 import type { Properties } from "csstype";
-import { type Responsive } from "./index";
+import { type AllowNumber, type Responsive } from "./index";
 
 export interface HTMLPositionsProps {
     position?: Responsive<Properties["position"]>;
-    zIndex?: Responsive<Properties["zIndex"] | keyof Theme["zIndex"]>;
-    top?: Responsive<Properties["top"]>;
-    right?: Responsive<Properties["right"]>;
-    bottom?: Responsive<Properties["bottom"]>;
-    left?: Responsive<Properties["left"]>;
+    zIndex?: Responsive<
+        AllowNumber<Properties["zIndex"]> | keyof Theme["zIndex"]
+    >;
+    top?: Responsive<AllowNumber<Properties["top"]>>;
+    right?: Responsive<AllowNumber<Properties["right"]>>;
+    bottom?: Responsive<AllowNumber<Properties["bottom"]>>;
+    left?: Responsive<AllowNumber<Properties["left"]>>;
 }

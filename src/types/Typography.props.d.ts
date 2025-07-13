@@ -1,14 +1,14 @@
-import type { Responsive } from "./index";
+import type { AllowNumber, Responsive } from "./index";
 
 import { Properties } from "csstype";
 
 export interface HTMLTypographyProps {
     fontFamily?: Responsive<Properties["fontFamily"]>;
-    fontSize?: Responsive<Properties["fontSize"]>;
+    fontSize?: Responsive<AllowNumber<Properties["fontSize"]>>;
     fontStyle?: Responsive<Properties["fontStyle"]>;
-    fontWeight?: Responsive<Properties["fontWeight"]>;
-    letterSpacing?: Responsive<Properties["letterSpacing"]>;
-    lineHeight?: Responsive<Properties["lineHeight"]>;
+    fontWeight?: Responsive<AllowNumber<Properties["fontWeight"]>>;
+    letterSpacing?: Responsive<AllowNumber<Properties["letterSpacing"]>>;
+    lineHeight?: Responsive<AllowNumber<Properties["lineHeight"]>>;
     textAlign?: Responsive<Properties["textAlign"]>;
     textTransform?: Responsive<Properties["textTransform"]>;
 

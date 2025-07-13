@@ -1,4 +1,4 @@
-import type { Color, ColorLike, Responsive } from "./index";
+import type { AllowNumber, Color, ColorLike, Responsive } from "./index";
 
 import { Properties } from "csstype";
 
@@ -6,37 +6,46 @@ export interface HTMLBorderProps {
     border?: Responsive<Properties["border"]>;
 
     borderColor?: Responsive<Color | ColorLike | Properties["borderColor"]>;
-    borderRadius?: Responsive<Properties["borderRadius"]>;
-    borderWidth?: Responsive<Properties["borderWidth"]>;
+    borderRadius?: Responsive<AllowNumber<Properties["borderRadius"]>>;
+    borderWidth?: Responsive<AllowNumber<Properties["borderWidth"]>>;
 
-    borderTop?: Responsive<Properties["borderTop"]>;
+    borderTop?: Responsive<AllowNumber<Properties["borderTop"]>>;
     borderTopColor?: Responsive<
         Color | ColorLike | Properties["borderTopColor"]
     >;
-    borderTopWidth?: Responsive<Properties["borderTopWidth"]>;
+    borderTopWidth?: Responsive<AllowNumber<Properties["borderTopWidth"]>>;
     borderTopStyle?: Responsive<Properties["borderTopStyle"]>;
     borderTopRadius?: Responsive<
-        Properties["borderTopLeftRadius"] | Properties["borderTopRightRadius"]
+        AllowNumber<
+            | Properties["borderTopLeftRadius"]
+            | Properties["borderTopRightRadius"]
+        >
     >;
-    borderTopLeftRadius?: Responsive<Properties["borderTopLeftRadius"]>;
-    borderTopRightRadius?: Responsive<Properties["borderTopRightRadius"]>;
+    borderTopLeftRadius?: Responsive<
+        AllowNumber<Properties["borderTopLeftRadius"]>
+    >;
+    borderTopRightRadius?: Responsive<
+        AllowNumber<Properties["borderTopRightRadius"]>
+    >;
 
-    borderRight?: Responsive<Properties["borderRight"]>;
+    borderRight?: Responsive<AllowNumber<Properties["borderRight"]>>;
     borderRightColor?: Responsive<
         Color | ColorLike | Properties["borderRightColor"]
     >;
-    borderRightWidth?: Responsive<Properties["borderRightWidth"]>;
+    borderRightWidth?: Responsive<AllowNumber<Properties["borderRightWidth"]>>;
     borderRightStyle?: Responsive<Properties["borderRightStyle"]>;
-    borderBottom?: Responsive<Properties["borderBottom"]>;
+    borderBottom?: Responsive<AllowNumber<Properties["borderBottom"]>>;
     borderBottomColor?: Responsive<
         Color | ColorLike | Properties["borderBottomColor"]
     >;
-    borderBottomWidth?: Responsive<Properties["borderBottomWidth"]>;
+    borderBottomWidth?: Responsive<
+        AllowNumber<Properties["borderBottomWidth"]>
+    >;
     borderBottomStyle?: Responsive<Properties["borderBottomStyle"]>;
-    borderLeft?: Responsive<Properties["borderLeft"]>;
+    borderLeft?: Responsive<AllowNumber<Properties["borderLeft"]>>;
     borderLeftColor?: Responsive<
         Color | ColorLike | Properties["borderLeftColor"]
     >;
-    borderLeftWidth?: Responsive<Properties["borderLeftWidth"]>;
+    borderLeftWidth?: Responsive<AllowNumber<Properties["borderLeftWidth"]>>;
     borderLeftStyle?: Responsive<Properties["borderLeftStyle"]>;
 }
