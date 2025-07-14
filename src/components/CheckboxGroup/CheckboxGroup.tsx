@@ -6,7 +6,8 @@ import {
     isValidElement,
     useState,
 } from "react";
-import { type CheckboxGroupProps, type CheckboxProps } from "./Checkbox.types";
+import type { CheckboxProps } from "../Checkbox/Checkbox.types";
+import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
 const CheckboxGroupWrapper = styled("div")<{ row?: boolean }>`
     display: inline-flex;

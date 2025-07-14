@@ -6,7 +6,8 @@ import {
     isValidElement,
     useState,
 } from "react";
-import { type RadioGroupProps, type RadioProps } from "./Radio.types";
+import type { RadioProps } from "../Radio/Radio.types";
+import type { RadioGroupProps } from "./RadioGroup.types";
 
 const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
     display: inline-flex;

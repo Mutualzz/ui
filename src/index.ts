@@ -1,51 +1,54 @@
 // Components
 
-export { Box } from "./components/Box/Box";
-export type { BoxProps } from "./components/Box/Box.types";
+export * from "./components/Box/Box";
+export type * from "./components/Box/Box.types";
 
-export { Button } from "./components/Button/Button";
-export type {
-    ButtonGroupProps,
-    ButtonProps,
-} from "./components/Button/Button.types";
-export { ButtonGroup } from "./components/Button/ButtonGroup";
+export * from "./components/Button/Button";
+export type * from "./components/Button/Button.types";
 
-export { Checkbox } from "./components/Checkbox/Checkbox";
+export * from "./components/ButtonGroup/ButtonGroup";
+export type * from "./components/ButtonGroup/ButtonGroup.types";
+
+export * from "./components/Checkbox/Checkbox";
 export type * from "./components/Checkbox/Checkbox.types";
-export { CheckboxGroup } from "./components/Checkbox/CheckboxGroup";
 
-export { CircularProgress } from "./components/CircularProgress/CircularProgress";
+export * from "./components/CheckboxGroup/CheckboxGroup";
+export type * from "./components/CheckboxGroup/CheckboxGroup.types";
+
+export * from "./components/CircularProgress/CircularProgress";
 export * from "./components/CircularProgress/CircularProgress.types";
 
-export { Divider } from "./components/Divider/Divider";
-export type * from "./components/Divider/Divider.types";
+export * from "./components/Divider/Divider";
+export * from "./components/Divider/Divider.types";
 
-export { Input } from "./components/Input/Input";
-export type * from "./components/Input/Input.types";
+export * from "./components/Input/Input";
+export * from "./components/Input/Input.types";
 
-export { LinearProgress } from "./components/LinearProgress/LinearProgress";
+export * from "./components/LinearProgress/LinearProgress";
 export type * from "./components/LinearProgress/LinearProgress.types";
 
-export { Paper } from "./components/Paper/Paper";
+export * from "./components/Paper/Paper";
 export type * from "./components/Paper/Paper.types";
 
-export { Portal } from "./components/Portal/Portal";
+export * from "./components/Portal/Portal";
 export type * from "./components/Portal/Portal.types";
 
-export { Radio } from "./components/Radio/Radio";
+export * from "./components/Radio/Radio";
 export type * from "./components/Radio/Radio.types";
-export { RadioGroup } from "./components/Radio/RadioGroup";
 
-export { Slider } from "./components/Slider/Slider";
+export * from "./components/RadioGroup/RadioGroup";
+export type * from "./components/RadioGroup/RadioGroup.types";
+
+export * from "./components/Slider/Slider";
 export type * from "./components/Slider/Slider.types";
 
-// Stack does not have a separate type file as it uses BoxProps and it just sets the display property to flex or inline-flex
-export { Stack } from "./components/Stack/Stack";
+// Stack does not have a separate type file as it uses BoxProps and it just sets the display property to flex or inline-flex (when inline prop is provided similar to Box).
+export * from "./components/Stack/Stack";
 
-export { Textarea } from "./components/Textarea/Textarea";
-export type * from "./components/Textarea/Textarea.types";
+export * from "./components/Textarea/Textarea";
+export * from "./components/Textarea/Textarea.types";
 
-export { Typography } from "./components/Typography/Typography";
+export * from "./components/Typography/Typography";
 export type * from "./components/Typography/Typography.types";
 
 // Hooks
