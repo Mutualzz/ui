@@ -11,12 +11,12 @@ import { type TypographyProps } from "./Typography.types";
 const Typography = styled("span")<TypographyProps>(
     ({
         theme,
-        level = "body-md",
+        level = "inherit",
         color = "#fff",
         variant = "none",
         weight,
     }) => ({
-        ...theme.typography.levels[level],
+        ...(level === "inherit" ? {} : theme.typography.levels[level]),
         ...variantStyles(theme, color)[variant],
         fontWeight: weight,
     }),

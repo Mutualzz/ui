@@ -8,9 +8,9 @@ export interface TypographyProps extends HTMLAttributes<HTMLSpanElement> {
     /**
      * Typography Level.
      * This can be a predefined level like "h1", "h2", and etc.
-     * @default "body-md"
+     * @default "inherit"
      */
-    level?: TypographyLevel;
+    level?: TypographyLevel | "inherit";
     /**
      * Font weight.
      * This can be a predefined weight like "light", "normal", "medium", "bold", or a custom number.
