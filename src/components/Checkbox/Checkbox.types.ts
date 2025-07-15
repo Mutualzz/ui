@@ -2,7 +2,10 @@ import { type Color, type ColorLike, type Size, type Variant } from "@ui-types";
 import type { InputHTMLAttributes, ReactNode } from "react";
 
 export interface CheckboxProps
-    extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+    extends Omit<
+        InputHTMLAttributes<HTMLInputElement>,
+        "size" | "type" | "value"
+    > {
     /**
      * The label for the checkbox.
      * It can be a string or a ReactNode.
@@ -71,4 +74,6 @@ export interface CheckboxProps
      * If false, the label will be displayed on the right side of the checkbox.
      */
     rtl?: boolean;
+
+    value?: string;
 }

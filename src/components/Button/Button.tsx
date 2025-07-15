@@ -1,9 +1,10 @@
-import { type ReactNode, type Ref } from "react";
+import { useContext, type ReactNode, type Ref } from "react";
 
 import styled from "@styled";
 import { CircularProgress } from "../CircularProgress/CircularProgress";
 
 import { type Size } from "@ui-types";
+import { ButtonGroupContext } from "../ButtonGroup/ButtonGroup.context";
 import { resolveButtonStyles, variantColors } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 
@@ -83,63 +84,76 @@ IconWrapper.displayName = "IconWrapper";
  */
 const Button = (
     {
-        variant = "solid",
-        color = "primary",
-        size = "md",
-        loading,
+        variant: propVariant,
+        color: propColor,
+        size: propSize,
+        loading: propLoading,
         loadingIndicator,
         startDecorator,
         endDecorator,
-        disabled,
+        disabled: propDisabled,
         children,
         ...props
     }: ButtonProps & { children?: ReactNode },
     ref?: Ref<HTMLButtonElement>,
-) => (
-    <ButtonWrapper
-        {...props}
-        ref={ref}
-        variant={variant}
-        color={color}
-        size={size}
-        disabled={loading || disabled}
-        loading={loading}
-    >
-        {loading && (
-            <SpinnerOverlay>
-                {loadingIndicator ? (
-                    loadingIndicator
-                ) : (
-                    <CircularProgress
-                        variant={
-                            variant === "solid" || variant === "soft"
-                                ? "plain"
-                                : "soft"
-                        }
-                        color={color}
-                        size="sm"
-                    />
-                )}
-            </SpinnerOverlay>
-        )}
+) => {
+    const group = useContext(ButtonGroupContext);
 
-        {startDecorator && (
-            <IconWrapper
-                childrenContent={children}
-                position="start"
-                size={size}
-            >
-                {startDecorator}
-            </IconWrapper>
-        )}
-        <ButtonContent loading={loading}>{children}</ButtonContent>
-        {endDecorator && (
-            <IconWrapper childrenContent={children} position="end" size={size}>
-                {endDecorator}
-            </IconWrapper>
-        )}
-    </ButtonWrapper>
-);
+    const variant = propVariant ?? group?.variant ?? "solid";
+    const color = propColor ?? group?.color ?? "primary";
+    const size = propSize ?? group?.size ?? "md";
+    const loading = propLoading ?? group?.loading ?? false;
+    const disabled = propDisabled ?? group?.disabled ?? false;
+    return (
+        <ButtonWrapper
+            {...props}
+            ref={ref}
+            variant={variant}
+            color={color}
+            size={size}
+            disabled={loading || disabled}
+            loading={loading}
+        >
+            {loading && (
+                <SpinnerOverlay>
+                    {loadingIndicator ? (
+                        loadingIndicator
+                    ) : (
+                        <CircularProgress
+                            variant={
+                                variant === "solid" || variant === "soft"
+                                    ? "plain"
+                                    : "soft"
+                            }
+                            color={color}
+                            size="sm"
+                        />
+                    )}
+                </SpinnerOverlay>
+            )}
+
+            {startDecorator && (
+                <IconWrapper
+                    childrenContent={children}
+                    position="start"
+                    size={size}
+                >
+                    {startDecorator}
+                </IconWrapper>
+            )}
+            <ButtonContent loading={loading}>{children}</ButtonContent>
+            {endDecorator && (
+                <IconWrapper
+                    childrenContent={children}
+                    position="end"
+                    size={size}
+                >
+                    {endDecorator}
+                </IconWrapper>
+            )}
+        </ButtonWrapper>
+    );
+};
 
 Button.displayName = "Button";
 

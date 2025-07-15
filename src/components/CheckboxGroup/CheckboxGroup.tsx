@@ -1,12 +1,6 @@
 import styled from "@emotion/styled";
-import {
-    type ChangeEvent,
-    Children,
-    cloneElement,
-    isValidElement,
-    useState,
-} from "react";
-import type { CheckboxProps } from "../Checkbox/Checkbox.types";
+import { type ChangeEvent, useState } from "react";
+import { CheckboxGroupContext } from "./CheckboxGroup.context";
 import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
 const CheckboxGroupWrapper = styled("div")<{ row?: boolean }>`
@@ -37,27 +31,36 @@ const CheckboxGroup = ({
     row,
     children,
 }: CheckboxGroupProps) => {
-    const [internalValue, setInternalValue] = useState(defaultValue ?? "");
-    const currentValue = controlledValue ?? internalValue;
+    const [internalValue, setInternalValue] = useState(defaultValue ?? []);
+    const isControlled = controlledValue !== undefined;
+    const currentValue = isControlled ? controlledValue : internalValue;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newVal = e.target.value;
-        if (!controlledValue) setInternalValue(newVal);
+    const handleChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        checked: boolean,
+    ) => {
+        const val = e.target.value;
+        let newValue = checked
+            ? Array.from(new Set([...currentValue, val])) // Deduplication
+            : currentValue.filter((v) => v !== val);
 
-        onChange?.(e, [...currentValue, newVal]);
+        if (!isControlled) setInternalValue(newValue);
+        onChange?.(e, newValue);
     };
 
-    const items = Children.map(children, (child) => {
-        if (!isValidElement<CheckboxProps>(child)) return child;
-        return cloneElement(child, {
-            name,
-            disabled: disabled ?? child.props.disabled,
-            onChange: handleChange,
-            checked: child.props.value === currentValue,
-        });
-    });
-
-    return <CheckboxGroupWrapper row={row}>{items}</CheckboxGroupWrapper>;
+    return (
+        <CheckboxGroupContext.Provider
+            value={{
+                name,
+                value: currentValue,
+                onChange: (e, _) => handleChange(e, e.target.checked),
+                disabled,
+            }}
+        >
+            {" "}
+            <CheckboxGroupWrapper row={row}>{children}</CheckboxGroupWrapper>
+        </CheckboxGroupContext.Provider>
+    );
 };
 
 CheckboxGroup.displayName = "CheckboxGroup";

@@ -6,7 +6,10 @@ import {
 } from "react";
 
 export interface RadioProps
-    extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+    extends Omit<
+        InputHTMLAttributes<HTMLInputElement>,
+        "size" | "type" | "value"
+    > {
     /**
      * Whether the radio is checked. If not provided, it will be controlled internally.
      * @default false
@@ -66,4 +69,6 @@ export interface RadioProps
      * @default false
      */
     rtl?: boolean;
+
+    value?: string;
 }

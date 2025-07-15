@@ -1,6 +1,7 @@
 import styled from "@styled";
 import { type Size } from "@ui-types";
-import { useEffect, useState, type ChangeEvent, type Ref } from "react";
+import { useContext, useState, type ChangeEvent, type Ref } from "react";
+import { CheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
 import {
     resolveCheckboxStyles,
     resolveIconScaling,
@@ -8,7 +9,7 @@ import {
 } from "./Checkbox.helpers";
 import { type CheckboxProps } from "./Checkbox.types";
 
-const CheckboxWrapper = styled("label")<CheckboxProps>(
+const CheckboxWrapper = styled("label")<Omit<CheckboxProps, "value">>(
     ({ disabled, size = "md" }) => ({
         position: "relative",
         display: "inline-flex",
@@ -36,7 +37,7 @@ const HiddenCheckbox = styled("input")({
 
 HiddenCheckbox.displayName = "HiddenCheckbox";
 
-const CheckboxBox = styled("span")<CheckboxProps>(({
+const CheckboxBox = styled("span")<Omit<CheckboxProps, "value">>(({
     theme,
     color = "neutral",
     variant = "solid",
@@ -118,13 +119,14 @@ IconWrapper.displayName = "IconWrapper";
 const Checkbox = (
     {
         checked: controlledChecked,
-        onChange,
+        onChange: propOnChange,
+        defaultChecked,
         label,
-        disabled,
+        disabled: propDisabled,
         color = "neutral",
         variant = "solid",
         size = "md",
-        name,
+        name: propName,
         value,
         uncheckedIcon,
         checkedIcon,
@@ -135,20 +137,35 @@ const Checkbox = (
     }: CheckboxProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
-    const [internalChecked, setInternalChecked] = useState(false);
-    const isChecked = controlledChecked ?? internalChecked;
+    const group = useContext(CheckboxGroupContext);
+    const [uncontrolledChecked, setUncontrolledChecked] = useState(
+        defaultChecked ?? false,
+    );
 
-    useEffect(() => {
-        if (typeof ref === "function") return;
-        if (ref && "current" in ref && ref.current) {
-            ref.current.indeterminate = !!indeterminate;
+    if (group && !value) {
+        if (process.env.NODE_ENV !== "production") {
+            console.warn(
+                "A Checkbox inside CheckboxGroup requires a `value` prop for group logic.",
+            );
         }
-    }, [ref, indeterminate]);
+    }
+
+    const isChecked =
+        group && value
+            ? Array.isArray(group.value) && group.value.includes(value)
+            : controlledChecked !== undefined
+              ? controlledChecked
+              : uncontrolledChecked;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (!controlledChecked) setInternalChecked(e.target.checked);
-        onChange?.(e);
+        if (!group && controlledChecked === undefined) {
+            setUncontrolledChecked(e.target.checked);
+        }
+        propOnChange?.(e);
     };
+
+    const name = group?.name ?? propName;
+    const disabled = group?.disabled ?? propDisabled;
 
     return (
         <CheckboxWrapper disabled={disabled} size={size}>

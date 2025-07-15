@@ -1,7 +1,8 @@
 import styled from "@styled";
 import type { Size } from "@ui-types";
-import { type ChangeEvent, type Ref, useState } from "react";
+import { type ChangeEvent, type Ref, useContext, useState } from "react";
 
+import { RadioGroupContext } from "../RadioGroup/RadioGroup.context";
 import {
     resolveIconScaling,
     resolveRadioStyles,
@@ -117,13 +118,14 @@ IconWrapper.displayName = "IconWrapper";
 const Radio = (
     {
         checked: controlledChecked,
-        onChange,
+        onChange: propOnChange,
         label,
-        disabled,
+        disabled: propDisabled,
+        defaultChecked,
         color = "primary",
         variant = "solid",
         size = "md",
-        name,
+        name: propName,
         value,
         checkedIcon,
         uncheckedIcon,
@@ -132,12 +134,31 @@ const Radio = (
     }: RadioProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
-    const [internalChecked, setInternalChecked] = useState(false);
-    const isChecked = controlledChecked ?? internalChecked;
+    const group = useContext(RadioGroupContext);
+    const [internalChecked, setInternalChecked] = useState(!!defaultChecked);
+
+    if (group && !value) {
+        if (process.env.NODE_ENV !== "production") {
+            console.warn(
+                "A Checkbox inside CheckboxGroup requires a `value` prop for group logic.",
+            );
+        }
+    }
+
+    let isChecked: boolean;
+    if (group && value !== undefined) isChecked = group.value === value;
+    else if (controlledChecked !== undefined) isChecked = controlledChecked;
+    else isChecked = internalChecked;
+
+    const name = group?.name ?? propName;
+    const disabled = group?.disabled ?? propDisabled;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (!controlledChecked) setInternalChecked(e.target.checked);
-        onChange?.(e);
+        if (group && value !== undefined) group.onChange?.(e, value);
+        else if (controlledChecked === undefined)
+            setInternalChecked(e.target.checked);
+
+        propOnChange?.(e);
     };
 
     return (

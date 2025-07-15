@@ -1,7 +1,6 @@
 import styled from "@styled";
 import type { Color, ColorLike, Orientation, Variant } from "@ui-types";
-import { Children, cloneElement, isValidElement } from "react";
-import type { ButtonProps } from "../Button/Button.types";
+import { ButtonGroupContext } from "./ButtonGroup.context";
 import { resolveButtonGroupStyles } from "./ButtonGroup.helpers";
 import type { ButtonGroupProps } from "./ButtonGroup.types";
 
@@ -66,28 +65,26 @@ const ButtonGroup = ({
     separatorColor,
     children,
 }: ButtonGroupProps) => {
-    const items = Children.map(children, (child) => {
-        if (!isValidElement<ButtonProps>(child)) return child;
-
-        return cloneElement(child, {
-            variant: variant ?? child.props.variant,
-            color: color ?? child.props.color,
-            size: size ?? child.props.size,
-            disabled: disabled ?? child.props.disabled,
-            loading: loading ?? child.props.loading,
-        });
-    });
-
     return (
-        <ButtonGroupRoot
-            spacing={spacing}
-            orientation={orientation}
-            color={color}
-            variant={variant}
-            separatorColor={separatorColor}
+        <ButtonGroupContext.Provider
+            value={{
+                color,
+                variant,
+                size,
+                disabled,
+                loading,
+            }}
         >
-            {items}
-        </ButtonGroupRoot>
+            <ButtonGroupRoot
+                spacing={spacing}
+                orientation={orientation}
+                color={color}
+                variant={variant}
+                separatorColor={separatorColor}
+            >
+                {children}
+            </ButtonGroupRoot>
+        </ButtonGroupContext.Provider>
     );
 };
 

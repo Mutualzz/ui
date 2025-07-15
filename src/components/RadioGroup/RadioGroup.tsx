@@ -1,12 +1,6 @@
 import styled from "@emotion/styled";
-import {
-    type ChangeEvent,
-    Children,
-    cloneElement,
-    isValidElement,
-    useState,
-} from "react";
-import type { RadioProps } from "../Radio/Radio.types";
+import { type ChangeEvent, useState } from "react";
+import { RadioGroupContext } from "./RadioGroup.context";
 import type { RadioGroupProps } from "./RadioGroup.types";
 
 const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
@@ -41,26 +35,31 @@ const RadioGroup = ({
     children,
 }: RadioGroupProps) => {
     const [internalValue, setInternalValue] = useState(defaultValue ?? "");
-    const currentValue = controlledValue ?? internalValue;
+    const isControlled = controlledValue !== undefined;
+    const currentValue = isControlled ? controlledValue : internalValue;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newVal = e.target.value;
-        if (!controlledValue) setInternalValue(newVal);
-
-        onChange?.(e, newVal);
+    const handleChange = (
+        e: ChangeEvent<HTMLInputElement>,
+        newValue: string,
+    ) => {
+        if (!isControlled) setInternalValue(newValue);
+        onChange?.(e, newValue);
     };
 
-    const items = Children.map(children, (child) => {
-        if (!isValidElement<RadioProps>(child)) return child;
-        return cloneElement(child, {
-            name,
-            disabled: disabled ?? child.props.disabled,
-            onChange: handleChange,
-            checked: child.props.value === currentValue,
-        });
-    });
-
-    return <RadioGroupButtonWrapper row={row}>{items}</RadioGroupButtonWrapper>;
+    return (
+        <RadioGroupContext.Provider
+            value={{
+                name,
+                value: currentValue,
+                onChange: handleChange,
+                disabled,
+            }}
+        >
+            <RadioGroupButtonWrapper row={row}>
+                {children}
+            </RadioGroupButtonWrapper>
+        </RadioGroupContext.Provider>
+    );
 };
 
 RadioGroup.displayName = "RadioGroup";
