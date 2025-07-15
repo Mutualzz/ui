@@ -1,12 +1,11 @@
 import type { CSSObject, Theme } from "@emotion/react";
-import type { Color, ColorLike, Variant } from "@ui-types";
+import type { Color, ColorLike, Orientation, Variant } from "@ui-types";
 import { darken, resolveColor } from "@utils";
 import { formatHex8, parse } from "culori";
-import type { ButtonGroupOrientation } from "./ButtonGroup.types";
 
 export const resolveButtonGroupStyles = (
     theme: Theme,
-    orientation: ButtonGroupOrientation,
+    orientation: Orientation,
     color: Color | ColorLike = "primary",
     variant: Variant = "solid",
     separatorColor?: Color | ColorLike,

@@ -1,15 +1,12 @@
 import styled from "@styled";
-import type { Color, ColorLike, Variant } from "@ui-types";
+import type { Color, ColorLike, Orientation, Variant } from "@ui-types";
 import { Children, cloneElement, isValidElement } from "react";
 import type { ButtonProps } from "../Button/Button.types";
 import { resolveButtonGroupStyles } from "./ButtonGroup.helpers";
-import type {
-    ButtonGroupOrientation,
-    ButtonGroupProps,
-} from "./ButtonGroup.types";
+import type { ButtonGroupProps } from "./ButtonGroup.types";
 
 const ButtonGroupRoot = styled("div")<{
-    orientation: ButtonGroupOrientation;
+    orientation: Orientation;
     spacing: number;
     color?: Color | ColorLike;
     variant?: Variant;

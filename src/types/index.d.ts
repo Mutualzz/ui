@@ -28,6 +28,8 @@ export type TypographyColor = "primary" | "secondary" | "accent" | "disabled";
 
 export type Variant = "plain" | "outlined" | "soft" | "solid";
 
+export type Orientation = "horizontal" | "vertical";
+
 export type TypographyDisplayKey =
     | "display-xs"
     | "display-sm"

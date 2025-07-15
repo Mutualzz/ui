@@ -1,7 +1,5 @@
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Orientation, Size, Variant } from "@ui-types";
 import type { ReactNode } from "react";
-
-export type ButtonGroupOrientation = "horizontal" | "vertical";
 
 export interface ButtonGroupProps {
     /**
@@ -31,7 +29,7 @@ export interface ButtonGroupProps {
      * The orientation of the button group, either "horizontal" or "vertical".
      * @default "horizontal"
      */
-    orientation?: ButtonGroupOrientation;
+    orientation?: Orientation;
 
     /**
      * The loading state of the button group.
