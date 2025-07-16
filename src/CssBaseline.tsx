@@ -26,13 +26,6 @@ export const CssBaseline = () => {
                     color: ${theme.typography.colors.primary};
                 }
 
-                ul,
-                ol {
-                    padding: 0;
-                    margin: 0;
-                    list-style: none;
-                }
-
                 img,
                 video,
                 svg {
