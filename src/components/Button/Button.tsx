@@ -104,6 +104,15 @@ const Button = (
     const size = propSize ?? group?.size ?? "md";
     const loading = propLoading ?? group?.loading ?? false;
     const disabled = propDisabled ?? group?.disabled ?? false;
+
+    console.log("Button rendered with:", {
+        variant,
+        color,
+        size,
+        loading,
+        disabled,
+    });
+
     return (
         <ButtonWrapper
             {...props}

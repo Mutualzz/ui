@@ -64,7 +64,6 @@ export const variantColors = (theme: Theme, color: Color | ColorLike) => {
             color: formatHex8(parsedColor),
             "&:hover": {
                 backgroundColor: alpha(parsedColor, 0.2),
-                border: `1px solid ${alpha(parsedColor, 0.1)}`,
             },
             "&:active": {
                 backgroundColor: alpha(parsedColor, 0.1),
@@ -79,9 +78,11 @@ export const variantColors = (theme: Theme, color: Color | ColorLike) => {
             border: "none",
             color: formatHex8(parsedColor),
             "&:hover": {
+                backgroundColor: alpha(parsedColor, 0.3),
                 color: formatHex8(lighten(parsedColor, 0.6)),
             },
             "&:active": {
+                backgroundColor: alpha(parsedColor, 0.5),
                 color: formatHex8(lighten(parsedColor, 0.5)),
             },
             "&:disabled": {
@@ -97,7 +98,7 @@ export const variantColors = (theme: Theme, color: Color | ColorLike) => {
                 color: formatHex8(lighten(parsedColor, 0.2)),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.2),
+                backgroundColor: alpha(parsedColor, 0.3),
                 color: formatHex8(lighten(parsedColor, 0.1)),
             },
             "&:disabled": {
