@@ -3,7 +3,7 @@ import { type Theme } from "@emotion/react";
 import { formatHex8, parse } from "culori";
 
 import type { Color, ColorLike, Size } from "@ui-types";
-import { adjustTextColor, alpha, getLuminance, lighten } from "@utils";
+import { adjustTextColor, alpha, darken, getLuminance, lighten } from "@utils";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
 
@@ -48,10 +48,10 @@ export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
             color: formatHex8(adjustTextColor(parsedColor, textColor)),
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.8),
+                backgroundColor: formatHex8(darken(parsedColor, 0.2)),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.6),
+                backgroundColor: formatHex8(darken(parsedColor, 0.4)),
             },
             "&:disabled": {
                 backgroundColor: alpha(parsedColor, 0.2),

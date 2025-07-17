@@ -3,8 +3,8 @@ import { useContext, type ReactNode, type Ref } from "react";
 import styled from "@styled";
 import { CircularProgress } from "../CircularProgress/CircularProgress";
 
-import { type Size } from "@ui-types";
 import { ButtonGroupContext } from "../ButtonGroup/ButtonGroup.context";
+import { IconWrapper } from "../IconWrapper/IconWrapper";
 import { resolveButtonSize, resolveButtonStyles } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 
@@ -58,24 +58,6 @@ const SpinnerOverlay = styled("span")({
 });
 
 SpinnerOverlay.displayName = "SpinnerOverlay";
-
-const IconWrapper = styled("span")<{
-    position: "start" | "end";
-    size?: Size | number;
-    childrenContent?: ReactNode;
-}>(({ position, size, childrenContent }) => ({
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    lineHeight: 1,
-    fontSize: size === "sm" ? "1.2em" : size === "lg" ? "1.5em" : "1.3em",
-    marginLeft: childrenContent && position === "end" ? "0.25em" : 0,
-    marginRight: childrenContent && position === "start" ? "0.25em" : 0,
-    flexShrink: 0,
-    flexGrow: 0,
-}));
-
-IconWrapper.displayName = "IconWrapper";
 
 /**
  * Button component that renders a styled button element with various properties.
