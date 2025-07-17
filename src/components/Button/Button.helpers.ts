@@ -61,7 +61,7 @@ export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
         outlined: {
             backgroundColor: "transparent",
             border: `1px solid ${formatHex8(parsedColor)}`,
-            color: formatHex8(parsedColor),
+            color: formatHex8(lighten(parsedColor, 0.6)),
             "&:hover": {
                 backgroundColor: alpha(parsedColor, 0.2),
             },
@@ -76,7 +76,7 @@ export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
         plain: {
             backgroundColor: "transparent",
             border: "none",
-            color: formatHex8(parsedColor),
+            color: formatHex8(lighten(parsedColor, 0.25)),
             "&:hover": {
                 backgroundColor: alpha(parsedColor, 0.3),
                 color: formatHex8(lighten(parsedColor, 0.6)),
@@ -91,15 +91,13 @@ export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
         },
         soft: {
             backgroundColor: alpha(parsedColor, 0.4),
-            color: formatHex8(parsedColor),
+            color: formatHex8(lighten(parsedColor, 0.75)),
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.2),
-                color: formatHex8(lighten(parsedColor, 0.2)),
+                backgroundColor: alpha(lighten(parsedColor, 0.2), 0.5),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.3),
-                color: formatHex8(lighten(parsedColor, 0.1)),
+                backgroundColor: alpha(lighten(parsedColor, 0.5), 0.5),
             },
             "&:disabled": {
                 backgroundColor: alpha(parsedColor, 0.2),
