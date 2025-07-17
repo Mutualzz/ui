@@ -1,4 +1,4 @@
-import { css, Global } from "@emotion/react";
+import { Global } from "@emotion/react";
 import { useTheme } from "./hooks/useTheme";
 
 export const CssBaseline = () => {
@@ -6,41 +6,31 @@ export const CssBaseline = () => {
 
     return (
         <Global
-            styles={css`
-                *,
-                *::before,
-                *::after {
-                    box-sizing: border-box;
-                }
+            styles={{
+                "*, *::before, *::after": {
+                    boxSizing: "border-box",
+                },
+                "html, body": {
+                    margin: 0,
+                    padding: 0,
 
-                html,
-                body {
-                    margin: 0;
-                    padding: 0;
+                    fontFamily: theme.typography.fontFamily,
+                    fontSize: theme.typography.levels["body-md"].fontSize,
+                    lineHeight: theme.typography.levels["body-md"].lineHeight,
+                    backgroundColor: theme.colors.background,
+                    color: theme.typography.colors.primary,
+                },
 
-                    font-family: ${theme.typography.fontFamily};
-                    font-size: ${theme.typography.levels["body-md"].fontSize}px;
-                    line-height: ${theme.typography.levels["body-md"]
-                        .lineHeight};
-                    background-color: ${theme.colors.background};
-                    color: ${theme.typography.colors.primary};
-                }
+                "img, video, svg": {
+                    maxWidth: "100%",
+                    height: "auto",
+                    display: "block",
+                },
 
-                img,
-                video,
-                svg {
-                    max-width: 100%;
-                    height: auto;
-                    display: block;
-                }
-
-                button,
-                input,
-                textarea,
-                select {
-                    font-family: inherit;
-                }
-            `}
+                "button, input, textarea, select": {
+                    fontFamily: "inherit",
+                },
+            }}
         />
     );
 };
