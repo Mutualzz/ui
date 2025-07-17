@@ -3,6 +3,7 @@ import type { Orientation } from "@ui-types";
 import { resolveColor } from "@utils";
 import { formatHex8 } from "culori";
 import { useContext } from "react";
+import { IconWrapper } from "../IconWrapper/IconWrapper";
 import { ListContext } from "../List/List.context";
 import { NestedListContext } from "../List/NestedList.context";
 import {
@@ -19,7 +20,6 @@ export const ListItemButtonRoot = styled("button")<
 >(
     ({
         theme,
-        disabled,
         size = "md",
         orientation = "vertical",
         color = "primary",
@@ -31,12 +31,12 @@ export const ListItemButtonRoot = styled("button")<
         justifyContent: "flex-start",
         borderRadius: 0,
         boxSizing: "border-box",
+        cursor: "pointer",
         transition: "all 0.3s ease",
-        ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
         ...resolveListItemButtonSize(theme, size),
         ...resolveListItemButtonStyles(theme, color)[variant],
-        border: "none",
         ...(variant === "outlined" && {
+            border: "none",
             "&:not(:first-of-type)": {
                 borderTop:
                     orientation === "vertical"
@@ -50,6 +50,18 @@ export const ListItemButtonRoot = styled("button")<
         }),
     }),
 );
+
+const ListItemButtonContent = styled("span")({
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexGrow: 0,
+    flexShrink: 0,
+    width: "auto",
+    height: "100%",
+    opacity: 1,
+    boxSizing: "border-box",
+});
 
 export const ListItemButton = (props: ListItemButtonProps) => {
     const nesting = useContext(NestedListContext);
@@ -75,9 +87,25 @@ export const ListItemButton = (props: ListItemButtonProps) => {
             orientation={orientation}
             {...rest}
         >
-            {startDecorator}
-            {children}
-            {endDecorator}
+            {startDecorator && (
+                <IconWrapper
+                    childrenContent={children}
+                    position="start"
+                    size={size}
+                >
+                    {startDecorator}
+                </IconWrapper>
+            )}
+            <ListItemButtonContent>{children}</ListItemButtonContent>
+            {endDecorator && (
+                <IconWrapper
+                    childrenContent={children}
+                    position="end"
+                    size={size}
+                >
+                    {endDecorator}
+                </IconWrapper>
+            )}
         </ListItemButtonRoot>
     );
 };
