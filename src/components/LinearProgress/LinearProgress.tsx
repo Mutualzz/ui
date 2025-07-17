@@ -4,9 +4,9 @@ import styled from "@styled";
 import type { Variant } from "@ui-types";
 import { resolveColor } from "@utils/resolveColors";
 import {
-    resolveLength,
-    resolveThickness,
-    variantColors,
+    resolveLinearProgressLength,
+    resolveLinearProgressStyles,
+    resolveLinearProgressThickness,
 } from "./LinearProgress.helpers";
 import { bounce, scaleInOut, slide, wave } from "./LinearProgress.keyframes";
 import type { LinearProgressProps } from "./LinearProgress.types";
@@ -98,10 +98,10 @@ const LinearProgress = ({
 }: LinearProgressProps) => {
     const { theme } = useTheme();
 
-    const height = resolveThickness(thickness);
-    const width = resolveLength(length);
+    const height = resolveLinearProgressThickness(thickness);
+    const width = resolveLinearProgressLength(length);
 
-    const background = variantColors(theme, color)[variant];
+    const background = resolveLinearProgressStyles(theme, color)[variant];
 
     const sharedColor = resolveColor(color, theme);
 

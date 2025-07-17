@@ -4,7 +4,7 @@ import { adjustTextColor, alpha, dynamicElevation, getLuminance } from "@utils";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
 import { formatHex8, parse } from "culori";
 
-export const variantStyles = (
+export const resolvePaperStyles = (
     theme: Theme,
     color: Color | ColorLike,
     textColor: TypographyColor | "inherit",

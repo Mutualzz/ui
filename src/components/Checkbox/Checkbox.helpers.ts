@@ -15,7 +15,7 @@ export const baseSizeMap: Record<Size, number> = {
     lg: 24,
 };
 
-export const resolveCheckboxStyles = (size: Size | number) => {
+export const resolveCheckboxSize = (size: Size | number) => {
     const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
     return {
@@ -25,7 +25,7 @@ export const resolveCheckboxStyles = (size: Size | number) => {
     };
 };
 
-export const variantColors = (
+export const resolveCheckboxStyles = (
     theme: Theme,
     color: Color | ColorLike,
     checked?: boolean,

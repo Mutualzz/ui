@@ -11,7 +11,10 @@ const minSize = 16,
 const minSizeThickness = 1,
     maxSizeThickness = 10;
 
-export const variantColors = (theme: Theme, color: Color | ColorLike) => {
+export const resolveCircularProgressStyles = (
+    theme: Theme,
+    color: Color | ColorLike,
+) => {
     const parsedColor = parse(resolveColor(color, theme));
 
     if (!parsedColor)
@@ -42,10 +45,10 @@ export const thicknesses: Record<Size, number> = {
     lg: 8,
 };
 
-export const resolveCircularProgressSizes = (size: Size | number) =>
+export const resolveCircularProgressSize = (size: Size | number) =>
     resolveSize(size, minSize, maxSize, sizes);
 
-export const resolveCiruclarProgressThickness = (thickness: Size | number) => {
+export const resolveCircularProgressThickness = (thickness: Size | number) => {
     const sizeVal = resolveSize(
         thickness,
         minSizeThickness,

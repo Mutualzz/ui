@@ -3,9 +3,9 @@ import { useTheme } from "../../hooks/useTheme";
 
 import { resolveColor } from "@utils/resolveColors";
 import {
-    resolveCircularProgressSizes,
-    resolveCiruclarProgressThickness,
-    variantColors,
+    resolveCircularProgressSize,
+    resolveCircularProgressStyles,
+    resolveCircularProgressThickness,
 } from "./CircularProgress.helpers";
 import { spin } from "./CircularProgress.keyframes";
 import type { CircularProgressProps } from "./CircularProgress.types";
@@ -41,17 +41,17 @@ const CircularProgress = ({
 
     const contentPadding = 8;
 
-    const strokeWidth = resolveCiruclarProgressThickness(size);
+    const strokeWidth = resolveCircularProgressThickness(size);
 
     const diameter = contentDiameter
         ? contentDiameter + strokeWidth + contentPadding * 2
-        : resolveCircularProgressSizes(size);
+        : resolveCircularProgressSize(size);
 
     const radius = (diameter - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
     const dashOffset = ((100 - value) / 100) * circumference;
 
-    const outerStroke = variantColors(theme, color)[variant];
+    const outerStroke = resolveCircularProgressStyles(theme, color)[variant];
     const innerStroke = resolveColor(color, theme);
     const outlinedStroke = resolveColor(color, theme);
 

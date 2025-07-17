@@ -1,5 +1,5 @@
 import styled from "@styled";
-import { variantStyles } from "./Paper.helpers";
+import { resolvePaperStyles } from "./Paper.helpers";
 import { type PaperProps } from "./Paper.types";
 
 /**
@@ -20,7 +20,7 @@ const Paper = styled("div")<PaperProps>(
     }) => ({
         ...(!display && { display: "flex" }),
         transition: "background-color 0.2s ease",
-        ...variantStyles(theme, color, textColor, elevation)[variant],
+        ...resolvePaperStyles(theme, color, textColor, elevation)[variant],
     }),
 );
 

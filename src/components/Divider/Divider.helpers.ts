@@ -20,7 +20,7 @@ export const resolveDividerColor = (
     return formatHex8(parsedColor);
 };
 
-export const resolveDividerVariant = (
+export const resolveDividerStyles = (
     isVertical: boolean,
     lineColor: string,
 ) => {

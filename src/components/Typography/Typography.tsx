@@ -1,6 +1,6 @@
 import styled from "@styled";
 
-import { variantStyles } from "./Typography.helpers";
+import { resolveTypographStyles } from "./Typography.helpers";
 import { type TypographyProps } from "./Typography.types";
 
 /**
@@ -17,7 +17,7 @@ const Typography = styled("span")<TypographyProps>(
         weight,
     }) => ({
         ...(level === "inherit" ? {} : theme.typography.levels[level]),
-        ...variantStyles(theme, color)[variant],
+        ...resolveTypographStyles(theme, color)[variant],
         fontWeight: weight,
     }),
 );

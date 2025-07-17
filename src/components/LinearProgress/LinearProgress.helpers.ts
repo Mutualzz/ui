@@ -11,7 +11,10 @@ const minLength = 80,
 const minThickness = 4,
     maxThickness = 16;
 
-export const variantColors = (theme: Theme, color: Color | ColorLike) => {
+export const resolveLinearProgressStyles = (
+    theme: Theme,
+    color: Color | ColorLike,
+) => {
     const parsedColor = parse(resolveColor(color, theme));
     if (!parsedColor)
         return {
@@ -41,8 +44,8 @@ export const lengthMap: Record<Size, number> = {
     lg: 200,
 };
 
-export const resolveThickness = (thickness: Size | number) =>
+export const resolveLinearProgressThickness = (thickness: Size | number) =>
     resolveSize(thickness, minThickness, maxThickness, thicknessMap);
 
-export const resolveLength = (length: Size | number) =>
+export const resolveLinearProgressLength = (length: Size | number) =>
     resolveSize(length, minLength, maxLength, lengthMap);

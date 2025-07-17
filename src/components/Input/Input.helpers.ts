@@ -32,7 +32,7 @@ export const resolveInputSize = (size: Size | number) => {
     };
 };
 
-export const resolvePasswordIconColor = (
+export const resolvePasswordIconStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ): Record<Variant, string> => {

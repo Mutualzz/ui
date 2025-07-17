@@ -16,7 +16,7 @@ export const baseSizeMap: Record<Size, number> = {
     lg: 16,
 };
 
-export const resolveButtonStyles = (size: Size | number) => {
+export const resolveButtonSize = (size: Size | number) => {
     const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
     const padding = 10;
 
@@ -30,7 +30,7 @@ export const resolveButtonStyles = (size: Size | number) => {
     };
 };
 
-export const variantColors = (theme: Theme, color: Color | ColorLike) => {
+export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
     const { colors } = theme;
 
     const parsedColor = parse(resolveColor(color, theme));

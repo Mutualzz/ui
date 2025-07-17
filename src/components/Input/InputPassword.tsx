@@ -1,6 +1,6 @@
 import { useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";
-import { resolvePasswordIconColor } from "./Input.helpers";
+import { resolvePasswordIconStyles } from "./Input.helpers";
 import type { InputPasswordProps } from "./Input.types";
 import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 
@@ -50,7 +50,7 @@ const InputPassword = (
 
     let strokeColor = "currentColor";
     if (iconVisible && (!showPasswordIcon || !hidePasswordIcon)) {
-        strokeColor = resolvePasswordIconColor(theme, color)[variant];
+        strokeColor = resolvePasswordIconStyles(theme, color)[variant];
     }
 
     return (

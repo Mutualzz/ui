@@ -3,9 +3,9 @@ import { type Size } from "@ui-types";
 import { useContext, useState, type ChangeEvent, type Ref } from "react";
 import { CheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
 import {
+    resolveCheckboxSize,
     resolveCheckboxStyles,
     resolveIconScaling,
-    variantColors,
 } from "./Checkbox.helpers";
 import { type CheckboxProps } from "./Checkbox.types";
 
@@ -18,7 +18,7 @@ const CheckboxWrapper = styled("label")<Omit<CheckboxProps, "value">>(
         userSelect: "none",
         transition: "all 0.3s ease",
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
-        ...resolveCheckboxStyles(size),
+        ...resolveCheckboxSize(size),
     }),
 );
 
@@ -56,20 +56,24 @@ const CheckboxBox = styled("span")<Omit<CheckboxProps, "value">>(({
         padding: 0,
     };
 
-    const variantStyle = variantColors(theme, color, checked)[variant];
+    const variantStyle = resolveCheckboxStyles(theme, color, checked)[variant];
 
     return {
         ...base,
         ...variantStyle,
 
-        'input[type="checkbox"]:hover + &': variantColors(theme, color, true)[
-            variant
-        ],
-        'input[type="checkbox"]:active + &': variantColors(theme, color, true)[
-            variant
-        ],
+        'input[type="checkbox"]:hover + &': resolveCheckboxStyles(
+            theme,
+            color,
+            true,
+        )[variant],
+        'input[type="checkbox"]:active + &': resolveCheckboxStyles(
+            theme,
+            color,
+            true,
+        )[variant],
         'input[type="checkbox"]:focus-visible + &': {
-            boxShadow: `0 0 0 3px ${variantColors(theme, color, true).solid.backgroundColor}`,
+            boxShadow: `0 0 0 3px ${resolveCheckboxStyles(theme, color, true).solid.backgroundColor}`,
             outline: "none",
         },
         "&::before": {

@@ -10,7 +10,7 @@ export const baseSizeMap: Record<Size, number> = {
     lg: 24,
 };
 
-export const resolveRadioStyles = (size: Size | number) => {
+export const resolveRadioSize = (size: Size | number) => {
     const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
     return {
@@ -22,5 +22,5 @@ export const resolveRadioStyles = (size: Size | number) => {
 
 export {
     resolveIconScaling,
-    variantColors,
+    resolveCheckboxStyles as resolveRadioStyles,
 } from "../Checkbox/Checkbox.helpers";

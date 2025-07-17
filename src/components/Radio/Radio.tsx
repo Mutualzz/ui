@@ -5,8 +5,8 @@ import { type ChangeEvent, type Ref, useContext, useState } from "react";
 import { RadioGroupContext } from "../RadioGroup/RadioGroup.context";
 import {
     resolveIconScaling,
+    resolveRadioSize,
     resolveRadioStyles,
-    variantColors,
 } from "./Radio.helpers";
 import type { RadioProps } from "./Radio.types";
 
@@ -19,7 +19,7 @@ const RadioWrapper = styled("label")<RadioProps>(
         userSelect: "none",
         transition: "all 0.3s ease",
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
-        ...resolveRadioStyles(size),
+        ...resolveRadioSize(size),
     }),
 );
 
@@ -58,22 +58,24 @@ const RadioControl = styled("span")<RadioProps>(({
         padding: 0,
     };
 
-    const variantStyle = variantColors(theme, color, checked)[variant];
+    const variantStyle = resolveRadioStyles(theme, color, checked)[variant];
 
     return {
         ...baseStyles,
         ...variantStyle,
 
-        'input[type="radio"]:hover + &': variantColors(theme, color, true)[
+        'input[type="radio"]:hover + &': resolveRadioStyles(theme, color, true)[
             variant
         ],
 
-        'input[type="radio"]:active + &': variantColors(theme, color, true)[
-            variant
-        ],
+        'input[type="radio"]:active + &': resolveRadioStyles(
+            theme,
+            color,
+            true,
+        )[variant],
 
         'input[type="radio"]:focus-visible + &': {
-            boxShadow: `0 0 0 3px ${variantColors(theme, color, true).solid.backgroundColor}`,
+            boxShadow: `0 0 0 3px ${resolveRadioStyles(theme, color, true).solid.backgroundColor}`,
             outline: "none",
         },
     };

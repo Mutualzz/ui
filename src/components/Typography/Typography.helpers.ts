@@ -4,7 +4,10 @@ import { adjustTextColor, alpha, getLuminance } from "@utils";
 import { resolveColor } from "@utils/resolveColors";
 import { formatHex8, parse } from "culori";
 
-export const variantStyles = (theme: Theme, color: Color | ColorLike) => {
+export const resolveTypographStyles = (
+    theme: Theme,
+    color: Color | ColorLike,
+) => {
     const { colors } = theme;
 
     const parsedColor = parse(resolveColor(color, theme));

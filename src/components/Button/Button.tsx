@@ -5,7 +5,7 @@ import { CircularProgress } from "../CircularProgress/CircularProgress";
 
 import { type Size } from "@ui-types";
 import { ButtonGroupContext } from "../ButtonGroup/ButtonGroup.context";
-import { resolveButtonStyles, variantColors } from "./Button.helpers";
+import { resolveButtonSize, resolveButtonStyles } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 
 const ButtonWrapper = styled("button")<ButtonProps>(
@@ -25,8 +25,8 @@ const ButtonWrapper = styled("button")<ButtonProps>(
         cursor: "pointer",
         transition: "all 0.3s ease",
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
-        ...resolveButtonStyles(size),
-        ...variantColors(theme, color)[variant],
+        ...resolveButtonSize(size),
+        ...resolveButtonStyles(theme, color)[variant],
     }),
 );
 

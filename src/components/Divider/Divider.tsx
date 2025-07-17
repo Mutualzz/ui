@@ -1,7 +1,7 @@
 import { useTheme } from "../../hooks/useTheme";
 
 import styled from "@styled";
-import { resolveDividerColor, resolveDividerVariant } from "./Divider.helpers";
+import { resolveDividerColor, resolveDividerStyles } from "./Divider.helpers";
 import type { DividerProps, DividerVariant } from "./Divider.types";
 
 const DividerWrapper = styled("div")<{ isVertical?: boolean }>(
@@ -37,7 +37,7 @@ const DividerLine = styled("span")<{
     flexGrow: grow ? 1 : 0,
 
     ...(isVertical ? { minHeight: "1rem" } : { minWidth: "1rem" }),
-    ...resolveDividerVariant(isVertical, lineColor)[variant],
+    ...resolveDividerStyles(isVertical, lineColor)[variant],
 }));
 
 DividerLine.displayName = "DividerLine";
