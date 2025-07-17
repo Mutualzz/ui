@@ -1,4 +1,5 @@
 import { clampChroma, lch, type Color, type Lch } from "culori";
+import { allowedListStyleTypes } from "../components/List/List";
 import { adjustLightness } from "./adjustLightness";
 import { adjustTextColor } from "./adjustTextColor";
 import { alpha } from "./alpha";
@@ -53,4 +54,10 @@ export const lighten = (color: Color, factor: number) => {
     colorLch.l = Math.min(100, colorLch.l + (100 - colorLch.l) * factor);
 
     return clampChroma(colorLch);
+};
+
+export const isCssMarker = (
+    marker: any,
+): marker is (typeof allowedListStyleTypes)[number] => {
+    return allowedListStyleTypes.includes(marker);
 };
