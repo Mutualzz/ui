@@ -15,6 +15,7 @@ const blockedProps = [
     "theme",
     "size",
     "color",
+    "orientation",
     ...Object.keys(aliasMaps),
 ];
 
