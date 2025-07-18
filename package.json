@@ -43,5 +43,5 @@
         "dev": "bunchee --watch",
         "prepublishOnly": "bun run check-types && bun run build"
     },
-    "version": "3.0.1"
+    "version": "3.0.2"
 }
