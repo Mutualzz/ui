@@ -24,7 +24,8 @@
 
 - Avatar 🗓️ (Planned)
 - [Divider](https://mutualzz.com/ui/data-display/divider) ✅ (Implemented)
-- [Markdown](https://mutualzz.com/ui/data-display/markdown-renderer) Renderer ✅ (Implemented) **SIDENOTE:** Same situation as Markdown Input
+- [Markdown Renderer](https://mutualzz.com/ui/data-display/markdown-renderer) ✅ (Implemented) **SIDENOTE:** Same situation as Markdown Input
+- [List](https://mutualzz.com/ui/data-display/list) ✅
 - [Typography](https://mutualzz.com/ui/data-display/typography) ✅ (Implemented)
 
 ### Feedback
