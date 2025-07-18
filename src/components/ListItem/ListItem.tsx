@@ -24,12 +24,14 @@ const ListItemRoot = styled("li")<
         display: isCssMarker(marker)
             ? orientation === "vertical"
                 ? "list-item"
-                : "inline-list-item"
-            : "flex", // block for CSS markers, flex for custom
+                : "inline list-item"
+            : orientation === "vertical"
+              ? "flex"
+              : "inline-flex",
         alignItems: !isCssMarker(marker) ? "center" : undefined,
         position: "relative",
         paddingBlock: marker ? "0.5em" : undefined,
-        listStylePosition: isCssMarker(marker) ? "inside" : "unset",
+        listStylePosition: isCssMarker(marker) ? "inside" : undefined,
         listStyleType: isCssMarker(marker) ? marker : "none",
         boxSizing: "border-box",
 

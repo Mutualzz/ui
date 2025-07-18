@@ -18,21 +18,21 @@ export const resolveListSize = (theme: Theme, size: Size | number) => {
     let gap, minHeight, paddingY, paddingX, fontSize;
     switch (size) {
         case "sm":
-            gap = "0.5rem";
+            gap = "0.25rem";
             minHeight = "2rem";
             paddingY = 3;
             paddingX = 3;
             fontSize = theme.typography.levels["body-sm"].fontSize;
             break;
         case "md":
-            gap = "0.625rem";
+            gap = "0.375rem";
             minHeight = "2.25rem";
             paddingY = "0.25rem";
             paddingX = "0.25rem";
             fontSize = theme.typography.levels["body-md"].fontSize;
             break;
         case "lg":
-            gap = "0.75rem";
+            gap = "0.5rem";
             minHeight = "2.75rem";
             paddingY = "0.375rem";
             paddingX = "0.5rem";
