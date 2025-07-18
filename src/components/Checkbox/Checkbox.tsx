@@ -146,14 +146,6 @@ const Checkbox = (
         defaultChecked ?? false,
     );
 
-    if (group && !value) {
-        if (process.env.NODE_ENV !== "production") {
-            console.warn(
-                "A Checkbox inside CheckboxGroup requires a `value` prop for group logic.",
-            );
-        }
-    }
-
     const isChecked =
         group && value
             ? Array.isArray(group.value) && group.value.includes(value)

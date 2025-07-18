@@ -66,8 +66,7 @@ const ListItemButtonContent = styled("span")({
 export const ListItemButton = (props: ListItemButtonProps) => {
     const nesting = useContext(NestedListContext);
 
-    const { marker, color, orientation, size, variant } =
-        useContext(ListContext);
+    const { color, orientation, size, variant } = useContext(ListContext);
     const {
         children,
         startDecorator,

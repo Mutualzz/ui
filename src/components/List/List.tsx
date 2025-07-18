@@ -7,44 +7,6 @@ import { resolveListStyles } from "./List.helpers";
 import type { ListProps } from "./List.types";
 import { NestedListContext } from "./NestedList.context";
 
-export const allowedListStyleTypes = [
-    "disc",
-    "circle",
-    "square",
-    "decimal",
-    "decimal-leading-zero",
-    "lower-roman",
-    "upper-roman",
-    "lower-alpha",
-    "upper-alpha",
-    "lower-latin",
-    "upper-latin",
-    "armenian",
-    "georgian",
-    "lower-greek",
-    "lower-armenian",
-    "upper-armenian",
-    "hebrew",
-    "cjk-earthly-branch",
-    "cjk-heavenly-stem",
-    "hiragana",
-    "hiragana-iroha",
-    "katakana",
-    "katakana-iroha",
-    "japanese-formal",
-    "japanese-informal",
-    "korean-hangul-formal",
-    "korean-hanja-formal",
-    "korean-hanja-informal",
-    "simp-chinese-formal",
-    "simp-chinese-informal",
-    "trad-chinese-formal",
-    "trad-chinese-informal",
-    "disclosure-open",
-    "disclosure-closed",
-    "none",
-] as const;
-
 const ListRoot = styled("ul")<
     ListProps & { nesting: number; cssMarker?: boolean }
 >(
@@ -73,8 +35,7 @@ const ListRoot = styled("ul")<
 );
 
 export const List = (props: ListProps) => {
-    const { marker, children, orientation, color, variant, size, ...rest } =
-        props;
+    const { marker, children, orientation, color, variant, size } = props;
 
     const parentNesting = useContext(NestedListContext);
 

@@ -1,6 +1,6 @@
 import type { AllowNumber, Responsive } from "./index";
 
-import { Properties } from "csstype";
+import { type Properties } from "csstype";
 
 export interface HTMLSizingProps {
     width?: Responsive<AllowNumber<Properties["width"]>>;

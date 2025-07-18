@@ -139,14 +139,6 @@ const Radio = (
     const group = useContext(RadioGroupContext);
     const [internalChecked, setInternalChecked] = useState(!!defaultChecked);
 
-    if (group && !value) {
-        if (process.env.NODE_ENV !== "production") {
-            console.warn(
-                "A Checkbox inside CheckboxGroup requires a `value` prop for group logic.",
-            );
-        }
-    }
-
     let isChecked: boolean;
     if (group && value !== undefined) isChecked = group.value === value;
     else if (controlledChecked !== undefined) isChecked = controlledChecked;

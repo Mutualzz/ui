@@ -34,30 +34,29 @@ interface StyledWithSxInterface {
         tag: Tag,
         options?: StyledOptions,
     ): <Props extends object = object>(
-        ...styles: Array<
+        ...styles: (
             | TemplateStringsArray
             | Interpolation<CallbackProps<JSX.IntrinsicElements[Tag] & Props>>
             | string
             | number
-        >
+        )[]
     ) => ComponentType<PublicProps<JSX.IntrinsicElements[Tag] & Props>>;
 
     <Component extends ComponentType<any>>(
         component: Component,
         options?: StyledOptions,
     ): <Props extends object = object>(
-        ...styles: Array<
+        ...styles: (
             | TemplateStringsArray
             | Interpolation<
                   CallbackProps<ComponentPropsWithRef<Component> & Props>
               >
             | string
             | number
-        >
+        )[]
     ) => ComponentType<PublicProps<ComponentPropsWithRef<Component> & Props>>;
 }
 
-// eslint-disable-next-line sonarjs/no-useless-intersection
 type StyledWithSx = StyledWithSxInterface & typeof styledBase;
 
 const styled = new Proxy(styledBase, {

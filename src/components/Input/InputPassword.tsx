@@ -139,7 +139,6 @@ const InputPassword = (
     );
 };
 
-// eslint-disable-next-line sonarjs/no-hardcoded-passwords
 InputPassword.displayName = "InputPassword";
 
 export { InputPassword };

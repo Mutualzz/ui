@@ -45,12 +45,12 @@ export type TypographyLevel =
     | TypographyHeadingKey
     | TypographyDisplayKey;
 
-export type TypographyLevelObj = {
+export interface TypographyLevelObj {
     fontSize: number;
     lineHeight: string | number;
     fontWeight: string | number;
     letterSpacing: string | number;
-};
+}
 
 export type Size = "sm" | "md" | "lg";
 
@@ -104,13 +104,11 @@ export interface MZTheme {
             accent: ColorLike;
             disabled: ColorLike;
         };
-        levels: {
-            [key in TypographyLevel]: TypographyLevelObj;
-        };
+        levels: Record<TypographyLevel, TypographyLevelObj>;
     };
     breakpoints: {
         keys: Breakpoint[];
-        values: { [key in Breakpoint]: number };
+        values: Record<Breakpoint, number>;
         up: (key: Breakpoint) => string;
         down: (key: Breakpoint) => string;
         between: (start: Breakpoint, end: Breakpoint) => string;
@@ -134,5 +132,6 @@ export interface MZTheme {
 }
 
 declare module "@emotion/react" {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     export interface Theme extends MZTheme {}
 }

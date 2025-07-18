@@ -1,6 +1,6 @@
 import type { Responsive } from ".";
 
-import { Properties } from "csstype";
+import { type Properties } from "csstype";
 
 export interface HTMLDisplayProps {
     display?: Responsive<Properties["display"]>;

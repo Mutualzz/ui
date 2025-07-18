@@ -1,6 +1,6 @@
 import type { Color, ColorLike, Orientation, Size, Variant } from "@ui-types";
+import type { allowedListStyleTypes } from "@utils";
 import type { HTMLProps } from "react";
-import type { allowedListStyleTypes } from "./List";
 
 export type AllowedListStyleTypes = (typeof allowedListStyleTypes)[number];
 

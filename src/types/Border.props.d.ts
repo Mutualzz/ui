@@ -1,6 +1,6 @@
 import type { AllowNumber, Color, ColorLike, Responsive } from "./index";
 
-import { Properties } from "csstype";
+import { type Properties } from "csstype";
 
 export interface HTMLBorderProps {
     border?: Responsive<Properties["border"]>;

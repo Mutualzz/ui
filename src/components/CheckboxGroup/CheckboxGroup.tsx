@@ -40,7 +40,7 @@ const CheckboxGroup = ({
         checked: boolean,
     ) => {
         const val = e.target.value;
-        let newValue = checked
+        const newValue = checked
             ? Array.from(new Set([...currentValue, val])) // Deduplication
             : currentValue.filter((v) => v !== val);
 

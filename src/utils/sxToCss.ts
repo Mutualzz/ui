@@ -6,9 +6,7 @@ import { aliasToStyles } from "./aliasToStyles";
 
 export type SxProps = {
     [K in keyof CSSProperties]?: Responsive<CSSProperties[K]>;
-} & {
-    [K in AliasKey]?: Responsive<string | number>;
-};
+} & Partial<Record<AliasKey, Responsive<string | number>>>;
 
 export function sxToCss(sx: SxProps = {}, theme: Theme) {
     return aliasToStyles(sx, theme);

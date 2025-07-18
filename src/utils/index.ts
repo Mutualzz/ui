@@ -1,5 +1,4 @@
 import { clampChroma, lch, type Color, type Lch } from "culori";
-import { allowedListStyleTypes } from "../components/List/List";
 import { adjustLightness } from "./adjustLightness";
 import { adjustTextColor } from "./adjustTextColor";
 import { alpha } from "./alpha";
@@ -55,6 +54,44 @@ export const lighten = (color: Color, factor: number) => {
 
     return clampChroma(colorLch);
 };
+
+export const allowedListStyleTypes = [
+    "disc",
+    "circle",
+    "square",
+    "decimal",
+    "decimal-leading-zero",
+    "lower-roman",
+    "upper-roman",
+    "lower-alpha",
+    "upper-alpha",
+    "lower-latin",
+    "upper-latin",
+    "armenian",
+    "georgian",
+    "lower-greek",
+    "lower-armenian",
+    "upper-armenian",
+    "hebrew",
+    "cjk-earthly-branch",
+    "cjk-heavenly-stem",
+    "hiragana",
+    "hiragana-iroha",
+    "katakana",
+    "katakana-iroha",
+    "japanese-formal",
+    "japanese-informal",
+    "korean-hangul-formal",
+    "korean-hanja-formal",
+    "korean-hanja-informal",
+    "simp-chinese-formal",
+    "simp-chinese-informal",
+    "trad-chinese-formal",
+    "trad-chinese-informal",
+    "disclosure-open",
+    "disclosure-closed",
+    "none",
+] as const;
 
 export const isCssMarker = (
     marker: any,

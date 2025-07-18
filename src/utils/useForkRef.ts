@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef } from "react";
 
 export function useForkRef<Instance>(
-    ...refs: Array<React.Ref<Instance> | undefined>
+    ...refs: (React.Ref<Instance> | undefined)[]
 ): React.RefCallback<Instance> | null {
     const cleanupRef = useRef<void | (() => void)>(undefined);
 

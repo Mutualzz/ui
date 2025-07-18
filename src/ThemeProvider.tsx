@@ -14,9 +14,13 @@ import { themesObj } from "./themes";
 
 export const ThemeContext = createContext({
     theme: themesObj["baseDark"],
-    changeTheme: (_theme: string) => {},
+    changeTheme: (_theme: string) => {
+        return;
+    },
     mode: "system",
-    changeMode: (_mode: ThemeMode) => {},
+    changeMode: (_mode: ThemeMode) => {
+        return;
+    },
 });
 
 export const ThemeProvider = ({

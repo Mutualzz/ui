@@ -1,6 +1,6 @@
 import type { AllowNumber, Responsive } from "./index";
 
-import { Properties } from "csstype";
+import { type Properties } from "csstype";
 
 export interface HTMLSpacingProps {
     gap?: Responsive<AllowNumber<Properties["gap"]>>;
