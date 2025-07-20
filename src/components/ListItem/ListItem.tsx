@@ -1,6 +1,6 @@
+import styled from "@styled";
 import type { Orientation } from "@ui-types";
 import { isCssMarker } from "@utils";
-import styled from "@utils/styled";
 import { ListContext } from "components/List/List.context";
 import { useContext } from "react";
 import { NestedListContext } from "../List/NestedList.context";

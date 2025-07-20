@@ -1,4 +1,4 @@
-import styled from "@utils/styled";
+import styled from "@styled";
 import { useContext } from "react";
 
 import { isCssMarker } from "@utils";
