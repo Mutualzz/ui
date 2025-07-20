@@ -66,7 +66,7 @@ export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
                 backgroundColor: alpha(parsedColor, 0.2),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.1),
+                backgroundColor: alpha(parsedColor, 0.3),
             },
             "&:disabled": {
                 color: alpha(parsedColor, 0.4),
