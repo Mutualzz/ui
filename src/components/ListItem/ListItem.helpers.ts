@@ -12,7 +12,7 @@ const baseSizeMap: Record<Size, number> = {
     lg: 64,
 };
 
-export const resolveListSize = (theme: Theme, size: Size | number) => {
+export const resolveListItemSize = (theme: Theme, size: Size | number) => {
     const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
 
     let gap, minHeight, paddingX, fontSize;
@@ -20,7 +20,6 @@ export const resolveListSize = (theme: Theme, size: Size | number) => {
         case "sm":
             gap = "0.25rem";
             minHeight = "2rem";
-
             paddingX = 3;
             fontSize = theme.typography.levels["body-sm"].fontSize;
             break;

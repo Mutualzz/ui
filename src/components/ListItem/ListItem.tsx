@@ -4,7 +4,7 @@ import { isCssMarker } from "@utils";
 import { ListContext } from "components/List/List.context";
 import { useContext } from "react";
 import { NestedListContext } from "../List/NestedList.context";
-import { resolveListItemStyles, resolveListSize } from "./ListItem.helpers";
+import { resolveListItemSize, resolveListItemStyles } from "./ListItem.helpers";
 import type { ListItemProps } from "./ListItem.types";
 
 const ListItemRoot = styled("li")<
@@ -39,7 +39,7 @@ const ListItemRoot = styled("li")<
             ...resolveListItemStyles(theme, color)[variant],
         },
 
-        ...resolveListSize(theme, size),
+        ...resolveListItemSize(theme, size),
         ...resolveListItemStyles(theme, color)[variant],
     }),
 );
