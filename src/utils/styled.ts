@@ -16,6 +16,7 @@ const blockedProps = [
     "size",
     "color",
     "orientation",
+    "loading",
     ...Object.keys(aliasMaps),
 ];
 
