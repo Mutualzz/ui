@@ -17,6 +17,7 @@
         "baseUrl": "src",
         "rootDir": "src",
         "paths": {
+            "@components/*": ["components/*"],
             "@utils": ["utils/index"],
             "@utils/*": ["utils/*"],
             "@styled": ["utils/styled"],

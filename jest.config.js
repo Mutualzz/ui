@@ -3,10 +3,13 @@ module.exports = {
     testEnvironment: "jsdom",
     setupFilesAfterEnv: ["<rootDir>/src/setupTests.tsx"],
     moduleNameMapper: {
-        "^@test-utils$": "<rootDir>/src/setupTests.tsx",
+        "^@components/(.*)$": "<rootDir>/src/components/$1",
+        "^@utils$": "<rootDir>/src/utils/index",
+        "^@utils/(.*)$": "<rootDir>/src/utils/$1",
         "^@styled$": "<rootDir>/src/utils/styled",
         "^@ui-types$": "<rootDir>/src/types/index.d.ts",
-        "^@utils$": "<rootDir>/src/utils/index",
+        "^@ui-types/(.*)$": "<rootDir>/src/types/$1",
+        "^@test-utils$": "<rootDir>/src/setupTests.tsx",
     },
     transform: {
         "^.+\\.(ts|tsx)$": [
