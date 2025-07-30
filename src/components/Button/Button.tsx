@@ -1,7 +1,7 @@
 import { useContext, type ReactNode, type Ref } from "react";
 
+import { CircularProgress } from "@components/CircularProgress/CircularProgress";
 import styled from "@styled";
-import { CircularProgress } from "../CircularProgress/CircularProgress";
 
 import { ButtonGroupContext } from "../ButtonGroup/ButtonGroup.context";
 import { IconWrapper } from "../IconWrapper/IconWrapper";
