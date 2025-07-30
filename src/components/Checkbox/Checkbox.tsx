@@ -177,7 +177,6 @@ const Checkbox = (
             />
             {rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
             <CheckboxBox
-                role="checkbox"
                 aria-checked={isChecked}
                 color={color}
                 variant={variant}
