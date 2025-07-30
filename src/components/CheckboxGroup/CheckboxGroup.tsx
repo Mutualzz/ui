@@ -57,7 +57,6 @@ const CheckboxGroup = ({
                 disabled,
             }}
         >
-            {" "}
             <CheckboxGroupWrapper row={row}>{children}</CheckboxGroupWrapper>
         </CheckboxGroupContext.Provider>
     );
