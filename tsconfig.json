@@ -21,7 +21,8 @@
             "@utils/*": ["utils/*"],
             "@styled": ["utils/styled"],
             "@ui-types": ["types/index.d.ts"],
-            "@ui-types/*": ["types/*"]
+            "@ui-types/*": ["types/*"],
+            "@test-utils": ["setupTests.tsx"]
         }
     },
     "include": ["src/**/*"]
