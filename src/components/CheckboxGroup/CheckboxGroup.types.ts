@@ -5,7 +5,7 @@ export interface CheckboxGroupProps {
      * The name of the checkbox group.
      * This is used to group checkboxes together.
      */
-    name: string;
+    name?: string;
     /**
      * The controlled value of the checkbox group.
      * This is an array of strings representing the values of the checked checkboxes.
