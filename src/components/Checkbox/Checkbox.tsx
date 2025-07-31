@@ -157,6 +157,16 @@ const Checkbox = (
         if (!group && controlledChecked === undefined) {
             setUncontrolledChecked(e.target.checked);
         }
+
+        if (group?.onChange && value) {
+            const currentValues = group.value || [];
+            const newValues = e.target.checked
+                ? [...currentValues, value]
+                : currentValues.filter((v) => v !== value);
+
+            group.onChange(e, newValues);
+        }
+
         propOnChange?.(e);
     };
 
