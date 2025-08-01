@@ -111,4 +111,34 @@ describe("InputNumber", () => {
         });
         expect(input).toHaveValue(20); // Should clamp to max
     });
+
+    it("calls onIncrement and onDecrement callbacks", async () => {
+        const onIncrement = jest.fn();
+        const onDecrement = jest.fn();
+        const user = userEvent.setup();
+        const { container } = render(
+            <InputNumber onIncrement={onIncrement} onDecrement={onDecrement} />,
+        );
+        const incrementButton = container.querySelector(
+            "button[aria-label='Increment']",
+        );
+        const decrementButton = container.querySelector(
+            "button[aria-label='Decrement']",
+        );
+
+        expect(incrementButton).toBeInTheDocument();
+        expect(decrementButton).toBeInTheDocument();
+
+        // Click increment button
+        await act(async () => {
+            await user.click(incrementButton!);
+        });
+        expect(onIncrement).toHaveBeenCalledTimes(1);
+
+        // Click decrement button
+        await act(async () => {
+            await user.click(decrementButton!);
+        });
+        expect(onDecrement).toHaveBeenCalledTimes(1);
+    });
 });
