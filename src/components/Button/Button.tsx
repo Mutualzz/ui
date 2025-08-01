@@ -117,7 +117,7 @@ const Button = (
 
             {startDecorator && (
                 <IconWrapper
-                    childrenContent={children}
+                    parentContent={children}
                     position="start"
                     size={size}
                 >
@@ -127,7 +127,7 @@ const Button = (
             <ButtonContent loading={loading}>{children}</ButtonContent>
             {endDecorator && (
                 <IconWrapper
-                    childrenContent={children}
+                    parentContent={children}
                     position="end"
                     size={size}
                 >
