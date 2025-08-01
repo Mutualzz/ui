@@ -1,11 +1,9 @@
-import type {
-    InputBaseProps,
-    InputNumberProps,
-    InputPasswordProps,
-} from "./Input.types";
-import { InputNumber } from "./InputNumber";
-import { InputPassword } from "./InputPassword";
-import { InputText } from "./InputText";
+import type { InputBaseProps } from "@components/InputBase/InputBase.types";
+import type { InputNumberProps } from "@components/InputNumber/InputNumber.types";
+import type { InputPasswordProps } from "@components/InputPassword/InputPassword.types";
+import { InputNumber } from "../InputNumber/InputNumber";
+import { InputPassword } from "../InputPassword/InputPassword";
+import { InputText } from "../InputText/InputText";
 
 export const Input = (
     props: InputBaseProps | InputPasswordProps | InputNumberProps,

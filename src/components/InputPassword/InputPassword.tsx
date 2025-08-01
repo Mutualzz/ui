@@ -1,8 +1,49 @@
+import {
+    DecoratorWrapper,
+    InputBase,
+    InputRoot,
+} from "@components/InputBase/InputBase";
+import type { Size } from "@ui-types";
 import { useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";
-import { resolvePasswordIconStyles } from "./Input.helpers";
-import type { InputPasswordProps } from "./Input.types";
-import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
+import { resolvePasswordIconStyles } from "./InputPassword.helpers";
+import type { InputPasswordProps } from "./InputPassword.types";
+
+interface IconProps {
+    size: Size | number;
+    strokeColor: string;
+}
+
+const ShowPasswordIcon = ({ size, strokeColor }: IconProps) => (
+    <svg
+        width={size === "sm" ? 14 : size === "md" ? 16 : 20}
+        height={size === "sm" ? 14 : size === "md" ? 16 : 20}
+        viewBox="0 0 24 24"
+        fill="none"
+        strokeWidth={2}
+        stroke={strokeColor}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+        <circle cx={12} cy={12} r={3} />
+    </svg>
+);
+
+const HidePasswordIcon = ({ size, strokeColor }: IconProps) => (
+    <svg
+        width={size === "sm" ? 14 : size === "md" ? 16 : 20}
+        height={size === "sm" ? 14 : size === "md" ? 16 : 20}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke={strokeColor}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.3 20.3 0 0 1 5.09-5.91M10.58 10.58A3 3 0 0 0 13.41 13.41M9.88 3.88A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a20.3 20.3 0 0 1-4.38 4.38M1 1l22 22" />
+    </svg>
+);
 
 /**
  * InputPassword component for entering passwords.
@@ -66,6 +107,7 @@ const InputPassword = (
             {startDecorator && (
                 <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
+
             <InputBase
                 {...props}
                 ref={ref}
@@ -81,57 +123,16 @@ const InputPassword = (
                 >
                     {passwordVisible
                         ? (hidePasswordIcon ?? (
-                              <svg
-                                  width={
-                                      size === "sm"
-                                          ? 14
-                                          : size === "md"
-                                            ? 16
-                                            : 20
-                                  }
-                                  height={
-                                      size === "sm"
-                                          ? 14
-                                          : size === "md"
-                                            ? 16
-                                            : 20
-                                  }
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  strokeWidth={2}
-                                  stroke={strokeColor}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                              >
-                                  <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
-                                  <circle cx={12} cy={12} r={3} />
-                              </svg>
+                              <HidePasswordIcon
+                                  size={size}
+                                  strokeColor={strokeColor}
+                              />
                           ))
                         : (showPasswordIcon ?? (
-                              <svg
-                                  width={
-                                      size === "sm"
-                                          ? 14
-                                          : size === "md"
-                                            ? 16
-                                            : 20
-                                  }
-                                  height={
-                                      size === "sm"
-                                          ? 14
-                                          : size === "md"
-                                            ? 16
-                                            : 20
-                                  }
-                                  viewBox="0 0 24 24"
-                                  fill="none"
-                                  stroke={strokeColor}
-                                  strokeWidth={2}
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                              >
-                                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a20.3 20.3 0 0 1 5.09-5.91M10.58 10.58A3 3 0 0 0 13.41 13.41M9.88 3.88A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a20.3 20.3 0 0 1-4.38 4.38M1 1l22 22" />
-                              </svg>
+                              <ShowPasswordIcon
+                                  size={size}
+                                  strokeColor={strokeColor}
+                              />
                           ))}
                 </DecoratorWrapper>
             ) : null}

@@ -1,6 +1,7 @@
+import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
+import { InputBase, InputRoot } from "@components/InputBase/InputBase";
+import type { InputBaseProps } from "@components/InputBase/InputBase.types";
 import type { Ref } from "react";
-import type { InputBaseProps } from "./Input.types";
-import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
 
 /**
  * InputText component for entering text.

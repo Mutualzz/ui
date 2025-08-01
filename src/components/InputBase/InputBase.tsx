@@ -1,6 +1,9 @@
 import styled from "@styled";
-import { resolveInputSize, resolveInputStyles } from "./Input.helpers";
-import type { InputBaseProps } from "./Input.types";
+import {
+    resolveInputBaseSize,
+    resolveInputBaseStyles,
+} from "./InputBase.helpers";
+import type { InputBaseProps } from "./InputBase.types";
 
 const InputRoot = styled("div")<InputBaseProps>(
     ({
@@ -12,8 +15,8 @@ const InputRoot = styled("div")<InputBaseProps>(
         fullWidth,
         disabled,
     }) => ({
-        ...resolveInputSize(size),
-        ...resolveInputStyles(theme, color, textColor)[variant],
+        ...resolveInputBaseSize(size),
+        ...resolveInputBaseStyles(theme, color, textColor)[variant],
         ...(disabled && { opacity: 0.5 }),
 
         display: "flex",

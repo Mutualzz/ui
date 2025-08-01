@@ -2,9 +2,14 @@ import type { Size } from "@ui-types";
 import { formatHex8 } from "culori";
 import { useRef, type ClipboardEvent, type KeyboardEvent } from "react";
 import { useTheme } from "../../hooks/useTheme";
+
+import {
+    DecoratorWrapper,
+    InputBase,
+    InputRoot,
+} from "@components/InputBase/InputBase";
 import { Stack } from "../Stack/Stack";
-import type { InputNumberProps } from "./Input.types";
-import { DecoratorWrapper, InputBase, InputRoot } from "./InputBase";
+import type { InputNumberProps } from "./InputNumber.types";
 
 const sizeMap: Record<Size, { width: number; fontSize: string }> = {
     sm: { width: 12, fontSize: "0.5rem" },
