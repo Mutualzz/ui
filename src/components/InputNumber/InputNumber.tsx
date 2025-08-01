@@ -251,6 +251,16 @@ const InputNumber = ({
         input.dispatchEvent(new Event("input", { bubbles: true }));
     };
 
+    const handleOnIncrement = () => {
+        if (onIncrement) onIncrement();
+        handleStepChange("up");
+    };
+
+    const handleOnDecrement = () => {
+        if (onDecrement) onDecrement();
+        handleStepChange("down");
+    };
+
     return (
         <InputRoot
             color={color}
@@ -283,8 +293,8 @@ const InputNumber = ({
                 {endDecorator ?? (
                     <SpinnerButtons
                         size={size}
-                        onIncrement={() => handleStepChange("up")}
-                        onDecrement={() => handleStepChange("down")}
+                        onIncrement={handleOnIncrement}
+                        onDecrement={handleOnDecrement}
                         disabled={disabled}
                     />
                 )}
