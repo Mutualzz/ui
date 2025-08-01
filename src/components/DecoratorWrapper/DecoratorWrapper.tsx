@@ -2,8 +2,8 @@ import styled from "@styled";
 import type { Size } from "@ui-types";
 import type { ReactNode } from "react";
 
-const IconWrapper = styled("span")<{
-    position: "start" | "end";
+const DecoratorWrapper = styled("span")<{
+    position?: "start" | "end";
     size?: Size | number;
     parentContent?: ReactNode;
     spacing?: string | number;
@@ -19,6 +19,6 @@ const IconWrapper = styled("span")<{
     flexGrow: 0,
 }));
 
-IconWrapper.displayName = "IconWrapper";
+DecoratorWrapper.displayName = "DecoratorWrapper";
 
-export { IconWrapper };
+export { DecoratorWrapper };

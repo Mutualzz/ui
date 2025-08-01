@@ -4,7 +4,7 @@ import { CircularProgress } from "@components/CircularProgress/CircularProgress"
 import styled from "@styled";
 
 import { ButtonGroupContext } from "../ButtonGroup/ButtonGroup.context";
-import { IconWrapper } from "../IconWrapper/IconWrapper";
+import { DecoratorWrapper } from "../DecoratorWrapper/DecoratorWrapper";
 import { resolveButtonSize, resolveButtonStyles } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 
@@ -116,23 +116,23 @@ const Button = (
             )}
 
             {startDecorator && (
-                <IconWrapper
+                <DecoratorWrapper
                     parentContent={children}
                     position="start"
                     size={size}
                 >
                     {startDecorator}
-                </IconWrapper>
+                </DecoratorWrapper>
             )}
             <ButtonContent loading={loading}>{children}</ButtonContent>
             {endDecorator && (
-                <IconWrapper
+                <DecoratorWrapper
                     parentContent={children}
                     position="end"
                     size={size}
                 >
                     {endDecorator}
-                </IconWrapper>
+                </DecoratorWrapper>
             )}
         </ButtonWrapper>
     );

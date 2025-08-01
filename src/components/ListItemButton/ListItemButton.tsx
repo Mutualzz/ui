@@ -1,7 +1,7 @@
 import styled from "@styled";
 import type { Orientation } from "@ui-types";
 import { useContext } from "react";
-import { IconWrapper } from "../IconWrapper/IconWrapper";
+import { DecoratorWrapper } from "../DecoratorWrapper/DecoratorWrapper";
 import { ListContext } from "../List/List.context";
 import { NestedListContext } from "../List/NestedList.context";
 import {
@@ -68,23 +68,23 @@ export const ListItemButton = (props: ListItemButtonProps) => {
             {...rest}
         >
             {startDecorator && (
-                <IconWrapper
+                <DecoratorWrapper
                     parentContent={children}
                     position="start"
                     size={size}
                 >
                     {startDecorator}
-                </IconWrapper>
+                </DecoratorWrapper>
             )}
             <ListItemButtonContent>{children}</ListItemButtonContent>
             {endDecorator && (
-                <IconWrapper
+                <DecoratorWrapper
                     parentContent={children}
                     position="end"
                     size={size}
                 >
                     {endDecorator}
-                </IconWrapper>
+                </DecoratorWrapper>
             )}
         </ListItemButtonRoot>
     );
