@@ -45,11 +45,11 @@ DividerLine.displayName = "DividerLine";
 const DividerText = styled("span")<{
     textColor: string;
     isVertical: boolean;
-}>(({ isVertical, textColor }) => ({
+}>(({ theme, isVertical, textColor }) => ({
     color: textColor,
     padding: isVertical ? "8px 0" : "0 8px",
     whiteSpace: "nowrap",
-    fontSize: "14px",
+    fontSize: theme.typography.levels["body-md"].fontSize,
 }));
 
 DividerText.displayName = "DividerText";
