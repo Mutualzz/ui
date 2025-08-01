@@ -7,12 +7,12 @@ describe("Stack", () => {
         expect(container).toBeInTheDocument();
     });
 
-    it("applies block display by default", () => {
+    it("applies flex display by default", () => {
         const { container } = render(<Stack>Test</Stack>);
         expect(container.firstChild).toHaveStyle("display: flex");
     });
 
-    it("applies inline-block display when inline prop is true", () => {
+    it("applies inline-flex display when inline prop is true", () => {
         const { container } = render(<Stack inline>Test</Stack>);
         expect(container.firstChild).toHaveStyle("display: inline-flex");
     });
