@@ -1,12 +1,19 @@
 import type { InputProps } from "@components/Input/Input.types";
 
-export interface InputNumberProps extends Omit<InputProps, "type" | "value"> {
+export interface InputNumberProps
+    extends Omit<InputProps, "inputMode" | "type" | "value"> {
     /**
      * The type of the input element.
      * Should always be "number" for number inputs.
      * @default "number"
      */
     type?: "number";
+    /**
+     * The input mode for the input element.
+     * Determines the virtual keyboard layout and behavior on mobile devices.
+     * @default "decimal"
+     */
+    inputMode?: "decimal" | "numeric";
 
     /**
      * The step value for the number input.

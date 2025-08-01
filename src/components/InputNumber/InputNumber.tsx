@@ -134,6 +134,7 @@ const InputNumber = ({
     textColor = "inherit",
     variant = "outlined",
     size = "md",
+    inputMode = "decimal",
     fullWidth = false,
     error = false,
     disabled = false,
@@ -279,7 +280,7 @@ const InputNumber = ({
                 ref={inputRef}
                 {...props}
                 type="number"
-                inputMode="decimal"
+                inputMode={inputMode}
                 onChange={onChange}
                 min={min}
                 max={max}

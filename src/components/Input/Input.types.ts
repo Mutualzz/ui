@@ -21,6 +21,16 @@ export type InputType =
     | "url"
     | "week";
 
+export type InputMode =
+    | "none"
+    | "text"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | "search";
+
 export interface InputProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
     /**
@@ -83,4 +93,11 @@ export interface InputProps
      * @default "text"
      */
     type?: InputType;
+
+    /**
+     * The input mode for the input element.
+     * Determines the virtual keyboard layout and behavior on mobile devices.
+     * @default "text"
+     */
+    inputMode?: InputMode;
 }
