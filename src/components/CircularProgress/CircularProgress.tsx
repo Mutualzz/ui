@@ -110,6 +110,7 @@ const CircularProgress = ({
             {diameter > 0 && (
                 <svg
                     {...props}
+                    role="progressbar"
                     width={diameter}
                     height={diameter}
                     viewBox={`0 0 ${diameter} ${diameter}`}
