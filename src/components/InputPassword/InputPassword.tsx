@@ -1,8 +1,5 @@
-import {
-    DecoratorWrapper,
-    InputBase,
-    InputRoot,
-} from "@components/InputBase/InputBase";
+import { InputBase, InputRoot } from "@components/InputBase/InputBase";
+import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import type { Size } from "@ui-types";
 import { useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";
@@ -105,7 +102,7 @@ const InputPassword = (
             disabled={disabled}
         >
             {startDecorator && (
-                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
+                <InputDecoratorWrapper>{startDecorator}</InputDecoratorWrapper>
             )}
 
             <InputBase
@@ -115,9 +112,9 @@ const InputPassword = (
             />
 
             {endDecorator ? (
-                <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
+                <InputDecoratorWrapper>{endDecorator}</InputDecoratorWrapper>
             ) : showToggleIcon ? (
-                <DecoratorWrapper
+                <InputDecoratorWrapper
                     onClick={togglePassword}
                     css={{ cursor: "pointer", userSelect: "none" }}
                 >
@@ -134,7 +131,7 @@ const InputPassword = (
                                   strokeColor={strokeColor}
                               />
                           ))}
-                </DecoratorWrapper>
+                </InputDecoratorWrapper>
             ) : null}
         </InputRoot>
     );

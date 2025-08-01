@@ -3,11 +3,8 @@ import { formatHex8 } from "culori";
 import { useRef, type ClipboardEvent, type KeyboardEvent } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
-import {
-    DecoratorWrapper,
-    InputBase,
-    InputRoot,
-} from "@components/InputBase/InputBase";
+import { InputBase, InputRoot } from "@components/InputBase/InputBase";
+import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { Stack } from "../Stack/Stack";
 import type { InputNumberProps } from "./InputNumber.types";
 
@@ -218,7 +215,7 @@ const InputNumber = ({
             disabled={disabled}
         >
             {startDecorator && (
-                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
+                <InputDecoratorWrapper>{startDecorator}</InputDecoratorWrapper>
             )}
 
             <InputBase
@@ -234,7 +231,7 @@ const InputNumber = ({
                 onPaste={handlePaste}
             />
 
-            <DecoratorWrapper>
+            <InputDecoratorWrapper>
                 {endDecorator ?? (
                     <SpinnerButtons
                         size={size}
@@ -243,7 +240,7 @@ const InputNumber = ({
                         disabled={disabled}
                     />
                 )}
-            </DecoratorWrapper>
+            </InputDecoratorWrapper>
         </InputRoot>
     );
 };

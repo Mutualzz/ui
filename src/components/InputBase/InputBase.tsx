@@ -38,22 +38,6 @@ const InputRoot = styled("div")<InputBaseProps>(
 
 InputRoot.displayName = "InputRoot";
 
-const DecoratorWrapper = styled("div")({
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-
-    flexShrink: 0,
-    overflow: "hidden",
-    minWidth: 0,
-    maxWidth: "25%",
-
-    position: "relative",
-    zIndex: 1,
-});
-
-DecoratorWrapper.displayName = "DecoratorWrapper";
-
 const InputBase = styled("input")({
     flex: 1,
     minWidth: 0,
@@ -76,4 +60,4 @@ const InputBase = styled("input")({
 
 InputBase.displayName = "InputBase";
 
-export { DecoratorWrapper, InputBase, InputRoot };
+export { InputBase, InputRoot };
