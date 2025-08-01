@@ -1,6 +1,7 @@
 import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
-import { InputBase, InputRoot } from "@components/InputBase/InputBase";
-import type { InputBaseProps } from "@components/InputBase/InputBase.types";
+import type { InputProps } from "@components/Input/Input.types";
+import { InputBase } from "@components/InputBase/InputBase";
+import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Ref } from "react";
 
 /**
@@ -20,7 +21,7 @@ const InputText = (
         type = "text",
         children,
         ...props
-    }: InputBaseProps,
+    }: InputProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
     return (

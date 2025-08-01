@@ -1,5 +1,6 @@
-import { InputBase, InputRoot } from "@components/InputBase/InputBase";
+import { InputBase } from "@components/InputBase/InputBase";
 import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
+import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size } from "@ui-types";
 import { useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";

@@ -21,7 +21,7 @@ export type InputType =
     | "url"
     | "week";
 
-export interface InputBaseProps
+export interface InputProps
     extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
     /**
      * The color of the input element.

@@ -1,10 +1,15 @@
+import { InputBase } from "@components/InputBase/InputBase";
+import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
+import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size } from "@ui-types";
 import { formatHex8 } from "culori";
-import { useRef, type ClipboardEvent, type KeyboardEvent } from "react";
+import {
+    useRef,
+    type ClipboardEvent,
+    type FocusEvent,
+    type KeyboardEvent,
+} from "react";
 import { useTheme } from "../../hooks/useTheme";
-
-import { InputBase, InputRoot } from "@components/InputBase/InputBase";
-import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { Stack } from "../Stack/Stack";
 import type { InputNumberProps } from "./InputNumber.types";
 
@@ -113,6 +118,12 @@ const SpinnerButtons = ({
 
 SpinnerButtons.displayName = "SpinnerButtons";
 
+const clamp = (value: number, min: number, max: number) => {
+    if (isFinite(min) && value < min) return min;
+    if (isFinite(max) && value > max) return max;
+    return value;
+};
+
 /**
  * InputNumber component for entering numeric values.
  * It includes increment and decrement buttons for adjusting the value.
@@ -158,50 +169,86 @@ const InputNumber = ({
             "End",
         ];
 
-        const isCtrlOrMetaKey = ctrlKey || metaKey;
-        const isDigit = /^\d$/.test(key);
-        const isMinus = key === "-";
-        const isDot = key === ".";
+        if (key === "ArrowUp") {
+            handleStepChange("up");
+            e.preventDefault();
+            return;
+        }
+
+        if (key === "ArrowDown") {
+            handleStepChange("down");
+            e.preventDefault();
+            return;
+        }
 
         if (
             allowedModifierKeys.includes(key) ||
-            isDigit ||
-            (isCtrlOrMetaKey && key.toLowerCase() === "a") ||
-            (isCtrlOrMetaKey && key.toLowerCase() === "c") || // copy
-            (isCtrlOrMetaKey && key.toLowerCase() === "v") || // paste
-            (isCtrlOrMetaKey && key.toLowerCase() === "x") // cut
+            /^\d$/.test(key) ||
+            ((ctrlKey || metaKey) &&
+                ["a", "c", "v", "x"].includes(key.toLowerCase()))
         )
             return;
 
-        if (isMinus && cursorPos === 0 && !value.includes("-")) return;
-
-        if (isDot && !value.includes(".")) return;
+        if (key === "-" && cursorPos === 0 && !value.includes("-")) return;
+        if (key === "." && !value.includes(".")) return;
 
         e.preventDefault();
     };
 
+    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+        const input = e.currentTarget;
+        const value = input.value;
+
+        // Don't do anything if value is empty or invalid
+        if (value === "" || value === "-" || value === "." || value === "-.")
+            return;
+
+        const parsed = parseFloat(value);
+        if (isNaN(parsed)) return;
+
+        const clamped = clamp(parsed, min, max);
+        if (parsed !== clamped) {
+            input.value = String(clamped);
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+    };
+
     const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
-        const pasted = e.clipboardData.getData("text");
-        if (!/^-?\d*(\.\d*)?$/.test(pasted.trim())) e.preventDefault();
+        const pasted = e.clipboardData.getData("text").trim();
+        if (!/^-?\d*\.?\d*$/.test(pasted)) {
+            e.preventDefault();
+            return;
+        }
+
+        const parsed = parseFloat(pasted);
+        if (isNaN(parsed)) {
+            e.preventDefault();
+            return;
+        }
+
+        if (!isFinite(parsed) || parsed < min || parsed > max) {
+            const clamped = clamp(parsed, min, max);
+            inputRef.current!.value = String(clamped);
+            e.preventDefault();
+            inputRef.current!.dispatchEvent(
+                new Event("input", { bubbles: true }),
+            );
+        }
     };
 
     const handleStepChange = (direction: "up" | "down") => {
         if (!inputRef.current) return;
-
         const input = inputRef.current;
-        const currentValue = parseFloat(input.value) || 0;
+        const current = parseFloat(input.value) || 0;
         const delta = direction === "up" ? step : -step;
-        const nextValue = Math.min(max, Math.max(min, currentValue + delta));
+        const next = clamp(current + delta, min, max);
 
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLInputElement.prototype,
+        const setter = Object.getOwnPropertyDescriptor(
+            HTMLInputElement.prototype,
             "value",
         )?.set;
-
-        nativeInputValueSetter?.call(input, String(nextValue));
-
-        const event = new Event("input", { bubbles: true });
-        input.dispatchEvent(event);
+        setter?.call(input, String(next));
+        input.dispatchEvent(new Event("input", { bubbles: true }));
     };
 
     return (
@@ -227,6 +274,7 @@ const InputNumber = ({
                 min={min}
                 max={max}
                 step={step}
+                onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
                 onPaste={handlePaste}
             />
