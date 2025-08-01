@@ -29,9 +29,9 @@ describe("Stack", () => {
             </Stack>,
         );
 
-        const box = container.firstChild;
-        expect(box).toHaveStyle("margin: 16px");
-        expect(box).toHaveStyle("padding: 8px");
+        const stack = container.firstChild;
+        expect(stack).toHaveStyle("margin: 16px");
+        expect(stack).toHaveStyle("padding: 8px");
     });
 
     it("renders as a div element", () => {
@@ -51,7 +51,7 @@ describe("Stack", () => {
     it("forwards HTML attributes", () => {
         const { container } = render(
             <Stack
-                data-testid="test-box"
+                data-testid="test-stack"
                 aria-label="Test Stack"
                 className="custom-class"
             >
@@ -59,9 +59,9 @@ describe("Stack", () => {
             </Stack>,
         );
 
-        const box = container.firstChild;
-        expect(box).toHaveAttribute("data-testid", "test-box");
-        expect(box).toHaveAttribute("aria-label", "Test Stack");
-        expect(box).toHaveClass("custom-class");
+        const stack = container.firstChild;
+        expect(stack).toHaveAttribute("data-testid", "test-stack");
+        expect(stack).toHaveAttribute("aria-label", "Test Stack");
+        expect(stack).toHaveClass("custom-class");
     });
 });
