@@ -1,9 +1,9 @@
 import { type Theme } from "@emotion/react";
 
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 import type { Color, ColorLike, Size } from "@ui-types";
-import { adjustTextColor, alpha, darken, getLuminance, lighten } from "@utils";
+import { alpha, darken, getLuminance, lighten } from "@utils";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
 
@@ -33,75 +33,80 @@ export const resolveButtonSize = (size: Size | number) => {
 export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
     const { colors } = theme;
 
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error("Invalid color");
+    const resolvedColor = resolveColor(color, theme);
 
-    const bgLuminance = getLuminance(parsedColor);
-    const textColor = parse(
-        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-    );
-    if (!textColor) throw new Error("Invalid color");
+    const bgLuminance = getLuminance(resolvedColor);
+    const textColor =
+        formatHex8(
+            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
+        ) ?? theme.typography.colors.primary;
+
+    const hexColor = formatHex8(resolvedColor);
 
     return {
         solid: {
-            backgroundColor: formatHex8(parsedColor),
-            color: formatHex8(adjustTextColor(parsedColor, textColor)),
+            backgroundColor: hexColor,
+            color: textColor,
             border: "none",
             "&:hover": {
-                backgroundColor: formatHex8(darken(parsedColor, 0.2)),
+                backgroundColor: formatHex8(darken(resolvedColor, 0.2)),
             },
             "&:active": {
-                backgroundColor: formatHex8(darken(parsedColor, 0.4)),
+                backgroundColor: formatHex8(darken(resolvedColor, 0.4)),
             },
             "&:disabled": {
-                backgroundColor: alpha(parsedColor, 0.2),
-                color: alpha(textColor, 0.4),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
+                color: formatHex8(alpha(textColor, 0.4)),
             },
         },
         outlined: {
             backgroundColor: "transparent",
-            border: `1px solid ${formatHex8(parsedColor)}`,
-            color: formatHex8(lighten(parsedColor, 0.6)),
+            border: `1px solid ${formatHex8(resolvedColor)}`,
+            color: formatHex8(lighten(resolvedColor, 0.6)),
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.2),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.3),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
             "&:disabled": {
-                color: alpha(parsedColor, 0.4),
-                border: `1px solid ${alpha(parsedColor, 0.4)}`,
+                color: formatHex8(alpha(resolvedColor, 0.4)),
+                border: `1px solid ${formatHex8(alpha(resolvedColor, 0.4))}`,
             },
         },
         plain: {
             backgroundColor: "transparent",
             border: "none",
-            color: formatHex8(lighten(parsedColor, 0.25)),
+            color: formatHex8(lighten(resolvedColor, 0.25)),
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.3),
-                color: formatHex8(lighten(parsedColor, 0.6)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
+                color: formatHex8(lighten(resolvedColor, 0.6)),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.5),
-                color: formatHex8(lighten(parsedColor, 0.5)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
+                color: formatHex8(lighten(resolvedColor, 0.5)),
             },
             "&:disabled": {
-                color: formatHex8(lighten(parsedColor, 0.4)),
+                color: formatHex8(lighten(resolvedColor, 0.4)),
             },
         },
         soft: {
-            backgroundColor: alpha(parsedColor, 0.4),
-            color: formatHex8(lighten(parsedColor, 0.75)),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
+            color: formatHex8(lighten(resolvedColor, 0.75)),
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(lighten(parsedColor, 0.2), 0.5),
+                backgroundColor: formatHex8(
+                    alpha(lighten(resolvedColor, 0.2), 0.5),
+                ),
             },
             "&:active": {
-                backgroundColor: alpha(lighten(parsedColor, 0.5), 0.5),
+                backgroundColor: formatHex8(
+                    alpha(lighten(resolvedColor, 0.5), 0.5),
+                ),
             },
             "&:disabled": {
-                backgroundColor: alpha(parsedColor, 0.2),
-                color: alpha(parsedColor, 0.4),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
+                color: formatHex8(alpha(resolvedColor, 0.4)),
             },
         },
     };

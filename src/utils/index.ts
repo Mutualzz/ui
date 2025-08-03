@@ -1,6 +1,6 @@
-import { clampChroma, lch, type Color, type Lch } from "culori";
+import type { ColorLike } from "@ui-types";
+import { clampChroma, lch } from "culori";
 import { adjustLightness } from "./adjustLightness";
-import { adjustTextColor } from "./adjustTextColor";
 import { alpha } from "./alpha";
 import { blendOver } from "./blendOver";
 import { dynamicElevation } from "./dynamicElevation";
@@ -18,7 +18,6 @@ import visuallyHidden from "./visuallyHidden";
 
 export {
     adjustLightness,
-    adjustTextColor,
     alpha,
     blendOver,
     dynamicElevation,
@@ -36,19 +35,18 @@ export {
     visuallyHidden,
 };
 
-export function darken(color: string, factor: number): Lch;
-export function darken(color: Color, factor: number): Lch;
-export function darken(color: Color | string, factor: number): Lch {
+export function darken(color: ColorLike, factor: number) {
     const colorLch = lch(color);
-    if (!colorLch) throw new Error("Invalid color provided to darken function");
+    if (!colorLch) return color;
 
     colorLch.l = Math.max(0, colorLch.l * (1 - factor));
 
     return clampChroma(colorLch);
 }
 
-export const lighten = (color: Color, factor: number) => {
+export const lighten = (color: ColorLike, factor: number) => {
     const colorLch = lch(color);
+    if (!colorLch) return color;
 
     colorLch.l = Math.min(100, colorLch.l + (100 - colorLch.l) * factor);
 

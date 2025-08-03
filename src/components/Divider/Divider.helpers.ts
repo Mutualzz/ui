@@ -3,21 +3,22 @@ import type { Color, ColorLike, TypographyColor } from "@ui-types";
 import { isThemeColor } from "@utils";
 import { isTypographyColor } from "@utils/isThemeColor";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 export const resolveDividerColor = (
     theme: Theme,
     color: Color | ColorLike | TypographyColor,
 ) => {
-    const parsedColor = isThemeColor(color)
-        ? parse(resolveColor(color, theme))
+    const resolvedColor = isThemeColor(color)
+        ? resolveColor(color, theme)
         : isTypographyColor(color)
-          ? parse(resolveTypographyColor(color, theme))
-          : parse(color);
+          ? resolveTypographyColor(color, theme)
+          : resolveColor(color, theme);
 
-    if (!parsedColor) throw new Error("Invalid color");
+    const hexColor = formatHex8(resolvedColor);
+    if (!hexColor) return color;
 
-    return formatHex8(parsedColor);
+    return hexColor;
 };
 
 export const resolveDividerStyles = (

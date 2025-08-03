@@ -75,6 +75,7 @@ const Divider = ({
     const { theme } = useTheme();
 
     const isVertical = orientation === "vertical";
+
     const resolvedLineColor = resolveDividerColor(theme, lineColor);
     const resolvedTextColor = resolveDividerColor(theme, textColor);
 

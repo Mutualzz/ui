@@ -3,7 +3,7 @@ import type { Color, ColorLike, Size, Variant } from "@ui-types";
 import { alpha, lighten } from "@utils";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 const minThumbSize = 10,
     maxThumbSize = 28;
@@ -72,32 +72,31 @@ export const resolveSliderTrackStyles = (
     color: Color | ColorLike,
     hovered: boolean,
 ): Record<Variant, CSSObject> => {
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error(`Invalid color: ${color}`);
+    const resolvedColor = resolveColor(color, theme);
 
     return {
         solid: {
             backgroundColor: hovered
-                ? formatHex8(alpha(parsedColor, 0.85))
-                : formatHex8(parsedColor),
+                ? formatHex8(alpha(resolvedColor, 0.85))
+                : formatHex8(resolvedColor),
         },
         outlined: {
             border: hovered
-                ? `1px solid ${formatHex8(alpha(parsedColor, 0.5))}`
-                : `1px solid ${formatHex8(parsedColor)}`,
+                ? `1px solid ${formatHex8(alpha(resolvedColor, 0.5))}`
+                : `1px solid ${formatHex8(resolvedColor)}`,
             backgroundColor: hovered
-                ? formatHex8(alpha(parsedColor, 0.35))
+                ? formatHex8(alpha(resolvedColor, 0.35))
                 : "transparent",
         },
         plain: {
             backgroundColor: hovered
-                ? formatHex8(alpha(parsedColor, 0.5))
+                ? formatHex8(alpha(resolvedColor, 0.5))
                 : "transparent",
         },
         soft: {
             backgroundColor: hovered
-                ? formatHex8(alpha(parsedColor, 0.5))
-                : formatHex8(alpha(parsedColor, 0.3)),
+                ? formatHex8(alpha(resolvedColor, 0.5))
+                : formatHex8(alpha(resolvedColor, 0.3)),
         },
     };
 };
@@ -109,31 +108,30 @@ export const resolveSliderThumbStyles = (
 ): Record<Variant, CSSObject> => {
     const { colors } = theme;
 
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error(`Invalid color: ${color}`);
+    const resolvedColor = resolveColor(color, theme);
 
     return {
         solid: {
             backgroundColor: colors.common.white,
             border: hovered
-                ? `2px solid ${formatHex8(alpha(parsedColor, 0.85))}`
-                : `2px solid ${formatHex8(parsedColor)}`,
+                ? `2px solid ${formatHex8(alpha(resolvedColor, 0.85))}`
+                : `2px solid ${formatHex8(resolvedColor)}`,
         },
         outlined: {
             padding: 2,
-            backgroundColor: formatHex8(lighten(parsedColor, 0.7)),
-            border: `1px solid ${formatHex8(parsedColor)}`,
+            backgroundColor: formatHex8(lighten(resolvedColor, 0.7)),
+            border: `1px solid ${formatHex8(resolvedColor)}`,
         },
         plain: {
-            backgroundColor: formatHex8(lighten(parsedColor, 0.5)),
+            backgroundColor: formatHex8(lighten(resolvedColor, 0.5)),
         },
         soft: {
             backgroundColor: hovered
-                ? formatHex8(lighten(parsedColor, 0.5))
-                : formatHex8(lighten(parsedColor, 0.7)),
+                ? formatHex8(lighten(resolvedColor, 0.5))
+                : formatHex8(lighten(resolvedColor, 0.7)),
             border: hovered
-                ? `2px solid ${formatHex8(alpha(parsedColor, 0.85))}`
-                : `2px solid ${formatHex8(parsedColor)}`,
+                ? `2px solid ${formatHex8(alpha(resolvedColor, 0.85))}`
+                : `2px solid ${formatHex8(resolvedColor)}`,
         },
     };
 };

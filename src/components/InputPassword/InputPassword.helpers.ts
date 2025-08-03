@@ -1,19 +1,20 @@
 import type { Theme } from "@emotion/react";
 import type { Color, ColorLike, Variant } from "@ui-types";
 import { lighten, resolveColor } from "@utils";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 export const resolvePasswordIconStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ): Record<Variant, string> => {
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error("Invalid color");
+    const resolvedColor = resolveColor(color, theme);
+
+    const hexColor = formatHex8(resolvedColor) ?? theme.colors.primary;
 
     return {
-        outlined: formatHex8(parsedColor),
-        solid: formatHex8(lighten(parsedColor, 1)),
-        plain: formatHex8(parsedColor),
-        soft: formatHex8(lighten(parsedColor, 0.25)),
+        outlined: hexColor,
+        solid: formatHex8(lighten(resolvedColor, 1)) ?? theme.colors.primary,
+        plain: hexColor,
+        soft: formatHex8(lighten(resolvedColor, 0.25)) ?? theme.colors.primary,
     };
 };

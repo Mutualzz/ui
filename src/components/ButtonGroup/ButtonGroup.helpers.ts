@@ -1,7 +1,7 @@
 import type { CSSObject, Theme } from "@emotion/react";
 import type { Color, ColorLike, Orientation, Variant } from "@ui-types";
 import { darken, resolveColor } from "@utils";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 export const resolveButtonGroupStyles = (
     theme: Theme,
@@ -10,34 +10,33 @@ export const resolveButtonGroupStyles = (
     variant: Variant = "solid",
     separatorColor?: Color | ColorLike,
 ): CSSObject => {
-    const parsedColor = separatorColor
-        ? parse(resolveColor(separatorColor, theme))
-        : parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error("Invalid color");
+    const resolvedColor = separatorColor
+        ? resolveColor(separatorColor, theme)
+        : resolveColor(color, theme);
 
     const horizontalBorders: Record<Variant, CSSObject> = {
         solid: {
-            borderLeft: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.5))}`,
+            borderLeft: `1px solid ${formatHex8(separatorColor ? resolvedColor : darken(resolvedColor, 0.5))}`,
         },
         outlined: {},
         plain: {
-            borderLeft: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.3))}`,
+            borderLeft: `1px solid ${formatHex8(separatorColor ? resolvedColor : darken(resolvedColor, 0.3))}`,
         },
         soft: {
-            borderLeft: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.1))}`,
+            borderLeft: `1px solid ${formatHex8(separatorColor ? resolvedColor : darken(resolvedColor, 0.1))}`,
         },
     };
 
     const verticalBorders: Record<Variant, CSSObject> = {
         solid: {
-            borderTop: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.5))}`,
+            borderTop: `1px solid ${formatHex8(separatorColor ? resolvedColor : darken(resolvedColor, 0.5))}`,
         },
         outlined: {},
         plain: {
-            borderTop: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.3))}`,
+            borderTop: `1px solid ${formatHex8(separatorColor ? resolvedColor : darken(resolvedColor, 0.3))}`,
         },
         soft: {
-            borderTop: `1px solid ${formatHex8(separatorColor ? parsedColor : darken(parsedColor, 0.1))}`,
+            borderTop: `1px solid ${formatHex8(separatorColor ? resolvedColor : darken(resolvedColor, 0.1))}`,
         },
     };
 

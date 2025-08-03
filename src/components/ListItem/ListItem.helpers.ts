@@ -1,7 +1,7 @@
 import type { CSSObject, Theme } from "@emotion/react";
 import type { Color, ColorLike, Size, Variant } from "@ui-types";
-import { alpha, getLuminance, resolveColor, resolveSize } from "@utils";
-import { formatHex8, parse } from "culori";
+import { alpha, resolveColor, resolveSize } from "@utils";
+import { formatHex8 } from "culori";
 
 const minSize = 24,
     maxSize = 72;
@@ -55,27 +55,18 @@ export const resolveListItemStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ): Record<Variant, CSSObject> => {
-    const { colors } = theme;
-
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error("Invalid color");
-
-    const bgLuminance = getLuminance(parsedColor);
-    const textColor = parse(
-        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-    );
-    if (!textColor) throw new Error("Invalid color");
+    const resolvedColor = resolveColor(color, theme);
 
     return {
         solid: {
-            backgroundColor: formatHex8(parsedColor),
+            backgroundColor: formatHex8(resolvedColor),
             border: "none",
         },
         outlined: {
             backgroundColor: "transparent",
         },
         soft: {
-            backgroundColor: alpha(parsedColor, 0.4),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
             border: "none",
         },
         plain: {

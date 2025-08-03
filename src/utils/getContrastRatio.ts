@@ -1,7 +1,10 @@
-import type { Color } from "culori";
+import type { ColorLike } from "@ui-types";
 import { getLuminance } from "./getLuminance";
 
-export const getContrastRatio = (color1: Color, color2: Color): number => {
+export const getContrastRatio = (
+    color1: ColorLike,
+    color2: ColorLike,
+): number => {
     const lum1 = getLuminance(color1);
     const lum2 = getLuminance(color2);
     const [lighter, darker] = lum1 > lum2 ? [lum1, lum2] : [lum2, lum1];

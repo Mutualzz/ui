@@ -3,7 +3,7 @@ import type { Color, ColorLike, Size } from "@ui-types";
 import { alpha } from "@utils/alpha";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 const minSize = 16,
     maxSize = 64;
@@ -15,20 +15,12 @@ export const resolveCircularProgressStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ) => {
-    const parsedColor = parse(resolveColor(color, theme));
-
-    if (!parsedColor)
-        return {
-            plain: "transparent",
-            solid: "transparent",
-            soft: "transparent",
-            outlined: "transparent",
-        };
+    const resolvedColor = resolveColor(color, theme);
 
     return {
         plain: "transparent",
-        solid: formatHex8(alpha(parsedColor, 0.5))!,
-        soft: formatHex8(alpha(parsedColor, 0.1))!,
+        solid: formatHex8(alpha(resolvedColor, 0.5))!,
+        soft: formatHex8(alpha(resolvedColor, 0.1))!,
         outlined: "transparent",
     };
 };

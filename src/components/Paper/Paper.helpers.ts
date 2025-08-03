@@ -1,8 +1,8 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike, type TypographyColor } from "@ui-types";
-import { adjustTextColor, alpha, dynamicElevation, getLuminance } from "@utils";
+import { alpha, dynamicElevation, getLuminance } from "@utils";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 export const resolvePaperStyles = (
     theme: Theme,
@@ -12,22 +12,22 @@ export const resolvePaperStyles = (
 ) => {
     const { colors } = theme;
 
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error("Invalid color");
+    const resolvedColor = resolveColor(color, theme);
 
-    const bgLuminance = getLuminance(parsedColor);
+    const bgLuminance = getLuminance(resolvedColor);
 
-    const parsedTextColor =
+    const resolvedTextColor =
         textColor === "inherit"
-            ? parsedColor
-            : parse(resolveTypographyColor(textColor, theme));
+            ? resolvedColor
+            : resolveTypographyColor(textColor, theme);
 
-    if (!parsedTextColor) throw new Error("Invalid text color");
+    const solidTextColor =
+        formatHex8(
+            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
+        ) ?? theme.typography.colors.primary;
 
-    const solidTextColor = parse(
-        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-    );
-    if (!solidTextColor) throw new Error("Invalid color");
+    const textColorWithFallback =
+        formatHex8(resolvedTextColor) ?? theme.typography.colors.primary;
 
     return {
         elevation: {
@@ -35,24 +35,25 @@ export const resolvePaperStyles = (
             boxShadow: `0 ${elevation + 1}px ${elevation * 2}px rgba(0,0,0,${elevation * 0.1})`,
         },
         solid: {
-            backgroundColor: formatHex8(parsedColor),
-            color: formatHex8(adjustTextColor(parsedTextColor, solidTextColor)),
+            backgroundColor: formatHex8(resolvedColor) ?? colors.primary,
+            color:
+                formatHex8(solidTextColor) ?? theme.typography.colors.primary,
             border: "none",
         },
         outlined: {
             backgroundColor: "transparent",
-            border: `1px solid ${formatHex8(parsedColor)}`,
-            color: formatHex8(parsedTextColor),
+            border: `1px solid ${formatHex8(resolvedColor)}`,
+            color: textColorWithFallback,
         },
         plain: {
             backgroundColor: "transparent",
             border: "none",
-            color: formatHex8(parsedTextColor),
+            color: textColorWithFallback,
         },
         soft: {
-            backgroundColor: alpha(parsedColor, 0.1),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.1)),
             border: "none",
-            color: formatHex8(parsedTextColor),
+            color: textColorWithFallback,
         },
     };
 };

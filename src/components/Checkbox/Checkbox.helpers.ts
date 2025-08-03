@@ -1,10 +1,10 @@
 import { type Theme } from "@emotion/react";
 
 import { type Color, type ColorLike, type Size } from "@ui-types";
-import { adjustTextColor, alpha, getLuminance } from "@utils";
+import { alpha, getLuminance } from "@utils";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
-import { formatHex8, parse } from "culori";
+import { formatHex8 } from "culori";
 
 const minSize = 10,
     maxSize = 28;
@@ -32,46 +32,49 @@ export const resolveCheckboxStyles = (
 ) => {
     const { colors } = theme;
 
-    const parsedColor = parse(resolveColor(color, theme));
-    if (!parsedColor) throw new Error("Invalid color");
+    const resolvedColor = resolveColor(color, theme);
 
-    const resolvedColor = formatHex8(parsedColor);
+    const bgLuminance = getLuminance(resolvedColor);
+    const textColor =
+        formatHex8(
+            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
+        ) ?? theme.typography.colors.primary;
 
-    const bgLuminance = getLuminance(parsedColor);
-    const textColor = parse(
-        bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-    );
-    if (!textColor) throw new Error("Invalid color");
+    const hexColor = formatHex8(resolvedColor);
 
     return {
         solid: {
-            backgroundColor: resolvedColor,
-            color: formatHex8(adjustTextColor(parsedColor, textColor)),
+            backgroundColor: hexColor,
+            color: textColor,
             border: "none",
-            "&:hover": { backgroundColor: alpha(parsedColor, 0.5) },
-            "&:active": { backgroundColor: resolvedColor },
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
+            },
+            "&:active": { backgroundColor: formatHex8(resolvedColor) },
         },
         outlined: {
             backgroundColor: "transparent",
             color: resolvedColor,
-            border: `1px solid ${alpha(parsedColor, 0.5)}`,
+            border: `1px solid ${formatHex8(alpha(resolvedColor, 0.5))}`,
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.3),
-                border: `1px solid ${alpha(parsedColor, 0.3)}`,
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
+                border: `1px solid ${formatHex8(alpha(resolvedColor, 0.3))}`,
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.15),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.15)),
             },
         },
         soft: {
-            backgroundColor: alpha(parsedColor, checked ? 0.4 : 0.2),
+            backgroundColor: formatHex8(
+                alpha(resolvedColor, checked ? 0.4 : 0.2),
+            ),
             color: resolvedColor,
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.3),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
             "&:active": {
-                backgroundColor: alpha(parsedColor, 0.3),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
         },
         plain: {
@@ -79,9 +82,9 @@ export const resolveCheckboxStyles = (
             color: resolvedColor,
             border: "none",
             "&:hover": {
-                backgroundColor: alpha(parsedColor, 0.5),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
             },
-            "&:active": { color: alpha(parsedColor, 0.5) },
+            "&:active": { color: formatHex8(alpha(resolvedColor, 0.5)) },
         },
     };
 };
