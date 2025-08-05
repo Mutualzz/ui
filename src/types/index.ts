@@ -73,6 +73,34 @@ export type SystemProps = HTMLAttributes<HTMLElement> &
     HTMLSpacingProps &
     HTMLTypographyProps;
 
+export type Px = `${number}px`;
+export type Rem = `${number}rem`;
+export type Em = `${number}em`;
+export type Percent = `${number}%`;
+export type Vh = `${number}vh`;
+export type Vw = `${number}vw`;
+export type Vmin = `${number}vmin`;
+export type Vmax = `${number}vmax`;
+export type Pt = `${number}pt`;
+export type Fr = `${number}fr`; // For CSS Grid
+
+export type AbsoluteSize = Px | Pt;
+export type RelativeSize = Em | Rem | Percent | Vh | Vw | Vmin | Vmax | Fr;
+
+export type SizeValue = AbsoluteSize | RelativeSize;
+
+export type UnitSuffix =
+    | "px"
+    | "rem"
+    | "em"
+    | "%"
+    | "vh"
+    | "vw"
+    | "vmin"
+    | "vmax"
+    | "pt"
+    | "fr";
+
 export interface MZTheme {
     id: string;
     name: string;
