@@ -1,7 +1,26 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike, type TypographyColor } from "@ui-types";
 import { useTheme } from "../hooks/useTheme";
-import { isThemeColor, isTypographyColor } from "./isThemeColor";
+
+export const isThemeColor = (
+    color: Color | ColorLike | TypographyColor,
+): color is Color => {
+    return (
+        typeof color === "string" &&
+        ["primary", "neutral", "success", "danger", "warning", "info"].includes(
+            color,
+        )
+    );
+};
+
+export const isTypographyColor = (
+    color: Color | TypographyColor | ColorLike,
+): color is TypographyColor => {
+    return (
+        typeof color === "string" &&
+        ["primary", "secondary", "accent", "disabled"].includes(color)
+    );
+};
 
 export const resolveColor = (color: Color | ColorLike, theme: Theme) =>
     isThemeColor(color) ? theme.colors[color] : color;

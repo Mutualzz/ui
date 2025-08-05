@@ -6,15 +6,22 @@ import { blendOver } from "./blendOver";
 import { dynamicElevation } from "./dynamicElevation";
 import { getContrastRatio } from "./getContrastRatio";
 import { getLuminance } from "./getLuminance";
-import { isThemeColor } from "./isThemeColor";
 import { randomHexColor } from "./randomHexColor";
-import { resolveColor, resolveTypographyColor } from "./resolveColors";
+import {
+    isThemeColor,
+    isTypographyColor,
+    resolveColor,
+    resolveTypographyColor,
+} from "./resolveColor";
 import { resolveSize } from "./resolveSize";
 import { setRef } from "./setRef";
 import { sortThemes } from "./sortThemes";
 import { useEnhancedEffect } from "./useEnhancedEffect";
 import { useForkRef } from "./useForkRef";
 import visuallyHidden from "./visuallyHidden";
+
+export const cssUnitRegex =
+    /^(-?\d*\.?\d+)(px|rem|em|%|vh|vw|vmin|vmax|pt|fr)$/i;
 
 export {
     adjustLightness,
@@ -24,6 +31,7 @@ export {
     getContrastRatio,
     getLuminance,
     isThemeColor,
+    isTypographyColor,
     randomHexColor,
     resolveColor,
     resolveSize,
