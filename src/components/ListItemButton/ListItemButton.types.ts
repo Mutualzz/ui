@@ -1,4 +1,4 @@
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 export interface ListItemButtonProps
@@ -25,7 +25,7 @@ export interface ListItemButtonProps
      * @max 72
      * @example "sm", "md", "lg", 32
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Indicates whether the button is in a loading state.

@@ -1,5 +1,5 @@
 import styled from "@styled";
-import { type Size } from "@ui-types";
+import { type Size, type SizeValue } from "@ui-types";
 import { useContext, useState, type ChangeEvent, type Ref } from "react";
 import { CheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
 import {
@@ -10,7 +10,7 @@ import {
 import { type CheckboxProps } from "./Checkbox.types";
 
 const CheckboxWrapper = styled("label")<Omit<CheckboxProps, "value">>(
-    ({ disabled, size = "md" }) => ({
+    ({ theme, disabled, size = "md" }) => ({
         position: "relative",
         display: "inline-flex",
         alignItems: "center",
@@ -18,7 +18,7 @@ const CheckboxWrapper = styled("label")<Omit<CheckboxProps, "value">>(
         userSelect: "none",
         transition: "all 0.3s ease",
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
-        ...resolveCheckboxSize(size),
+        ...resolveCheckboxSize(theme, size),
     }),
 );
 
@@ -98,12 +98,12 @@ const CheckboxLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
 
 CheckboxLabel.displayName = "CheckboxLabel";
 
-const IconWrapper = styled("span")<{ size?: Size | number }>(
-    ({ size = "md" }) => ({
+const IconWrapper = styled("span")<{ size?: Size | SizeValue | number }>(
+    ({ theme, size = "md" }) => ({
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        ...resolveIconScaling(size),
+        ...resolveIconScaling(theme, size),
         "& > *": {
             width: "100%",
             height: "100%",

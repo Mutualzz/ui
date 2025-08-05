@@ -1,4 +1,10 @@
-import { type Color, type ColorLike, type Size, type Variant } from "@ui-types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type SizeValue,
+    type Variant,
+} from "@ui-types";
 import {
     type ChangeEvent,
     type InputHTMLAttributes,
@@ -58,7 +64,7 @@ export interface RadioProps
      * @max 28
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Unchecked icon to display when the radio is not checked.

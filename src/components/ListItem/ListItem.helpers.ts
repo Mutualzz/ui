@@ -1,10 +1,7 @@
 import type { CSSObject, Theme } from "@emotion/react";
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import { alpha, resolveColor, resolveSize } from "@utils";
 import { formatHex8 } from "culori";
-
-const minSize = 24,
-    maxSize = 72;
 
 const baseSizeMap: Record<Size, number> = {
     sm: 30,
@@ -12,8 +9,11 @@ const baseSizeMap: Record<Size, number> = {
     lg: 64,
 };
 
-export const resolveListItemSize = (theme: Theme, size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveListItemSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     let gap, minHeight, paddingX, fontSize;
     switch (size) {
@@ -36,10 +36,10 @@ export const resolveListItemSize = (theme: Theme, size: Size | number) => {
             fontSize = theme.typography.levels["body-lg"].fontSize;
             break;
         default:
-            gap = sizeVal / 10;
-            minHeight = sizeVal;
-            paddingX = sizeVal / 8;
-            fontSize = sizeVal / 2;
+            gap = resolvedSize / 10;
+            minHeight = resolvedSize;
+            paddingX = resolvedSize / 8;
+            fontSize = resolvedSize / 2;
             break;
     }
 

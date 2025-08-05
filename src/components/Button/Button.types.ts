@@ -1,4 +1,10 @@
-import { type Color, type ColorLike, type Size, type Variant } from "@ui-types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type SizeValue,
+    type Variant,
+} from "@ui-types";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
 export interface ButtonProps
@@ -18,11 +24,9 @@ export interface ButtonProps
     /**
      * The size of the button, which can be a predefined size or a custom size in pixels.
      * @default "md"
-     * @min 10
-     * @max 24
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Indicates whether the button is in a loading state.

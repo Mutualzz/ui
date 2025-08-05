@@ -1,13 +1,15 @@
 import { type Theme } from "@emotion/react";
 
-import { type Color, type ColorLike, type Size } from "@ui-types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type SizeValue,
+} from "@ui-types";
 import { alpha, getLuminance } from "@utils";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
-
-const minSize = 10,
-    maxSize = 28;
 
 export const baseSizeMap: Record<Size, number> = {
     sm: 16,
@@ -15,13 +17,16 @@ export const baseSizeMap: Record<Size, number> = {
     lg: 24,
 };
 
-export const resolveCheckboxSize = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveCheckboxSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
-        padding: sizeVal * 0.2,
+        padding: resolvedSize * 0.2,
         lineHeight: 0,
-        fontSize: sizeVal * 0.8,
+        fontSize: resolvedSize * 0.8,
     };
 };
 
@@ -89,10 +94,13 @@ export const resolveCheckboxStyles = (
     };
 };
 
-export const resolveIconScaling = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveIconScaling = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
-    const scale = sizeVal / 2;
+    const scale = resolvedSize / 2;
 
     return {
         width: scale,

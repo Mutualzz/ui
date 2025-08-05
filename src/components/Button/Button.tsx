@@ -25,7 +25,7 @@ const ButtonWrapper = styled("button")<ButtonProps>(
         cursor: "pointer",
         transition: "all 0.3s ease",
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
-        ...resolveButtonSize(size),
+        ...resolveButtonSize(theme, size),
         ...resolveButtonStyles(theme, color)[variant],
     }),
 );

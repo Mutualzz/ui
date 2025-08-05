@@ -1,4 +1,4 @@
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import type { HTMLAttributes, ReactNode } from "react";
 
 export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
@@ -27,7 +27,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
      * @max 72
      * @example "sm", "md", "lg", 32
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * The start decorator of the list item.

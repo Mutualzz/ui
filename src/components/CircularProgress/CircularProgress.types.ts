@@ -1,4 +1,10 @@
-import { type Color, type ColorLike, type Size, type Variant } from "@ui-types";
+import {
+    type Color,
+    type ColorLike,
+    type Size,
+    type SizeValue,
+    type Variant,
+} from "@ui-types";
 import type { ReactNode } from "react";
 
 export interface CircularProgressProps {
@@ -7,11 +13,9 @@ export interface CircularProgressProps {
      * Can be a predefined size or a custom size in pixels.
      *
      * @default "md"
-     * @min 16
-     * @max 64
      * @example "sm", "md", "lg", 36
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
     /**
      * The color of the circular progress component.
      * Can be a predefined color or a custom color.

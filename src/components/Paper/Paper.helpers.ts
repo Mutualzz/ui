@@ -1,7 +1,7 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike, type TypographyColor } from "@ui-types";
 import { alpha, dynamicElevation, getLuminance } from "@utils";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
+import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { formatHex8 } from "culori";
 
 export const resolvePaperStyles = (

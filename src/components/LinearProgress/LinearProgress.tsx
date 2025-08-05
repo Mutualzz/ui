@@ -2,7 +2,7 @@ import { useTheme } from "../../hooks/useTheme";
 
 import styled from "@styled";
 import type { Variant } from "@ui-types";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import {
     resolveLinearProgressLength,
     resolveLinearProgressStyles,
@@ -98,8 +98,8 @@ const LinearProgress = ({
 }: LinearProgressProps) => {
     const { theme } = useTheme();
 
-    const height = resolveLinearProgressThickness(thickness);
-    const width = resolveLinearProgressLength(length);
+    const height = resolveLinearProgressThickness(theme, thickness);
+    const width = resolveLinearProgressLength(theme, length);
 
     const background = resolveLinearProgressStyles(theme, color)[variant];
 

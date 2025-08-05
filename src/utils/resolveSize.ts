@@ -1,20 +1,57 @@
-import type { Size } from "@ui-types";
+import type { Theme } from "@emotion/react";
+import type { Size, SizeValue } from "@ui-types";
+import { cssUnitRegex } from "@utils";
+
+export const isSizeValue = (
+    size: Size | SizeValue | number,
+): size is SizeValue => {
+    return typeof size === "string" && cssUnitRegex.test(size);
+};
+
+export const isSize = (
+    size: Size | SizeValue | number,
+    map: Record<Size, string | number>,
+): size is Size => {
+    return typeof size === "string" && size in map;
+};
+
+export const isNumberSize = (
+    size: Size | SizeValue | number,
+): size is number => {
+    return typeof size === "number";
+};
 
 export const resolveSize = (
-    size: Size | number,
-    minSize: number,
-    maxSize: number,
+    theme: Theme,
+    size: Size | SizeValue | number,
     map: Record<Size, number>,
 ) => {
-    let final: number;
-    if (typeof size === "number") final = size;
-    else if (size in map) final = map[size];
-    else {
-        const parsed = parseFloat(size);
-        final = isNaN(parsed) ? map.md : parsed;
+    // If size is just a number, return it directly
+    if (isNumberSize(size)) return size;
+
+    // If size is a theme size (sm, md, lg), resolve it from the map (if available)
+    if (isSize(size, map) && size in map) return map[size];
+
+    if (isSizeValue(size)) {
+        const match = size.match(cssUnitRegex);
+        if (!match) return map.md; // Default to medium size if no match
+
+        const [, numStr, unit] = match;
+        const value = parseFloat(numStr);
+        if (isNaN(value)) return map.md; // Default to medium size if NaN
+
+        switch (unit) {
+            case "px":
+                return value; // Return as is for pixels
+            case "rem":
+            case "em":
+                return value * theme.typography.levels["body-md"].fontSize;
+            case "%":
+                return (value / 100) * 1.333;
+            default:
+                return map.md; // Default to medium size for unsupported units
+        }
     }
 
-    final = Math.max(minSize, Math.min(maxSize, final));
-
-    return final;
+    return map.md; // Default to medium size if nothing matches
 };

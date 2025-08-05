@@ -2,6 +2,7 @@ import type {
     Color,
     ColorLike,
     Size,
+    SizeValue,
     TypographyColor,
     Variant,
 } from "@ui-types";
@@ -45,7 +46,7 @@ export interface TextareaProps
      * @max 24
      * @example "sm", "md", "lg", 14
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Whether the textarea is disabled.

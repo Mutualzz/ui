@@ -1,14 +1,14 @@
 import { InputBase } from "@components/InputBase/InputBase";
 import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { InputRoot } from "@components/InputRoot/InputRoot";
-import type { Size } from "@ui-types";
+import type { Size, SizeValue } from "@ui-types";
 import { useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { resolvePasswordIconStyles } from "./InputPassword.helpers";
 import type { InputPasswordProps } from "./InputPassword.types";
 
 interface IconProps {
-    size: Size | number;
+    size: Size | SizeValue | number;
     strokeColor: string;
 }
 

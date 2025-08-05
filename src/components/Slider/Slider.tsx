@@ -1,5 +1,5 @@
 import styled from "@styled";
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import { darken } from "@utils";
 import { formatHex8 } from "culori";
 import {
@@ -52,9 +52,9 @@ SliderRoot.displayName = "SliderRoot";
 
 const TrackContainer = styled("div")<{
     orientation: SliderOrientation;
-    size: Size | number;
-}>(({ orientation, size }) => {
-    const trackThickness = resolveSliderTrackThickness(size);
+    size: Size | SizeValue | number;
+}>(({ theme, orientation, size }) => {
+    const trackThickness = resolveSliderTrackThickness(theme, size);
 
     return {
         position: "relative",
@@ -123,7 +123,7 @@ TrackSegmentFilled.displayName = "TrackSegmentFilled";
 
 const Tick = styled("div")<{
     orientation: SliderOrientation;
-    size: Size | number;
+    size: Size | SizeValue | number;
     percent: number;
 }>(({ theme, percent, orientation, size }) => {
     const minClamp = 1; // percentage (in % of 100%)
@@ -136,7 +136,7 @@ const Tick = styled("div")<{
         position: "absolute",
         backgroundColor: theme.colors.common.white,
         borderRadius: "50%",
-        ...resolveSliderTickSize(size),
+        ...resolveSliderTickSize(theme, size),
 
         ...(orientation === "horizontal"
             ? {
@@ -157,7 +157,7 @@ Tick.displayName = "Tick";
 const Thumb = styled("div")<{
     color: Color | ColorLike;
     variant: Variant;
-    size: Size | number;
+    size: Size | SizeValue | number;
     percent: number;
     orientation: SliderOrientation;
     hovered: boolean;
@@ -181,7 +181,7 @@ const Thumb = styled("div")<{
             ? { left: `${percent}%`, top: "50%" }
             : { top: `${100 - percent}%`, left: "50%" }),
         ...resolveSliderThumbStyles(theme, color, hovered)[variant],
-        ...resolveSliderThumbSize(size),
+        ...resolveSliderThumbSize(theme, size),
     }),
 );
 
@@ -190,9 +190,9 @@ Thumb.displayName = "Thumb";
 const ValueLabel = styled("span")<{
     orientation: SliderOrientation;
     percent: number;
-    size: Size | number;
+    size: Size | SizeValue | number;
 }>(({ theme, orientation, percent, size }) => {
-    const thumbSize = Number(resolveSliderThumbSize(size).width);
+    const thumbSize = Number(resolveSliderThumbSize(theme, size).width);
     const labelOffset = thumbSize + 20;
     const fontSize = resolveSliderLabelSize(theme, size);
     const clampPercent = Math.min(Math.max(percent, 0), 100);
@@ -251,7 +251,7 @@ ValueLabel.displayName = "ValueLabel";
 const MarkLabel = styled("span")<{
     orientation: SliderOrientation;
     percent: number;
-    size: Size | number;
+    size: Size | SizeValue | number;
 }>(({ theme, orientation, percent, size }) => ({
     position: "absolute",
     display: "flex",

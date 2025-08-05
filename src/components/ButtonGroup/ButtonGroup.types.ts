@@ -1,4 +1,11 @@
-import type { Color, ColorLike, Orientation, Size, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Orientation,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { ReactNode } from "react";
 
 export interface ButtonGroupProps {
@@ -20,11 +27,9 @@ export interface ButtonGroupProps {
      * The size of the buttons in the group, which can be a predefined size or a custom size in pixels.
      * If not provided, the buttons will use their assigned sizes.
      *
-     * @min 10
-     * @max 24
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Indicates whether all buttons in the group should be disabled.

@@ -1,9 +1,16 @@
-import type { Color, ColorLike, Orientation, Size, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Orientation,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import { createContext } from "react";
 
 interface ListContextType {
     color?: Color | ColorLike;
-    size?: Size | number;
+    size?: Size | SizeValue | number;
     variant?: Variant;
     orientation?: Orientation;
 

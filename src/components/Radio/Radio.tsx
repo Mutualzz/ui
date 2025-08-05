@@ -1,5 +1,5 @@
 import styled from "@styled";
-import type { Size } from "@ui-types";
+import type { Size, SizeValue } from "@ui-types";
 import { type ChangeEvent, type Ref, useContext, useState } from "react";
 
 import { RadioGroupContext } from "../RadioGroup/RadioGroup.context";
@@ -11,7 +11,7 @@ import {
 import type { RadioProps } from "./Radio.types";
 
 const RadioWrapper = styled("label")<RadioProps>(
-    ({ disabled, size = "md" }) => ({
+    ({ theme, disabled, size = "md" }) => ({
         position: "relative",
         display: "inline-flex",
         alignItems: "center",
@@ -19,7 +19,7 @@ const RadioWrapper = styled("label")<RadioProps>(
         userSelect: "none",
         transition: "all 0.3s ease",
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
-        ...resolveRadioSize(size),
+        ...resolveRadioSize(theme, size),
     }),
 );
 
@@ -89,12 +89,12 @@ const RadioLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
 
 RadioLabel.displayName = "RadioLabel";
 
-const IconWrapper = styled("span")<{ size?: Size | number }>(
-    ({ size = "md" }) => ({
+const IconWrapper = styled("span")<{ size?: Size | SizeValue | number }>(
+    ({ theme, size = "md" }) => ({
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        ...resolveIconScaling(size),
+        ...resolveIconScaling(theme, size),
         "& > *": {
             width: "100%",
             height: "100%",

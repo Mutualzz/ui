@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import {
     resolveCircularProgressSize,
     resolveCircularProgressStyles,
@@ -41,11 +41,11 @@ const CircularProgress = ({
 
     const contentPadding = 8;
 
-    const strokeWidth = resolveCircularProgressThickness(size);
+    const strokeWidth = resolveCircularProgressThickness(theme, size);
 
     const diameter = contentDiameter
         ? contentDiameter + strokeWidth + contentPadding * 2
-        : resolveCircularProgressSize(size);
+        : resolveCircularProgressSize(theme, size);
 
     const radius = (diameter - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;

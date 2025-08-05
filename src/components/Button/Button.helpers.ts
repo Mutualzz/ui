@@ -2,13 +2,10 @@ import { type Theme } from "@emotion/react";
 
 import { formatHex8 } from "culori";
 
-import type { Color, ColorLike, Size } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
 import { alpha, darken, getLuminance, lighten } from "@utils";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
-
-const minSize = 10,
-    maxSize = 24;
 
 export const baseSizeMap: Record<Size, number> = {
     sm: 12,
@@ -16,15 +13,18 @@ export const baseSizeMap: Record<Size, number> = {
     lg: 16,
 };
 
-export const resolveButtonSize = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveButtonSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
     const padding = 10;
 
     return {
-        fontSize: sizeVal,
+        fontSize: resolvedSize,
         lineHeight: 1,
-        padding: `${padding}px ${padding}px`,
-        minHeight: `${sizeVal + padding * 2}px`,
+        padding: padding,
+        minHeight: `${resolvedSize + padding * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
     };

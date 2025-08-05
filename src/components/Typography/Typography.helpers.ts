@@ -1,7 +1,7 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike } from "@ui-types";
 import { alpha, getLuminance } from "@utils";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import { formatHex8 } from "culori";
 
 export const resolveTypographStyles = (

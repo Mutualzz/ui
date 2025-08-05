@@ -1,15 +1,10 @@
 import type { Theme } from "@emotion/react";
-import type { Color, ColorLike, Size } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
+import { cssUnitRegex } from "@utils";
 import { alpha } from "@utils/alpha";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
-
-const minSize = 16,
-    maxSize = 64;
-
-const minSizeThickness = 1,
-    maxSizeThickness = 10;
 
 export const resolveCircularProgressStyles = (
     theme: Theme,
@@ -37,16 +32,19 @@ export const thicknesses: Record<Size, number> = {
     lg: 8,
 };
 
-export const resolveCircularProgressSize = (size: Size | number) =>
-    resolveSize(size, minSize, maxSize, sizes);
+export const resolveCircularProgressSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => resolveSize(theme, size, sizes);
 
-export const resolveCircularProgressThickness = (thickness: Size | number) => {
-    const sizeVal = resolveSize(
-        thickness,
-        minSizeThickness,
-        maxSizeThickness,
-        thicknesses,
-    );
+export const resolveCircularProgressThickness = (
+    theme: Theme,
+    thickness: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, thickness, thicknesses);
+    if (cssUnitRegex.test(resolvedSize.toString())) return resolvedSize;
 
-    return Object.values(thicknesses).includes(sizeVal) ? sizeVal : sizeVal / 2;
+    return Object.values(thicknesses).includes(resolvedSize)
+        ? resolvedSize
+        : resolvedSize / 2;
 };

@@ -2,6 +2,7 @@ import type {
     Color,
     ColorLike,
     Size,
+    SizeValue,
     TypographyColor,
     Variant,
 } from "@ui-types";
@@ -67,7 +68,7 @@ export interface InputProps
      * @max 32
      * @example "sm", "md", "lg", 16
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Optional start decorator to render before the input element.

@@ -12,7 +12,7 @@ const TextareaRoot = styled("div")<TextareaProps>(
         variant = "outlined",
         disabled,
     }) => ({
-        ...resolveTextareaSize(size),
+        ...resolveTextareaSize(theme, size),
         ...resolveTextareaStyles(theme, color, textColor)[variant],
         ...(disabled && {
             opacity: 0.5,
@@ -23,7 +23,7 @@ const TextareaRoot = styled("div")<TextareaProps>(
         paddingInline: "0.5em",
         gap: "0.375em",
         borderRadius: 8,
-        boxSizing: "border-box",
+        boxSizing: "border-box" as const,
         minWidth: 0,
         width: "100%",
     }),

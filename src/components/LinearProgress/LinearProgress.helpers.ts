@@ -1,15 +1,10 @@
 import type { Theme } from "@emotion/react";
-import type { Color, ColorLike, Size } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
 
 import { alpha } from "@utils";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
-
-const minLength = 80,
-    maxLength = 240;
-const minThickness = 4,
-    maxThickness = 16;
 
 export const resolveLinearProgressStyles = (
     theme: Theme,
@@ -37,8 +32,12 @@ export const lengthMap: Record<Size, number> = {
     lg: 200,
 };
 
-export const resolveLinearProgressThickness = (thickness: Size | number) =>
-    resolveSize(thickness, minThickness, maxThickness, thicknessMap);
+export const resolveLinearProgressThickness = (
+    theme: Theme,
+    thickness: Size | SizeValue | number,
+) => resolveSize(theme, thickness, thicknessMap);
 
-export const resolveLinearProgressLength = (length: Size | number) =>
-    resolveSize(length, minLength, maxLength, lengthMap);
+export const resolveLinearProgressLength = (
+    theme: Theme,
+    length: Size | SizeValue | number,
+) => resolveSize(theme, length, lengthMap);

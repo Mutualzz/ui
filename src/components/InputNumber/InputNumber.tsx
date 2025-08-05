@@ -2,6 +2,7 @@ import { InputBase } from "@components/InputBase/InputBase";
 import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size } from "@ui-types";
+import { resolveSize } from "@utils";
 import { formatHex8 } from "culori";
 import {
     useRef,
@@ -13,10 +14,16 @@ import { useTheme } from "../../hooks/useTheme";
 import { Stack } from "../Stack/Stack";
 import type { InputNumberProps } from "./InputNumber.types";
 
-const sizeMap: Record<Size, { width: number; fontSize: string }> = {
-    sm: { width: 12, fontSize: "0.5rem" },
-    md: { width: 14, fontSize: "0.6rem" },
-    lg: { width: 18, fontSize: "0.75rem" },
+const widthSizeMap: Record<Size, number> = {
+    sm: 12,
+    md: 14,
+    lg: 18,
+} as const;
+
+const fontSizeMap: Record<Size, number> = {
+    sm: 8,
+    md: 9.6,
+    lg: 12,
 } as const;
 
 const SpinnerButtons = ({
@@ -26,7 +33,8 @@ const SpinnerButtons = ({
     size = "md",
 }: InputNumberProps) => {
     const { theme } = useTheme();
-    const { width, fontSize } = sizeMap[typeof size === "number" ? "sm" : size];
+    const width = resolveSize(theme, size, widthSizeMap);
+    const fontSize = resolveSize(theme, size, fontSizeMap);
 
     return (
         <Stack

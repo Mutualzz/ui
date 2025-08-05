@@ -1,4 +1,4 @@
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import type {
     ChangeEvent,
     InputHTMLAttributes,
@@ -48,7 +48,7 @@ export interface SliderProps
      * @max 28
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
     /**
      * Slider variant.
      * This can be a predefined variant like "solid", "outlined", "soft" or "plain".

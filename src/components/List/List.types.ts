@@ -1,4 +1,11 @@
-import type { Color, ColorLike, Orientation, Size, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Orientation,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { allowedListStyleTypes } from "@utils";
 import type { HTMLProps } from "react";
 
@@ -31,7 +38,7 @@ export interface ListProps
      * @max 72
      * @example "sm", "md", "lg", 32
      */
-    size?: Size | number;
+    size?: Size | SizeValue | number;
 
     /**
      * Marker to use for the list items.

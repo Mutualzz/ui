@@ -3,30 +3,31 @@ import type {
     Color,
     ColorLike,
     Size,
+    SizeValue,
     TypographyColor,
     Variant,
 } from "@ui-types";
 import { darken, lighten } from "@utils";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
+import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
-const minSize = 6,
-    maxSize = 32;
-
 const baseSizeMap: Record<Size, number> = {
-    sm: 12,
-    md: 14,
-    lg: 16,
+    sm: 14,
+    md: 16,
+    lg: 18,
 };
 
-export const resolveInputBaseSize = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveInputBaseSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
-        fontSize: sizeVal,
+        fontSize: resolvedSize,
         lineHeight: 1,
-        minHeight: `${sizeVal + (sizeVal / 2) * 2}px`,
+        minHeight: `${resolvedSize + (resolvedSize / 2) * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
     };

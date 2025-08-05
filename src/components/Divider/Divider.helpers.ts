@@ -1,8 +1,11 @@
 import type { Theme } from "@emotion/react";
 import type { Color, ColorLike, TypographyColor } from "@ui-types";
 import { isThemeColor } from "@utils";
-import { isTypographyColor } from "@utils/isThemeColor";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
+import {
+    isTypographyColor,
+    resolveColor,
+    resolveTypographyColor,
+} from "@utils/resolveColor";
 import { formatHex8 } from "culori";
 
 export const resolveDividerColor = (

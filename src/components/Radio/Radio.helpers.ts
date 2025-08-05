@@ -1,8 +1,6 @@
-import { type Size } from "@ui-types";
+import type { Theme } from "@emotion/react";
+import { type Size, type SizeValue } from "@ui-types";
 import { resolveSize } from "@utils/resolveSize";
-
-const minSize = 10,
-    maxSize = 28;
 
 export const baseSizeMap: Record<Size, number> = {
     sm: 16,
@@ -10,13 +8,16 @@ export const baseSizeMap: Record<Size, number> = {
     lg: 24,
 };
 
-export const resolveRadioSize = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveRadioSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
-        padding: sizeVal * 0.2,
+        padding: resolvedSize * 0.2,
         lineHeight: 0,
-        fontSize: sizeVal * 0.8,
+        fontSize: resolvedSize * 0.8,
     };
 };
 

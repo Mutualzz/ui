@@ -1,12 +1,9 @@
 import type { CSSObject, Theme } from "@emotion/react";
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import { alpha, lighten } from "@utils";
-import { resolveColor } from "@utils/resolveColors";
+import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
-
-const minThumbSize = 10,
-    maxThumbSize = 28;
 
 const minFontSize = 10,
     maxFontSize = 16;
@@ -17,26 +14,35 @@ const thumbSizeMap: Record<Size, number> = {
     lg: 24,
 };
 
-export const resolveSliderThumbSize = (size: Size | number): CSSObject => {
-    const sizeVal = resolveSize(size, minThumbSize, maxThumbSize, thumbSizeMap);
+export const resolveSliderThumbSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+): CSSObject => {
+    const resolvedSize = resolveSize(theme, size, thumbSizeMap);
 
     return {
-        width: sizeVal,
-        height: sizeVal,
-        borderRadius: sizeVal / 2,
+        width: resolvedSize,
+        height: resolvedSize,
+        borderRadius: resolvedSize / 2,
     };
 };
 
-export const resolveSliderTrackThickness = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minThumbSize, maxThumbSize, thumbSizeMap);
+export const resolveSliderTrackThickness = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, thumbSizeMap);
 
-    return Math.round(sizeVal / 2.5);
+    return Math.round(resolvedSize / 2.5);
 };
 
-export const resolveSliderTickSize = (size: Size | number): CSSObject => {
-    const sizeVal = resolveSize(size, minThumbSize, maxThumbSize, thumbSizeMap);
+export const resolveSliderTickSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+): CSSObject => {
+    const resolvedSize = resolveSize(theme, size, thumbSizeMap);
 
-    const tickSize = Math.round(sizeVal * 0.2);
+    const tickSize = Math.round(resolvedSize * 0.2);
 
     return {
         width: tickSize,
@@ -44,7 +50,10 @@ export const resolveSliderTickSize = (size: Size | number): CSSObject => {
     };
 };
 
-export const resolveSliderLabelSize = (theme: Theme, size: Size | number) => {
+export const resolveSliderLabelSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
     let base = size;
     if (typeof base === "string") base = parseFloat(base);
     if (isNaN(base)) {

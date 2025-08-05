@@ -3,16 +3,14 @@ import type {
     Color,
     ColorLike,
     Size,
+    SizeValue,
     TypographyColor,
     Variant,
 } from "@ui-types";
 import { darken, lighten } from "@utils";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
+import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
-
-const minSize = 6,
-    maxSize = 24;
 
 const baseSizeMap: Record<Size, number> = {
     sm: 12,
@@ -20,13 +18,16 @@ const baseSizeMap: Record<Size, number> = {
     lg: 16,
 };
 
-export const resolveTextareaSize = (size: Size | number) => {
-    const sizeVal = resolveSize(size, minSize, maxSize, baseSizeMap);
+export const resolveTextareaSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
-        fontSize: sizeVal,
+        fontSize: resolvedSize,
         lineHeight: 1.5,
-        minHeight: `${sizeVal + (sizeVal / 2) * 2}px`,
+        minHeight: `${resolvedSize + (resolvedSize / 2) * 2}px`,
         whiteSpace: "nowrap",
         flexShrink: 0,
     };

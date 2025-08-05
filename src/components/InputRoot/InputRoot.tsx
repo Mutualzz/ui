@@ -16,7 +16,7 @@ const InputRoot = styled("div")<InputProps>(
         fullWidth,
         disabled,
     }) => ({
-        ...resolveInputBaseSize(size),
+        ...resolveInputBaseSize(theme, size),
         ...resolveInputBaseStyles(theme, color, textColor, error)[variant],
         ...(disabled && { opacity: 0.5 }),
 
