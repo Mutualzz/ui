@@ -5,28 +5,37 @@ export interface ButtonGroupProps {
     /**
      * The color of the button group, which can be a predefined color or a custom color.
      * If not provided, the buttons will use their assigned colors.
+     *
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * The variant of the button group, which determines the style of the buttons.
      * If not provided, the buttons will use their assigned variants.
+     *
+     * @example "solid", "outlined", "soft", "plain"
      */
     variant?: Variant;
     /**
      * The size of the buttons in the group, which can be a predefined size or a custom size in pixels.
      * If not provided, the buttons will use their assigned sizes.
+     *
+     * @min 10
+     * @max 24
+     * @example "sm", "md", "lg", 20
      */
     size?: Size | number;
 
     /**
      * Indicates whether all buttons in the group should be disabled.
      * If true, all buttons will be disabled.
-     * @default false
+     * If not provided, the buttons will use their individual disabled states.
      */
     disabled?: boolean;
 
     /**
      * The orientation of the button group, either "horizontal" or "vertical".
+     *
      * @default "horizontal"
      */
     orientation?: Orientation;
@@ -40,9 +49,8 @@ export interface ButtonGroupProps {
     /**
      * The separator color for the button group.
      * This can be a predefined color or a custom color.
-     * If not provided, the default color will be used.
-     *
-     * @alpha Not implemented yet
+     * If not provided, the default color will be used."
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     separatorColor?: Color | ColorLike;
 

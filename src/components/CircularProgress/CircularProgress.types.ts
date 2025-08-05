@@ -5,30 +5,40 @@ export interface CircularProgressProps {
     /**
      * The size of the circular progress component.
      * Can be a predefined size or a custom size in pixels.
+     *
      * @default "md"
+     * @min 16
+     * @max 64
+     * @example "sm", "md", "lg", 36
      */
     size?: Size | number;
     /**
      * The color of the circular progress component.
      * Can be a predefined color or a custom color.
+     *
      * @default "primary"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * The variant of the circular progress component.
      * Determines the style of the progress indicator.
+     *
      * @default "soft"
+     * @example "solid", "outlined", "soft", "plain"
      */
     variant?: Variant;
     /**
      * Indicates whether the circular progress is in a determinate state.
      * If true, the progress will be based on the `value` prop.
+     *
      * @default false
      */
     determinate?: boolean;
     /**
      * The current value of the progress indicator when in determinate mode.
      * Should be a number between 0 and 100.
+     *
      * @default 0
      */
     value?: number;

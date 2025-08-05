@@ -6,16 +6,21 @@ export interface ButtonProps
     /**
      * The variant of the button, which determines its style.
      * @default "solid"
+     * @example "solid", "outlined", "soft", "plain"
      */
     variant?: Variant;
     /**
      * The color of the button, which can be a predefined color or a custom color.
      * @default "primary"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * The size of the button, which can be a predefined size or a custom size in pixels.
      * @default "md"
+     * @min 10
+     * @max 24
+     * @example "sm", "md", "lg", 20
      */
     size?: Size | number;
 

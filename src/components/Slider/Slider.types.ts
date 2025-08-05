@@ -33,18 +33,29 @@ export interface SliderProps
      * Slider color or color-like value.
      * This can be a color name, hex code, or any valid color format.
      * It determines the color of the slider track and thumb.
+     *
+     * @default "primary"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * Slider size.
      * This can be a predefined size like "sm", "md", "lg", or a custom number.
      * It determines the size of the slider thumb and track.
+     *
+     * @default "md"
+     * @min 10
+     * @max 28
+     * @example "sm", "md", "lg", 20
      */
     size?: Size | number;
     /**
      * Slider variant.
      * This can be a predefined variant like "solid", "outlined", "soft" or "plain".
      * It determines the visual style of the slider.
+     *
+     * @default "solid"
+     * @example "solid", "outlined", "soft", "plain"
      */
     variant?: Variant;
 
@@ -58,25 +69,30 @@ export interface SliderProps
      * Slider orientation.
      * This can be "horizontal" or "vertical".
      * It determines the direction in which the slider is rendered.
+     *
      * @default "horizontal"
+     * @example "horizontal", "vertical"
      */
     orientation?: SliderOrientation;
 
     /**
      * Minimum value of the slider.
      * This should be a number that represents the lowest value the slider can take.
+     *
      * @default 0
      */
     min?: number;
     /**
      * Maximum value of the slider.
      * This should be a number that represents the highest value the slider can take.
+     *
      * @default 100
      */
     max?: number;
     /**
      * Step value of the slider.
      * This should be a number that represents the incremental step the slider takes.
+     *
      * @default 1
      */
     step?: number | null;
@@ -113,7 +129,9 @@ export interface SliderProps
      * - "off": No value labels are displayed.
      * - "on": Value labels are always displayed.
      * - "auto": Value labels are displayed only when the slider is focused or hovered.
+     *
      * @default "off"
+     * @example "off", "on", "auto"
      */
     valueLabelDisplay?: SliderValueLabelDisplay;
     /**

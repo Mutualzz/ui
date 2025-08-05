@@ -54,22 +54,28 @@ export interface CheckboxProps
      * The color of the checkbox, which can be a predefined color or a custom color
      *
      * @default "neutral"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * The variant of the checkbox, which determines its style.
      *
      * @default "solid"
+     * @example "solid", "outlined", "soft", "plain"
      */
     variant?: Variant;
     /**
      * The size of the checkbox, which can be a predefined size or a custom size in pixels.
+     *
      * @default "md"
+     * @min 10
+     * @max 28
+     * @example "sm", "md", "lg", 20
      */
     size?: Size | number;
 
     /**
-     * This is the directio of the checkbox label.
+     * This is the direction of the checkbox label.
      * If true, the label will be displayed on the left side of the checkbox.
      * If false, the label will be displayed on the right side of the checkbox.
      */

@@ -12,24 +12,38 @@ export interface TextareaProps
     /**
      * Color or color-like value for the textarea.
      * This can be a color name, hex code, or any valid color format.
+     *
+     * @default "neutral"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * Text color for the textarea.
-     * This can be a color name, hex code, or any valid color format.
+     * This can be a color name, hex code
      * If set to "inherit", it will inherit the color from the parent element.
+     *
+     * @default "inherit"
+     * @example "primary", "secondary", "accent", "disabled"
      */
     textColor?: TypographyColor | "inherit";
     /**
      * Variant of the textarea.
      * This can be "outlined", "solid", "soft", or "plain".
      * It determines the visual style of the textarea.
+     *
+     * @default "outlined"
+     * @example "outlined", "solid", "soft", "plain"
      */
     variant?: Variant;
     /**
      * Size of the textarea.
      * This can be a predefined size like "sm", "md", "lg", or a custom number.
      * It determines the font size and line height of the textarea.
+     *
+     * @default "md"
+     * @min 6
+     * @max 24
+     * @example "sm", "md", "lg", 14
      */
     size?: Size | number;
 

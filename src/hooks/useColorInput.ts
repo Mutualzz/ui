@@ -92,7 +92,8 @@ export const useColorInput = <T = ColorLike>(
                 setColor(
                     alpha === 100
                         ? formatHex(parsed)
-                        : alphaUtil(parsed, alpha),
+                        : (formatHex8(alphaUtil(parsed, alpha)) ??
+                              randomHexColor()),
                 );
                 setIsInvalid(false);
 

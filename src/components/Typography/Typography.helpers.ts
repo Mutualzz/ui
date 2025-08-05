@@ -35,7 +35,7 @@ export const resolveTypographStyles = (
             border: "none",
         },
         soft: {
-            backgroundColor: alpha(resolvedColor, 0.4),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
             color: formatHex8(resolvedColor),
             border: "none",
         },

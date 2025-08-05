@@ -9,33 +9,43 @@ export interface ListProps
     /**
      * Color of the list
      * Can be a predefined color or a custom color.
+     *
      * @default "neutral"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
 
     /**
-     * Variant of the list
-     * Can be "solid", "outlined", "plain" or "soft".
+     * Variant of the lists
+     *
      * @default "plain"
+     * @example "solid", "outlined", "plain", "soft"
      */
     variant?: Variant;
 
     /**
      * Size of the list
+     *
      * @default "md"
+     * @min 24
+     * @max 72
+     * @example "sm", "md", "lg", 32
      */
     size?: Size | number;
 
     /**
      * Marker to use for the list items.
      * can be anything from "disc", "circle", "square" to custom markers like "•", "◦", etc.
+     *
+     * @example "disc", "circle", "square", "•", "◦"
      */
     marker?: string | string[] | ((nesting: number) => string);
 
     /**
-     * Orientation of the list
-     * Can be "vertical" or "horizontal".
+     * Orientation of the lists
+     *
      * @default "vertical"
+     * @example "vertical", "horizontal"
      */
     orientation?: Orientation;
 }

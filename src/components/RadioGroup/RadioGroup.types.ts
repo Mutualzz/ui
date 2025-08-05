@@ -6,7 +6,7 @@ export interface RadioGroupProps {
      * This is used to group radio buttons together so that only one can be selected at a time.
      * It is also used to identify the group in form submissions.
      */
-    name: string;
+    name?: string;
     /**
      * The value of the currently selected radio button.
      */

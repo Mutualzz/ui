@@ -12,6 +12,7 @@ export interface RadioProps
     > {
     /**
      * Whether the radio is checked. If not provided, it will be controlled internally.
+     *
      * @default false
      */
     checked?: boolean;
@@ -34,20 +35,28 @@ export interface RadioProps
 
     /**
      * The color of the radio button.
-     * This can be a predefined color name or a custom color value.
+     * This can be a predefined color name or a custom color value
+     *
      * @default "primary"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * The variant of the radio button.
      * This defines the visual style of the radio button.
+     *
      * @default "solid"
+     * @example "solid", "outlined", "soft", "plain"
      */
     variant?: Variant;
     /**
      * The size of the radio button.
      * This can be a predefined size or a custom size value.
+     *
      * @default "md"
+     * @min 10
+     * @max 28
+     * @example "sm", "md", "lg", 20
      */
     size?: Size | number;
 

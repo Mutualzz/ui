@@ -12,11 +12,12 @@ const InputRoot = styled("div")<InputProps>(
         textColor = "inherit",
         size = "md",
         variant = "outlined",
+        error = false,
         fullWidth,
         disabled,
     }) => ({
         ...resolveInputBaseSize(size),
-        ...resolveInputBaseStyles(theme, color, textColor)[variant],
+        ...resolveInputBaseStyles(theme, color, textColor, error)[variant],
         ...(disabled && { opacity: 0.5 }),
 
         display: "flex",

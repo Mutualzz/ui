@@ -12,7 +12,7 @@ import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
 const minSize = 6,
-    maxSize = 24;
+    maxSize = 32;
 
 const baseSizeMap: Record<Size, number> = {
     sm: 12,
@@ -36,6 +36,7 @@ export const resolveInputBaseStyles = (
     theme: Theme,
     color: Color | ColorLike,
     textColor: TypographyColor | "inherit",
+    error: boolean,
 ): Record<Variant, CSSObject> => {
     const resolvedColor = resolveColor(color, theme);
 
@@ -44,41 +45,53 @@ export const resolveInputBaseStyles = (
             ? resolvedColor
             : resolveTypographyColor(textColor, theme);
 
+    const errorColor = theme.colors.danger;
+
     return {
         outlined: {
             background: "transparent",
-            color: formatHex8(lighten(parsedTextColor, 0.5)),
-            border: `1px solid ${formatHex8(resolvedColor)}`,
+            color: formatHex8(
+                lighten(error ? errorColor : parsedTextColor, 0.5),
+            ),
+            border: `1px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
             borderRadius: 8,
             ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
             },
         },
         solid: {
-            background: formatHex8(resolvedColor),
-            color: formatHex8(lighten(parsedTextColor, 0.75)),
+            background: formatHex8(error ? errorColor : resolvedColor),
+            color: formatHex8(
+                lighten(error ? errorColor : parsedTextColor, 0.75),
+            ),
             border: "none",
             borderRadius: 8,
             ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
             },
         },
         plain: {
             background: "transparent",
-            color: formatHex8(lighten(parsedTextColor, 0.25)),
+            color: formatHex8(
+                lighten(error ? errorColor : parsedTextColor, 0.25),
+            ),
             border: "none",
             borderRadius: 8,
             ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
             },
         },
         soft: {
-            background: formatHex8(darken(resolvedColor, 0.5)),
-            color: formatHex8(lighten(parsedTextColor, 0.5)),
+            background: formatHex8(
+                darken(error ? errorColor : resolvedColor, 0.5),
+            ),
+            color: formatHex8(
+                lighten(error ? errorColor : parsedTextColor, 0.5),
+            ),
             border: "none",
             borderRadius: 8,
             ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
             },
         },
     };

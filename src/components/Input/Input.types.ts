@@ -36,28 +36,36 @@ export interface InputProps
     /**
      * The color of the input element.
      * Can be a predefined color or a custom color.
+     *
      * @default "neutral"
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Color | ColorLike;
     /**
      * The text color of the input element.
-     * Can be a predefined color or a custom color.
      * If set to "inherit", the input will inherit the text color from its parent.
+     *
      * @default "inherit"
+     * @example "primary", "secondary", "accent", "disabled", "inherit"
      */
     textColor?: TypographyColor | "inherit";
     /**
      * The variant of the input element.
      * Determines the style of the input element.
-     * Can be "outlined", "solid", "plain", or "soft".
+     *
      * @default "outlined"
+     * @example "outlined", "solid", "plain", "soft"
      */
     variant?: Variant;
     /**
      * The size of the input element.
      * Can be a predefined size ("sm", "md", "lg") or a custom size in pixels.
      * If a number is provided, it will be used as the font size.
+     *
      * @default "md"
+     * @min 6
+     * @max 32
+     * @example "sm", "md", "lg", 16
      */
     size?: Size | number;
 
@@ -87,17 +95,18 @@ export interface InputProps
     /**
      * The type of the input element.
      * Determines the input behavior and validation.
-     * Can be one of the following: "date", "datetime-local", "email",
-     * "month", "number", "password", "search", "tel", "text",
-     * "time", "url", or "week".
+     *
      * @default "text"
+     * @example "date", "datetime-local", "email", "month", "number", "password", "search", "tel", "text", "time", "url", "week".
      */
     type?: InputType;
 
     /**
      * The input mode for the input element.
      * Determines the virtual keyboard layout and behavior on mobile devices.
+     *
      * @default "text"
+     * @example "none", "text", "tel", "url", "email", "numeric", "decimal", "search"
      */
     inputMode?: InputMode;
 }

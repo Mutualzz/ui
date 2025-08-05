@@ -5,6 +5,8 @@ export interface InputPasswordProps extends Omit<InputProps, "type"> {
     /**
      * The type of the input element.
      * Should always be "password" for password inputs.
+     *
+     * @readonly
      * @default "password"
      */
     type?: "password";
@@ -12,12 +14,14 @@ export interface InputPasswordProps extends Omit<InputProps, "type"> {
     /**
      * If true the password will be visible.
      * If false, the password will be hidden.
+     *
      * @default false
      */
     visible?: boolean;
     /**
      * If true, the toggle password visibility icon will be shown.
      * If false, the icon will not be displayed.
+     *
      * @default true
      */
     iconVisible?: boolean;

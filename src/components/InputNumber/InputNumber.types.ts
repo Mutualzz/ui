@@ -11,7 +11,9 @@ export interface InputNumberProps
     /**
      * The input mode for the input element.
      * Determines the virtual keyboard layout and behavior on mobile devices.
+     *
      * @default "decimal"
+     * @example "decimal", "numeric"
      */
     inputMode?: "decimal" | "numeric";
 
