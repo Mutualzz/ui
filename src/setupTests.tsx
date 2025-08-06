@@ -1,6 +1,12 @@
 import { afterEach } from "@jest/globals";
+import type * as DOMTestingLibrary from "@testing-library/dom";
 import "@testing-library/jest-dom";
-import { cleanup, render, type RenderOptions } from "@testing-library/react";
+import {
+    cleanup,
+    render,
+    type RenderOptions,
+    type RenderResult,
+} from "@testing-library/react";
 import type { ReactElement, ReactNode } from "react";
 import { CssBaseline } from "./CssBaseline";
 import { ThemeProvider } from "./ThemeProvider";
@@ -41,7 +47,8 @@ const AllTheProviders = ({ children }: { children: ReactNode }) => {
 const customRender = (
     ui: ReactElement,
     options?: Omit<RenderOptions, "wrapper">,
-) => render(ui, { wrapper: AllTheProviders, ...options });
+): RenderResult<typeof DOMTestingLibrary.queries, HTMLElement, HTMLElement> =>
+    render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from "@testing-library/react";
 export { customRender as render };
