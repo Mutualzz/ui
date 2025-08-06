@@ -67,13 +67,14 @@ const InputPassword = (
         onTogglePassword,
         onShowPassword,
         onHidePassword,
+        visible = false,
         children,
         ...props
     }: InputPasswordProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
     const { theme } = useTheme();
-    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(visible);
 
     const togglePassword = () => {
         setPasswordVisible((prev) => {

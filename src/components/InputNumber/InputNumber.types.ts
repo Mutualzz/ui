@@ -1,7 +1,7 @@
-import type { InputProps } from "@components/Input/Input.types";
+import type { InputRootProps } from "@components/InputRoot/InputRoot.types";
 
 export interface InputNumberProps
-    extends Omit<InputProps, "inputMode" | "type" | "value"> {
+    extends Omit<InputRootProps, "inputMode" | "type" | "value"> {
     /**
      * The type of the input element.
      * Should always be "number" for number inputs.

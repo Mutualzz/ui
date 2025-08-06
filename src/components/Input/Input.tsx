@@ -5,15 +5,13 @@ import { InputPassword } from "../InputPassword/InputPassword";
 import { InputText } from "../InputText/InputText";
 import type { InputProps } from "./Input.types";
 
-export const Input = (
-    props: InputProps | InputPasswordProps | InputNumberProps,
-) => {
+export const Input = (props: InputProps) => {
     switch (props.type) {
         case "number":
             return <InputNumber {...(props as InputNumberProps)} />;
         case "password":
             return <InputPassword {...(props as InputPasswordProps)} />;
         default:
-            return <InputText {...(props as InputProps)} />;
+            return <InputText {...props} />;
     }
 };

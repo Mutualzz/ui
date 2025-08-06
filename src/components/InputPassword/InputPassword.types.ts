@@ -1,7 +1,7 @@
-import type { InputProps } from "@components/Input/Input.types";
+import type { InputRootProps } from "@components/InputRoot/InputRoot.types";
 import type { ReactNode } from "react";
 
-export interface InputPasswordProps extends Omit<InputProps, "type"> {
+export interface InputPasswordProps extends Omit<InputRootProps, "type"> {
     /**
      * The type of the input element.
      * Should always be "password" for password inputs.
