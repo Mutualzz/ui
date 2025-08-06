@@ -48,10 +48,10 @@
         "url": "https://github.com/Mutualzz/ui.git"
     },
     "scripts": {
-        "build": "bun run check-types && bunchee",
+        "build": "pnpm check-types && bunchee",
         "check-types": "tsc --noEmit",
         "dev": "bunchee --watch",
-        "prepublishOnly": "bun run build",
+        "prepublishOnly": "pnpm build",
         "test": "jest",
         "test:coverage": "jest --coverage",
         "test:watch": "jest --watch"
