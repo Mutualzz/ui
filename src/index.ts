@@ -49,7 +49,8 @@ export type * from "./components/RadioGroup/RadioGroup.types";
 export * from "./components/Slider/Slider";
 export type * from "./components/Slider/Slider.types";
 
-// Stack does not have a separate type file as it uses BoxProps and it just sets the display property to flex or inline-flex (when inline prop is provided similar to Box).
+// Stack does not have a separate type file as it uses BoxProps and it just sets the display property to flex
+// or inline-flex (when inline prop is provided similar to Box).
 export * from "./components/Stack/Stack";
 
 export * from "./components/Textarea/Textarea";
