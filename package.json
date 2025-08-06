@@ -1,6 +1,6 @@
 {
     "bugs": {
-        "url": "https://github.com/Mutualzz/ui.git/issues"
+        "url": "https://github.com/Mutualzz/ui/issues"
     },
     "dependencies": {
         "culori": "^4.0.2"
