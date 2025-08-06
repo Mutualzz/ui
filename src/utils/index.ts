@@ -13,20 +13,18 @@ import {
     resolveColor,
     resolveTypographyColor,
 } from "./resolveColor";
-import { resolveSize } from "./resolveSize";
+import { cssUnitRegex, resolveSize } from "./resolveSize";
 import { setRef } from "./setRef";
 import { sortThemes } from "./sortThemes";
 import { useEnhancedEffect } from "./useEnhancedEffect";
 import { useForkRef } from "./useForkRef";
 import visuallyHidden from "./visuallyHidden";
 
-export const cssUnitRegex =
-    /^(-?\d*\.?\d+)(px|rem|em|%|vh|vw|vmin|vmax|pt|fr)$/i;
-
 export {
     adjustLightness,
     alpha,
     blendOver,
+    cssUnitRegex,
     dynamicElevation,
     getContrastRatio,
     getLuminance,

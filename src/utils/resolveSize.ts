@@ -1,6 +1,8 @@
 import type { Theme } from "@emotion/react";
 import type { Size, SizeValue } from "@ui-types";
-import { cssUnitRegex } from "@utils";
+
+export const cssUnitRegex =
+    /^(-?\d*\.?\d+)(px|rem|em|%|vh|vw|vmin|vmax|pt|fr)$/i;
 
 export const isSizeValue = (
     size: Size | SizeValue | number,
