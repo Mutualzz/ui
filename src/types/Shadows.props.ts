@@ -1,6 +1,6 @@
 import type { Properties } from "csstype";
-import type { Responsive } from "./index";
+import type { AllowNumber, Responsive } from "./index";
 
 export interface HTMLShadowsProps {
-    boxShadow?: Responsive<Properties["boxShadow"]>;
+    boxShadow?: Responsive<AllowNumber<Properties["boxShadow"]>>;
 }
