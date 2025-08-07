@@ -83,9 +83,7 @@ const InputPassword = (
     useEffect(() => {
         if (visible) onShowPassword?.();
         else onHidePassword?.();
-
-        onTogglePassword?.(visible);
-    }, [visible, onShowPassword, onHidePassword, onTogglePassword]);
+    }, [visible]);
 
     const togglePassword = useCallback(() => {
         if (isControlled) {
@@ -99,7 +97,7 @@ const InputPassword = (
                 return newVisible;
             });
         }
-    }, [isControlled, onTogglePassword, visible]);
+    }, [isControlled, visible]);
 
     const showToggleIcon = iconVisible && !(endDecorator && !showPasswordIcon);
 
