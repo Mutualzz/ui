@@ -41,15 +41,15 @@ export interface InputPasswordProps extends Omit<InputRootProps, "type"> {
      * Callback function to be called when the password visibility is toggled.
      * This function can be used to handle custom logic when the visibility changes.
      */
-    onTogglePassword?: () => void;
+    onTogglePassword?: (visible?: boolean) => void;
     /**
      * Callback function to be called when the password is shown.
      * This function can be used to handle custom logic when the password is made visible.
      */
-    onShowPassword?: () => void;
+    onShowPassword?: (visible?: boolean) => void;
     /**
      * Callback function to be called when the password is hidden.
      * This function can be used to handle custom logic when the password is obscured.
      */
-    onHidePassword?: () => void;
+    onHidePassword?: (visible?: boolean) => void;
 }

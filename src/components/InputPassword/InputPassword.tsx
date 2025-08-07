@@ -2,7 +2,7 @@ import { InputBase } from "@components/InputBase/InputBase";
 import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size, SizeValue } from "@ui-types";
-import { useState, type Ref } from "react";
+import { useCallback, useEffect, useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { resolvePasswordIconStyles } from "./InputPassword.helpers";
 import type { InputPasswordProps } from "./InputPassword.types";
@@ -67,24 +67,39 @@ const InputPassword = (
         onTogglePassword,
         onShowPassword,
         onHidePassword,
-        visible = false,
+        visible: visibleProp,
         children,
         ...props
     }: InputPasswordProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
     const { theme } = useTheme();
-    const [passwordVisible, setPasswordVisible] = useState(visible);
+    const [visibleInternal, setVisibleInternal] = useState(false);
 
-    const togglePassword = () => {
-        setPasswordVisible((prev) => {
-            const next = !prev;
-            if (next && onShowPassword) onShowPassword();
-            if (!next && onHidePassword) onHidePassword();
-            if (onTogglePassword) onTogglePassword();
-            return next;
-        });
-    };
+    const isControlled = visibleProp !== undefined;
+
+    const visible = isControlled ? visibleProp : visibleInternal;
+
+    useEffect(() => {
+        if (visible) onShowPassword?.();
+        else onHidePassword?.();
+
+        onTogglePassword?.(visible);
+    }, [visible, onShowPassword, onHidePassword, onTogglePassword]);
+
+    const togglePassword = useCallback(() => {
+        if (isControlled) {
+            // If controlled, notify parent only
+            onTogglePassword?.(!visible);
+        } else {
+            // If uncontrolled, update internal state and notify parent
+            setVisibleInternal((prev) => {
+                const newVisible = !prev;
+                onTogglePassword?.(newVisible);
+                return newVisible;
+            });
+        }
+    }, [isControlled, onTogglePassword, visible]);
 
     const showToggleIcon = iconVisible && !(endDecorator && !showPasswordIcon);
 
@@ -110,7 +125,7 @@ const InputPassword = (
             <InputBase
                 {...props}
                 ref={ref}
-                type={passwordVisible ? "text" : "password"}
+                type={visible ? "text" : "password"}
             />
 
             {endDecorator ? (
@@ -120,7 +135,7 @@ const InputPassword = (
                     onClick={togglePassword}
                     css={{ cursor: "pointer", userSelect: "none" }}
                 >
-                    {passwordVisible
+                    {visible
                         ? (hidePasswordIcon ?? (
                               <HidePasswordIcon
                                   size={size}
