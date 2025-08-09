@@ -15,7 +15,6 @@ import {
 } from "./resolveColor";
 import { cssUnitRegex, resolveSize } from "./resolveSize";
 import { setRef } from "./setRef";
-import { sortThemes } from "./sortThemes";
 import { useEnhancedEffect } from "./useEnhancedEffect";
 import { useForkRef } from "./useForkRef";
 import visuallyHidden from "./visuallyHidden";
@@ -35,7 +34,6 @@ export {
     resolveSize,
     resolveTypographyColor,
     setRef,
-    sortThemes,
     useEnhancedEffect,
     useForkRef,
     visuallyHidden,
