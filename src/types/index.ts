@@ -130,7 +130,7 @@ export interface MZTheme {
             primary: ColorLike;
             secondary: ColorLike;
             accent: ColorLike;
-            disabled: ColorLike;
+            muted: ColorLike;
         };
         levels: Record<TypographyLevel, TypographyLevelObj>;
     };
