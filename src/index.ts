@@ -34,6 +34,9 @@ export type * from "./components/ListItem/ListItem.types";
 export * from "./components/ListItemButton/ListItemButton";
 export type * from "./components/ListItemButton/ListItemButton.types";
 
+export * from "./components/Modal/Modal";
+export type * from "./components/Modal/Modal.types";
+
 export * from "./components/Paper/Paper";
 export type * from "./components/Paper/Paper.types";
 

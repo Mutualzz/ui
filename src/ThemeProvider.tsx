@@ -10,10 +10,10 @@ import {
     useState,
     type PropsWithChildren,
 } from "react";
-import { themesObj } from "./themes";
+import { themes as baseThemes } from "./themes";
 
 export const ThemeContext = createContext({
-    theme: themesObj["baseDark"],
+    theme: baseThemes.find((theme) => theme.id === "baseDark"),
     changeTheme: (_theme: string) => {
         return;
     },
@@ -25,8 +25,8 @@ export const ThemeContext = createContext({
 
 export const ThemeProvider = ({
     children,
-    themes = themesObj,
-}: PropsWithChildren & { themes?: Record<string, Theme> }) => {
+    themes = baseThemes,
+}: PropsWithChildren & { themes?: Theme[] }) => {
     const [theme, setTheme] = useState<string | null>(null);
     const [mode, setMode] = useState<"light" | "dark" | "system">("system");
     const [prefersDark, setPrefersDark] = useState<boolean | null>(null);
@@ -71,7 +71,8 @@ export const ThemeProvider = ({
                 : "baseLight"
             : "baseDark");
 
-    const themeObject = themes[finalThemeKey];
+    const themeObject =
+        themes.find((t) => t.id === finalThemeKey) ?? baseThemes[0];
 
     const value = useMemo(
         () => ({
