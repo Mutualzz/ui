@@ -25,7 +25,7 @@ export const baseDarkTheme: Theme = {
             primary: "#E8E8E8",
             secondary: "#B5B5B5",
             accent: "#C27896",
-            disabled: "#5A5A5A",
+            muted: "#5A5A5A",
         },
     },
 

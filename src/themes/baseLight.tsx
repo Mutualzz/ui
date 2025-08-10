@@ -25,7 +25,7 @@ export const baseLightTheme: Theme = {
             primary: "#333333",
             secondary: "#555555",
             accent: "#A84E68",
-            disabled: "#A0A0A0",
+            muted: "#A0A0A0",
         },
     },
 
