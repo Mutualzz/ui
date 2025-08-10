@@ -75,6 +75,7 @@ const Button = (
         endDecorator,
         disabled: propDisabled,
         children,
+        type = "button",
         ...props
     }: ButtonProps & { children?: ReactNode },
     ref?: Ref<HTMLButtonElement>,
@@ -90,6 +91,7 @@ const Button = (
     return (
         <ButtonWrapper
             {...props}
+            type={type}
             ref={ref}
             variant={variant}
             color={color}
