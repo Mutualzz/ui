@@ -1,13 +1,12 @@
 import { InputColor } from "@components/InputColor/InputColor";
 import type { InputColorProps } from "@components/InputColor/InputColor.types";
 import type { InputNumberProps } from "@components/InputNumber/InputNumber.types";
-import { InputOther } from "@components/InputOther/InputOther";
 import type { InputPasswordProps } from "@components/InputPassword/InputPassword.types";
 import type { InputTextProps } from "@components/InputText/InputText.types";
 import { InputNumber } from "../InputNumber/InputNumber";
 import { InputPassword } from "../InputPassword/InputPassword";
 import { InputText } from "../InputText/InputText";
-import type { InputProps, InputRootProps } from "./Input.types";
+import type { InputProps } from "./Input.types";
 
 export const Input = (props: InputProps) => {
     switch (props.type) {
@@ -18,9 +17,8 @@ export const Input = (props: InputProps) => {
         case "color":
             return <InputColor {...(props as InputColorProps)} />;
         case "text":
-            return <InputText {...(props as InputTextProps)} />;
         default:
-            return <InputOther {...(props as InputRootProps)} />;
+            return <InputText {...(props as InputTextProps)} />;
     }
 };
 

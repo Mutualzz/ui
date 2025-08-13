@@ -19,6 +19,7 @@ const InputText = (
         error = false,
         disabled = false,
         children,
+        type = "text",
         ...props
     }: InputTextProps,
     ref?: Ref<HTMLInputElement>,
@@ -37,7 +38,7 @@ const InputText = (
                 <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
 
-            <InputBase {...props} ref={ref} type="text" />
+            <InputBase {...props} ref={ref} type={type} />
 
             {endDecorator && (
                 <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
