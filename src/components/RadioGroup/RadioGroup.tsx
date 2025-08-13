@@ -1,18 +1,25 @@
-import styled from "@emotion/styled";
+import styled from "@styled";
 import { type ChangeEvent, useState } from "react";
 import { RadioGroupContext } from "./RadioGroup.context";
 import type { RadioGroupProps } from "./RadioGroup.types";
 
-const RadioGroupButtonWrapper = styled("div")<{ row?: boolean }>`
-    display: inline-flex;
-    flex-direction: ${({ row }) => (row ? "row" : "column")};
-    ${({ row }) =>
-        row
-            ? "& > * + * { margin-left: 0.5rem; }"
-            : "& > * + * { margin-top: 0.5rem; }"};
-`;
+const RadioGroupWrapper = styled("div")<{ row?: boolean }>(({ row }) => ({
+    display: "inline-flex",
+    flexDirection: row ? "row" : "column",
+    ...(row
+        ? {
+              "& > * + *": {
+                  marginLeft: "0.5rem",
+              },
+          }
+        : {
+              "& > * + *": {
+                  marginTop: "0.5rem",
+              },
+          }),
+}));
 
-RadioGroupButtonWrapper.displayName = "RadioGroupButtonWrapper";
+RadioGroupWrapper.displayName = "RadioGroupButtonWrapper";
 
 /**
  * RadioGroup component for grouping radio buttons.
@@ -55,9 +62,7 @@ const RadioGroup = ({
                 disabled,
             }}
         >
-            <RadioGroupButtonWrapper row={row}>
-                {children}
-            </RadioGroupButtonWrapper>
+            <RadioGroupWrapper row={row}>{children}</RadioGroupWrapper>
         </RadioGroupContext.Provider>
     );
 };
