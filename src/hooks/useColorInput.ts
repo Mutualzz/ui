@@ -22,14 +22,12 @@ import { useState } from "react";
  * and functions to handle input changes, validation, and setting the color directly.
  */
 export const useColorInput = <T = ColorLike>(
+    initialColor = randomColor(),
     alpha = 100,
     type: ColorType = "hex",
-    initialColor?: ColorLike,
 ) => {
-    const resolvedColor = initialColor ?? randomColor(type, alpha);
-
-    const [inputValue, setInputValue] = useState<ColorLike>(resolvedColor);
-    const [color, setColor] = useState<ColorLike>(resolvedColor);
+    const [inputValue, setInputValue] = useState<ColorLike>(initialColor);
+    const [color, setColor] = useState<ColorLike>(initialColor);
     const [isInvalid, setIsInvalid] = useState<boolean>(false);
 
     const handleChange = (input: ColorLike) => {
