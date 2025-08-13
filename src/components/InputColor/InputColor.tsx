@@ -6,8 +6,12 @@ import { Popover } from "@components/Popover/Popover";
 import { useColorInput } from "@hooks/useColorInput";
 import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import { useTheme } from "@hooks/useTheme";
-import type { ColorLike, HsvaColor } from "@ui-types";
-import { hexToHsva, type ColorResult } from "@uiw/color-convert";
+import type { ColorLike } from "@ui-types";
+import {
+    hexToHsva,
+    type ColorResult,
+    type HsvaColor,
+} from "@uiw/color-convert";
 import Colorful from "@uiw/react-color-colorful";
 import { darken } from "@utils";
 import { randomColor } from "@utils/randomColor";
