@@ -18,7 +18,7 @@ export const isTypographyColor = (
 ): color is TypographyColor => {
     return (
         typeof color === "string" &&
-        ["primary", "secondary", "accent", "disabled"].includes(color)
+        ["primary", "secondary", "accent", "muted"].includes(color)
     );
 };
 
