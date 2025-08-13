@@ -11,6 +11,7 @@
         "verbatimModuleSyntax": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
         "strict": true,
         "jsx": "react-jsx",
         "jsxImportSource": "@emotion/react",
@@ -24,7 +25,8 @@
             "@ui-types": ["types/index.ts"],
             "@ui-types/*": ["types/*"],
             "@test-utils": ["setupTests.tsx"]
-        }
+        },
+        "types": []
     },
     "include": ["src/**/*"]
 }
