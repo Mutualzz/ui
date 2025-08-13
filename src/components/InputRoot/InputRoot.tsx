@@ -1,11 +1,11 @@
-import type { InputProps } from "@components/Input/Input.types";
+import type { InputRootProps } from "@components/Input/Input.types";
 import styled from "@styled";
 import {
     resolveInputBaseSize,
     resolveInputBaseStyles,
 } from "./InputRoot.helpers";
 
-const InputRoot = styled("div")<InputProps>(
+const InputRoot = styled("div")<InputRootProps>(
     ({
         theme,
         color = "neutral",
