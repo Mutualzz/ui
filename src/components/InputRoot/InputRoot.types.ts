@@ -13,6 +13,7 @@ export type InputType =
     | "datetime-local"
     | "email"
     | "month"
+    | "color"
     | "number"
     | "password"
     | "search"
@@ -49,7 +50,7 @@ export interface InputRootProps
      * @default "inherit"
      * @example "primary", "secondary", "accent", "disabled", "inherit"
      */
-    textColor?: TypographyColor | "inherit";
+    textColor?: TypographyColor | ColorLike | "inherit";
     /**
      * The variant of the input element.
      * Determines the style of the input element.
@@ -98,7 +99,7 @@ export interface InputRootProps
      * Determines the input behavior and validation.
      *
      * @default "text"
-     * @example "date", "datetime-local", "email", "month", "number", "password", "search", "tel", "text", "time", "url", "week".
+     * @example "date", "datetime-local", "color", "email", "month", "number", "password", "search", "tel", "text", "time", "url", "week".
      */
     type?: InputType;
 
@@ -110,4 +111,6 @@ export interface InputRootProps
      * @example "none", "text", "tel", "url", "email", "numeric", "decimal", "search"
      */
     inputMode?: InputMode;
+
+    onChange?: (value: any) => void;
 }
