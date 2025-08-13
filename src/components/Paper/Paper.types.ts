@@ -1,3 +1,4 @@
+import type { BoxProps } from "@components/Box/Box.types";
 import {
     type Color,
     type ColorLike,
@@ -7,7 +8,7 @@ import {
 
 export type PaperVariant = Variant | "elevation";
 
-export interface PaperProps {
+export interface PaperProps extends BoxProps {
     /**
      * The color of the Paper component.
      * Can be a color name or a color value.
