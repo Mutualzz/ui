@@ -46,9 +46,14 @@ const InputColor = ({
     );
 
     const currentValue = isControlled ? colorProp : internalValue;
-    const [pickerColor, setPickerColor] = useState<HsvaColor>(
-        hexToHsva(currentValue),
-    );
+    const [pickerColor, setPickerColor] = useState<HsvaColor>(() => {
+        try {
+            return hexToHsva(currentValue);
+        } catch {
+            // If the color is invalid, fallback to a random color
+            return hexToHsva(randomColor("hex", alpha));
+        }
+    });
 
     const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +68,7 @@ const InputColor = ({
         handleChange,
         validate,
         setColorDirectly,
-    } = useColorInput(alpha, "hex", currentValue);
+    } = useColorInput(currentValue, alpha, "hex");
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value as ColorLike;
@@ -71,7 +76,12 @@ const InputColor = ({
         if (typeof newValue !== "string") return;
 
         handleChange(newValue);
-        setPickerColor(hexToHsva(newValue));
+
+        try {
+            setPickerColor(hexToHsva(newValue));
+        } catch {
+            // Ignore invalid color input
+        }
         if (!isControlled) setInternalValue(newValue);
 
         onChange?.(newValue);
@@ -123,7 +133,7 @@ const InputColor = ({
 
                 <InputDecoratorWrapper>
                     {endDecorator ??
-                        (showColorPicker && (
+                        (showColorPicker && !isInvalid && (
                             <Popover
                                 content={
                                     <Colorful
