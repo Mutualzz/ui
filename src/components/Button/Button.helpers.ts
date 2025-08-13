@@ -18,13 +18,11 @@ export const resolveButtonSize = (
     size: Size | SizeValue | number,
 ) => {
     const resolvedSize = resolveSize(theme, size, baseSizeMap);
-    const padding = 10;
 
     return {
         fontSize: resolvedSize,
         lineHeight: 1,
-        padding: padding,
-        minHeight: `${resolvedSize + padding * 2}px`,
+        padding: 10,
         whiteSpace: "nowrap",
         flexShrink: 0,
     };
