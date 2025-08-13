@@ -18,6 +18,7 @@
         "paths": {
             "@components/*": ["components/*"],
             "@utils": ["utils/index"],
+            "@hooks/*": ["hooks/*"],
             "@utils/*": ["utils/*"],
             "@styled": ["utils/styled"],
             "@ui-types": ["types/index.ts"],
