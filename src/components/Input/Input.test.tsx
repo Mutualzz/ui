@@ -1,9 +1,9 @@
 import { render } from "@test-utils";
-import { Input } from "./Input";
+import { InputNumber, InputPassword, InputText } from "./Input";
 
 describe("Input", () => {
     it("renders InputText as the default", () => {
-        const { container } = render(<Input />);
+        const { container } = render(<InputText type="text" />);
         expect(container).toBeInTheDocument();
         expect(
             container.querySelector("input[type='text']"),
@@ -11,7 +11,7 @@ describe("Input", () => {
     });
 
     it("renders InputNumber when type is 'number'", () => {
-        const { container } = render(<Input type="number" />);
+        const { container } = render(<InputNumber />);
         expect(container).toBeInTheDocument();
         expect(
             container.querySelector("input[type='number']"),
@@ -19,7 +19,7 @@ describe("Input", () => {
     });
 
     it("renders InputPassword when type is 'password'", () => {
-        const { container } = render(<Input type="password" />);
+        const { container } = render(<InputPassword />);
         expect(container).toBeInTheDocument();
         expect(
             container.querySelector("input[type='password']"),
