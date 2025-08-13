@@ -111,6 +111,4 @@ export interface InputRootProps
      * @example "none", "text", "tel", "url", "email", "numeric", "decimal", "search"
      */
     inputMode?: InputMode;
-
-    onChange?: (value: any) => void;
 }
