@@ -1,3 +1,5 @@
+import { parse } from "culori";
+
 /**
  * Checks if the input is a valid hex color.
  */
@@ -49,9 +51,19 @@ export const isValidHsla = (value: string): boolean =>
  * It checks for valid hex, rgb, rgba, hsl, and hsla formats.
  * Returns true if the input is valid, false otherwise.
  */
-export const isValidColorInput = (value: string): boolean =>
-    isValidHex(value) ||
-    isValidRgb(value) ||
-    isValidRgba(value) ||
-    isValidHsl(value) ||
-    isValidHsla(value);
+export const isValidColorInput = (value: string): boolean => {
+    // First check the existing regex patterns for performance
+    const isValidFormat =
+        isValidHex(value) ||
+        isValidRgb(value) ||
+        isValidRgba(value) ||
+        isValidHsl(value) ||
+        isValidHsla(value);
+
+    if (isValidFormat) return true;
+
+    // If regex patterns don't match, use culori to check for named colors
+    // and other valid CSS color formats
+    const parsed = parse(value.trim());
+    return parsed !== undefined;
+};
