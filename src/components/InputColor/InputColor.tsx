@@ -52,9 +52,14 @@ const InputColor = ({
     );
 
     const currentValue = isControlled ? colorProp : internalValue;
-    const [pickerColor, setPickerColor] = useState<HsvaColor>(
-        hexToHsva(currentValue),
-    );
+    const [pickerColor, setPickerColor] = useState<HsvaColor>(() => {
+        try {
+            return hexToHsva(currentValue);
+        } catch {
+            // If the color is invalid, generate a random color to cover edge cases
+            return hexToHsva(randomColor("hex", alpha));
+        }
+    });
 
     const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -72,14 +77,24 @@ const InputColor = ({
     } = useColorInput(alpha, "hex", currentValue);
 
     useEffect(() => {
-        if (isControlled) setPickerColor(hexToHsva(colorProp));
+        try {
+            if (isControlled) setPickerColor(hexToHsva(colorProp));
+        } catch {
+            // If the color is invalid, we can ignore it
+        }
     }, [colorProp, isControlled]);
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value as ColorLike;
 
+        if (typeof newValue !== "string") return;
+
         handleChange(newValue);
-        setPickerColor(hexToHsva(newValue));
+        try {
+            setPickerColor(hexToHsva(newValue));
+        } catch {
+            // If the color is invalid, we can ignore it
+        }
 
         if (!isControlled) setInternalValue(newValue);
 
