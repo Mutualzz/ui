@@ -13,7 +13,7 @@ import {
 import { themes as baseThemes } from "./themes";
 
 export const ThemeContext = createContext({
-    theme: baseThemes.find((theme) => theme.id === "baseDark"),
+    theme: baseThemes.find((theme) => theme.id === "baseDark") ?? baseThemes[0],
     changeTheme: (_theme: string) => {
         return;
     },
