@@ -1,7 +1,7 @@
 import type { InputRootProps } from "@components/InputRoot/InputRoot.types";
 
 export interface InputNumberProps
-    extends Omit<InputRootProps, "inputMode" | "type" | "value"> {
+    extends Omit<InputRootProps, "onChange" | "inputMode" | "type" | "value"> {
     /**
      * The type of the input element.
      * Should always be "number" for number inputs.
@@ -52,4 +52,6 @@ export interface InputNumberProps
      * This function can be used to handle custom logic when the value decreases.
      */
     onDecrement?: () => void;
+
+    onChange?: (value: number) => void;
 }
