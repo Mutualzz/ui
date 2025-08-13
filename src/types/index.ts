@@ -16,6 +16,8 @@ export type HSLA = `hsla(${number}, ${number}%, ${number}%, ${number})`;
 
 export type ColorLike = Hex | RGB | RGBA | HSL | HSLA;
 
+export type ColorType = "hex" | "rgb" | "hsl";
+
 export type Color =
     | "primary"
     | "neutral"
@@ -24,7 +26,7 @@ export type Color =
     | "warning"
     | "info";
 
-export type TypographyColor = "primary" | "secondary" | "accent" | "disabled";
+export type TypographyColor = "primary" | "secondary" | "accent" | "muted";
 
 export type Variant = "plain" | "outlined" | "soft" | "solid";
 
