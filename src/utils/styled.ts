@@ -75,7 +75,7 @@ const styled = new Proxy(styledBase, {
             const sxStyle = (props: any) =>
                 sxToCss(props.sx ?? {}, props.theme);
 
-            return factory(...styles, sysStyle, sxStyle);
+            return factory(sysStyle, sxStyle, ...styles);
         };
     },
 
@@ -91,7 +91,7 @@ const styled = new Proxy(styledBase, {
                         systemToCss(props as SystemProps, props.theme);
                     const sxStyle = (props: any) =>
                         sxToCss(props.sx ?? {}, props.theme);
-                    return factory(...args, sysStyle, sxStyle);
+                    return factory(sysStyle, sxStyle, ...args);
                 },
             });
         }
