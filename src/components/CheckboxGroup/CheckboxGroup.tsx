@@ -1,16 +1,23 @@
-import styled from "@emotion/styled";
+import styled from "@styled";
 import { type ChangeEvent, useState } from "react";
 import { CheckboxGroupContext } from "./CheckboxGroup.context";
 import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
-const CheckboxGroupWrapper = styled("div")<{ row?: boolean }>`
-    display: inline-flex;
-    flex-direction: ${({ row }) => (row ? "row" : "column")};
-    ${({ row }) =>
-        row
-            ? "& > * + * { margin-left: 0.5rem; }"
-            : "& > * + * { margin-top: 0.5rem; }"};
-`;
+const CheckboxGroupWrapper = styled("div")<{ row?: boolean }>(({ row }) => ({
+    display: "inline-flex",
+    flexDirection: row ? "row" : "column",
+    ...(row
+        ? {
+              "& > * + *": {
+                  marginLeft: "0.5rem",
+              },
+          }
+        : {
+              "& > * + *": {
+                  marginTop: "0.5rem",
+              },
+          }),
+}));
 
 CheckboxGroupWrapper.displayName = "CheckboxGroupWrapper";
 
