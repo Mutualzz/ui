@@ -2,10 +2,11 @@ import { InputBase } from "@components/InputBase/InputBase";
 import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size } from "@ui-types";
-import { resolveSize } from "@utils";
+import { clamp, resolveSize } from "@utils";
 import { formatHex8 } from "culori";
 import {
     useRef,
+    type ChangeEvent,
     type ClipboardEvent,
     type FocusEvent,
     type KeyboardEvent,
@@ -125,12 +126,6 @@ const SpinnerButtons = ({
 };
 
 SpinnerButtons.displayName = "SpinnerButtons";
-
-const clamp = (value: number, min: number, max: number) => {
-    if (isFinite(min) && value < min) return min;
-    if (isFinite(max) && value > max) return max;
-    return value;
-};
 
 /**
  * InputNumber component for entering numeric values.
@@ -270,12 +265,16 @@ const InputNumber = ({
         handleStepChange("down");
     };
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        onChange?.(parseFloat(e.target.value));
+    };
+
     return (
         <InputRoot
             color={color}
             textColor={textColor}
             variant={variant}
-            size={size as number}
+            size={size}
             fullWidth={fullWidth}
             error={error}
             disabled={disabled}
@@ -289,7 +288,7 @@ const InputNumber = ({
                 {...props}
                 type="number"
                 inputMode={inputMode}
-                onChange={onChange}
+                onChange={handleChange}
                 min={min}
                 max={max}
                 step={step}
