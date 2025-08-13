@@ -33,7 +33,7 @@ const InputColor = ({
     fullWidth = false,
     disabled = false,
     showColorPicker = true,
-    showAlpha = true,
+    showAlpha = false,
     value: colorProp,
     onChange,
     onAlphaChange,
