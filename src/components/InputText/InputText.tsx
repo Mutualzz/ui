@@ -1,8 +1,8 @@
 import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
-import type { InputProps } from "@components/Input/Input.types";
 import { InputBase } from "@components/InputBase/InputBase";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Ref } from "react";
+import type { InputTextProps } from "./InputText.types";
 
 /**
  * InputText component for entering text.
@@ -18,10 +18,9 @@ const InputText = (
         fullWidth = false,
         error = false,
         disabled = false,
-        type = "text",
         children,
         ...props
-    }: InputProps,
+    }: InputTextProps,
     ref?: Ref<HTMLInputElement>,
 ) => {
     return (
@@ -38,7 +37,7 @@ const InputText = (
                 <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
 
-            <InputBase ref={ref} type={type} {...props} />
+            <InputBase {...props} ref={ref} type="text" />
 
             {endDecorator && (
                 <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
