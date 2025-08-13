@@ -1,0 +1,165 @@
+import { Button } from "@components/Button/Button";
+import { InputBase } from "@components/InputBase/InputBase";
+import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
+import { InputRoot } from "@components/InputRoot/InputRoot";
+import { Popover } from "@components/Popover/Popover";
+import { useColorInput } from "@hooks/useColorInput";
+import { useOnClickOutside } from "@hooks/useOnClickOutside";
+import { useTheme } from "@hooks/useTheme";
+import type { ColorLike, HsvaColor } from "@ui-types";
+import { hexToHsva, type ColorResult } from "@uiw/color-convert";
+import Colorful from "@uiw/react-color-colorful";
+import { darken } from "@utils";
+import { randomColor } from "@utils/randomColor";
+import { formatHex } from "culori";
+import {
+    useEffect,
+    useRef,
+    useState,
+    type ChangeEvent,
+    type RefObject,
+} from "react";
+import type { InputColorProps } from "./InputColor.types";
+
+const InputColor = ({
+    variant = "outlined",
+    size = "md",
+    startDecorator,
+    endDecorator,
+    fullWidth = false,
+    disabled = false,
+    showColorPicker = true,
+    showAlpha = true,
+    value: colorProp,
+    onChange,
+    onAlphaChange,
+    defaultValue,
+    ...props
+}: InputColorProps) => {
+    const { theme } = useTheme();
+
+    const [isPickerOpen, setIsPickerOpen] = useState(false);
+    const [alpha, setAlpha] = useState(100);
+
+    const isControlled = colorProp !== undefined;
+
+    const [internalValue, setInternalValue] = useState<ColorLike>(
+        defaultValue ?? randomColor("hex", alpha),
+    );
+
+    const currentValue = isControlled ? colorProp : internalValue;
+    const [pickerColor, setPickerColor] = useState<HsvaColor>(
+        hexToHsva(currentValue),
+    );
+
+    const popoverRef = useRef<HTMLDivElement>(null);
+
+    useOnClickOutside(popoverRef as RefObject<HTMLDivElement>, () => {
+        setIsPickerOpen(false);
+    });
+
+    const {
+        inputValue,
+        color: validatedColor,
+        isInvalid,
+        handleChange,
+        validate,
+        setColorDirectly,
+    } = useColorInput(alpha, "hex", currentValue);
+
+    useEffect(() => {
+        if (isControlled) setPickerColor(hexToHsva(colorProp));
+    }, [colorProp, isControlled]);
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value as ColorLike;
+
+        handleChange(newValue);
+        setPickerColor(hexToHsva(newValue));
+
+        if (!isControlled) setInternalValue(newValue);
+
+        onChange?.(newValue);
+    };
+
+    const togglePicker = () => {
+        setIsPickerOpen((prev) => !prev);
+    };
+
+    const handleNewColor = (newColor: ColorResult) => {
+        const newAlpha = Math.round(newColor.rgba.a * 100);
+        setAlpha(newAlpha);
+
+        const colorValue = newAlpha < 100 ? newColor.hexa : newColor.hex;
+
+        setColorDirectly(colorValue as ColorLike);
+        setPickerColor(newColor.hsva);
+
+        if (!isControlled) setInternalValue(colorValue as ColorLike);
+
+        onChange?.(colorValue as ColorLike);
+        onAlphaChange?.(newAlpha);
+    };
+
+    return (
+        <>
+            <InputRoot
+                color={validatedColor}
+                textColor={isInvalid ? theme.colors.danger : validatedColor}
+                variant={variant}
+                size={size}
+                fullWidth={fullWidth}
+                error={isInvalid}
+                disabled={disabled}
+            >
+                {startDecorator && (
+                    <InputDecoratorWrapper>
+                        {startDecorator}
+                    </InputDecoratorWrapper>
+                )}
+
+                <InputBase
+                    {...props}
+                    type="text"
+                    value={inputValue}
+                    onChange={handleOnChange}
+                    onBlur={validate}
+                />
+
+                <InputDecoratorWrapper>
+                    {endDecorator ??
+                        (showColorPicker && (
+                            <Popover
+                                content={
+                                    <Colorful
+                                        ref={popoverRef}
+                                        disableAlpha={!showAlpha}
+                                        color={pickerColor}
+                                        onChange={handleNewColor}
+                                    />
+                                }
+                                isOpen={isPickerOpen}
+                                color={validatedColor}
+                                size={size}
+                                variant={variant}
+                            >
+                                <Button
+                                    size="lg"
+                                    color={validatedColor}
+                                    variant="solid"
+                                    onClick={togglePicker}
+                                    css={{
+                                        ...(variant === "solid" && {
+                                            border: `2px solid ${formatHex(darken(validatedColor, 0.3))}`,
+                                        }),
+                                    }}
+                                />
+                            </Popover>
+                        ))}
+                </InputDecoratorWrapper>
+            </InputRoot>
+        </>
+    );
+};
+
+export { InputColor };
