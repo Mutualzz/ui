@@ -8,6 +8,7 @@ import type {
     Variant,
 } from "@ui-types";
 import { darken, lighten } from "@utils";
+import { isValidColorInput } from "@utils/colorRegex";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
@@ -36,7 +37,7 @@ export const resolveInputBaseSize = (
 export const resolveInputBaseStyles = (
     theme: Theme,
     color: Color | ColorLike,
-    textColor: TypographyColor | "inherit",
+    textColor: TypographyColor | ColorLike | "inherit",
     error: boolean,
 ): Record<Variant, CSSObject> => {
     const resolvedColor = resolveColor(color, theme);
@@ -47,12 +48,15 @@ export const resolveInputBaseStyles = (
             : resolveTypographyColor(textColor, theme);
 
     const errorColor = theme.colors.danger;
+    const isColorLike = isValidColorInput(parsedTextColor);
 
     return {
         outlined: {
             background: "transparent",
             color: formatHex8(
-                lighten(error ? errorColor : parsedTextColor, 0.5),
+                isColorLike
+                    ? parsedTextColor
+                    : lighten(error ? errorColor : parsedTextColor, 0.5),
             ),
             border: `1px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
             borderRadius: 8,
@@ -63,7 +67,9 @@ export const resolveInputBaseStyles = (
         solid: {
             background: formatHex8(error ? errorColor : resolvedColor),
             color: formatHex8(
-                lighten(error ? errorColor : parsedTextColor, 0.75),
+                isColorLike
+                    ? theme.typography.colors.primary
+                    : lighten(error ? errorColor : parsedTextColor, 0.75),
             ),
             border: "none",
             borderRadius: 8,
@@ -74,7 +80,9 @@ export const resolveInputBaseStyles = (
         plain: {
             background: "transparent",
             color: formatHex8(
-                lighten(error ? errorColor : parsedTextColor, 0.25),
+                isColorLike
+                    ? parsedTextColor
+                    : lighten(error ? errorColor : parsedTextColor, 0.25),
             ),
             border: "none",
             borderRadius: 8,
@@ -87,7 +95,9 @@ export const resolveInputBaseStyles = (
                 darken(error ? errorColor : resolvedColor, 0.5),
             ),
             color: formatHex8(
-                lighten(error ? errorColor : parsedTextColor, 0.5),
+                isColorLike
+                    ? parsedTextColor
+                    : lighten(error ? errorColor : parsedTextColor, 0.5),
             ),
             border: "none",
             borderRadius: 8,
