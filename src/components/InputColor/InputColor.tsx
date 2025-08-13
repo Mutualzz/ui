@@ -16,13 +16,7 @@ import Colorful from "@uiw/react-color-colorful";
 import { darken } from "@utils";
 import { randomColor } from "@utils/randomColor";
 import { formatHex } from "culori";
-import {
-    useEffect,
-    useRef,
-    useState,
-    type ChangeEvent,
-    type RefObject,
-} from "react";
+import { useRef, useState, type ChangeEvent, type RefObject } from "react";
 import type { InputColorProps } from "./InputColor.types";
 
 const InputColor = ({
@@ -52,14 +46,9 @@ const InputColor = ({
     );
 
     const currentValue = isControlled ? colorProp : internalValue;
-    const [pickerColor, setPickerColor] = useState<HsvaColor>(() => {
-        try {
-            return hexToHsva(currentValue);
-        } catch {
-            // If the color is invalid, generate a random color to cover edge cases
-            return hexToHsva(randomColor("hex", alpha));
-        }
-    });
+    const [pickerColor, setPickerColor] = useState<HsvaColor>(
+        hexToHsva(currentValue),
+    );
 
     const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -76,26 +65,13 @@ const InputColor = ({
         setColorDirectly,
     } = useColorInput(alpha, "hex", currentValue);
 
-    useEffect(() => {
-        try {
-            if (isControlled) setPickerColor(hexToHsva(colorProp));
-        } catch {
-            // If the color is invalid, we can ignore it
-        }
-    }, [colorProp, isControlled]);
-
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value as ColorLike;
 
         if (typeof newValue !== "string") return;
 
         handleChange(newValue);
-        try {
-            setPickerColor(hexToHsva(newValue));
-        } catch {
-            // If the color is invalid, we can ignore it
-        }
-
+        setPickerColor(hexToHsva(newValue));
         if (!isControlled) setInternalValue(newValue);
 
         onChange?.(newValue);
