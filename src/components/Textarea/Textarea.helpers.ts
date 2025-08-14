@@ -36,7 +36,7 @@ export const resolveTextareaSize = (
 export const resolveTextareaStyles = (
     theme: Theme,
     color: Color | ColorLike,
-    textColor: TypographyColor | "inherit",
+    textColor: TypographyColor | ColorLike | "inherit",
 ): Record<Variant, CSSObject> => {
     const resolvedColor = resolveColor(color, theme);
 

@@ -26,7 +26,7 @@ export interface TextareaProps
      * @default "inherit"
      * @example "primary", "secondary", "accent", "disabled"
      */
-    textColor?: TypographyColor | "inherit";
+    textColor?: TypographyColor | ColorLike | "inherit";
     /**
      * Variant of the textarea.
      * This can be "outlined", "solid", "soft", or "plain".
