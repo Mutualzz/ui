@@ -24,6 +24,9 @@ export type * from "./components/Divider/Divider.types";
 export * from "./components/Input/Input";
 export type * from "./components/Input/Input.types";
 
+export * from "./components/InputRoot/InputRoot";
+export type * from "./components/InputRoot/InputRoot.types";
+
 export * from "./components/InputColor/InputColor";
 export type * from "./components/InputColor/InputColor.types";
 
