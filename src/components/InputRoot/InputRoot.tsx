@@ -1,9 +1,9 @@
-import type { InputRootProps } from "@components/Input/Input.types";
 import styled from "@styled";
 import {
     resolveInputBaseSize,
     resolveInputBaseStyles,
 } from "./InputRoot.helpers";
+import type { InputRootProps } from "./InputRoot.types";
 
 const InputRoot = styled("div")<InputRootProps>(
     ({

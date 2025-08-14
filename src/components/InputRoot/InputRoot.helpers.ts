@@ -7,7 +7,7 @@ import type {
     TypographyColor,
     Variant,
 } from "@ui-types";
-import { darken, lighten } from "@utils";
+import { darken, getLuminance, lighten } from "@utils";
 import { isValidColorInput } from "@utils/colorRegex";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
@@ -50,6 +50,17 @@ export const resolveInputBaseStyles = (
     const errorColor = theme.colors.danger;
     const isColorLike = isValidColorInput(parsedTextColor);
 
+    const luminance = getLuminance(resolvedColor);
+    const luminatedColor = (
+        isColorLike
+            ? (formatHex8(
+                  luminance < 0.5
+                      ? theme.colors.common.white
+                      : theme.colors.common.black,
+              ) ?? parsedTextColor)
+            : parsedTextColor
+    ) as ColorLike;
+
     return {
         outlined: {
             background: "transparent",
@@ -68,7 +79,7 @@ export const resolveInputBaseStyles = (
             background: formatHex8(error ? errorColor : resolvedColor),
             color: formatHex8(
                 isColorLike
-                    ? theme.typography.colors.primary
+                    ? luminatedColor
                     : lighten(error ? errorColor : parsedTextColor, 0.75),
             ),
             border: "none",
@@ -96,7 +107,7 @@ export const resolveInputBaseStyles = (
             ),
             color: formatHex8(
                 isColorLike
-                    ? parsedTextColor
+                    ? luminatedColor
                     : lighten(error ? errorColor : parsedTextColor, 0.5),
             ),
             border: "none",

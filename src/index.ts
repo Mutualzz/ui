@@ -16,13 +16,24 @@ export * from "./components/CheckboxGroup/CheckboxGroup";
 export type * from "./components/CheckboxGroup/CheckboxGroup.types";
 
 export * from "./components/CircularProgress/CircularProgress";
-export * from "./components/CircularProgress/CircularProgress.types";
+export type * from "./components/CircularProgress/CircularProgress.types";
 
 export * from "./components/Divider/Divider";
-export * from "./components/Divider/Divider.types";
+export type * from "./components/Divider/Divider.types";
 
 export * from "./components/Input/Input";
-export * from "./components/Input/Input.types";
+export type * from "./components/Input/Input.types";
+
+export * from "./components/InputColor/InputColor";
+export type * from "./components/InputColor/InputColor.types";
+
+export * from "./components/InputDefault/InputDefault";
+
+export * from "./components/InputNumber/InputNumber";
+export type * from "./components/InputNumber/InputNumber.types";
+
+export * from "./components/InputPassword/InputPassword";
+export type * from "./components/InputPassword/InputPassword.types";
 
 export * from "./components/LinearProgress/LinearProgress";
 export type * from "./components/LinearProgress/LinearProgress.types";

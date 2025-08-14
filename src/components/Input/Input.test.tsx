@@ -1,9 +1,11 @@
+import { InputNumber } from "@components/InputNumber/InputNumber";
+import { InputPassword } from "@components/InputPassword/InputPassword";
 import { render } from "@test-utils";
-import { InputNumber, InputPassword, InputText } from "./Input";
+import { Input } from "./Input";
 
 describe("Input", () => {
-    it("renders InputText as the default", () => {
-        const { container } = render(<InputText type="text" />);
+    it("renders Input as a text by default", () => {
+        const { container } = render(<Input type="text" />);
         expect(container).toBeInTheDocument();
         expect(
             container.querySelector("input[type='text']"),

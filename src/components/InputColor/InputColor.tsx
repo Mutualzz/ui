@@ -6,6 +6,7 @@ import { Popover } from "@components/Popover/Popover";
 import { useColorInput } from "@hooks/useColorInput";
 import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import { useTheme } from "@hooks/useTheme";
+import styled from "@styled";
 import type { ColorLike } from "@ui-types";
 import {
     hexToHsva,
@@ -13,11 +14,16 @@ import {
     type HsvaColor,
 } from "@uiw/color-convert";
 import Colorful from "@uiw/react-color-colorful";
-import { darken } from "@utils";
 import { randomColor } from "@utils/randomColor";
-import { formatHex } from "culori";
 import { useRef, useState, type ChangeEvent, type RefObject } from "react";
+import { resolveColorPickerButtonStyles } from "./InputColor.helpers";
 import type { InputColorProps } from "./InputColor.types";
+
+const ColorPickerButton = styled(Button)(
+    ({ theme, color = "neutral", variant = "solid" }) => ({
+        ...resolveColorPickerButtonStyles(theme, color)[variant],
+    }),
+);
 
 const InputColor = ({
     variant = "outlined",
@@ -148,16 +154,11 @@ const InputColor = ({
                                 size={size}
                                 variant={variant}
                             >
-                                <Button
-                                    size="lg"
+                                <ColorPickerButton
+                                    size={size}
                                     color={validatedColor}
-                                    variant="solid"
+                                    variant={variant}
                                     onClick={togglePicker}
-                                    css={{
-                                        ...(variant === "solid" && {
-                                            border: `2px solid ${formatHex(darken(validatedColor, 0.3))}`,
-                                        }),
-                                    }}
                                 />
                             </Popover>
                         ))}
