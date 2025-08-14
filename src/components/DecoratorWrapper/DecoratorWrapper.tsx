@@ -3,7 +3,7 @@ import styled from "@styled";
 const DecoratorWrapper = styled("span")<{
     position?: "start" | "end";
     spacing?: string | number;
-}>(({ position = "end", spacing = "0.5em" }) => ({
+}>(({ position, spacing = "0.5em" }) => ({
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
