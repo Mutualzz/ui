@@ -1,3 +1,6 @@
+import { Button } from "@components/Button/Button";
+import { resolveButtonStyles } from "@components/Button/Button.helpers";
+import type { ButtonProps } from "@components/Button/Button.types";
 import { Portal } from "@components/Portal/Portal";
 import styled from "@styled";
 import {
@@ -51,6 +54,50 @@ const ModalBackdrop = styled("div")({
 });
 
 ModalBackdrop.displayName = "ModalBackdrop";
+
+const ModalContainer = styled("div")<{ layout: "center" | "fullscreen" }>(
+    ({ layout }) => ({
+        position: "relative",
+        ...(layout === "fullscreen" && {
+            width: "100%",
+            height: "100%",
+        }),
+    }),
+);
+
+const ModalCloseButton = styled(Button)<
+    ButtonProps & {
+        layout: "center" | "fullscreen";
+    }
+>(({ theme, color = "neutral", variant = "outlined", layout }) => ({
+    ...resolveButtonStyles(theme, color)[variant],
+    position: "absolute",
+    top: layout === "fullscreen" ? "24px" : "1.5em",
+    right: layout === "fullscreen" ? "24px" : "1.5em",
+    zIndex: 1,
+
+    // Make it perfectly circular
+    borderRadius: "50%",
+    aspectRatio: "1", // Ensures perfect circle
+    minWidth: layout === "fullscreen" ? "44px" : "40px",
+    width: layout === "fullscreen" ? "44px" : "40px",
+    height: layout === "fullscreen" ? "44px" : "40px",
+    padding: 0,
+
+    // Center the X
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+
+    "&::before": {
+        content: '"✕"',
+        fontSize: layout === "fullscreen" ? "18px" : "16px",
+        lineHeight: 1,
+        fontWeight: "bold",
+    },
+}));
+
+ModalCloseButton.displayName = "ModalCloseButton";
 
 const ScrollLock = () => {
     useEffect(() => {
@@ -127,9 +174,12 @@ const Modal = (
         disablePortal = false,
         disableRestoreFocus = false,
         disableScrollLock = false,
+        disableBackdropClick = false,
         hideBackdrop = false,
         keepMounted = false,
         layout = "center",
+        showCloseButton = true,
+        closeButton,
         onClose,
         onKeyDown,
         open,
@@ -198,9 +248,28 @@ const Modal = (
                 }}
                 {...props}
             >
-                {!hideBackdrop && <ModalBackdrop onClick={onClose} />}
-
-                {children}
+                {!hideBackdrop &&
+                    (disableBackdropClick ? (
+                        <ModalBackdrop />
+                    ) : (
+                        <ModalBackdrop onClick={onClose} />
+                    ))}
+                <ModalContainer layout={layout}>
+                    {showCloseButton &&
+                        onClose &&
+                        (closeButton ? (
+                            closeButton
+                        ) : (
+                            <ModalCloseButton
+                                color="neutral"
+                                variant="outlined"
+                                layout={layout}
+                                onClick={onClose}
+                                aria-label="Close modal"
+                            />
+                        ))}
+                    {children}
+                </ModalContainer>
             </ModalRoot>
         </FocusTrap>
     );
