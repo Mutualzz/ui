@@ -68,21 +68,13 @@ export const ListItemButton = (props: ListItemButtonProps) => {
             {...rest}
         >
             {startDecorator && (
-                <DecoratorWrapper
-                    parentContent={children}
-                    position="start"
-                    size={size}
-                >
+                <DecoratorWrapper position="start">
                     {startDecorator}
                 </DecoratorWrapper>
             )}
             <ListItemButtonContent>{children}</ListItemButtonContent>
             {endDecorator && (
-                <DecoratorWrapper
-                    parentContent={children}
-                    position="end"
-                    size={size}
-                >
+                <DecoratorWrapper position="end">
                     {endDecorator}
                 </DecoratorWrapper>
             )}

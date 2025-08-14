@@ -1,10 +1,11 @@
-import { type Theme } from "@emotion/react";
+import { type CSSObject, type Theme } from "@emotion/react";
 
 import {
     type Color,
     type ColorLike,
     type Size,
     type SizeValue,
+    type Variant,
 } from "@ui-types";
 import { alpha, getLuminance } from "@utils";
 import { resolveColor } from "@utils/resolveColor";
@@ -12,21 +13,20 @@ import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
 export const baseSizeMap: Record<Size, number> = {
-    sm: 16,
-    md: 20,
-    lg: 24,
+    sm: 12,
+    md: 16,
+    lg: 20,
 };
 
 export const resolveCheckboxSize = (
     theme: Theme,
     size: Size | SizeValue | number,
-) => {
+): CSSObject => {
     const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
+        fontSize: resolvedSize,
         padding: resolvedSize * 0.2,
-        lineHeight: 0,
-        fontSize: resolvedSize * 0.8,
     };
 };
 
@@ -34,7 +34,7 @@ export const resolveCheckboxStyles = (
     theme: Theme,
     color: Color | ColorLike,
     checked?: boolean,
-) => {
+): Record<Variant, CSSObject> => {
     const { colors } = theme;
 
     const resolvedColor = resolveColor(color, theme);
@@ -51,45 +51,56 @@ export const resolveCheckboxStyles = (
         solid: {
             backgroundColor: hexColor,
             color: textColor,
-            border: "none",
+            border: `1px solid ${hexColor}`,
             "&:hover": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
-            },
-            "&:active": { backgroundColor: formatHex8(resolvedColor) },
-        },
-        outlined: {
-            backgroundColor: "transparent",
-            color: resolvedColor,
-            border: `1px solid ${formatHex8(alpha(resolvedColor, 0.5))}`,
-            "&:hover": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
-                border: `1px solid ${formatHex8(alpha(resolvedColor, 0.3))}`,
+                backgroundColor: checked
+                    ? formatHex8(alpha(resolvedColor, 0.8))
+                    : formatHex8(alpha(resolvedColor, 0.1)),
+                borderColor: hexColor,
             },
             "&:active": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.15)),
+                backgroundColor: checked
+                    ? formatHex8(alpha(resolvedColor, 0.7))
+                    : formatHex8(alpha(resolvedColor, 0.2)),
+            },
+        },
+        outlined: {
+            backgroundColor: checked
+                ? formatHex8(alpha(resolvedColor, 0.1))
+                : "transparent",
+            color: formatHex8(resolvedColor),
+            border: `1px solid ${formatHex8(resolvedColor)}`,
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
+                borderColor: formatHex8(resolvedColor),
+            },
+            "&:active": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
         },
         soft: {
             backgroundColor: formatHex8(
-                alpha(resolvedColor, checked ? 0.4 : 0.2),
+                alpha(resolvedColor, checked ? 0.3 : 0.1),
             ),
-            color: resolvedColor,
+            color: formatHex8(resolvedColor),
             border: "none",
             "&:hover": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
             },
             "&:active": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
             },
         },
         plain: {
             backgroundColor: "transparent",
-            color: resolvedColor,
+            color: formatHex8(resolvedColor),
             border: "none",
             "&:hover": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
             },
-            "&:active": { color: formatHex8(alpha(resolvedColor, 0.5)) },
+            "&:active": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
+            },
         },
     };
 };
@@ -100,10 +111,8 @@ export const resolveIconScaling = (
 ) => {
     const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
-    const scale = resolvedSize / 2;
-
     return {
-        width: scale,
-        height: scale,
+        width: resolvedSize * 0.5,
+        height: resolvedSize * 0.5,
     };
 };

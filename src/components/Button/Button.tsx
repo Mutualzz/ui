@@ -24,6 +24,9 @@ const ButtonWrapper = styled("button")<ButtonProps>(
         borderRadius: "6px",
         cursor: "pointer",
         transition: "all 0.3s ease",
+        whiteSpace: "nowrap",
+        flexShrink: 0,
+        lineHeight: 1.2,
         ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
         ...resolveButtonSize(theme, size),
         ...resolveButtonStyles(theme, color)[variant],
@@ -118,21 +121,13 @@ const Button = (
             )}
 
             {startDecorator && (
-                <DecoratorWrapper
-                    parentContent={children}
-                    position="start"
-                    size={size}
-                >
+                <DecoratorWrapper position="start">
                     {startDecorator}
                 </DecoratorWrapper>
             )}
             <ButtonContent loading={loading}>{children}</ButtonContent>
             {endDecorator && (
-                <DecoratorWrapper
-                    parentContent={children}
-                    position="end"
-                    size={size}
-                >
+                <DecoratorWrapper position="end">
                     {endDecorator}
                 </DecoratorWrapper>
             )}

@@ -16,10 +16,10 @@ export const resolveListStyles = (
         },
         outlined: {
             backgroundColor: "transparent",
-            border: `1px solid ${formatHex8(resolvedColor)}`,
+            border: `1px solid ${formatHex8(alpha(resolvedColor, 0.3))}`,
         },
         soft: {
-            backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.1)),
             border: "none",
         },
         plain: {

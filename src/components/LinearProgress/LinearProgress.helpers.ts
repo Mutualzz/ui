@@ -14,8 +14,8 @@ export const resolveLinearProgressStyles = (
 
     return {
         plain: "transparent",
-        solid: formatHex8(alpha(resolvedColor, 0.5))!,
-        soft: formatHex8(alpha(resolvedColor, 0.1))!,
+        solid: formatHex8(alpha(resolvedColor, 0.2))!,
+        soft: formatHex8(alpha(resolvedColor, 0.15))!,
         outlined: "transparent",
     };
 };
@@ -27,9 +27,9 @@ export const thicknessMap: Record<Size, number> = {
 };
 
 export const lengthMap: Record<Size, number> = {
-    sm: 120,
-    md: 160,
-    lg: 200,
+    sm: 100,
+    md: 140,
+    lg: 180,
 };
 
 export const resolveLinearProgressThickness = (

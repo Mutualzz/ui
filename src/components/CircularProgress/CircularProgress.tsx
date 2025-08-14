@@ -5,7 +5,6 @@ import { resolveColor } from "@utils/resolveColor";
 import {
     resolveCircularProgressSize,
     resolveCircularProgressStyles,
-    resolveCircularProgressThickness,
 } from "./CircularProgress.helpers";
 import { spin } from "./CircularProgress.keyframes";
 import type { CircularProgressProps } from "./CircularProgress.types";
@@ -41,11 +40,12 @@ const CircularProgress = ({
 
     const contentPadding = 8;
 
-    const strokeWidth = resolveCircularProgressThickness(theme, size);
+    const baseDiameter = resolveCircularProgressSize(theme, size);
+    const strokeWidth = Math.max(2, baseDiameter * 0.1);
 
     const diameter = contentDiameter
         ? contentDiameter + strokeWidth + contentPadding * 2
-        : resolveCircularProgressSize(theme, size);
+        : baseDiameter;
 
     const radius = (diameter - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;

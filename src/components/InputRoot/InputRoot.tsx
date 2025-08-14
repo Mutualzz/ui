@@ -1,7 +1,8 @@
 import styled from "@styled";
+
 import {
-    resolveInputBaseSize,
-    resolveInputBaseStyles,
+    resolveInputRootSize,
+    resolveInputRootStyles,
 } from "./InputRoot.helpers";
 import type { InputRootProps } from "./InputRoot.types";
 
@@ -16,8 +17,8 @@ const InputRoot = styled("div")<InputRootProps>(
         fullWidth,
         disabled,
     }) => ({
-        ...resolveInputBaseSize(theme, size),
-        ...resolveInputBaseStyles(theme, color, textColor, error)[variant],
+        ...resolveInputRootSize(theme, size),
+        ...resolveInputRootStyles(theme, color, textColor, error)[variant],
         ...(disabled && { opacity: 0.5 }),
 
         display: "flex",
@@ -34,6 +35,7 @@ const InputRoot = styled("div")<InputRootProps>(
         paddingInline: "0.5em",
         gap: "0.375em",
         borderRadius: 8,
+        transition: "all 0.3s ease",
     }),
 );
 

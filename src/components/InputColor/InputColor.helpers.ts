@@ -1,7 +1,7 @@
 import type { Theme } from "@emotion/react";
 import type { Color, ColorLike } from "@ui-types";
-import { darken, getLuminance, resolveColor } from "@utils";
-import { formatHex, formatHex8 } from "culori";
+import { alpha, getLuminance, resolveColor } from "@utils";
+import { formatHex8 } from "culori";
 
 export const resolveColorPickerButtonStyles = (
     theme: Theme,
@@ -12,7 +12,7 @@ export const resolveColorPickerButtonStyles = (
     const resolvedColor = resolveColor(color, theme);
     const bgLuminance = getLuminance(resolvedColor);
 
-    const luminatedColor =
+    const contrastColor =
         formatHex8(
             bgLuminance < 0.5 ? colors.common.white : colors.common.black,
         ) ?? theme.typography.colors.primary;
@@ -22,19 +22,47 @@ export const resolveColorPickerButtonStyles = (
     return {
         solid: {
             backgroundColor: hexColor,
-            border: `2px solid ${luminatedColor}`,
-        },
-        plain: {
-            backgroundColor: hexColor,
-            border: "none",
+            border: `2px solid ${contrastColor}`,
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
+                borderColor: contrastColor,
+            },
+            "&:active": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.8)),
+            },
         },
         outlined: {
             backgroundColor: hexColor,
-            border: `2px solid ${formatHex(darken(resolvedColor, 0.3))}`,
+            border: `2px solid ${formatHex8(alpha(resolvedColor, 0.6))}`,
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
+                borderColor: formatHex8(alpha(resolvedColor, 0.8)),
+            },
+            "&:active": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.8)),
+            },
         },
         soft: {
             backgroundColor: hexColor,
-            border: `2px solid ${luminatedColor}`,
+            border: `2px solid ${formatHex8(alpha(contrastColor, 0.3))}`,
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
+                borderColor: formatHex8(alpha(contrastColor, 0.5)),
+            },
+            "&:active": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.8)),
+            },
+        },
+        plain: {
+            backgroundColor: hexColor,
+            border: "2px solid transparent",
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
+                borderColor: formatHex8(alpha(contrastColor, 0.2)),
+            },
+            "&:active": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.8)),
+            },
         },
     };
 };

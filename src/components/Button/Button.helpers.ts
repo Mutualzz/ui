@@ -1,9 +1,9 @@
-import { type Theme } from "@emotion/react";
+import { type CSSObject, type Theme } from "@emotion/react";
 
 import { formatHex8 } from "culori";
 
-import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
-import { alpha, darken, getLuminance, lighten } from "@utils";
+import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import { alpha, getLuminance } from "@utils";
 import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 
@@ -16,19 +16,19 @@ export const baseSizeMap: Record<Size, number> = {
 export const resolveButtonSize = (
     theme: Theme,
     size: Size | SizeValue | number,
-) => {
+): CSSObject => {
     const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
         fontSize: resolvedSize,
-        lineHeight: 1,
-        padding: 10,
-        whiteSpace: "nowrap",
-        flexShrink: 0,
+        padding: `${resolvedSize * 0.6}px ${resolvedSize * 1.2}px`,
     };
 };
 
-export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
+export const resolveButtonStyles = (
+    theme: Theme,
+    color: Color | ColorLike,
+): Record<Variant, CSSObject> => {
     const { colors } = theme;
 
     const resolvedColor = resolveColor(color, theme);
@@ -47,64 +47,59 @@ export const resolveButtonStyles = (theme: Theme, color: Color | ColorLike) => {
             color: textColor,
             border: "none",
             "&:hover": {
-                backgroundColor: formatHex8(darken(resolvedColor, 0.2)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.8)),
             },
             "&:active": {
-                backgroundColor: formatHex8(darken(resolvedColor, 0.4)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.7)),
             },
             "&:disabled": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
-                color: formatHex8(alpha(textColor, 0.4)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
+                color: formatHex8(alpha(textColor, 0.6)),
             },
         },
         outlined: {
             backgroundColor: "transparent",
             border: `1px solid ${formatHex8(resolvedColor)}`,
-            color: formatHex8(lighten(resolvedColor, 0.6)),
+            color: formatHex8(resolvedColor),
             "&:hover": {
                 backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
+                borderColor: formatHex8(resolvedColor),
             },
             "&:active": {
                 backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
             "&:disabled": {
-                color: formatHex8(alpha(resolvedColor, 0.4)),
-                border: `1px solid ${formatHex8(alpha(resolvedColor, 0.4))}`,
+                color: formatHex8(alpha(resolvedColor, 0.5)),
+                borderColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
         },
         plain: {
             backgroundColor: "transparent",
             border: "none",
-            color: formatHex8(lighten(resolvedColor, 0.25)),
+            color: formatHex8(resolvedColor),
             "&:hover": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
-                color: formatHex8(lighten(resolvedColor, 0.6)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
             },
             "&:active": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
-                color: formatHex8(lighten(resolvedColor, 0.5)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
             "&:disabled": {
-                color: formatHex8(lighten(resolvedColor, 0.4)),
+                color: formatHex8(alpha(resolvedColor, 0.5)),
             },
         },
         soft: {
-            backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
-            color: formatHex8(lighten(resolvedColor, 0.75)),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.15)),
+            color: formatHex8(resolvedColor),
             border: "none",
             "&:hover": {
-                backgroundColor: formatHex8(
-                    alpha(lighten(resolvedColor, 0.2), 0.5),
-                ),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.3)),
             },
             "&:active": {
-                backgroundColor: formatHex8(
-                    alpha(lighten(resolvedColor, 0.5), 0.5),
-                ),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.4)),
             },
             "&:disabled": {
-                backgroundColor: formatHex8(alpha(resolvedColor, 0.2)),
-                color: formatHex8(alpha(resolvedColor, 0.4)),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.05)),
+                color: formatHex8(alpha(resolvedColor, 0.5)),
             },
         },
     };

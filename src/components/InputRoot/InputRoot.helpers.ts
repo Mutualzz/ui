@@ -7,19 +7,19 @@ import type {
     TypographyColor,
     Variant,
 } from "@ui-types";
-import { darken, getLuminance, lighten } from "@utils";
+import { alpha, darken, getLuminance } from "@utils";
 import { isValidColorInput } from "@utils/colorRegex";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
 const baseSizeMap: Record<Size, number> = {
-    sm: 14,
-    md: 16,
-    lg: 18,
+    sm: 12,
+    md: 14,
+    lg: 16,
 };
 
-export const resolveInputBaseSize = (
+export const resolveInputRootSize = (
     theme: Theme,
     size: Size | SizeValue | number,
 ) => {
@@ -27,93 +27,89 @@ export const resolveInputBaseSize = (
 
     return {
         fontSize: resolvedSize,
-        lineHeight: 1,
-        minHeight: `${resolvedSize + (resolvedSize / 2) * 2}px`,
-        whiteSpace: "nowrap",
-        flexShrink: 0,
+        lineHeight: 1.2,
+        minHeight: resolvedSize * 2.2,
+        padding: `${resolvedSize * 0.4}px ${resolvedSize * 0.6}px`,
     };
 };
 
-export const resolveInputBaseStyles = (
+export const resolveInputRootStyles = (
     theme: Theme,
     color: Color | ColorLike,
     textColor: TypographyColor | ColorLike | "inherit",
     error: boolean,
 ): Record<Variant, CSSObject> => {
+    const { colors } = theme;
     const resolvedColor = resolveColor(color, theme);
 
     const parsedTextColor =
         textColor === "inherit"
-            ? resolvedColor
+            ? theme.typography.colors.primary
             : resolveTypographyColor(textColor, theme);
 
-    const errorColor = theme.colors.danger;
+    const errorColor = colors.danger;
+    const activeColor = error ? errorColor : resolvedColor;
     const isColorLike = isValidColorInput(parsedTextColor);
 
-    const luminance = getLuminance(resolvedColor);
-    const luminatedColor = (
-        isColorLike
-            ? (formatHex8(
-                  luminance < 0.5
-                      ? theme.colors.common.white
-                      : theme.colors.common.black,
-              ) ?? parsedTextColor)
-            : parsedTextColor
-    ) as ColorLike;
+    const luminance = getLuminance(activeColor);
+    const solidTextColor =
+        luminance < 0.5
+            ? formatHex8(colors.common.white)
+            : formatHex8(darken(activeColor, 0.7));
+
+    const textColorFinal = formatHex8(
+        isColorLike ? parsedTextColor : theme.typography.colors.primary,
+    );
 
     return {
         outlined: {
-            background: "transparent",
-            color: formatHex8(
-                isColorLike
-                    ? parsedTextColor
-                    : lighten(error ? errorColor : parsedTextColor, 0.5),
-            ),
-            border: `1px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
-            borderRadius: 8,
-            ":focus": {
-                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
+            backgroundColor: "transparent",
+            color: textColorFinal,
+            border: `1px solid ${formatHex8(activeColor)}`,
+            "&:hover": {
+                borderColor: formatHex8(alpha(activeColor, 0.5)),
+                backgroundColor: formatHex8(alpha(activeColor, 0.05)),
+            },
+            "&:focus-within": {
+                borderColor: formatHex8(activeColor),
+                backgroundColor: formatHex8(alpha(activeColor, 0.05)),
+                boxShadow: `0 0 0 2px ${formatHex8(alpha(activeColor, 0.2))}`,
             },
         },
         solid: {
-            background: formatHex8(error ? errorColor : resolvedColor),
-            color: formatHex8(
-                isColorLike
-                    ? luminatedColor
-                    : lighten(error ? errorColor : parsedTextColor, 0.75),
-            ),
+            backgroundColor: formatHex8(activeColor),
+            color: solidTextColor, // Use the contrast-adjusted text color
             border: "none",
-            borderRadius: 8,
-            ":focus": {
-                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(activeColor, 0.9)),
             },
-        },
-        plain: {
-            background: "transparent",
-            color: formatHex8(
-                isColorLike
-                    ? parsedTextColor
-                    : lighten(error ? errorColor : parsedTextColor, 0.25),
-            ),
-            border: "none",
-            borderRadius: 8,
-            ":focus": {
-                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
+            "&:focus-within": {
+                backgroundColor: formatHex8(alpha(activeColor, 0.8)),
+                boxShadow: `0 0 0 2px ${formatHex8(alpha(activeColor, 0.3))}`,
             },
         },
         soft: {
-            background: formatHex8(
-                darken(error ? errorColor : resolvedColor, 0.5),
-            ),
-            color: formatHex8(
-                isColorLike
-                    ? luminatedColor
-                    : lighten(error ? errorColor : parsedTextColor, 0.5),
-            ),
+            backgroundColor: formatHex8(alpha(activeColor, 0.1)),
+            color: formatHex8(activeColor),
             border: "none",
-            borderRadius: 8,
-            ":focus": {
-                border: `2px solid ${formatHex8(error ? errorColor : resolvedColor)}`,
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(activeColor, 0.15)),
+            },
+            "&:focus-within": {
+                backgroundColor: formatHex8(alpha(activeColor, 0.2)),
+                boxShadow: `0 0 0 2px ${formatHex8(alpha(activeColor, 0.2))}`,
+            },
+        },
+        plain: {
+            backgroundColor: "transparent",
+            color: textColorFinal,
+            border: "none",
+            "&:hover": {
+                backgroundColor: formatHex8(alpha(activeColor, 0.05)),
+            },
+            "&:focus-within": {
+                backgroundColor: formatHex8(alpha(activeColor, 0.1)),
+                boxShadow: `0 0 0 2px ${formatHex8(alpha(activeColor, 0.2))}`,
             },
         },
     };

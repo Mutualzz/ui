@@ -5,12 +5,9 @@ import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
-const minFontSize = 10,
-    maxFontSize = 16;
-
 const thumbSizeMap: Record<Size, number> = {
-    sm: 14,
-    md: 18,
+    sm: 16,
+    md: 20,
     lg: 24,
 };
 
@@ -33,7 +30,7 @@ export const resolveSliderTrackThickness = (
 ) => {
     const resolvedSize = resolveSize(theme, size, thumbSizeMap);
 
-    return Math.round(resolvedSize / 2.5);
+    return Math.round(resolvedSize / 3);
 };
 
 export const resolveSliderTickSize = (
@@ -42,7 +39,7 @@ export const resolveSliderTickSize = (
 ): CSSObject => {
     const resolvedSize = resolveSize(theme, size, thumbSizeMap);
 
-    const tickSize = Math.round(resolvedSize * 0.2);
+    const tickSize = Math.round(resolvedSize * 0.25);
 
     return {
         width: tickSize,
@@ -54,26 +51,13 @@ export const resolveSliderLabelSize = (
     theme: Theme,
     size: Size | SizeValue | number,
 ) => {
-    let base = size;
-    if (typeof base === "string") base = parseFloat(base);
-    if (isNaN(base)) {
-        switch (size) {
-            case "sm":
-                base = theme.typography.levels["body-xs"].fontSize;
-                break;
-            case "md":
-                base = theme.typography.levels["body-sm"].fontSize;
-                break;
-            case "lg":
-                base = theme.typography.levels["body-md"].fontSize;
-                break;
-        }
-    }
+    const baseFontMap: Record<Size, number> = {
+        sm: theme.typography.levels["body-xs"].fontSize,
+        md: theme.typography.levels["body-sm"].fontSize,
+        lg: theme.typography.levels["body-md"].fontSize,
+    };
 
-    if (base < minFontSize) base = minFontSize;
-    if (base > maxFontSize) base = maxFontSize;
-
-    return base;
+    return resolveSize(theme, size, baseFontMap);
 };
 
 export const resolveSliderTrackStyles = (
@@ -86,26 +70,26 @@ export const resolveSliderTrackStyles = (
     return {
         solid: {
             backgroundColor: hovered
-                ? formatHex8(alpha(resolvedColor, 0.85))
+                ? formatHex8(alpha(resolvedColor, 0.9))
                 : formatHex8(resolvedColor),
         },
         outlined: {
             border: hovered
-                ? `1px solid ${formatHex8(alpha(resolvedColor, 0.5))}`
+                ? `1px solid ${formatHex8(alpha(resolvedColor, 0.7))}`
                 : `1px solid ${formatHex8(resolvedColor)}`,
             backgroundColor: hovered
-                ? formatHex8(alpha(resolvedColor, 0.35))
+                ? formatHex8(alpha(resolvedColor, 0.1))
                 : "transparent",
         },
         plain: {
             backgroundColor: hovered
-                ? formatHex8(alpha(resolvedColor, 0.5))
+                ? formatHex8(alpha(resolvedColor, 0.2))
                 : "transparent",
         },
         soft: {
             backgroundColor: hovered
-                ? formatHex8(alpha(resolvedColor, 0.5))
-                : formatHex8(alpha(resolvedColor, 0.3)),
+                ? formatHex8(alpha(resolvedColor, 0.2))
+                : formatHex8(alpha(resolvedColor, 0.1)),
         },
     };
 };
@@ -123,16 +107,15 @@ export const resolveSliderThumbStyles = (
         solid: {
             backgroundColor: colors.common.white,
             border: hovered
-                ? `2px solid ${formatHex8(alpha(resolvedColor, 0.85))}`
+                ? `2px solid ${formatHex8(alpha(resolvedColor, 0.9))}`
                 : `2px solid ${formatHex8(resolvedColor)}`,
         },
         outlined: {
-            padding: 2,
-            backgroundColor: formatHex8(lighten(resolvedColor, 0.7)),
-            border: `1px solid ${formatHex8(resolvedColor)}`,
+            backgroundColor: colors.common.white,
+            border: `2px solid ${formatHex8(resolvedColor)}`,
         },
         plain: {
-            backgroundColor: formatHex8(lighten(resolvedColor, 0.5)),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.8)),
         },
         soft: {
             backgroundColor: hovered

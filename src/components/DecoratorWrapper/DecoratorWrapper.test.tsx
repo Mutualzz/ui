@@ -3,15 +3,15 @@ import { DecoratorWrapper } from "./DecoratorWrapper";
 
 describe("DecoratorWrapper", () => {
     it("renders without crashing", () => {
-        const { container } = render(<DecoratorWrapper>Icon</DecoratorWrapper>);
+        const { container } = render(
+            <DecoratorWrapper position="start">Icon</DecoratorWrapper>,
+        );
         expect(container).toBeInTheDocument();
     });
 
-    it("applies correct styles for start position when parent is present", () => {
+    it("applies correct styles for start position", () => {
         const { container } = render(
-            <DecoratorWrapper parentContent="Icon" position="start">
-                Icon
-            </DecoratorWrapper>,
+            <DecoratorWrapper position="start">Icon</DecoratorWrapper>,
         );
 
         expect(container.firstChild).toHaveStyle({
@@ -19,11 +19,9 @@ describe("DecoratorWrapper", () => {
         });
     });
 
-    it("applies correct styles for end position when parent is present", () => {
+    it("applies correct styles for end position", () => {
         const { container } = render(
-            <DecoratorWrapper parentContent="Icon" position="end">
-                Icon
-            </DecoratorWrapper>,
+            <DecoratorWrapper position="end">Icon</DecoratorWrapper>,
         );
 
         expect(container.firstChild).toHaveStyle({
@@ -31,7 +29,7 @@ describe("DecoratorWrapper", () => {
         });
     });
 
-    it("applies correct styles when parenet is not present", () => {
+    it("applies correct styles when position is not present", () => {
         const { container } = render(<DecoratorWrapper>Icon</DecoratorWrapper>);
 
         expect(container.firstChild).toHaveStyle({

@@ -7,7 +7,7 @@ import type {
     TypographyColor,
     Variant,
 } from "@ui-types";
-import { darken, lighten } from "@utils";
+import { alpha, getLuminance } from "@utils";
 import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
@@ -26,10 +26,19 @@ export const resolveTextareaSize = (
 
     return {
         fontSize: resolvedSize,
-        lineHeight: 1.5,
-        minHeight: `${resolvedSize + (resolvedSize / 2) * 2}px`,
-        whiteSpace: "nowrap",
-        flexShrink: 0,
+        minHeight: resolvedSize * 4,
+    };
+};
+
+export const resolveTextareaInputSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
+    const padding = `${resolvedSize * 0.5}px ${resolvedSize * 0.75}px`;
+
+    return {
+        padding,
     };
 };
 
@@ -38,48 +47,55 @@ export const resolveTextareaStyles = (
     color: Color | ColorLike,
     textColor: TypographyColor | ColorLike | "inherit",
 ): Record<Variant, CSSObject> => {
+    const { colors } = theme;
     const resolvedColor = resolveColor(color, theme);
+    const bgLuminance = getLuminance(resolvedColor);
 
     const resolvedTextColor =
         textColor === "inherit"
             ? resolvedColor
             : resolveTypographyColor(textColor, theme);
 
+    const solidTextColor =
+        formatHex8(
+            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
+        ) ?? theme.typography.colors.primary;
+
+    const textColorWithFallback =
+        formatHex8(resolvedTextColor) ?? theme.typography.colors.primary;
+
     return {
-        outlined: {
-            background: "transparent",
-            color: formatHex8(lighten(resolvedTextColor, 0.5)),
-            border: `1px solid ${formatHex8(resolvedColor)}`,
-            borderRadius: 8,
-            ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
-            },
-        },
         solid: {
-            background: formatHex8(resolvedColor),
-            color: formatHex8(lighten(resolvedTextColor, 0.75)),
+            backgroundColor: formatHex8(resolvedColor),
+            color: solidTextColor,
             border: "none",
-            borderRadius: 8,
-            ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+            "&:focus-within": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
             },
         },
-        plain: {
-            background: "transparent",
-            color: formatHex8(lighten(resolvedTextColor, 0.25)),
-            border: "none",
-            borderRadius: 8,
-            ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+        outlined: {
+            backgroundColor: colors.background,
+            border: `1px solid ${formatHex8(alpha(resolvedColor, 0.3))}`,
+            color: textColorWithFallback,
+            "&:focus-within": {
+                borderColor: formatHex8(resolvedColor),
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.05)),
             },
         },
         soft: {
-            background: formatHex8(darken(resolvedColor, 0.5)),
-            color: formatHex8(lighten(resolvedTextColor, 0.5)),
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.1)),
             border: "none",
-            borderRadius: 8,
-            ":focus": {
-                outline: `2px solid ${formatHex8(resolvedColor)}`,
+            color: textColorWithFallback,
+            "&:focus-within": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.15)),
+            },
+        },
+        plain: {
+            backgroundColor: "transparent",
+            border: "none",
+            color: textColorWithFallback,
+            "&:focus-within": {
+                backgroundColor: formatHex8(alpha(resolvedColor, 0.05)),
             },
         },
     };

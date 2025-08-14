@@ -36,13 +36,12 @@ export const resolvePaperStyles = (
         },
         solid: {
             backgroundColor: formatHex8(resolvedColor) ?? colors.primary,
-            color:
-                formatHex8(solidTextColor) ?? theme.typography.colors.primary,
+            color: solidTextColor,
             border: "none",
         },
         outlined: {
-            backgroundColor: "transparent",
-            border: `1px solid ${formatHex8(resolvedColor)}`,
+            backgroundColor: colors.surface,
+            border: `1px solid ${formatHex8(alpha(resolvedColor, 0.3))}`,
             color: textColorWithFallback,
         },
         plain: {

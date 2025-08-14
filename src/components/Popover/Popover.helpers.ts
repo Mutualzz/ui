@@ -17,9 +17,9 @@ import {
 import { formatHex8 } from "culori";
 
 const baseSizeMap: Record<Size, number> = {
-    sm: 14,
-    md: 16,
-    lg: 18,
+    sm: 12,
+    md: 14,
+    lg: 16,
 };
 
 export const resolvePopoverSize = (
@@ -29,7 +29,8 @@ export const resolvePopoverSize = (
     const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
-        padding: resolvedSize,
+        fontSize: resolvedSize,
+        padding: `${resolvedSize * 0.6}px ${resolvedSize * 0.8}px`,
     };
 };
 
@@ -40,9 +41,7 @@ export const resolvePopoverStyles = (
     elevation: number,
 ) => {
     const { colors } = theme;
-
     const resolvedColor = resolveColor(color, theme);
-
     const bgLuminance = getLuminance(resolvedColor);
 
     const resolvedTextColor =
@@ -65,23 +64,21 @@ export const resolvePopoverStyles = (
         },
         solid: {
             backgroundColor: formatHex8(resolvedColor) ?? colors.primary,
-            color:
-                formatHex8(solidTextColor) ?? theme.typography.colors.primary,
+            color: solidTextColor,
             border: "none",
         },
         outlined: {
-            backgroundColor: formatHex8(theme.colors.background),
+            backgroundColor: colors.background,
             border: `1px solid ${formatHex8(resolvedColor)}`,
             color: textColorWithFallback,
         },
-        plain: {
-            backgroundColor: formatHex8(theme.colors.background),
+        soft: {
+            backgroundColor: formatHex8(alpha(resolvedColor, 0.1)),
             border: "none",
             color: textColorWithFallback,
-            boxShadow: `0 1px 5px ${formatHex8(resolvedColor)}`,
         },
-        soft: {
-            backgroundColor: formatHex8(alpha(resolvedColor, 0.5)),
+        plain: {
+            backgroundColor: "transparent",
             border: "none",
             color: textColorWithFallback,
         },

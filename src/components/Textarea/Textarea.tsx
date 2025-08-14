@@ -1,6 +1,11 @@
 import styled from "@styled";
+import type { Size, SizeValue } from "@ui-types";
 import { useEffect, useRef } from "react";
-import { resolveTextareaSize, resolveTextareaStyles } from "./Textarea.helpers";
+import {
+    resolveTextareaInputSize,
+    resolveTextareaSize,
+    resolveTextareaStyles,
+} from "./Textarea.helpers";
 import { type TextareaProps } from "./Textarea.types";
 
 const TextareaRoot = styled("div")<TextareaProps>(
@@ -19,13 +24,13 @@ const TextareaRoot = styled("div")<TextareaProps>(
         }),
 
         display: "flex",
-        alignItems: "center",
-        paddingInline: "0.5em",
+        alignItems: "flex-start",
         gap: "0.375em",
         borderRadius: 8,
-        boxSizing: "border-box" as const,
+        boxSizing: "border-box",
         minWidth: 0,
         width: "100%",
+        lineHeight: 1.5,
     }),
 );
 
@@ -33,7 +38,9 @@ TextareaRoot.displayName = "TextareaRoot";
 
 const TextareaInput = styled("textarea")<{
     resizable?: boolean;
-}>(({ resizable }) => ({
+    size: Size | SizeValue | number;
+}>(({ theme, size, resizable }) => ({
+    ...resolveTextareaInputSize(theme, size),
     flex: 1,
     width: "100%",
     minWidth: 0,
@@ -42,7 +49,6 @@ const TextareaInput = styled("textarea")<{
     background: "transparent",
     color: "inherit",
     font: "inherit",
-    padding: 0,
     lineHeight: 1.5,
     resize: resizable ? "both" : "none",
 }));
@@ -116,6 +122,7 @@ const Textarea = ({
                 {...props}
                 ref={ref}
                 resizable={resizable}
+                size={size}
                 disabled={disabled}
                 rows={minRows}
             />
