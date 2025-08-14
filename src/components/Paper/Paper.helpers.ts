@@ -7,7 +7,7 @@ import { formatHex8 } from "culori";
 export const resolvePaperStyles = (
     theme: Theme,
     color: Color | ColorLike,
-    textColor: TypographyColor | "inherit",
+    textColor: TypographyColor | ColorLike | "inherit",
     elevation: number,
 ) => {
     const { colors } = theme;

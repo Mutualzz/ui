@@ -20,7 +20,7 @@ export interface PaperProps extends BoxProps {
      * Can be a color name or a color value.
      * @default "inherit"
      */
-    textColor?: TypographyColor | "inherit";
+    textColor?: TypographyColor | ColorLike | "inherit";
     /**
      * The variant of the Paper component.
      * Can be "elevation", "solid", "outlined", "plain", or "soft".
