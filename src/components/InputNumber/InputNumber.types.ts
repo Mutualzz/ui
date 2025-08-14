@@ -52,6 +52,4 @@ export interface InputNumberProps
      * This function can be used to handle custom logic when the value decreases.
      */
     onDecrement?: () => void;
-
-    onChange?: (value: number) => void;
 }

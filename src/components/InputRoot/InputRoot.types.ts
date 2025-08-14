@@ -6,7 +6,7 @@ import type {
     TypographyColor,
     Variant,
 } from "@ui-types";
-import type { InputHTMLAttributes, ReactNode } from "react";
+import type { ChangeEvent, InputHTMLAttributes, ReactNode } from "react";
 
 export type InputType =
     | "date"
@@ -34,7 +34,10 @@ export type InputMode =
     | "search";
 
 export interface InputRootProps
-    extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+    extends Omit<
+        InputHTMLAttributes<HTMLInputElement>,
+        "onChange" | "size" | "type"
+    > {
     /**
      * The color of the input element.
      * Can be a predefined color or a custom color.
@@ -111,4 +114,6 @@ export interface InputRootProps
      * @example "none", "text", "tel", "url", "email", "numeric", "decimal", "search"
      */
     inputMode?: InputMode;
+
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
