@@ -1,5 +1,5 @@
+import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
 import { InputBase } from "@components/InputBase/InputBase";
-import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size } from "@ui-types";
 import { clamp, resolveSize } from "@utils";
@@ -280,7 +280,7 @@ const InputNumber = ({
             disabled={disabled}
         >
             {startDecorator && (
-                <InputDecoratorWrapper>{startDecorator}</InputDecoratorWrapper>
+                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
             )}
 
             <InputBase
@@ -297,7 +297,7 @@ const InputNumber = ({
                 onPaste={handlePaste}
             />
 
-            <InputDecoratorWrapper>
+            <DecoratorWrapper>
                 {endDecorator ?? (
                     <SpinnerButtons
                         size={size}
@@ -306,7 +306,7 @@ const InputNumber = ({
                         disabled={disabled}
                     />
                 )}
-            </InputDecoratorWrapper>
+            </DecoratorWrapper>
         </InputRoot>
     );
 };
