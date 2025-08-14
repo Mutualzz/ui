@@ -1,10 +1,9 @@
 import { Button } from "@components/Button/Button";
+import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
 import { InputBase } from "@components/InputBase/InputBase";
-import { InputDecoratorWrapper } from "@components/InputDecoratorWrapper/InputDecoratorWrapper";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import { Popover } from "@components/Popover/Popover";
 import { useColorInput } from "@hooks/useColorInput";
-import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import { useTheme } from "@hooks/useTheme";
 import styled from "@styled";
 import type { ColorLike } from "@ui-types";
@@ -15,13 +14,18 @@ import {
 } from "@uiw/color-convert";
 import Colorful from "@uiw/react-color-colorful";
 import { randomColor } from "@utils/randomColor";
-import { useRef, useState, type ChangeEvent, type RefObject } from "react";
-import { resolveColorPickerButtonStyles } from "./InputColor.helpers";
+import { useRef, useState, type ChangeEvent } from "react";
+import {
+    resolveColorPickerButtonSize,
+    resolveColorPickerButtonStyles,
+} from "./InputColor.helpers";
 import type { InputColorProps } from "./InputColor.types";
 
 const ColorPickerButton = styled(Button)(
-    ({ theme, color = "neutral", variant = "solid" }) => ({
+    ({ theme, color = "neutral", variant = "solid", size = "md" }) => ({
         ...resolveColorPickerButtonStyles(theme, color)[variant],
+        ...resolveColorPickerButtonSize(theme, size),
+        padding: 0,
     }),
 );
 
@@ -62,10 +66,6 @@ const InputColor = ({
     });
 
     const popoverRef = useRef<HTMLDivElement>(null);
-
-    useOnClickOutside(popoverRef as RefObject<HTMLDivElement>, () => {
-        setIsPickerOpen(false);
-    });
 
     const {
         inputValue,
@@ -123,22 +123,8 @@ const InputColor = ({
                 error={isInvalid}
                 disabled={disabled}
             >
-                {startDecorator && (
-                    <InputDecoratorWrapper>
-                        {startDecorator}
-                    </InputDecoratorWrapper>
-                )}
-
-                <InputBase
-                    {...props}
-                    type="text"
-                    value={inputValue}
-                    onChange={handleOnChange}
-                    onBlur={validate}
-                />
-
-                <InputDecoratorWrapper>
-                    {endDecorator ??
+                <DecoratorWrapper>
+                    {startDecorator ??
                         (showColorPicker && !isInvalid && (
                             <Popover
                                 content={
@@ -162,7 +148,19 @@ const InputColor = ({
                                 />
                             </Popover>
                         ))}
-                </InputDecoratorWrapper>
+                </DecoratorWrapper>
+
+                <InputBase
+                    {...props}
+                    type="text"
+                    value={inputValue}
+                    onChange={handleOnChange}
+                    onBlur={validate}
+                />
+
+                {endDecorator && (
+                    <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
+                )}
             </InputRoot>
         </>
     );

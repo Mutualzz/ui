@@ -1,7 +1,28 @@
 import type { Theme } from "@emotion/react";
-import type { Color, ColorLike } from "@ui-types";
-import { alpha, getLuminance, resolveColor } from "@utils";
+import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
+import { alpha, getLuminance, resolveColor, resolveSize } from "@utils";
 import { formatHex8 } from "culori";
+
+const baseSizeMap: Record<Size, number> = {
+    sm: 16,
+    md: 20,
+    lg: 24,
+};
+
+export const resolveColorPickerButtonSize = (
+    theme: Theme,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
+
+    return {
+        width: resolvedSize,
+        height: resolvedSize,
+        minWidth: resolvedSize,
+        minHeight: resolvedSize,
+        borderRadius: resolvedSize * 0.25,
+    };
+};
 
 export const resolveColorPickerButtonStyles = (
     theme: Theme,
