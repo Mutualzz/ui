@@ -266,7 +266,7 @@ const InputNumber = ({
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange?.(parseFloat(e.target.value));
+        onChange?.(e);
     };
 
     return (
