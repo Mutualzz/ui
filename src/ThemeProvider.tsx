@@ -33,8 +33,8 @@ export interface ThemeProviderRef {
 const ThemeProvider = forwardRef<
     ThemeProviderRef,
     PropsWithChildren & {
-        onThemeChange: (theme: Theme) => void;
-        onModeChange: (mode: ThemeMode) => void;
+        onThemeChange?: (theme: Theme) => void;
+        onModeChange?: (mode: ThemeMode) => void;
     }
 >(({ children, onThemeChange, onModeChange }, ref) => {
     const [theme, setTheme] = useState<Theme | null>(null);
@@ -68,12 +68,12 @@ const ThemeProvider = forwardRef<
         else if (mode === "dark") setTheme(baseDarkTheme);
         else setTheme(baseLightTheme);
 
-        onModeChange(mode);
+        onModeChange?.(mode);
     };
 
     const changeTheme = (theme: Theme) => {
         setTheme(theme);
-        onThemeChange(theme);
+        onThemeChange?.(theme);
     };
 
     useImperativeHandle(ref, () => ({
