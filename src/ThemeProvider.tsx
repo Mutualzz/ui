@@ -5,30 +5,40 @@ import {
 import type { ThemeMode } from "@ui-types";
 import {
     createContext,
+    forwardRef,
     useEffect,
+    useImperativeHandle,
     useMemo,
     useState,
     type PropsWithChildren,
 } from "react";
-import { themes as baseThemes } from "./themes";
+import { baseDarkTheme, baseLightTheme, themes as baseThemes } from "./themes";
 
 export const ThemeContext = createContext({
     theme: baseThemes.find((theme) => theme.id === "baseDark") ?? baseThemes[0],
-    changeTheme: (_theme: string) => {
+    changeTheme: (_theme: Theme) => {
         return;
     },
-    mode: "system",
+    mode: "system" as ThemeMode,
     changeMode: (_mode: ThemeMode) => {
         return;
     },
 });
 
-export const ThemeProvider = ({
-    children,
-    themes = baseThemes,
-}: PropsWithChildren & { themes?: Theme[] }) => {
-    const [theme, setTheme] = useState<string | null>(null);
-    const [mode, setMode] = useState<"light" | "dark" | "system">("system");
+export interface ThemeProviderRef {
+    changeTheme: (theme: Theme) => void;
+    changeMode: (mode: ThemeMode) => void;
+}
+
+const ThemeProvider = forwardRef<
+    ThemeProviderRef,
+    PropsWithChildren & {
+        onThemeChange: (theme: Theme) => void;
+        onModeChange: (mode: ThemeMode) => void;
+    }
+>(({ children, onThemeChange, onModeChange }, ref) => {
+    const [theme, setTheme] = useState<Theme | null>(null);
+    const [mode, setMode] = useState<ThemeMode>("system");
     const [prefersDark, setPrefersDark] = useState<boolean | null>(null);
     const [mounted, setMounted] = useState(false);
 
@@ -41,7 +51,7 @@ export const ThemeProvider = ({
             const isDark = mediaQuery.matches;
             setPrefersDark(isDark);
             if (mode === "system") {
-                setTheme(isDark ? "baseDark" : "baseLight");
+                setTheme(isDark ? baseDarkTheme : baseLightTheme);
             }
         };
 
@@ -54,25 +64,30 @@ export const ThemeProvider = ({
     const changeMode = (mode: ThemeMode) => {
         setMode(mode);
         if (mode === "system" && prefersDark !== null)
-            setTheme(prefersDark ? "baseDark" : "baseLight");
-        else if (mode === "dark") setTheme("baseDark");
-        else setTheme("baseLight");
+            setTheme(prefersDark ? baseDarkTheme : baseLightTheme);
+        else if (mode === "dark") setTheme(baseDarkTheme);
+        else setTheme(baseLightTheme);
+
+        onModeChange(mode);
     };
 
-    const changeTheme = (theme: string) => {
+    const changeTheme = (theme: Theme) => {
         setTheme(theme);
+        onThemeChange(theme);
     };
 
-    const finalThemeKey =
+    useImperativeHandle(ref, () => ({
+        changeTheme,
+        changeMode,
+    }));
+
+    const themeObject =
         theme ??
         (prefersDark != null
             ? prefersDark
-                ? "baseDark"
-                : "baseLight"
-            : "baseDark");
-
-    const themeObject =
-        themes.find((t) => t.id === finalThemeKey) ?? baseThemes[0];
+                ? baseDarkTheme
+                : baseLightTheme
+            : baseDarkTheme);
 
     const value = useMemo(
         () => ({
@@ -93,4 +108,8 @@ export const ThemeProvider = ({
             </EmotionThemeProvder>
         </ThemeContext.Provider>
     );
-};
+});
+
+ThemeProvider.displayName = "ThemeProvider";
+
+export { ThemeProvider };
