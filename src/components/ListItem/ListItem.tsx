@@ -34,6 +34,7 @@ const ListItemRoot = styled("li")<
         listStylePosition: isCssMarker(marker) ? "inside" : undefined,
         listStyleType: isCssMarker(marker) ? marker : "none",
         boxSizing: "border-box",
+        transition: "all 0.3s ease",
 
         "::marker": {
             ...resolveListItemStyles(theme, color)[variant],

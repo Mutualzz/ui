@@ -38,6 +38,7 @@ const PopoverContent = styled(Paper)<{
         left: usePortal ? left : "50%",
         transform: "translateX(-50%)",
         marginTop: usePortal ? 0 : 10,
+        transition: "all 0.3s ease",
 
         borderRadius: 4,
         zIndex: theme.zIndex.tooltip,

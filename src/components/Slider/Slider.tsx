@@ -136,6 +136,7 @@ const Tick = styled("div")<{
         position: "absolute",
         backgroundColor: theme.colors.common.white,
         borderRadius: "50%",
+        transition: "all 0.3s ease",
         ...resolveSliderTickSize(theme, size),
 
         ...(orientation === "horizontal"
@@ -177,6 +178,7 @@ const Thumb = styled("div")<{
         boxSizing: "border-box",
         transform: "translate(-50%, -50%)",
         zIndex: 1,
+        transition: "all 0.3s ease",
         ...(orientation === "horizontal"
             ? { left: `${percent}%`, top: "50%" }
             : { top: `${100 - percent}%`, left: "50%" }),
@@ -219,6 +221,7 @@ const ValueLabel = styled("span")<{
         zIndex: 2,
         pointerEvents: "none",
         userSelect: "none",
+        transition: "all 0.3s ease",
 
         "::after": {
             content: '""',
@@ -270,6 +273,7 @@ const MarkLabel = styled("span")<{
     backgroundColor: "transparent",
     pointerEvents: "none",
     userSelect: "none",
+    transition: "all 0.3s ease",
 }));
 
 MarkLabel.displayName = "MarkLabel";

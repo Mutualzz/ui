@@ -42,6 +42,7 @@ const ListItemButtonContent = styled("span")({
     height: "100%",
     opacity: 1,
     boxSizing: "border-box",
+    transition: "all 0.3s ease",
 });
 
 export const ListItemButton = (props: ListItemButtonProps) => {

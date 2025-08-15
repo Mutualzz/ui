@@ -23,6 +23,7 @@ const ProgressWrapper = styled("div")<{
     background,
     borderRadius: "0.5rem",
     overflow: "hidden",
+    transition: "all 0.3s ease",
     ...(variant === "outlined" && { border: `1px solid ${outlinedColor}` }),
 }));
 
@@ -35,7 +36,7 @@ const DeterminateBar = styled("div")<{
     width: `${Math.min(Math.max(value, 0), 100)}%`,
     height: "100%",
     background: barColor,
-    transition: "width 0.3s ease",
+    transition: "all 0.3s ease",
 }));
 
 DeterminateBar.displayName = "DeterminateBar";
@@ -48,6 +49,7 @@ const IndeterminateBar = styled("div")<{
         height: "100%",
         background: barColor,
         position: "absolute",
+        transition: "all 0.3s ease",
     };
 
     switch (animation) {

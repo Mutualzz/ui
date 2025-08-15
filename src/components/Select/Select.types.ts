@@ -13,6 +13,8 @@ export interface SelectProps<T = string>
     startDecorator?: ReactNode;
     endDecorator?: ReactNode;
 
+    placeholder?: string;
+
     multiple?: boolean;
     disabled?: boolean;
     required?: boolean;

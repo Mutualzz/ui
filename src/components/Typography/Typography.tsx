@@ -19,6 +19,7 @@ const Typography = styled("span")<TypographyProps>(
         ...(level === "inherit" ? {} : theme.typography.levels[level]),
         ...resolveTypographStyles(theme, color)[variant],
         fontWeight: weight,
+        transition: "all 0.3s ease",
     }),
 );
 

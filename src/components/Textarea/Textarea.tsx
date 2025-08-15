@@ -31,6 +31,7 @@ const TextareaRoot = styled("div")<TextareaProps>(
         minWidth: 0,
         width: "100%",
         lineHeight: 1.5,
+        transition: "all 0.3s ease",
     }),
 );
 

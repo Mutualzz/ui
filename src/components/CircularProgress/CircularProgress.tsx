@@ -65,6 +65,7 @@ const CircularProgress = ({
                 justifyContent: "center",
                 alignItems: "center",
                 padding: 0,
+                transition: "all 0.3s ease",
 
                 ...(variant === "outlined" && diameter > 0
                     ? {
@@ -101,6 +102,7 @@ const CircularProgress = ({
                     alignItems: "center",
                     boxSizing: "border-box",
                     padding: 8,
+                    transition: "all 0.3s ease",
                 }}
                 ref={contentRef}
             >
@@ -118,6 +120,7 @@ const CircularProgress = ({
                         position: "absolute",
                         top: 0,
                         left: 0,
+                        transition: "all 0.3s ease",
                         animation: !determinate
                             ? `${spin} 1s linear infinite`
                             : undefined,

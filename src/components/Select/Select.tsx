@@ -1,0 +1,441 @@
+import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
+import { Portal } from "@components/Portal/Portal";
+import { Typography } from "@components/Typography/Typography";
+import styled from "@styled";
+import {
+    forwardRef,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+    type ChangeEvent,
+} from "react";
+import {
+    resolveSelectContentStyles,
+    resolveSelectSize,
+    resolveSelectStyles,
+} from "./Select.helpers";
+import type { SelectProps } from "./Select.types";
+
+const SelectWrapper = styled("div")<SelectProps>(
+    ({
+        theme,
+        color = "neutral",
+        size = "md",
+        variant = "solid",
+        disabled,
+    }) => ({
+        ...resolveSelectSize(theme, size),
+        ...resolveSelectStyles(theme, color)[variant],
+
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        overflow: "hidden",
+        borderRadius: 6,
+        position: "relative",
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+
+        "&:hover svg": {
+            opacity: 1,
+        },
+
+        "&:focus-within svg": {
+            opacity: 1,
+            transform: "scale(1.05)",
+        },
+
+        ...(disabled && {
+            opacity: 0.5,
+            cursor: "not-allowed",
+        }),
+    }),
+);
+
+const HiddenSelect = styled("select")<SelectProps>({
+    flex: 1,
+    minWidth: 0,
+    width: "100%",
+    border: "none",
+    outline: "none",
+    background: "transparent",
+    color: "inherit",
+    font: "inherit",
+    padding: 0,
+    position: "absolute",
+    inset: 0,
+    height: "100%",
+    cursor: "pointer",
+    margin: 0,
+    opacity: 0,
+
+    appearance: "none",
+    WebkitAppearance: "none",
+    MozAppearance: "none",
+
+    pointerEvents: "none",
+
+    "&:focus": {
+        outline: "none",
+        boxShadow: "none",
+    },
+
+    "&:hover, &:active": {
+        outline: "none",
+    },
+
+    "&::-ms-expand": {
+        display: "none",
+    },
+});
+
+const SelectPlaceholder = styled(Typography)<{ hasValue?: boolean }>(
+    ({ hasValue }) => ({
+        flex: 1,
+        textAlign: "left",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        opacity: hasValue ? 1 : 0.5,
+    }),
+);
+
+const DropdownIcon = styled("svg")({
+    display: "inline-block",
+    width: "1.2em",
+    height: "1.2em",
+    flexShrink: 0,
+    opacity: 0.7,
+    transition: "opacity 0.2s ease, transform 0.2s ease",
+});
+
+const SelectContent = styled("div")<
+    SelectProps & {
+        isOpen: boolean;
+        portalPosition?: { top: number; left: number; width: number };
+    }
+>(
+    ({
+        theme,
+        color = "neutral",
+        variant = "outlined",
+        isOpen,
+        portalPosition,
+    }) => ({
+        ...resolveSelectContentStyles(theme, color)[variant],
+        position: "fixed",
+        paddingBlock: 4,
+
+        top: portalPosition?.top ?? 0,
+        left: portalPosition?.left ?? 0,
+        width: portalPosition?.width ?? 200,
+
+        zIndex: 9999,
+        borderRadius: 6,
+        maxHeight: "200px",
+        overflowY: "auto",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+
+        opacity: isOpen ? 1 : 0,
+        visibility: isOpen ? "visible" : "hidden",
+        transform: isOpen ? "translateY(0)" : "translateY(-8px)",
+        transition: "all 0.2s ease",
+        pointerEvents: isOpen ? "auto" : "none",
+    }),
+);
+
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
+    (
+        {
+            size = "md",
+            variant = "outlined",
+            color = "neutral",
+            startDecorator,
+            endDecorator,
+            multiple = false,
+            disabled = false,
+            required = false,
+            autoFocus = false,
+            placeholder = "Select an option",
+            value,
+            defaultValue,
+            onChange,
+            onFocus,
+            onBlur,
+            children,
+            ...props
+        },
+        ref,
+    ) => {
+        const selectRef = useRef<HTMLDivElement>(null);
+        const isControlled = value !== undefined;
+
+        const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+        const [focusedIndex, setFocusedIndex] = useState(-1);
+        const [dropdownPosition, setDropdownPosition] = useState({
+            top: 0,
+            left: 0,
+            width: 0,
+        });
+
+        const currentValue = isControlled ? value : internalValue;
+        const [isOpen, setIsOpen] = useState(false);
+
+        const updateDropdownPosition = useCallback(() => {
+            if (selectRef.current) {
+                const rect = selectRef.current.getBoundingClientRect();
+                setDropdownPosition({
+                    top: rect.bottom + window.scrollY + 5,
+                    left: rect.left + window.scrollX,
+                    width: rect.width,
+                });
+            }
+        }, []);
+
+        useEffect(() => {
+            updateDropdownPosition();
+        }, [updateDropdownPosition]);
+
+        useEffect(() => {
+            if (isOpen) {
+                updateDropdownPosition();
+
+                // Update position on scroll/resize
+                const handlePositionUpdate = () => updateDropdownPosition();
+                window.addEventListener("scroll", handlePositionUpdate, {
+                    passive: true,
+                });
+                window.addEventListener("resize", handlePositionUpdate);
+
+                return () => {
+                    window.removeEventListener("scroll", handlePositionUpdate);
+                    window.removeEventListener("resize", handlePositionUpdate);
+                };
+            }
+        }, [isOpen, updateDropdownPosition]);
+
+        useEffect(() => {
+            const handleClickOutside = (event: MouseEvent) => {
+                if (
+                    selectRef.current &&
+                    !selectRef.current.contains(event.target as Node)
+                )
+                    setIsOpen(false);
+            };
+
+            if (isOpen) {
+                document.addEventListener("mousedown", handleClickOutside);
+                return () =>
+                    document.removeEventListener(
+                        "mousedown",
+                        handleClickOutside,
+                    );
+            }
+        }, [isOpen]);
+
+        useEffect(() => {
+            if (!isOpen) setFocusedIndex(-1);
+        }, [isOpen]);
+
+        const getOptions = useCallback(() => {
+            if (!selectRef.current) return [];
+
+            const optionElements =
+                selectRef.current.querySelectorAll('[role="option"]');
+            return Array.from(optionElements);
+        }, []);
+
+        const navigateToOption = useCallback(
+            (index: number) => {
+                const options = getOptions();
+                if (options.length === 0) return;
+
+                const clampedIndex = Math.max(
+                    0,
+                    Math.min(index, options.length - 1),
+                );
+                setFocusedIndex(clampedIndex);
+
+                // Scroll focused option into view
+                const focusedOption = options[clampedIndex] as
+                    | HTMLElement
+                    | undefined;
+                focusedOption?.scrollIntoView({
+                    block: "nearest",
+                    behavior: "smooth",
+                });
+
+                // Add visual focus state
+                options.forEach((option, i) => {
+                    (option as HTMLElement).setAttribute(
+                        "data-focused",
+                        i === clampedIndex ? "true" : "false",
+                    );
+                });
+            },
+            [getOptions],
+        );
+
+        const handleChange = useCallback(
+            (e: ChangeEvent<HTMLSelectElement>) => {
+                const newValue = multiple
+                    ? Array.from(
+                          e.target.selectedOptions,
+                          (option) => option.value,
+                      )
+                    : e.target.value;
+
+                if (!isControlled) setInternalValue(newValue);
+
+                onChange?.(e);
+            },
+            [isControlled, multiple, onChange],
+        );
+
+        const handleWrapperClick = useCallback(() => {
+            if (disabled) return;
+            updateDropdownPosition();
+            setIsOpen((prev) => !prev);
+        }, [disabled]);
+
+        const handleFocus = useCallback(
+            (event: React.FocusEvent<HTMLSelectElement>) => {
+                setIsOpen(true);
+                onFocus?.(event);
+            },
+            [onFocus],
+        );
+
+        const handleBlur = useCallback(
+            (event: React.FocusEvent<HTMLSelectElement>) => {
+                setIsOpen(false);
+                onBlur?.(event);
+            },
+            [onBlur],
+        );
+
+        const handleKeyDown = useCallback(
+            (event: React.KeyboardEvent) => {
+                if (disabled) return;
+
+                switch (event.key) {
+                    case "Enter":
+                    case " ":
+                        event.preventDefault();
+                        if (isOpen && focusedIndex >= 0) {
+                            const options = getOptions();
+                            const focusedOption = options[focusedIndex] as
+                                | HTMLElement
+                                | undefined;
+                            if (focusedOption) {
+                                focusedOption.click();
+                            }
+                        } else {
+                            setIsOpen((prev) => !prev);
+                        }
+                        break;
+                    case "Escape":
+                        setIsOpen(false);
+                        setFocusedIndex(-1);
+                        break;
+                    case "ArrowDown":
+                        event.preventDefault();
+                        if (!isOpen) {
+                            setIsOpen(true);
+                            setFocusedIndex(0);
+                        } else {
+                            navigateToOption(focusedIndex + 1);
+                        }
+                        break;
+                    case "ArrowUp":
+                        event.preventDefault();
+                        if (!isOpen) {
+                            setIsOpen(true);
+                            const options = getOptions();
+                            setFocusedIndex(Math.max(0, options.length - 1));
+                        } else {
+                            navigateToOption(focusedIndex - 1);
+                        }
+                        break;
+                }
+            },
+            [disabled, isOpen, focusedIndex, getOptions, navigateToOption],
+        );
+
+        const getDisplayValue = () => {
+            if (multiple && Array.isArray(currentValue)) {
+                return currentValue.length > 0
+                    ? `${currentValue.length} selected`
+                    : placeholder;
+            }
+            return currentValue || placeholder;
+        };
+
+        const displayValue = getDisplayValue();
+        const hasValue = multiple
+            ? Array.isArray(currentValue) && currentValue.length > 0
+            : Boolean(currentValue);
+
+        return (
+            <SelectWrapper
+                ref={selectRef}
+                color={color}
+                size={size}
+                variant={variant}
+                disabled={disabled}
+                onClick={handleWrapperClick}
+                onKeyDown={handleKeyDown}
+                tabIndex={disabled ? -1 : 0}
+                role="combobox"
+                aria-expanded={isOpen}
+                aria-haspopup="listbox"
+            >
+                <HiddenSelect
+                    ref={ref}
+                    value={currentValue as string}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    disabled={disabled}
+                    required={required}
+                    autoFocus={autoFocus}
+                    multiple={multiple}
+                    tabIndex={-1}
+                    {...props}
+                />
+                {startDecorator && (
+                    <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
+                )}
+
+                <SelectPlaceholder hasValue={hasValue}>
+                    {hasValue ? displayValue : placeholder}
+                </SelectPlaceholder>
+
+                <DecoratorWrapper>
+                    {endDecorator ?? (
+                        <DropdownIcon fill="currentColor" viewBox="0 0 24 24">
+                            <path d="m12 5.83 2.46 2.46c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 3.7a.9959.9959 0 0 0-1.41 0L8.12 6.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 5.83zm0 12.34-2.46-2.46a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41l3.17 3.18c.39.39 1.02.39 1.41 0l3.17-3.17c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L12 18.17z"></path>
+                        </DropdownIcon>
+                    )}
+                </DecoratorWrapper>
+
+                <Portal>
+                    <SelectContent
+                        color={color}
+                        variant={variant}
+                        isOpen={isOpen}
+                        role="listbox"
+                        portalPosition={dropdownPosition}
+                    >
+                        {children}
+                    </SelectContent>
+                </Portal>
+            </SelectWrapper>
+        );
+    },
+);
+
+Select.displayName = "Select";
+
+export { Select };
