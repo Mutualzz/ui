@@ -22,7 +22,7 @@ const ButtonWrapper = styled("button")<ButtonProps>(
         justifyContent: "center",
         boxSizing: "border-box",
         borderRadius: "6px",
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
         transition: "all 0.3s ease",
         whiteSpace: "nowrap",
         flexShrink: 0,
@@ -30,7 +30,6 @@ const ButtonWrapper = styled("button")<ButtonProps>(
         ...(disabled && {
             opacity: 0.5,
             pointerEvents: "none",
-            cursor: "not-allowed",
         }),
         ...resolveButtonSize(theme, size),
         ...resolveButtonStyles(theme, color)[variant],
