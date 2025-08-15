@@ -22,4 +22,6 @@ export interface SelectProps<T = string | number>
 
     value?: T | T[];
     defaultValue?: T | T[];
+
+    onValueChange?: (value: T | T[]) => void;
 }

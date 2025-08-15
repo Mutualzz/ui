@@ -163,6 +163,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             value,
             defaultValue,
             onChange,
+            onValueChange,
             onFocus,
             onBlur,
             children,
@@ -290,9 +291,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
                 if (!isControlled) setInternalValue(newValue);
 
+                // Only call the native onChange if provided
                 onChange?.(e);
+
+                // Call your custom handler
+                onValueChange?.(newValue);
             },
-            [isControlled, multiple, onChange],
+            [isControlled, multiple, onValueChange, onChange],
         );
 
         const handleWrapperClick = useCallback(() => {
@@ -377,6 +382,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     )
                     .map((opt: any) => opt.props.children);
             }
+
             const selected = opts.find(
                 (opt: any) => opt?.props?.value === currentValue,
             );
@@ -402,9 +408,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     setIsOpen(false);
                 }
                 if (!isControlled) setInternalValue(newValue);
-                onChange?.(newValue);
+                onValueChange?.(newValue);
             },
-            [disabled, multiple, currentValue, isControlled, onChange],
+            [disabled, multiple, currentValue, isControlled, onValueChange],
         );
 
         return (
