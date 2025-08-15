@@ -5,7 +5,7 @@ import { resolveColor } from "@utils/resolveColor";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
-export const resolveCircularProgressStyles = (
+export const resolveCircularProgressOuterStroke = (
     theme: Theme,
     color: Color | ColorLike,
 ) => {
