@@ -151,8 +151,8 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     (
         {
             size = "md",
-            variant = "outlined",
-            color = "neutral",
+            variant = "solid",
+            color = "primary",
             startDecorator,
             endDecorator,
             multiple = false,
