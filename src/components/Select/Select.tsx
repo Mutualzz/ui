@@ -173,9 +173,11 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     ) => {
         const selectRef = useRef<HTMLDivElement>(null);
         const selectContentRef = useRef<HTMLDivElement>(null);
-        const isControlled = value !== undefined;
 
-        const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+        const [internalValue, setInternalValue] = useState(
+            defaultValue ?? (multiple ? [] : ""),
+        );
+        const isControlled = value !== undefined;
         const [focusedIndex, setFocusedIndex] = useState(-1);
         const [dropdownPosition, setDropdownPosition] = useState({
             top: 0,
