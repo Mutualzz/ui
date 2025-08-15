@@ -1,7 +1,7 @@
 import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import type { ReactNode, SelectHTMLAttributes } from "react";
 
-export interface SelectProps<T = string>
+export interface SelectProps<T = string | number>
     extends Omit<
         SelectHTMLAttributes<HTMLSelectElement>,
         "size" | "value" | "defaultValue"
@@ -20,6 +20,6 @@ export interface SelectProps<T = string>
     required?: boolean;
     autoFocus?: boolean;
 
-    value?: T | T[] | null;
-    defaultValue?: T | T[] | null;
+    value?: T | T[];
+    defaultValue?: T | T[];
 }

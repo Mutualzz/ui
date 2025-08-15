@@ -10,6 +10,7 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
+import { SelectContext } from "./Select.context";
 import {
     resolveSelectContentStyles,
     resolveSelectSize,
@@ -136,6 +137,7 @@ const SelectContent = styled("div")<
         maxHeight: "200px",
         overflowY: "auto",
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        fontSize: "inherit",
 
         opacity: isOpen ? 1 : 0,
         visibility: isOpen ? "visible" : "hidden",
@@ -169,6 +171,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         ref,
     ) => {
         const selectRef = useRef<HTMLDivElement>(null);
+        const selectContentRef = useRef<HTMLDivElement>(null);
         const isControlled = value !== undefined;
 
         const [internalValue, setInternalValue] = useState(defaultValue ?? "");
@@ -239,10 +242,9 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         }, [isOpen]);
 
         const getOptions = useCallback(() => {
-            if (!selectRef.current) return [];
-
+            if (!selectContentRef.current) return [];
             const optionElements =
-                selectRef.current.querySelectorAll('[role="option"]');
+                selectContentRef.current.querySelectorAll('[role="option"]');
             return Array.from(optionElements);
         }, []);
 
@@ -363,75 +365,125 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             [disabled, isOpen, focusedIndex, getOptions, navigateToOption],
         );
 
-        const getDisplayValue = () => {
+        const getSelectedOptionContent = () => {
+            const opts = Array.isArray(children) ? children : [children];
             if (multiple && Array.isArray(currentValue)) {
-                return currentValue.length > 0
-                    ? `${currentValue.length} selected`
-                    : placeholder;
+                // For multiple selection, return array of children
+                return opts
+                    .filter(
+                        (opt: any) =>
+                            opt?.props?.value &&
+                            currentValue.includes(opt.props.value),
+                    )
+                    .map((opt: any) => opt.props.children);
             }
-            return currentValue || placeholder;
+            const selected = opts.find(
+                (opt: any) => opt?.props?.value === currentValue,
+            );
+            return selected ? selected.props.children : null;
         };
 
-        const displayValue = getDisplayValue();
+        const displayValue = getSelectedOptionContent() ?? placeholder;
         const hasValue = multiple
             ? Array.isArray(currentValue) && currentValue.length > 0
             : Boolean(currentValue);
 
+        const handleOptionSelect = useCallback(
+            (optionValue: string | number) => {
+                if (disabled) return;
+                let newValue: any;
+                if (multiple) {
+                    const arr = Array.isArray(currentValue) ? currentValue : [];
+                    newValue = arr.includes(optionValue)
+                        ? arr.filter((v) => v !== optionValue)
+                        : [...arr, optionValue];
+                } else {
+                    newValue = optionValue;
+                    setIsOpen(false);
+                }
+                if (!isControlled) setInternalValue(newValue);
+                onChange?.(newValue);
+            },
+            [disabled, multiple, currentValue, isControlled, onChange],
+        );
+
         return (
-            <SelectWrapper
-                ref={selectRef}
-                color={color}
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                onClick={handleWrapperClick}
-                onKeyDown={handleKeyDown}
-                tabIndex={disabled ? -1 : 0}
-                role="combobox"
-                aria-expanded={isOpen}
-                aria-haspopup="listbox"
+            <SelectContext.Provider
+                value={{
+                    value: currentValue,
+                    multiple,
+                    onSelect: handleOptionSelect,
+                    color,
+                    variant,
+                    size,
+                    disabled,
+                }}
             >
-                <HiddenSelect
-                    ref={ref}
-                    value={currentValue as string}
-                    onChange={handleChange}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
+                <SelectWrapper
+                    ref={selectRef}
+                    color={color}
+                    size={size}
+                    variant={variant}
                     disabled={disabled}
-                    required={required}
-                    autoFocus={autoFocus}
-                    multiple={multiple}
-                    tabIndex={-1}
-                    {...props}
-                />
-                {startDecorator && (
-                    <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
-                )}
-
-                <SelectPlaceholder hasValue={hasValue}>
-                    {hasValue ? displayValue : placeholder}
-                </SelectPlaceholder>
-
-                <DecoratorWrapper>
-                    {endDecorator ?? (
-                        <DropdownIcon fill="currentColor" viewBox="0 0 24 24">
-                            <path d="m12 5.83 2.46 2.46c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 3.7a.9959.9959 0 0 0-1.41 0L8.12 6.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 5.83zm0 12.34-2.46-2.46a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41l3.17 3.18c.39.39 1.02.39 1.41 0l3.17-3.17c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L12 18.17z"></path>
-                        </DropdownIcon>
+                    onClick={handleWrapperClick}
+                    onKeyDown={handleKeyDown}
+                    tabIndex={disabled ? -1 : 0}
+                    role="combobox"
+                    aria-expanded={isOpen}
+                    aria-haspopup="listbox"
+                >
+                    <HiddenSelect
+                        ref={ref}
+                        value={
+                            multiple
+                                ? (currentValue as string[])
+                                : (currentValue as string)
+                        }
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                        disabled={disabled}
+                        required={required}
+                        autoFocus={autoFocus}
+                        multiple={multiple}
+                        tabIndex={-1}
+                        {...props}
+                    />
+                    {startDecorator && (
+                        <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
                     )}
-                </DecoratorWrapper>
 
-                <Portal>
-                    <SelectContent
-                        color={color}
-                        variant={variant}
-                        isOpen={isOpen}
-                        role="listbox"
-                        portalPosition={dropdownPosition}
-                    >
-                        {children}
-                    </SelectContent>
-                </Portal>
-            </SelectWrapper>
+                    <SelectPlaceholder hasValue={hasValue}>
+                        {hasValue ? displayValue : placeholder}
+                    </SelectPlaceholder>
+
+                    <DecoratorWrapper>
+                        {endDecorator ?? (
+                            <DropdownIcon
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="m12 5.83 2.46 2.46c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L12.7 3.7a.9959.9959 0 0 0-1.41 0L8.12 6.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 5.83zm0 12.34-2.46-2.46a.9959.9959 0 0 0-1.41 0c-.39.39-.39 1.02 0 1.41l3.17 3.18c.39.39 1.02.39 1.41 0l3.17-3.17c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L12 18.17z"></path>
+                            </DropdownIcon>
+                        )}
+                    </DecoratorWrapper>
+
+                    {isOpen && (
+                        <Portal>
+                            <SelectContent
+                                ref={selectContentRef}
+                                color={color}
+                                variant={variant}
+                                isOpen={isOpen}
+                                role="listbox"
+                                portalPosition={dropdownPosition}
+                            >
+                                {children}
+                            </SelectContent>
+                        </Portal>
+                    )}
+                </SelectWrapper>
+            </SelectContext.Provider>
         );
     },
 );
