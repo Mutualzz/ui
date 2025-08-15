@@ -5,7 +5,7 @@ import { resolveSize } from "@utils/resolveSize";
 export const baseSizeMap: Record<Size, number> = {
     sm: 12,
     md: 16,
-    lg: 24,
+    lg: 20,
 };
 
 export const resolveRadioSize = (
