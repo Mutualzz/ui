@@ -1,7 +1,13 @@
 import { Global } from "@emotion/react";
+import { lighten } from "@utils";
+import { formatHex } from "culori";
 import { useTheme } from "./hooks/useTheme";
 
-export const CssBaseline = () => {
+interface CssBaselineProps {
+    adaptiveScrollbar?: boolean;
+}
+
+export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
     const { theme } = useTheme();
 
     return (
@@ -30,6 +36,29 @@ export const CssBaseline = () => {
                 "button, input, textarea, select": {
                     fontFamily: "inherit",
                 },
+
+                ...(adaptiveScrollbar && {
+                    "*": {
+                        scrollbarWidth: "auto",
+                        scrollbarColor: `${theme.colors.neutral} ${theme.colors.surface}`,
+                    },
+                    "::-webkit-scrollbar": {
+                        width: 8,
+                        height: 8,
+                    },
+                    "::-webkit-scrollbar-thumb": {
+                        backgroundColor: theme.colors.neutral,
+                        borderRadius: 4,
+                    },
+                    "::-webkit-scrollbar-track": {
+                        backgroundColor: theme.colors.surface,
+                    },
+                    "::-webkit-scrollbar-thumb:hover": {
+                        backgroundColor: formatHex(
+                            lighten(theme.colors.neutral, 0.2),
+                        ),
+                    },
+                }),
             }}
         />
     );
