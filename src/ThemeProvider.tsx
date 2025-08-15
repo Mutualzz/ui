@@ -35,80 +35,96 @@ const ThemeProvider = forwardRef<
     PropsWithChildren & {
         onThemeChange?: (theme: Theme) => void;
         onModeChange?: (mode: ThemeMode) => void;
+        disableDefaultThemeOnModeChange?: boolean;
     }
->(({ children, onThemeChange, onModeChange }, ref) => {
-    const [theme, setTheme] = useState<Theme | null>(null);
-    const [mode, setMode] = useState<ThemeMode>("system");
-    const [prefersDark, setPrefersDark] = useState<boolean | null>(null);
-    const [mounted, setMounted] = useState(false);
+>(
+    (
+        {
+            children,
+            onThemeChange,
+            onModeChange,
+            disableDefaultThemeOnModeChange = false,
+        },
+        ref,
+    ) => {
+        const [theme, setTheme] = useState<Theme | null>(null);
+        const [mode, setMode] = useState<ThemeMode>("system");
+        const [prefersDark, setPrefersDark] = useState<boolean | null>(null);
+        const [mounted, setMounted] = useState(false);
 
-    useEffect(() => {
-        setMounted(true);
-        if (typeof window === "undefined") return;
+        useEffect(() => {
+            setMounted(true);
+            if (typeof window === "undefined") return;
 
-        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        const updatePrefersDark = () => {
-            const isDark = mediaQuery.matches;
-            setPrefersDark(isDark);
-            if (mode === "system") {
-                setTheme(isDark ? baseDarkTheme : baseLightTheme);
+            const mediaQuery = window.matchMedia(
+                "(prefers-color-scheme: dark)",
+            );
+            const updatePrefersDark = () => {
+                const isDark = mediaQuery.matches;
+                setPrefersDark(isDark);
+                if (mode === "system") {
+                    setTheme(isDark ? baseDarkTheme : baseLightTheme);
+                }
+            };
+
+            updatePrefersDark(); // initialize on mount
+            mediaQuery.addEventListener("change", updatePrefersDark);
+            return () =>
+                mediaQuery.removeEventListener("change", updatePrefersDark);
+        }, [mode]);
+
+        const changeMode = (mode: ThemeMode) => {
+            setMode(mode);
+
+            if (!disableDefaultThemeOnModeChange) {
+                if (mode === "system" && prefersDark !== null)
+                    setTheme(prefersDark ? baseDarkTheme : baseLightTheme);
+                else if (mode === "dark") setTheme(baseDarkTheme);
+                else setTheme(baseLightTheme);
             }
+
+            onModeChange?.(mode);
         };
 
-        updatePrefersDark(); // initialize on mount
-        mediaQuery.addEventListener("change", updatePrefersDark);
-        return () =>
-            mediaQuery.removeEventListener("change", updatePrefersDark);
-    }, [mode]);
+        const changeTheme = (theme: Theme) => {
+            setTheme(theme);
+            onThemeChange?.(theme);
+        };
 
-    const changeMode = (mode: ThemeMode) => {
-        setMode(mode);
-        if (mode === "system" && prefersDark !== null)
-            setTheme(prefersDark ? baseDarkTheme : baseLightTheme);
-        else if (mode === "dark") setTheme(baseDarkTheme);
-        else setTheme(baseLightTheme);
-
-        onModeChange?.(mode);
-    };
-
-    const changeTheme = (theme: Theme) => {
-        setTheme(theme);
-        onThemeChange?.(theme);
-    };
-
-    useImperativeHandle(ref, () => ({
-        changeTheme,
-        changeMode,
-    }));
-
-    const themeObject =
-        theme ??
-        (prefersDark != null
-            ? prefersDark
-                ? baseDarkTheme
-                : baseLightTheme
-            : baseDarkTheme);
-
-    const value = useMemo(
-        () => ({
-            theme: themeObject,
+        useImperativeHandle(ref, () => ({
             changeTheme,
-            mode,
             changeMode,
-        }),
-        [mode, themeObject],
-    );
+        }));
 
-    if (!mounted) return null;
+        const themeObject =
+            theme ??
+            (prefersDark != null
+                ? prefersDark
+                    ? baseDarkTheme
+                    : baseLightTheme
+                : baseDarkTheme);
 
-    return (
-        <ThemeContext.Provider value={value}>
-            <EmotionThemeProvder theme={themeObject}>
-                {children}
-            </EmotionThemeProvder>
-        </ThemeContext.Provider>
-    );
-});
+        const value = useMemo(
+            () => ({
+                theme: themeObject,
+                changeTheme,
+                mode,
+                changeMode,
+            }),
+            [mode, themeObject],
+        );
+
+        if (!mounted) return null;
+
+        return (
+            <ThemeContext.Provider value={value}>
+                <EmotionThemeProvder theme={themeObject}>
+                    {children}
+                </EmotionThemeProvder>
+            </ThemeContext.Provider>
+        );
+    },
+);
 
 ThemeProvider.displayName = "ThemeProvider";
 
