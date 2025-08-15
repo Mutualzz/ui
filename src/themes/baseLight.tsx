@@ -8,24 +8,24 @@ export const baseLightTheme: Theme = {
     type: "light",
     colors: {
         common: { white: "#FFFFFF", black: "#121212" },
-        primary: "#8C2F4A", // deeper for contrast
-        neutral: "#444444", // deeper for contrast
-        background: "#FAFAFA", // lighter for clarity
-        surface: "#FFFFFF", // pure white for max contrast
-        danger: "#D32F2F", // accessible red
-        warning: "#FFD600", // accessible yellow
-        success: "#388E3C", // accessible green
-        info: "#1976D2", // accessible blue
+        primary: "#8C2F4A",
+        neutral: "#444444",
+        background: "#FAFAFA",
+        surface: "#FFFFFF",
+        danger: "#D32F2F",
+        warning: "#FFD600",
+        success: "#388E3C",
+        info: "#1976D2",
     },
 
     typography: {
         levels: { ...typographyLevels },
         fontFamily: "Inter, system-ui, sans-serif",
         colors: {
-            primary: "#222222", // deeper for contrast
+            primary: "#222222",
             secondary: "#444444",
-            accent: "#8C2F4A", // match primary
-            muted: "#444444", // more contrast
+            accent: "#8C2F4A",
+            muted: "#444444",
         },
     },
 

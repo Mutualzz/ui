@@ -8,24 +8,24 @@ export const baseDarkTheme: Theme = {
     type: "dark",
     colors: {
         common: { white: "#F4F4F4", black: "#181820" },
-        primary: "#5C5C7A", // lighter, more visible indigo
-        neutral: "#888899", // lighter, more visible neutral
-        background: "#181820", // keep as base
-        surface: "#23232A", // more neutral, less blue
-        danger: "#B85C5C", // softer red
-        warning: "#E6C463", // softer yellow
-        success: "#5CA88A", // softer green
-        info: "#5C7FA8", // softer blue
+        primary: "#5C5C7A",
+        neutral: "#888899",
+        background: "#181820",
+        surface: "#23232A",
+        danger: "#B85C5C",
+        warning: "#E6C463",
+        success: "#5CA88A",
+        info: "#5C7FA8",
     },
 
     typography: {
         levels: { ...typographyLevels },
         fontFamily: "Inter, system-ui, sans-serif",
         colors: {
-            primary: "#F4F4F4", // softer white
+            primary: "#F4F4F4",
             secondary: "#B5B5B5",
-            accent: "#5C7FA8", // match info for accent
-            muted: "#888899", // softer muted
+            accent: "#5C7FA8",
+            muted: "#888899",
         },
     },
 
