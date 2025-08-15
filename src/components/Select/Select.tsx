@@ -222,25 +222,6 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         }, [isOpen, updateDropdownPosition]);
 
         useEffect(() => {
-            const handleClickOutside = (event: MouseEvent) => {
-                if (
-                    selectRef.current &&
-                    !selectRef.current.contains(event.target as Node)
-                )
-                    setIsOpen(false);
-            };
-
-            if (isOpen) {
-                document.addEventListener("mousedown", handleClickOutside);
-                return () =>
-                    document.removeEventListener(
-                        "mousedown",
-                        handleClickOutside,
-                    );
-            }
-        }, [isOpen]);
-
-        useEffect(() => {
             if (!isOpen) setFocusedIndex(-1);
         }, [isOpen]);
 
