@@ -21,6 +21,7 @@ const TextareaRoot = styled("div")<TextareaProps>(
         ...resolveTextareaStyles(theme, color, textColor)[variant],
         ...(disabled && {
             opacity: 0.5,
+            cursor: "not-allowed",
         }),
 
         display: "flex",
