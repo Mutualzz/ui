@@ -29,6 +29,7 @@ const ButtonGroupRoot = styled("div")<{
         ...(disabled && {
             pointerEvents: "none",
             opacity: 0.5,
+            cursor: "not-allowed",
         }),
 
         "& > button": spacing === 0 && {

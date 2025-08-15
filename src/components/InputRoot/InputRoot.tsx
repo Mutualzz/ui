@@ -19,7 +19,7 @@ const InputRoot = styled("div")<InputRootProps>(
     }) => ({
         ...resolveInputRootSize(theme, size),
         ...resolveInputRootStyles(theme, color, textColor, error)[variant],
-        ...(disabled && { opacity: 0.5 }),
+        ...(disabled && { opacity: 0.5, cursor: "not-allowed" }),
 
         display: "flex",
         alignItems: "center",

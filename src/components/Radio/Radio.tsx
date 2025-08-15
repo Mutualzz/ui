@@ -18,7 +18,11 @@ const RadioWrapper = styled("label")<RadioProps>(
         cursor: "pointer",
         userSelect: "none",
         transition: "all 0.3s ease",
-        ...(disabled && { opacity: 0.5, pointerEvents: "none" }),
+        ...(disabled && {
+            opacity: 0.5,
+            pointerEvents: "none",
+            cursor: "not-allowed",
+        }),
         ...resolveRadioSize(theme, size),
     }),
 );
