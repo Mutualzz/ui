@@ -48,6 +48,12 @@ export interface CircularProgressProps {
     value?: number;
 
     /**
+     * Manually set stroke width, if you don't want automatic one
+     *
+     */
+    strokeWidth?: Size | SizeValue | number;
+
+    /**
      * Optional children to render inside the circular progress component.
      * This can be used to display additional content, such as text or icons.
      * If provided, the circular progress will adjust its size to accommodate the content.

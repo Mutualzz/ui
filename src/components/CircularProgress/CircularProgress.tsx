@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 import styled from "@styled";
-import type { Color, ColorLike, Variant } from "@ui-types";
+import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import { resolveSize } from "@utils";
 import { resolveColor } from "@utils/resolveColor";
+import debounce from "lodash-es/debounce";
 import {
     resolveCircularProgressOuterStroke,
     resolveCircularProgressSize,
@@ -109,6 +111,12 @@ const CircularProgressCircleInner = styled("circle")<{
         : `${circumference * 0.25} ${circumference}`,
 }));
 
+const strokeWidthSizeMap: Record<Size, number> = {
+    sm: 2,
+    md: 4,
+    lg: 6,
+};
+
 /**
  * CircularProgress component that renders a circular progress indicator.
  * It supports both determinate and indeterminate states, with customizable size, variant, and color.
@@ -120,6 +128,7 @@ const CircularProgress = ({
     variant = "soft",
     color = "primary",
     determinate = false,
+    strokeWidth: strokeWidthProp,
     value = 0,
     children,
     ...props
@@ -130,16 +139,25 @@ const CircularProgress = ({
 
     useEffect(() => {
         if (!contentRef.current) return;
-        const ro = new ResizeObserver(([entry]) => {
+        const handleResize = debounce((entry: ResizeObserverEntry) => {
             const { width, height } = entry.contentRect;
             setContentDiameter(Math.max(width, height));
+        }, 100); // 100ms debounce
+
+        const ro = new ResizeObserver((entries) => {
+            if (entries[0]) handleResize(entries[0]);
         });
         ro.observe(contentRef.current);
-        return () => ro.disconnect();
+        return () => {
+            ro.disconnect();
+            handleResize.cancel();
+        };
     }, []);
 
     const baseDiameter = resolveCircularProgressSize(theme, size);
-    const strokeWidth = Math.max(2, baseDiameter * 0.1);
+    const strokeWidth = strokeWidthProp
+        ? resolveSize(theme, strokeWidthProp, strokeWidthSizeMap)
+        : Math.max(2, baseDiameter * 0.1);
 
     const diameter = contentDiameter
         ? contentDiameter + strokeWidth + 8 * 2
