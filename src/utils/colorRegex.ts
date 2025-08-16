@@ -46,6 +46,26 @@ export const isValidHsla = (value: string): boolean =>
         value.trim(),
     );
 
+export const isValidLinearGradient = (value: string): boolean =>
+    /^linear-gradient\((.+)\)$/i.test(value.trim());
+
+/**
+ * Checks if the input is a valid radial-gradient string.
+ */
+export const isValidRadialGradient = (value: string): boolean =>
+    /^radial-gradient\((.+)\)$/i.test(value.trim());
+
+/**
+ * Checks if the input is a valid conic-gradient string.
+ */
+export const isValidConicGradient = (value: string): boolean =>
+    /^conic-gradient\((.+)\)$/i.test(value.trim());
+
+export const isValidGradient = (value: string): boolean =>
+    isValidLinearGradient(value) ||
+    isValidRadialGradient(value) ||
+    isValidConicGradient(value);
+
 /**
  * Checks if the input is a valid color input.
  * It checks for valid hex, rgb, rgba, hsl, and hsla formats.
@@ -53,17 +73,21 @@ export const isValidHsla = (value: string): boolean =>
  */
 export const isValidColorInput = (value: string): boolean => {
     // First check the existing regex patterns for performance
+    const trimmed = value.trim();
+
+    if (isValidGradient(trimmed)) return true;
+
     const isValidFormat =
-        isValidHex(value) ||
-        isValidRgb(value) ||
-        isValidRgba(value) ||
-        isValidHsl(value) ||
-        isValidHsla(value);
+        isValidHex(trimmed) ||
+        isValidRgb(trimmed) ||
+        isValidRgba(trimmed) ||
+        isValidHsl(trimmed) ||
+        isValidHsla(trimmed);
 
     if (isValidFormat) return true;
 
     // If regex patterns don't match, use culori to check for named colors
     // and other valid CSS color formats
-    const parsed = parse(value.trim());
+    const parsed = parse(trimmed);
     return parsed !== undefined;
 };

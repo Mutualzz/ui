@@ -7,7 +7,7 @@ import type {
     RGB,
     RGBA,
 } from "@ui-types";
-import { isValidColorInput } from "@utils/colorRegex";
+import { isValidColorInput, isValidGradient } from "@utils/colorRegex";
 import { randomColor } from "@utils/randomColor";
 import { formatHex, formatHex8, formatHsl, formatRgb, parse } from "culori";
 import { useState } from "react";
@@ -38,6 +38,12 @@ export const useColorInput = <T = ColorLike>(
         const trimmed = inputValue.trim();
 
         if (isValidColorInput(trimmed)) {
+            if (isValidGradient(trimmed)) {
+                setColor(trimmed as ColorLike);
+                setIsInvalid(false);
+                return;
+            }
+
             const parsed = parse(trimmed);
 
             if (parsed) {
@@ -63,7 +69,16 @@ export const useColorInput = <T = ColorLike>(
 
     const setColorDirectly = (color: ColorLike) => {
         setInputValue(color);
-        const parsed = parse(color);
+
+        const trimmed = String(color).trim();
+
+        if (isValidGradient(trimmed)) {
+            setColor(trimmed as ColorLike);
+            setIsInvalid(false);
+            return;
+        }
+
+        const parsed = parse(trimmed);
         if (parsed) {
             switch (type) {
                 case "hex":

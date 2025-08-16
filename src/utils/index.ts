@@ -1,8 +1,9 @@
 import type { ColorLike } from "@ui-types";
-import { clampChroma, lch } from "culori";
+import { clampChroma, formatHex, lch } from "culori";
 import { adjustLightness } from "./adjustLightness";
 import { alpha } from "./alpha";
 import { blendOver } from "./blendOver";
+import { isValidGradient } from "./colorRegex";
 import { dynamicElevation } from "./dynamicElevation";
 import { getContrastRatio } from "./getContrastRatio";
 import { getLuminance } from "./getLuminance";
@@ -40,21 +41,66 @@ export {
 };
 
 export function darken(color: ColorLike, factor: number) {
+    if (isValidGradient(color)) {
+        const match = color.match(/^(\w+-gradient)\((.+)\)$/i);
+        if (!match) return color;
+        const [, type, content] = match;
+        const stops = content.split(",").map((stop) => stop.trim());
+
+        const stopsDarkened = stops.map((stop) => {
+            const colorMatch = stop.match(
+                /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)|\w+)/,
+            );
+            if (!colorMatch) return stop;
+            const colorPart = colorMatch[0];
+            const colorLch = lch(colorPart);
+            if (!colorLch) return stop;
+            colorLch.l = Math.max(0, colorLch.l * (1 - factor));
+            return stop.replace(colorPart, formatHex(clampChroma(colorLch)));
+        });
+
+        return `${type}(${stopsDarkened.join(", ")})`;
+    }
+
     const colorLch = lch(color);
     if (!colorLch) return color;
 
     colorLch.l = Math.max(0, colorLch.l * (1 - factor));
 
-    return clampChroma(colorLch);
+    return formatHex(clampChroma(colorLch));
 }
 
 export const lighten = (color: ColorLike, factor: number) => {
+    if (isValidGradient(color)) {
+        const match = color.match(/^(\w+-gradient)\((.+)\)$/i);
+        if (!match) return color;
+        const [, type, content] = match;
+        const stops = content.split(",").map((stop) => stop.trim());
+
+        const stopsLightened = stops.map((stop) => {
+            const colorMatch = stop.match(
+                /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)|\w+)/,
+            );
+            if (!colorMatch) return stop;
+            const colorPart = colorMatch[0];
+            const colorLch = lch(colorPart);
+            if (!colorLch) return stop;
+            colorLch.l = Math.min(
+                100,
+                colorLch.l + (100 - colorLch.l) * factor,
+            );
+            return stop.replace(colorPart, formatHex(clampChroma(colorLch)));
+        });
+
+        return `${type}(${stopsLightened.join(", ")})`;
+    }
+
     const colorLch = lch(color);
     if (!colorLch) return color;
 
     colorLch.l = Math.min(100, colorLch.l + (100 - colorLch.l) * factor);
 
-    return clampChroma(colorLch);
+    return formatHex(clampChroma(colorLch));
 };
 
 export const allowedListStyleTypes = [
