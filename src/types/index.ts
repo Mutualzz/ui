@@ -14,7 +14,13 @@ export type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 export type HSL = `hsl(${number}, ${number}%, ${number}%)`;
 export type HSLA = `hsla(${number}, ${number}%, ${number}%, ${number})`;
 
-export type ColorLike = Hex | RGB | RGBA | HSL | HSLA;
+export type LinearGradient = `linear-gradient(${string})`;
+export type RadialGradient = `radial-gradient(${string})`;
+export type ConicGradient = `conic-gradient(${string})`;
+
+export type Gradient = LinearGradient | RadialGradient | ConicGradient;
+
+export type ColorLike = Hex | RGB | RGBA | HSL | HSLA | Gradient;
 
 export type ColorType = "hex" | "rgb" | "hsl";
 
