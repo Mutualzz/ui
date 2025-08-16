@@ -40,7 +40,7 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                 ...(adaptiveScrollbar && {
                     "*": {
                         scrollbarWidth: "auto",
-                        scrollbarColor: `${theme.colors.neutral} ${theme.colors.surface}`,
+                        scrollbarColor: `${theme.colors.primary} ${theme.colors.surface}`,
                     },
                     "::-webkit-scrollbar": {
                         width: 8,
@@ -51,7 +51,7 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                         borderRadius: 4,
                     },
                     "::-webkit-scrollbar-track": {
-                        backgroundColor: theme.colors.surface,
+                        backgroundColor: theme.colors.primary,
                     },
                     "::-webkit-scrollbar-thumb:hover": {
                         backgroundColor: formatHex(
