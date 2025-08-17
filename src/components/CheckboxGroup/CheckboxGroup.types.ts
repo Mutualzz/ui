@@ -1,3 +1,4 @@
+import type { Responsive } from "@ui-types";
 import type { ChangeEvent, ReactNode } from "react";
 
 export interface CheckboxGroupProps {
@@ -32,7 +33,7 @@ export interface CheckboxGroupProps {
      * When true, the checkboxes will be displayed in a row.
      * When false, the checkboxes will be displayed in a column.
      */
-    row?: boolean;
+    row?: Responsive<boolean>;
     /**
      * Checkbox items to render in the group.
      */

@@ -1,6 +1,7 @@
 import {
     type Color,
     type ColorLike,
+    type Responsive,
     type Size,
     type SizeValue,
     type Variant,
@@ -22,7 +23,7 @@ export interface LinearProgressProps {
      * @max 240
      * @example "sm", "md", "lg", 150
      */
-    length?: Size | SizeValue | number;
+    length?: Responsive<Size | SizeValue | number>;
     /**
      * The thickness of the progress bar.
      * Can be a predefined size or a custom value.
@@ -32,14 +33,14 @@ export interface LinearProgressProps {
      * @max 16
      * @example "sm", "md", "lg", 8
      */
-    thickness?: Size | SizeValue | number;
+    thickness?: Responsive<Size | SizeValue | number>;
     /**
      * The variant of the progress bar.
      *
      * @default "soft"
      * @example "plain", "solid", "soft", "outlined"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * The color of the progress bar.
      * Can be a color name or a color value.
@@ -47,7 +48,7 @@ export interface LinearProgressProps {
      * @default "primary"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The animation type for the indeterminate progress bar.
      *

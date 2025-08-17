@@ -2,6 +2,7 @@ import styled from "@styled";
 import { useContext } from "react";
 
 import { isCssMarker } from "@utils";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { ListContext } from "./List.context";
 import { resolveListStyles } from "./List.helpers";
 import type { ListProps } from "./List.types";
@@ -24,13 +25,20 @@ const ListRoot = styled("ul")<
         margin: 0,
         padding: 0,
         width: "100%",
-        flexDirection: orientation === "horizontal" ? "row" : "column",
+
         flexGrow: 1,
         position: "relative",
         alignSelf: "flex-start",
         paddingLeft: nesting * 1.5 + "rem",
         listStyleType: isCssMarker(marker) ? marker : "none",
-        ...resolveListStyles(theme, color)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            { color, variant, orientation },
+            ({ color: c, variant: v, orientation: ori }) => ({
+                ...resolveListStyles(theme, c)[v],
+                flexDirection: ori === "horizontal" ? "row" : "column",
+            }),
+        ),
     }),
 );
 
@@ -52,7 +60,11 @@ export const List = (props: ListProps) => {
                 marker,
             }}
         >
-            <ListRoot {...props} nesting={parentNesting} cssMarker={cssMarker}>
+            <ListRoot
+                {...(props as any)}
+                nesting={parentNesting}
+                cssMarker={cssMarker}
+            >
                 {children}
             </ListRoot>
         </ListContext.Provider>

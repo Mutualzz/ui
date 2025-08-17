@@ -1,6 +1,7 @@
 import {
     type Color,
     type ColorLike,
+    type Responsive,
     type Size,
     type SizeValue,
     type Variant,
@@ -15,7 +16,7 @@ export interface CircularProgressProps {
      * @default "md"
      * @example "sm", "md", "lg", 36
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
     /**
      * The color of the circular progress component.
      * Can be a predefined color or a custom color.
@@ -23,7 +24,7 @@ export interface CircularProgressProps {
      * @default "primary"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The variant of the circular progress component.
      * Determines the style of the progress indicator.
@@ -31,7 +32,7 @@ export interface CircularProgressProps {
      * @default "soft"
      * @example "solid", "outlined", "soft", "plain"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * Indicates whether the circular progress is in a determinate state.
      * If true, the progress will be based on the `value` prop.
@@ -51,7 +52,7 @@ export interface CircularProgressProps {
      * Manually set stroke width, if you don't want automatic one
      *
      */
-    strokeWidth?: Size | SizeValue | number;
+    strokeWidth?: Responsive<Size | SizeValue | number>;
 
     /**
      * Optional children to render inside the circular progress component.

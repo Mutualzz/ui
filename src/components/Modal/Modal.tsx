@@ -3,6 +3,7 @@ import { resolveButtonStyles } from "@components/Button/Button.helpers";
 import type { ButtonProps } from "@components/Button/Button.types";
 import { Portal } from "@components/Portal/Portal";
 import styled from "@styled";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     useCallback,
     useEffect,
@@ -70,7 +71,14 @@ const ModalCloseButton = styled(Button)<
         layout: "center" | "fullscreen";
     }
 >(({ theme, color = "neutral", variant = "outlined", layout }) => ({
-    ...resolveButtonStyles(theme, color)[variant],
+    ...resolveResponsiveMerge(
+        theme,
+        { color, variant },
+        ({ color: c, variant: v }) => ({
+            ...resolveButtonStyles(theme, c)[v],
+        }),
+    ),
+
     position: "absolute",
     top: layout === "fullscreen" ? "24px" : "1.5em",
     right: layout === "fullscreen" ? "24px" : "1.5em",

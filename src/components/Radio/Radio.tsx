@@ -1,7 +1,8 @@
 import styled from "@styled";
-import type { Size, SizeValue } from "@ui-types";
+import type { Responsive, Size, SizeValue } from "@ui-types";
 import { type ChangeEvent, type Ref, useContext, useState } from "react";
 
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { RadioGroupContext } from "../RadioGroup/RadioGroup.context";
 import {
     resolveIconScaling,
@@ -23,7 +24,9 @@ const RadioWrapper = styled("label")<RadioProps>(
             pointerEvents: "none",
             cursor: "not-allowed",
         }),
-        ...resolveRadioSize(theme, size),
+        ...resolveResponsiveMerge(theme, { size }, ({ size: s }) => ({
+            ...resolveRadioSize(theme, s),
+        })),
     }),
 );
 
@@ -62,24 +65,28 @@ const RadioControl = styled("span")<RadioProps>(({
         padding: 0,
     };
 
-    const variantStyle = resolveRadioStyles(theme, color, checked)[variant];
+    const { variantStyle, checkedStyle } = resolveResponsiveMerge(
+        theme,
+        {
+            color,
+            variant,
+        },
+        ({ color: c, variant: v }) => ({
+            variantStyle: resolveRadioStyles(theme, c, checked)[v],
+            checkedStyle: resolveRadioStyles(theme, c, true)[v],
+        }),
+    );
 
     return {
         ...baseStyles,
         ...variantStyle,
 
-        'input[type="radio"]:hover + &': resolveRadioStyles(theme, color, true)[
-            variant
-        ],
+        'input[type="radio"]:hover + &': checkedStyle,
 
-        'input[type="radio"]:active + &': resolveRadioStyles(
-            theme,
-            color,
-            true,
-        )[variant],
+        'input[type="radio"]:active + &': checkedStyle,
 
         'input[type="radio"]:focus-visible + &': {
-            boxShadow: `0 0 0 3px ${resolveRadioStyles(theme, color, true).solid.backgroundColor}`,
+            boxShadow: `0 0 0 3px ${checkedStyle.backgroundColor}`,
             outline: "none",
         },
     };
@@ -93,18 +100,22 @@ const RadioLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
 
 RadioLabel.displayName = "RadioLabel";
 
-const IconWrapper = styled("span")<{ size?: Size | SizeValue | number }>(
-    ({ theme, size = "md" }) => ({
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        ...resolveIconScaling(theme, size),
-        "& > *": {
-            width: "100%",
-            height: "100%",
-        },
-    }),
-);
+const IconWrapper = styled("span")<{
+    size?: Responsive<Size | SizeValue | number>;
+}>(({ theme, size = "md" }) => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+
+    "& > *": {
+        width: "100%",
+        height: "100%",
+    },
+
+    ...resolveResponsiveMerge(theme, { size }, ({ size: s }) => ({
+        ...resolveIconScaling(theme, s),
+    })),
+}));
 
 IconWrapper.displayName = "IconWrapper";
 
@@ -176,7 +187,7 @@ const Radio = (
                 name={name}
                 role="radio"
                 aria-checked={isChecked}
-                color={color}
+                color={color as string}
                 variant={variant}
                 checked={isChecked}
                 disabled={disabled}

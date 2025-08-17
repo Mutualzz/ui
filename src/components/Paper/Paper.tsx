@@ -1,4 +1,5 @@
 import styled from "@styled";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { resolvePaperStyles } from "./Paper.helpers";
 import { type PaperProps } from "./Paper.types";
 
@@ -18,9 +19,27 @@ const Paper = styled("div")<PaperProps>(
         color = "neutral",
         textColor = "inherit",
     }) => ({
-        ...(!display && { display: "flex" }),
         transition: "background-color 0.2s ease",
-        ...resolvePaperStyles(theme, color, textColor, elevation)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                display,
+                variant,
+                elevation,
+                color,
+                textColor,
+            },
+            ({
+                display: d,
+                variant: v,
+                elevation: e,
+                color: c,
+                textColor: tc,
+            }) => ({
+                display: d,
+                ...resolvePaperStyles(theme, c, tc, e)[v],
+            }),
+        ),
     }),
 );
 

@@ -1,22 +1,29 @@
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 export interface ListItemButtonProps
-    extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size"> {
+    extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "size" | "color"> {
     /**
      * The variant of the button, which determines its style.
      *
      * @default "solid"
      * @example "solid", "outlined", "soft", "plain"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * The color of the button, which can be a predefined color or a custom color.
      *
      * @default "primary"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The size of the button, which can be a predefined size or a custom size in pixels.
      *
@@ -25,7 +32,7 @@ export interface ListItemButtonProps
      * @max 72
      * @example "sm", "md", "lg", 32
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * Indicates whether the button is in a loading state.

@@ -14,6 +14,7 @@ import {
 } from "@uiw/color-convert";
 import Colorful from "@uiw/react-color-colorful";
 import { randomColor } from "@utils/randomColor";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useRef, useState, type ChangeEvent } from "react";
 import {
     resolveColorPickerButtonSize,
@@ -23,8 +24,15 @@ import type { InputColorProps } from "./InputColor.types";
 
 const ColorPickerButton = styled(Button)(
     ({ theme, color = "neutral", variant = "solid", size = "md" }) => ({
-        ...resolveColorPickerButtonStyles(theme, color)[variant],
-        ...resolveColorPickerButtonSize(theme, size),
+        ...resolveResponsiveMerge(
+            theme,
+            { color, variant, size },
+            ({ color: c, variant: v, size: s }) => ({
+                ...resolveColorPickerButtonStyles(theme, c)[v],
+                ...resolveColorPickerButtonSize(theme, s),
+            }),
+        ),
+
         padding: 0,
     }),
 );
@@ -151,7 +159,7 @@ const InputColor = ({
                 </DecoratorWrapper>
 
                 <InputBase
-                    {...props}
+                    {...(props as any)}
                     type="text"
                     value={inputValue}
                     onChange={handleOnChange}

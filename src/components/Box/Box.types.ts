@@ -1,11 +1,11 @@
-import type { HTMLAttributes } from "react";
+import type { Responsive, SystemProps } from "@ui-types";
 
 /**
  * Props for the Box component.
  */
-export interface BoxProps extends HTMLAttributes<HTMLDivElement> {
+export interface BoxProps extends SystemProps<HTMLDivElement> {
     /**
      * If true, the Box will be displayed as an inline-block element; otherwise, it will be a block element.
      */
-    inline?: boolean;
+    inline?: Responsive<boolean>;
 }

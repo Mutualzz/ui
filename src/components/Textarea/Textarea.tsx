@@ -1,5 +1,6 @@
 import styled from "@styled";
-import type { Size, SizeValue } from "@ui-types";
+import type { Responsive, Size, SizeValue } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useEffect, useRef } from "react";
 import {
     resolveTextareaInputSize,
@@ -17,8 +18,15 @@ const TextareaRoot = styled("div")<TextareaProps>(
         variant = "outlined",
         disabled,
     }) => ({
-        ...resolveTextareaSize(theme, size),
-        ...resolveTextareaStyles(theme, color, textColor)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            { size, color, textColor, variant },
+            ({ color: c, textColor: tc, size: s, variant: v }) => ({
+                ...resolveTextareaSize(theme, s),
+                ...resolveTextareaStyles(theme, c, tc)[v],
+            }),
+        ),
+
         ...(disabled && {
             opacity: 0.5,
             cursor: "not-allowed",
@@ -40,9 +48,11 @@ TextareaRoot.displayName = "TextareaRoot";
 
 const TextareaInput = styled("textarea")<{
     resizable?: boolean;
-    size: Size | SizeValue | number;
+    size: Responsive<Size | SizeValue | number>;
 }>(({ theme, size, resizable }) => ({
-    ...resolveTextareaInputSize(theme, size),
+    ...resolveResponsiveMerge(theme, { size }, ({ size: s }) => ({
+        ...resolveTextareaInputSize(theme, s),
+    })),
     flex: 1,
     width: "100%",
     minWidth: 0,
@@ -114,7 +124,7 @@ const Textarea = ({
 
     return (
         <TextareaRoot
-            color={color}
+            color={color as string}
             textColor={textColor}
             variant={variant}
             size={size}

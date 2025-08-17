@@ -1,3 +1,4 @@
+import type { Responsive } from "@ui-types";
 import type { ChangeEvent, ReactNode } from "react";
 
 export interface RadioGroupProps {
@@ -31,7 +32,7 @@ export interface RadioGroupProps {
      * When true, the radio buttons will be arranged horizontally.
      * @default false
      */
-    row?: boolean;
+    row?: Responsive<boolean>;
 
     /**
      * The children of the radio group.

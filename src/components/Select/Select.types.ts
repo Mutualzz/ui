@@ -1,14 +1,21 @@
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { ReactNode, SelectHTMLAttributes } from "react";
 
 export interface SelectProps<T = string | number>
     extends Omit<
         SelectHTMLAttributes<HTMLSelectElement>,
-        "size" | "value" | "defaultValue"
+        "size" | "value" | "defaultValue" | "color"
     > {
-    size?: Size | SizeValue | number;
-    variant?: Variant;
-    color?: Color | ColorLike;
+    size?: Responsive<Size | SizeValue | number>;
+    variant?: Responsive<Variant>;
+    color?: Responsive<Color | ColorLike>;
 
     startDecorator?: ReactNode;
     endDecorator?: ReactNode;

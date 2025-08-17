@@ -2,6 +2,7 @@ import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper"
 import { InputBase } from "@components/InputBase/InputBase";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size, SizeValue } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useCallback, useEffect, useState, type Ref } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { resolvePasswordIconStyles } from "./InputPassword.helpers";
@@ -102,13 +103,22 @@ const InputPassword = (
     const showToggleIcon = iconVisible && !(endDecorator && !showPasswordIcon);
 
     let strokeColor = "currentColor";
+    const { strokeColor: strokeColorResolved, s: resolvedSize } =
+        resolveResponsiveMerge(
+            theme,
+            { color, variant, size },
+            ({ color: c, variant: v, size: s }) => ({
+                strokeColor: resolvePasswordIconStyles(theme, c)[v],
+                s,
+            }),
+        );
     if (iconVisible && (!showPasswordIcon || !hidePasswordIcon)) {
-        strokeColor = resolvePasswordIconStyles(theme, color)[variant];
+        strokeColor = strokeColorResolved;
     }
 
     return (
         <InputRoot
-            color={color}
+            color={color as string}
             textColor={textColor}
             variant={variant}
             size={size}
@@ -136,13 +146,13 @@ const InputPassword = (
                     {visible
                         ? (hidePasswordIcon ?? (
                               <HidePasswordIcon
-                                  size={size}
+                                  size={resolvedSize}
                                   strokeColor={strokeColor}
                               />
                           ))
                         : (showPasswordIcon ?? (
                               <ShowPasswordIcon
-                                  size={size}
+                                  size={resolvedSize}
                                   strokeColor={strokeColor}
                               />
                           ))}

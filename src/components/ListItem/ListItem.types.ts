@@ -1,7 +1,15 @@
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { HTMLAttributes, ReactNode } from "react";
 
-export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
+export interface ListItemProps
+    extends Omit<HTMLAttributes<HTMLLIElement>, "color"> {
     /**
      * Color of the list item
      * Can be a predefined color or a custom color.
@@ -9,7 +17,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
      * @default "neutral"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
 
     /**
      * Variant of the list item
@@ -17,7 +25,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
      * @default "plain"
      * @example "solid", "outlined", "plain", "soft"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
 
     /**
      * Size of the list item
@@ -27,7 +35,7 @@ export interface ListItemProps extends HTMLAttributes<HTMLLIElement> {
      * @max 72
      * @example "sm", "md", "lg", 32
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * The start decorator of the list item.

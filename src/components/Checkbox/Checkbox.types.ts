@@ -1,6 +1,7 @@
 import {
     type Color,
     type ColorLike,
+    type Responsive,
     type Size,
     type SizeValue,
     type Variant,
@@ -10,7 +11,7 @@ import type { InputHTMLAttributes, ReactNode } from "react";
 export interface CheckboxProps
     extends Omit<
         InputHTMLAttributes<HTMLInputElement>,
-        "size" | "type" | "value"
+        "size" | "type" | "value" | "color"
     > {
     /**
      * The label for the checkbox.
@@ -62,21 +63,21 @@ export interface CheckboxProps
      * @default "neutral"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The variant of the checkbox, which determines its style.
      *
      * @default "solid"
      * @example "solid", "outlined", "soft", "plain"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * The size of the checkbox, which can be a predefined size or a custom size in pixels.
      *
      * @default "md"
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * This is the direction of the checkbox label.

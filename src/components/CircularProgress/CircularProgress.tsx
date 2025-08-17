@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 import styled from "@styled";
-import type { Color, ColorLike, Size, Variant } from "@ui-types";
+import type { Color, ColorLike, Responsive, Size, Variant } from "@ui-types";
 import { resolveSize } from "@utils";
 import { resolveColor } from "@utils/resolveColor";
-import debounce from "lodash-es/debounce";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     resolveCircularProgressOuterStroke,
     resolveCircularProgressSize,
@@ -16,8 +16,8 @@ import type { CircularProgressProps } from "./CircularProgress.types";
 const CircularProgressWrapper = styled("div")<{
     diameter: number;
     strokeWidth: number;
-    color: Color | ColorLike;
-    variant: Variant;
+    color: Responsive<Color | ColorLike>;
+    variant: Responsive<Variant>;
 }>(({ theme, color, diameter, strokeWidth, variant }) => ({
     position: "relative" as const,
     display: "inline-flex",
@@ -28,31 +28,33 @@ const CircularProgressWrapper = styled("div")<{
     padding: 0,
     transition: "all 0.3s ease",
 
-    ...(variant === "outlined" &&
-        diameter > 0 && {
-            "::before": {
-                content: '""',
-                position: "absolute",
-                top: strokeWidth / 2,
-                left: strokeWidth / 2,
-                right: strokeWidth / 2,
-                bottom: strokeWidth / 2,
-                borderRadius: "50%",
-                border: `1px solid ${resolveColor(color, theme)}`,
-                boxSizing: "border-box",
-            },
-            "::after": {
-                content: '""',
-                position: "absolute",
-                top: -1,
-                left: -1,
-                right: -1,
-                bottom: -1,
-                borderRadius: "50%",
-                border: `1px solid ${resolveColor(color, theme)}`,
-                boxSizing: "border-box",
-            },
-        }),
+    ...resolveResponsiveMerge(theme, { color }, ({ color: c }) => ({
+        ...(variant === "outlined" &&
+            diameter > 0 && {
+                "::before": {
+                    content: '""',
+                    position: "absolute",
+                    top: strokeWidth / 2,
+                    left: strokeWidth / 2,
+                    right: strokeWidth / 2,
+                    bottom: strokeWidth / 2,
+                    borderRadius: "50%",
+                    border: `1px solid ${resolveColor(c, theme)}`,
+                    boxSizing: "border-box",
+                },
+                "::after": {
+                    content: '""',
+                    position: "absolute",
+                    top: -1,
+                    left: -1,
+                    right: -1,
+                    bottom: -1,
+                    borderRadius: "50%",
+                    border: `1px solid ${resolveColor(c, theme)}`,
+                    boxSizing: "border-box",
+                },
+            }),
+    })),
 }));
 
 const CircularProgressContent = styled("div")({
@@ -80,17 +82,24 @@ const CircularProgressSvg = styled("svg")<{
 }));
 
 const CircularProgressCircleOuter = styled("circle")<{
-    color: Color | ColorLike;
-    variant: Variant;
+    color: Responsive<Color | ColorLike>;
+    variant: Responsive<Variant>;
     strokeWidth: number;
 }>(({ theme, color, strokeWidth, variant }) => ({
-    stroke: resolveCircularProgressOuterStroke(theme, color)[variant],
     fill: "none",
     strokeWidth,
+
+    ...resolveResponsiveMerge(
+        theme,
+        { color, variant },
+        ({ color: c, variant: v }) => ({
+            stroke: resolveCircularProgressOuterStroke(theme, c)[v],
+        }),
+    ),
 }));
 
 const CircularProgressCircleInner = styled("circle")<{
-    color: Color | ColorLike;
+    color: Responsive<Color | ColorLike>;
     strokeWidth: number;
     determinate: boolean;
     circumference: number;
@@ -103,12 +112,15 @@ const CircularProgressCircleInner = styled("circle")<{
     transition:
         "stroke-dasharray 0.3s ease, stroke-dashoffset 0.3s ease, transform 0.3s ease",
 
-    stroke: resolveColor(color, theme),
     strokeWidth,
     strokeDashoffset: determinate ? dashOffset : 0,
     strokeDasharray: determinate
         ? circumference
         : `${circumference * 0.25} ${circumference}`,
+
+    ...resolveResponsiveMerge(theme, { color }, ({ color: c }) => ({
+        stroke: resolveColor(c, theme),
+    })),
 }));
 
 const strokeWidthSizeMap: Record<Size, number> = {
@@ -139,10 +151,10 @@ const CircularProgress = ({
 
     useEffect(() => {
         if (!contentRef.current) return;
-        const handleResize = debounce((entry: ResizeObserverEntry) => {
+        const handleResize = (entry: ResizeObserverEntry) => {
             const { width, height } = entry.contentRect;
             setContentDiameter(Math.max(width, height));
-        }, 100); // 100ms debounce
+        };
 
         const ro = new ResizeObserver((entries) => {
             if (entries[0]) handleResize(entries[0]);
@@ -150,13 +162,22 @@ const CircularProgress = ({
         ro.observe(contentRef.current);
         return () => {
             ro.disconnect();
-            handleResize.cancel();
         };
     }, []);
 
-    const baseDiameter = resolveCircularProgressSize(theme, size);
+    const { size: resolvedSize, strokeWidth: resolvedStrokeWidth } =
+        resolveResponsiveMerge(
+            theme,
+            {
+                size,
+                strokeWidth: strokeWidthProp,
+            },
+            ({ size: s, strokeWidth }) => ({ s, strokeWidth }),
+        );
+
+    const baseDiameter = resolveCircularProgressSize(theme, resolvedSize);
     const strokeWidth = strokeWidthProp
-        ? resolveSize(theme, strokeWidthProp, strokeWidthSizeMap)
+        ? resolveSize(theme, resolvedStrokeWidth, strokeWidthSizeMap)
         : Math.max(2, baseDiameter * 0.1);
 
     const diameter = contentDiameter
@@ -172,7 +193,7 @@ const CircularProgress = ({
             diameter={diameter}
             strokeWidth={strokeWidth}
             variant={variant}
-            color={color}
+            color={color as string}
         >
             <CircularProgressContent ref={contentRef}>
                 {children}
@@ -188,14 +209,14 @@ const CircularProgress = ({
                 >
                     <CircularProgressCircleOuter
                         variant={variant}
-                        color={color}
+                        color={color as string}
                         strokeWidth={strokeWidth}
                         cx={diameter / 2}
                         cy={diameter / 2}
                         r={radius}
                     />
                     <CircularProgressCircleInner
-                        color={color}
+                        color={color as string}
                         strokeWidth={strokeWidth}
                         determinate={determinate}
                         circumference={circumference}

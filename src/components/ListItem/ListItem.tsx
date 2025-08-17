@@ -1,6 +1,7 @@
 import styled from "@styled";
-import type { Orientation } from "@ui-types";
+import type { Orientation, Responsive } from "@ui-types";
 import { isCssMarker } from "@utils";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { ListContext } from "components/List/List.context";
 import { useContext } from "react";
 import { NestedListContext } from "../List/NestedList.context";
@@ -10,7 +11,7 @@ import type { ListItemProps } from "./ListItem.types";
 const ListItemRoot = styled("li")<
     ListItemProps & {
         nesting: number;
-        orientation?: Orientation;
+        orientation?: Responsive<Orientation>;
     }
 >(
     ({
@@ -21,13 +22,6 @@ const ListItemRoot = styled("li")<
         orientation = "vertical",
         marker,
     }) => ({
-        display: isCssMarker(marker)
-            ? orientation === "vertical"
-                ? "list-item"
-                : "inline list-item"
-            : orientation === "vertical"
-              ? "flex"
-              : "inline-flex",
         alignItems: !isCssMarker(marker) ? "center" : undefined,
         position: "relative",
         paddingBlock: marker ? "0.5em" : undefined,
@@ -36,12 +30,29 @@ const ListItemRoot = styled("li")<
         boxSizing: "border-box",
         transition: "all 0.3s ease",
 
-        "::marker": {
-            ...resolveListItemStyles(theme, color)[variant],
-        },
-
-        ...resolveListItemSize(theme, size),
-        ...resolveListItemStyles(theme, color)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                color,
+                variant,
+                orientation,
+                size,
+            },
+            ({ color: c, variant: v, orientation: ori, size: s }) => ({
+                display: isCssMarker(marker)
+                    ? ori === "vertical"
+                        ? "list-item"
+                        : "inline list-item"
+                    : ori === "vertical"
+                      ? "flex"
+                      : "inline-flex",
+                "::marker": {
+                    ...resolveListItemStyles(theme, c)[v],
+                },
+                ...resolveListItemSize(theme, s),
+                ...resolveListItemStyles(theme, c)[v],
+            }),
+        ),
     }),
 );
 
@@ -75,7 +86,7 @@ export const ListItem = (props: ListItemProps & { marker?: string }) => {
     return (
         <ListItemRoot
             nesting={nesting}
-            color={colorOverride ?? color}
+            color={(colorOverride ?? color) as string}
             variant={variantOverride ?? variant}
             size={sizeOverride ?? size}
             orientation={orientation}

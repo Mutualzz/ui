@@ -1,6 +1,7 @@
 import type {
     Color,
     ColorLike,
+    Responsive,
     Size,
     SizeValue,
     TypographyColor,
@@ -36,7 +37,7 @@ export type InputMode =
 export interface InputRootProps
     extends Omit<
         InputHTMLAttributes<HTMLInputElement>,
-        "onChange" | "size" | "type"
+        "onChange" | "size" | "type" | "color"
     > {
     /**
      * The color of the input element.
@@ -45,7 +46,7 @@ export interface InputRootProps
      * @default "neutral"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The text color of the input element.
      * If set to "inherit", the input will inherit the text color from its parent.
@@ -53,7 +54,7 @@ export interface InputRootProps
      * @default "inherit"
      * @example "primary", "secondary", "accent", "disabled", "inherit"
      */
-    textColor?: TypographyColor | ColorLike | "inherit";
+    textColor?: Responsive<TypographyColor | ColorLike | "inherit">;
     /**
      * The variant of the input element.
      * Determines the style of the input element.
@@ -61,7 +62,7 @@ export interface InputRootProps
      * @default "outlined"
      * @example "outlined", "solid", "plain", "soft"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * The size of the input element.
      * Can be a predefined size ("sm", "md", "lg") or a custom size in pixels.
@@ -72,7 +73,7 @@ export interface InputRootProps
      * @max 32
      * @example "sm", "md", "lg", 16
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * Optional start decorator to render before the input element.

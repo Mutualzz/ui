@@ -1,6 +1,7 @@
 import type {
     Color,
     ColorLike,
+    Responsive,
     Size,
     SizeValue,
     TypographyColor,
@@ -9,7 +10,7 @@ import type {
 import type { ReactNode, TextareaHTMLAttributes } from "react";
 
 export interface TextareaProps
-    extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+    extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "color"> {
     /**
      * Color or color-like value for the textarea.
      * This can be a color name, hex code, or any valid color format.
@@ -17,7 +18,7 @@ export interface TextareaProps
      * @default "neutral"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * Text color for the textarea.
      * This can be a color name, hex code
@@ -26,7 +27,7 @@ export interface TextareaProps
      * @default "inherit"
      * @example "primary", "secondary", "accent", "disabled"
      */
-    textColor?: TypographyColor | ColorLike | "inherit";
+    textColor?: Responsive<TypographyColor | ColorLike | "inherit">;
     /**
      * Variant of the textarea.
      * This can be "outlined", "solid", "soft", or "plain".
@@ -35,7 +36,7 @@ export interface TextareaProps
      * @default "outlined"
      * @example "outlined", "solid", "soft", "plain"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * Size of the textarea.
      * This can be a predefined size like "sm", "md", "lg", or a custom number.
@@ -46,7 +47,7 @@ export interface TextareaProps
      * @max 24
      * @example "sm", "md", "lg", 14
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * Whether the textarea is disabled.

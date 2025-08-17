@@ -1,4 +1,5 @@
 import styled from "@styled";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import type { BoxProps } from "../Box/Box.types";
 
 /**
@@ -6,8 +7,10 @@ import type { BoxProps } from "../Box/Box.types";
  * It is used to create a flexible layout for arranging child elements.
  * The `inline` prop determines whether the Stack is displayed as an inline-flex or flex container
  */
-const Stack = styled("div")<BoxProps>(({ inline }) => ({
-    display: inline ? "inline-flex" : "flex",
+const Stack = styled("div")<BoxProps>(({ theme, inline }) => ({
+    ...resolveResponsiveMerge(theme, { inline }, ({ inline: i }) => ({
+        display: i ? "inline-flex" : "flex",
+    })),
 }));
 
 Stack.displayName = "Stack";

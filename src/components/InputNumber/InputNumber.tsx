@@ -3,6 +3,7 @@ import { InputBase } from "@components/InputBase/InputBase";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size } from "@ui-types";
 import { clamp, resolveSize } from "@utils";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { formatHex8 } from "culori";
 import {
     useRef,
@@ -34,8 +35,15 @@ const SpinnerButtons = ({
     size = "md",
 }: InputNumberProps) => {
     const { theme } = useTheme();
-    const width = resolveSize(theme, size, widthSizeMap);
-    const fontSize = resolveSize(theme, size, fontSizeMap);
+
+    const { width, fontSize } = resolveResponsiveMerge(
+        theme,
+        { size },
+        ({ size: s }) => ({
+            width: resolveSize(theme, s, widthSizeMap),
+            fontSize: resolveSize(theme, s, fontSizeMap),
+        }),
+    );
 
     return (
         <Stack
@@ -271,7 +279,7 @@ const InputNumber = ({
 
     return (
         <InputRoot
-            color={color}
+            color={color as string}
             textColor={textColor}
             variant={variant}
             size={size}

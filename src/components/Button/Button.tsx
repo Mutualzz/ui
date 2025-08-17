@@ -1,12 +1,21 @@
-import { useContext, type ReactNode, type Ref } from "react";
+import { useContext, type Ref } from "react";
 
 import { CircularProgress } from "@components/CircularProgress/CircularProgress";
 import styled from "@styled";
 
+import type { Size } from "@ui-types";
+import { resolveSize } from "@utils";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { ButtonGroupContext } from "../ButtonGroup/ButtonGroup.context";
 import { DecoratorWrapper } from "../DecoratorWrapper/DecoratorWrapper";
-import { resolveButtonSize, resolveButtonStyles } from "./Button.helpers";
+import { resolveButtonStyles } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
+
+export const baseSizeMap: Record<Size, number> = {
+    sm: 12,
+    md: 14,
+    lg: 16,
+};
 
 const ButtonWrapper = styled("button")<ButtonProps>(
     ({
@@ -31,8 +40,18 @@ const ButtonWrapper = styled("button")<ButtonProps>(
             opacity: 0.5,
             pointerEvents: "none",
         }),
-        ...resolveButtonSize(theme, size),
-        ...resolveButtonStyles(theme, color)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            { size, color, variant },
+            ({ size: s, color: c, variant: v }) => {
+                const resolvedSize = resolveSize(theme, s, baseSizeMap);
+                return {
+                    fontSize: resolvedSize,
+                    padding: `${resolvedSize * 0.6}px ${resolvedSize * 1.2}px`,
+                    ...resolveButtonStyles(theme, c)[v],
+                };
+            },
+        ),
     }),
 );
 
@@ -83,7 +102,7 @@ const Button = (
         children,
         type = "button",
         ...props
-    }: ButtonProps & { children?: ReactNode },
+    }: ButtonProps,
     ref?: Ref<HTMLButtonElement>,
 ) => {
     const group = useContext(ButtonGroupContext);
@@ -100,7 +119,7 @@ const Button = (
             type={type}
             ref={ref}
             variant={variant}
-            color={color}
+            color={color as string}
             size={size}
             disabled={loading || disabled}
             loading={loading}

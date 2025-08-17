@@ -1,5 +1,6 @@
 import styled from "@styled";
 
+import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     resolveInputRootSize,
     resolveInputRootStyles,
@@ -17,8 +18,14 @@ const InputRoot = styled("div")<InputRootProps>(
         fullWidth,
         disabled,
     }) => ({
-        ...resolveInputRootSize(theme, size),
-        ...resolveInputRootStyles(theme, color, textColor, error)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            { color, textColor, size, variant },
+            ({ color: c, textColor: tc, variant: v, size: s }) => ({
+                ...resolveInputRootSize(theme, s),
+                ...resolveInputRootStyles(theme, c, tc, error)[v],
+            }),
+        ),
         ...(disabled && { opacity: 0.5, cursor: "not-allowed" }),
 
         display: "flex",

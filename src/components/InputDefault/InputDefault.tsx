@@ -26,7 +26,7 @@ const InputDefault = (
 ) => {
     return (
         <InputRoot
-            color={color}
+            color={color as string}
             textColor={textColor}
             variant={variant}
             size={size as number}

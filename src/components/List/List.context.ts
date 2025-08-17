@@ -2,6 +2,7 @@ import type {
     Color,
     ColorLike,
     Orientation,
+    Responsive,
     Size,
     SizeValue,
     Variant,
@@ -9,10 +10,10 @@ import type {
 import { createContext } from "react";
 
 interface ListContextType {
-    color?: Color | ColorLike;
-    size?: Size | SizeValue | number;
-    variant?: Variant;
-    orientation?: Orientation;
+    color?: Responsive<Color | ColorLike>;
+    size?: Responsive<Size | SizeValue | number>;
+    variant?: Responsive<Variant>;
+    orientation?: Responsive<Orientation>;
 
     nesting?: number;
     marker?: string | string[] | ((nesting: number) => string);

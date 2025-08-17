@@ -2,28 +2,9 @@ import { type CSSObject, type Theme } from "@emotion/react";
 
 import { formatHex8 } from "culori";
 
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type { Color, ColorLike, Variant } from "@ui-types";
 import { alpha, getLuminance } from "@utils";
 import { resolveColor } from "@utils/resolveColor";
-import { resolveSize } from "@utils/resolveSize";
-
-export const baseSizeMap: Record<Size, number> = {
-    sm: 12,
-    md: 14,
-    lg: 16,
-};
-
-export const resolveButtonSize = (
-    theme: Theme,
-    size: Size | SizeValue | number,
-): CSSObject => {
-    const resolvedSize = resolveSize(theme, size, baseSizeMap);
-
-    return {
-        fontSize: resolvedSize,
-        padding: `${resolvedSize * 0.6}px ${resolvedSize * 1.2}px`,
-    };
-};
 
 export const resolveButtonStyles = (
     theme: Theme,

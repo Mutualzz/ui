@@ -2,6 +2,7 @@ import type {
     Color,
     ColorLike,
     Orientation,
+    Responsive,
     Size,
     SizeValue,
     Variant,
@@ -12,7 +13,7 @@ import type { HTMLProps } from "react";
 export type AllowedListStyleTypes = (typeof allowedListStyleTypes)[number];
 
 export interface ListProps
-    extends Omit<HTMLProps<HTMLUListElement>, "size" | "wrap"> {
+    extends Omit<HTMLProps<HTMLUListElement>, "size" | "wrap" | "color"> {
     /**
      * Color of the list
      * Can be a predefined color or a custom color.
@@ -20,7 +21,7 @@ export interface ListProps
      * @default "neutral"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
 
     /**
      * Variant of the lists
@@ -28,7 +29,7 @@ export interface ListProps
      * @default "plain"
      * @example "solid", "outlined", "plain", "soft"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
 
     /**
      * Size of the list
@@ -38,7 +39,7 @@ export interface ListProps
      * @max 72
      * @example "sm", "md", "lg", 32
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * Marker to use for the list items.
@@ -54,5 +55,5 @@ export interface ListProps
      * @default "vertical"
      * @example "vertical", "horizontal"
      */
-    orientation?: Orientation;
+    orientation?: Responsive<Orientation>;
 }

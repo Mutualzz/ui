@@ -1,4 +1,5 @@
 import styled from "@styled";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import type { BoxProps } from "./Box.types";
 
 /**
@@ -6,8 +7,10 @@ import type { BoxProps } from "./Box.types";
  * element. It is used to create a flexible layout for arranging child elements.
  * The `inline` prop determines whether the Box is displayed as an inline-block or block element
  */
-const Box = styled("div")<BoxProps>(({ inline }) => ({
-    display: inline ? "inline-block" : "block",
+const Box = styled("div")<BoxProps>(({ theme, inline }) => ({
+    ...resolveResponsiveMerge(theme, { inline }, ({ inline: i }) => ({
+        display: i ? "inline-block" : "block",
+    })),
 }));
 
 Box.displayName = "Box";

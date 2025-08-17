@@ -1,15 +1,22 @@
 import styled from "@styled";
-import type { Color, ColorLike, Orientation, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Orientation,
+    Responsive,
+    Variant,
+} from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { ButtonGroupContext } from "./ButtonGroup.context";
 import { resolveButtonGroupStyles } from "./ButtonGroup.helpers";
 import type { ButtonGroupProps } from "./ButtonGroup.types";
 
 const ButtonGroupRoot = styled("div")<{
-    orientation: Orientation;
-    spacing: number;
-    color?: Color | ColorLike;
-    variant?: Variant;
-    separatorColor?: Color | ColorLike;
+    orientation: Responsive<Orientation>;
+    spacing: Responsive<number>;
+    color?: Responsive<Color | ColorLike>;
+    variant?: Responsive<Variant>;
+    separatorColor?: Responsive<Color | ColorLike>;
     disabled?: boolean;
 }>(
     ({
@@ -25,22 +32,31 @@ const ButtonGroupRoot = styled("div")<{
         flexWrap: "wrap",
         flexDirection: orientation === "vertical" ? "column" : "row",
         alignItems: "stretch",
-        ...(spacing > 0 && { gap: spacing }),
+        ...resolveResponsiveMerge(theme, { spacing }, ({ spacing: gap }) =>
+            gap > 0 ? { gap } : {},
+        ),
         ...(disabled && {
             pointerEvents: "none",
             opacity: 0.5,
             cursor: "not-allowed",
         }),
 
-        "& > button": spacing === 0 && {
-            ...resolveButtonGroupStyles(
-                theme,
-                orientation,
-                color,
-                variant,
-                separatorColor,
-            ),
-        },
+        ...resolveResponsiveMerge(
+            theme,
+            { spacing, orientation, color, variant, separatorColor },
+            ({
+                spacing: gap,
+                orientation: o,
+                color: c,
+                variant: v,
+                separatorColor: sc,
+            }) => ({
+                ...(gap > 0 ? { gap } : {}),
+                ...(gap === 0 && {
+                    "& > button": resolveButtonGroupStyles(theme, o, c, v, sc),
+                }),
+            }),
+        ),
     }),
 );
 
@@ -79,7 +95,7 @@ const ButtonGroup = ({
             <ButtonGroupRoot
                 spacing={spacing}
                 orientation={orientation}
-                color={color}
+                color={color as string}
                 variant={variant}
                 separatorColor={separatorColor}
             >

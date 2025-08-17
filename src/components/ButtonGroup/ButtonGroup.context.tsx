@@ -1,10 +1,17 @@
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import { createContext } from "react";
 
 export interface ButtonGroupContextProps {
-    color?: Color | ColorLike;
-    variant?: Variant;
-    size?: Size | SizeValue | number;
+    color?: Responsive<Color | ColorLike>;
+    variant?: Responsive<Variant>;
+    size?: Responsive<Size | SizeValue | number>;
     disabled?: boolean;
     loading?: boolean;
 }

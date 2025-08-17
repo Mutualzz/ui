@@ -1,23 +1,29 @@
 import styled from "@styled";
+import type { Responsive } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { type ChangeEvent, useState } from "react";
 import { RadioGroupContext } from "./RadioGroup.context";
 import type { RadioGroupProps } from "./RadioGroup.types";
 
-const RadioGroupWrapper = styled("div")<{ row?: boolean }>(({ row }) => ({
-    display: "inline-flex",
-    flexDirection: row ? "row" : "column",
-    ...(row
-        ? {
-              "& > * + *": {
-                  marginLeft: "0.5rem",
-              },
-          }
-        : {
-              "& > * + *": {
-                  marginTop: "0.5rem",
-              },
-          }),
-}));
+const RadioGroupWrapper = styled("div")<{ row?: Responsive<boolean> }>(
+    ({ theme, row }) => ({
+        display: "inline-flex",
+        ...resolveResponsiveMerge(theme, { row }, ({ row: isRow }) => ({
+            flexDirection: isRow ? "row" : "column",
+            ...(isRow
+                ? {
+                      "& > * + *": {
+                          marginLeft: "0.5rem",
+                      },
+                  }
+                : {
+                      "& > * + *": {
+                          marginTop: "0.5rem",
+                      },
+                  }),
+        })),
+    }),
+);
 
 RadioGroupWrapper.displayName = "RadioGroupButtonWrapper";
 

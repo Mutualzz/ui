@@ -1,5 +1,6 @@
 import styled from "@styled";
-import { type Size, type SizeValue } from "@ui-types";
+import { type Responsive, type Size, type SizeValue } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useContext, useState, type ChangeEvent, type Ref } from "react";
 import { CheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
 import {
@@ -22,7 +23,9 @@ const CheckboxWrapper = styled("label")<Omit<CheckboxProps, "value">>(
             pointerEvents: "none",
             cursor: "not-allowed",
         }),
-        ...resolveCheckboxSize(theme, size),
+        ...resolveResponsiveMerge(theme, { size }, ({ size: s }) =>
+            resolveCheckboxSize(theme, s),
+        ),
     }),
 );
 
@@ -60,24 +63,35 @@ const CheckboxBox = styled("span")<Omit<CheckboxProps, "value">>(({
         padding: 0,
     };
 
-    const variantStyle = resolveCheckboxStyles(theme, color, checked)[variant];
+    // const variantStyles = resolveCheckboxStyles(theme, color, checked)[variant];
+
+    const variantStyles = resolveResponsiveMerge(
+        theme,
+        {
+            color,
+            variant,
+        },
+        ({ color: c, variant: v }) =>
+            resolveCheckboxStyles(theme, c, checked)[v],
+    );
+
+    const checkedStyles = resolveResponsiveMerge(
+        theme,
+        {
+            color,
+            variant,
+        },
+        ({ color: c, variant: v }) => resolveCheckboxStyles(theme, c, true)[v],
+    );
 
     return {
         ...base,
-        ...variantStyle,
+        ...variantStyles,
 
-        'input[type="checkbox"]:hover + &': resolveCheckboxStyles(
-            theme,
-            color,
-            true,
-        )[variant],
-        'input[type="checkbox"]:active + &': resolveCheckboxStyles(
-            theme,
-            color,
-            true,
-        )[variant],
+        'input[type="checkbox"]:hover + &': checkedStyles,
+        'input[type="checkbox"]:active + &': checkedStyles,
         'input[type="checkbox"]:focus-visible + &': {
-            boxShadow: `0 0 0 3px ${resolveCheckboxStyles(theme, color, true).solid.backgroundColor}`,
+            boxShadow: `0 0 0 3px ${checkedStyles.backgroundColor}`,
             outline: "none",
         },
         "&::before": {
@@ -89,12 +103,9 @@ const CheckboxBox = styled("span")<Omit<CheckboxProps, "value">>(({
             height: "0.5em",
             transform: "translate(-50%, -50%)",
             opacity: checked ? 1 : 0,
-            transition: "opacity 0.2s ease",
         },
     };
 });
-
-CheckboxBox.displayName = "CheckboxBox";
 
 const CheckboxLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
     ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
@@ -102,18 +113,20 @@ const CheckboxLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
 
 CheckboxLabel.displayName = "CheckboxLabel";
 
-const IconWrapper = styled("span")<{ size?: Size | SizeValue | number }>(
-    ({ theme, size = "md" }) => ({
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        ...resolveIconScaling(theme, size),
-        "& > *": {
-            width: "100%",
-            height: "100%",
-        },
-    }),
-);
+const IconWrapper = styled("span")<{
+    size?: Responsive<Size | SizeValue | number>;
+}>(({ theme, size = "md" }) => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& > *": {
+        width: "100%",
+        height: "100%",
+    },
+    ...resolveResponsiveMerge(theme, { size }, ({ size: s }) =>
+        resolveIconScaling(theme, s),
+    ),
+}));
 
 IconWrapper.displayName = "IconWrapper";
 
@@ -192,7 +205,7 @@ const Checkbox = (
             {rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
             <CheckboxBox
                 aria-checked={isChecked}
-                color={color}
+                color={color as string}
                 variant={variant}
                 checked={isChecked}
                 disabled={disabled}

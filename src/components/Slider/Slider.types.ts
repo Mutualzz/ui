@@ -1,4 +1,11 @@
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type {
     ChangeEvent,
     InputHTMLAttributes,
@@ -27,7 +34,13 @@ export type SliderValueLabelDisplay = "off" | "on" | "auto";
 export interface SliderProps
     extends Omit<
         InputHTMLAttributes<HTMLInputElement>,
-        "size" | "step" | "onChange" | "value" | "defaultValue" | "type"
+        | "size"
+        | "step"
+        | "onChange"
+        | "value"
+        | "defaultValue"
+        | "type"
+        | "color"
     > {
     /**
      * Slider color or color-like value.
@@ -37,7 +50,7 @@ export interface SliderProps
      * @default "primary"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * Slider size.
      * This can be a predefined size like "sm", "md", "lg", or a custom number.
@@ -48,7 +61,7 @@ export interface SliderProps
      * @max 28
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
     /**
      * Slider variant.
      * This can be a predefined variant like "solid", "outlined", "soft" or "plain".
@@ -57,7 +70,7 @@ export interface SliderProps
      * @default "solid"
      * @example "solid", "outlined", "soft", "plain"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
 
     /**
      * Whether the slider is disabled.
@@ -73,7 +86,7 @@ export interface SliderProps
      * @default "horizontal"
      * @example "horizontal", "vertical"
      */
-    orientation?: SliderOrientation;
+    orientation?: Responsive<SliderOrientation>;
 
     /**
      * Minimum value of the slider.
@@ -133,7 +146,7 @@ export interface SliderProps
      * @default "off"
      * @example "off", "on", "auto"
      */
-    valueLabelDisplay?: SliderValueLabelDisplay;
+    valueLabelDisplay?: Responsive<SliderValueLabelDisplay>;
     /**
      * The format for displaying the value label.
      */

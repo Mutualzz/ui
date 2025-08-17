@@ -2,31 +2,32 @@ import type { BoxProps } from "@components/Box/Box.types";
 import {
     type Color,
     type ColorLike,
+    type Responsive,
     type TypographyColor,
     type Variant,
 } from "@ui-types";
 
 export type PaperVariant = Variant | "elevation";
 
-export interface PaperProps extends BoxProps {
+export interface PaperProps extends Omit<BoxProps, "color"> {
     /**
      * The color of the Paper component.
      * Can be a color name or a color value.
      * @default "neutral"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The text color of the Paper component.
      * Can be a color name or a color value.
      * @default "inherit"
      */
-    textColor?: TypographyColor | ColorLike | "inherit";
+    textColor?: Responsive<TypographyColor | ColorLike | "inherit">;
     /**
      * The variant of the Paper component.
      * Can be "elevation", "solid", "outlined", "plain", or "soft".
      * @default "elevation"
      */
-    variant?: PaperVariant;
+    variant?: Responsive<PaperVariant>;
 
     /**
      * Elevation level for the Paper component.
@@ -34,5 +35,5 @@ export interface PaperProps extends BoxProps {
      * It determines the shadow and background color.
      * @default 0
      */
-    elevation?: number;
+    elevation?: Responsive<number>;
 }

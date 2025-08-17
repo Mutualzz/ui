@@ -2,6 +2,7 @@ import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper"
 import { Portal } from "@components/Portal/Portal";
 import { Typography } from "@components/Typography/Typography";
 import styled from "@styled";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     forwardRef,
     useCallback,
@@ -26,8 +27,14 @@ const SelectWrapper = styled("div")<SelectProps>(
         variant = "solid",
         disabled,
     }) => ({
-        ...resolveSelectSize(theme, size),
-        ...resolveSelectStyles(theme, color)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            { color, size, variant },
+            ({ color: c, variant: v, size: s }) => ({
+                ...resolveSelectSize(theme, s),
+                ...resolveSelectStyles(theme, c)[v],
+            }),
+        ),
 
         display: "flex",
         alignItems: "center",
@@ -124,7 +131,13 @@ const SelectContent = styled("div")<
         isOpen,
         portalPosition,
     }) => ({
-        ...resolveSelectContentStyles(theme, color)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            { color, variant },
+            ({ color: c, variant: v }) => ({
+                ...resolveSelectContentStyles(theme, c)[v],
+            }),
+        ),
         position: "fixed",
         paddingBlock: 4,
 
@@ -410,7 +423,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             >
                 <SelectWrapper
                     ref={selectRef}
-                    color={color}
+                    color={color as string}
                     size={size}
                     variant={variant}
                     disabled={disabled}
@@ -461,7 +474,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                         <Portal>
                             <SelectContent
                                 ref={selectContentRef}
-                                color={color}
+                                color={color as string}
                                 variant={variant}
                                 isOpen={isOpen}
                                 role="listbox"

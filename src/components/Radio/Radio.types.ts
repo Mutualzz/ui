@@ -1,6 +1,7 @@
 import {
     type Color,
     type ColorLike,
+    type Responsive,
     type Size,
     type SizeValue,
     type Variant,
@@ -14,7 +15,7 @@ import {
 export interface RadioProps
     extends Omit<
         InputHTMLAttributes<HTMLInputElement>,
-        "size" | "type" | "value"
+        "size" | "type" | "value" | "color"
     > {
     /**
      * Whether the radio is checked. If not provided, it will be controlled internally.
@@ -46,7 +47,7 @@ export interface RadioProps
      * @default "primary"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * The variant of the radio button.
      * This defines the visual style of the radio button.
@@ -54,7 +55,7 @@ export interface RadioProps
      * @default "solid"
      * @example "solid", "outlined", "soft", "plain"
      */
-    variant?: Variant;
+    variant?: Responsive<Variant>;
     /**
      * The size of the radio button.
      * This can be a predefined size or a custom size value.
@@ -64,7 +65,7 @@ export interface RadioProps
      * @max 28
      * @example "sm", "md", "lg", 20
      */
-    size?: Size | SizeValue | number;
+    size?: Responsive<Size | SizeValue | number>;
 
     /**
      * Unchecked icon to display when the radio is not checked.

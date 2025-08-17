@@ -1,5 +1,6 @@
 import styled from "@styled";
-import type { Orientation } from "@ui-types";
+import type { Orientation, Responsive } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useContext } from "react";
 import { DecoratorWrapper } from "../DecoratorWrapper/DecoratorWrapper";
 import { ListContext } from "../List/List.context";
@@ -13,7 +14,7 @@ import type { ListItemButtonProps } from "./ListItemButton.types";
 export const ListItemButtonRoot = styled("button")<
     ListItemButtonProps & {
         nesting: number;
-        orientation?: Orientation;
+        orientation?: Responsive<Orientation>;
     }
 >(({ theme, size = "md", color = "primary", variant = "solid" }) => ({
     width: "100%",
@@ -25,11 +26,21 @@ export const ListItemButtonRoot = styled("button")<
     boxSizing: "border-box",
     cursor: "pointer",
     transition: "all 0.3s ease",
-    ...resolveListItemButtonSize(theme, size),
-    ...resolveListItemButtonStyles(theme, color)[variant],
-    ...(variant === "outlined" && {
-        border: "none",
-    }),
+    ...resolveResponsiveMerge(
+        theme,
+        {
+            color,
+            variant,
+            size,
+        },
+        ({ color: c, variant: v, size: s }) => ({
+            ...resolveListItemButtonSize(theme, s),
+            ...resolveListItemButtonStyles(theme, c)[v],
+            ...(v === "outlined" && {
+                border: "none",
+            }),
+        }),
+    ),
 }));
 
 const ListItemButtonContent = styled("span")({
@@ -62,7 +73,7 @@ export const ListItemButton = (props: ListItemButtonProps) => {
     return (
         <ListItemButtonRoot
             nesting={nesting}
-            color={colorOverride ?? color}
+            color={(colorOverride ?? color) as string}
             variant={variantOverride ?? variant}
             size={sizeOverride ?? size}
             orientation={orientation}

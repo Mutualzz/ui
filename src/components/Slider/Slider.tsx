@@ -1,6 +1,14 @@
 import styled from "@styled";
-import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import { darken } from "@utils";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { formatHex8 } from "culori";
 import {
     useCallback,
@@ -26,104 +34,139 @@ import type {
 } from "./Slider.types";
 
 const SliderRoot = styled("div")<{
-    orientation: SliderOrientation;
+    orientation: Responsive<SliderOrientation>;
     disabled?: boolean;
-}>(({ orientation, disabled }) => ({
+}>(({ theme, orientation, disabled }) => ({
     position: "relative",
     display: "inline-block",
     boxSizing: "border-box",
-    flexDirection: orientation === "vertical" ? "column" : "row",
     alignItems: "center",
     justifyContent: "center",
     opacity: disabled ? 0.5 : 1,
     cursor: disabled ? "not-allowed" : "pointer",
     touchAction: "none",
     userSelect: "none",
-    ...(orientation === "horizontal"
-        ? {
-              width: "100%",
-          }
-        : {
-              height: "100%",
-          }),
+    ...resolveResponsiveMerge(
+        theme,
+        { orientation },
+        ({ orientation: ori }) => ({
+            ...(ori === "horizontal"
+                ? {
+                      width: "100%",
+                  }
+                : {
+                      height: "100%",
+                  }),
+            flexDirection: orientation === "vertical" ? "column" : "row",
+        }),
+    ),
 }));
 
 SliderRoot.displayName = "SliderRoot";
 
 const TrackContainer = styled("div")<{
-    orientation: SliderOrientation;
-    size: Size | SizeValue | number;
+    orientation: Responsive<SliderOrientation>;
+    size: Responsive<Size | SizeValue | number>;
 }>(({ theme, orientation, size }) => {
-    const trackThickness = resolveSliderTrackThickness(theme, size);
+    const trackStyles = resolveResponsiveMerge(
+        theme,
+        {
+            orientation,
+            size,
+        },
+        ({ orientation: ori, size: s }) => {
+            const trackThickness = resolveSliderTrackThickness(theme, s);
+            return {
+                ...(ori === "horizontal"
+                    ? { height: trackThickness, width: "100%" }
+                    : { width: trackThickness, height: "100%" }),
+            };
+        },
+    );
 
     return {
         position: "relative",
         flexGrow: 1,
         borderRadius: 9999,
-        ...(orientation === "horizontal"
-            ? { height: trackThickness, width: "100%" }
-            : { width: trackThickness, height: "100%" }),
+        ...trackStyles,
     };
 });
 
 TrackContainer.displayName = "TrackContainer";
 
 const TrackSegment = styled("div")<{
-    orientation: SliderOrientation;
+    orientation: Responsive<SliderOrientation>;
     start: number;
     end: number;
 }>(({ theme, orientation, start, end }) => ({
+    ...resolveResponsiveMerge(
+        theme,
+        { orientation },
+        ({ orientation: ori }) => ({
+            ...(ori === "horizontal"
+                ? {
+                      left: `${start}%`,
+                      width: `${end - start}%`,
+                      top: 0,
+                      height: "100%",
+                  }
+                : {
+                      bottom: `${start}%`,
+                      height: `${end - start}%`,
+                      left: 0,
+                      width: "100%",
+                  }),
+        }),
+    ),
     background: formatHex8(darken(theme.colors.neutral, 0.25)),
     position: "absolute",
     borderRadius: 9999,
-    ...(orientation === "horizontal"
-        ? {
-              left: `${start}%`,
-              width: `${end - start}%`,
-              top: 0,
-              height: "100%",
-          }
-        : {
-              bottom: `${start}%`,
-              height: `${end - start}%`,
-              left: 0,
-              width: "100%",
-          }),
 }));
 
 TrackSegment.displayName = "TrackSegment";
 
 const TrackSegmentFilled = styled("div")<{
-    color: Color | ColorLike;
-    variant: Variant;
-    orientation: SliderOrientation;
+    color: Responsive<Color | ColorLike>;
+    variant: Responsive<Variant>;
+    orientation: Responsive<SliderOrientation>;
     start: number;
     end: number;
     hovered: boolean;
 }>(({ theme, color, variant, orientation, start, end, hovered }) => ({
     position: "absolute",
     borderRadius: 9999,
-    ...(orientation === "horizontal"
-        ? {
-              left: `${start}%`,
-              width: `${end - start}%`,
-              top: 0,
-              height: "100%",
-          }
-        : {
-              bottom: `${start}%`,
-              height: `${end - start}%`,
-              left: 0,
-              width: "100%",
-          }),
-    ...resolveSliderTrackStyles(theme, color, hovered)[variant],
+
+    ...resolveResponsiveMerge(
+        theme,
+        {
+            color,
+            variant,
+            orientation,
+        },
+        ({ color: c, variant: v, orientation: ori }) => ({
+            ...(ori === "horizontal"
+                ? {
+                      left: `${start}%`,
+                      width: `${end - start}%`,
+                      top: 0,
+                      height: "100%",
+                  }
+                : {
+                      bottom: `${start}%`,
+                      height: `${end - start}%`,
+                      left: 0,
+                      width: "100%",
+                  }),
+            ...resolveSliderTrackStyles(theme, c, hovered)[v],
+        }),
+    ),
 }));
 
 TrackSegmentFilled.displayName = "TrackSegmentFilled";
 
 const Tick = styled("div")<{
-    orientation: SliderOrientation;
-    size: Size | SizeValue | number;
+    orientation: Responsive<SliderOrientation>;
+    size: Responsive<Size | SizeValue | number>;
     percent: number;
 }>(({ theme, percent, orientation, size }) => {
     const minClamp = 1; // percentage (in % of 100%)
@@ -137,30 +180,39 @@ const Tick = styled("div")<{
         backgroundColor: theme.colors.common.white,
         borderRadius: "50%",
         transition: "all 0.3s ease",
-        ...resolveSliderTickSize(theme, size),
 
-        ...(orientation === "horizontal"
-            ? {
-                  left: `${clampedPercent}%`,
-                  top: "50%",
-                  transform: `translate(${shift}, -50%)`,
-              }
-            : {
-                  bottom: `${clampedPercent}%`,
-                  left: "50%",
-                  transform: "translate(-50%, 50%)",
-              }),
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                size,
+                orientation,
+            },
+            ({ size: s, orientation: ori }) => ({
+                ...resolveSliderTickSize(theme, s),
+                ...(ori === "horizontal"
+                    ? {
+                          left: `${clampedPercent}%`,
+                          top: "50%",
+                          transform: `translate(${shift}, -50%)`,
+                      }
+                    : {
+                          bottom: `${clampedPercent}%`,
+                          left: "50%",
+                          transform: "translate(-50%, 50%)",
+                      }),
+            }),
+        ),
     };
 });
 
 Tick.displayName = "Tick";
 
 const Thumb = styled("div")<{
-    color: Color | ColorLike;
-    variant: Variant;
-    size: Size | SizeValue | number;
+    color: Responsive<Color | ColorLike>;
+    variant: Responsive<Variant>;
+    size: Responsive<Size | SizeValue | number>;
     percent: number;
-    orientation: SliderOrientation;
+    orientation: Responsive<SliderOrientation>;
     hovered: boolean;
 }>(
     ({
@@ -179,24 +231,46 @@ const Thumb = styled("div")<{
         transform: "translate(-50%, -50%)",
         zIndex: 1,
         transition: "all 0.3s ease",
-        ...(orientation === "horizontal"
-            ? { left: `${percent}%`, top: "50%" }
-            : { top: `${100 - percent}%`, left: "50%" }),
-        ...resolveSliderThumbStyles(theme, color, hovered)[variant],
-        ...resolveSliderThumbSize(theme, size),
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                color,
+                variant,
+                orientation,
+                size,
+            },
+            ({ color: c, variant: v, orientation: ori, size: s }) => ({
+                ...(ori === "horizontal"
+                    ? { left: `${percent}%`, top: "50%" }
+                    : { top: `${100 - percent}%`, left: "50%" }),
+                ...resolveSliderThumbStyles(theme, c, hovered)[v],
+                ...resolveSliderThumbSize(theme, s),
+            }),
+        ),
     }),
 );
 
 Thumb.displayName = "Thumb";
 
 const ValueLabel = styled("span")<{
-    orientation: SliderOrientation;
+    orientation: Responsive<SliderOrientation>;
     percent: number;
-    size: Size | SizeValue | number;
+    size: Responsive<Size | SizeValue | number>;
 }>(({ theme, orientation, percent, size }) => {
-    const thumbSize = Number(resolveSliderThumbSize(theme, size).width);
+    const { fontSize, thumbSize, resolvedOrientation } = resolveResponsiveMerge(
+        theme,
+        {
+            size,
+            orientation,
+        },
+        ({ size: s, orientation: ori }) => ({
+            fontSize: resolveSliderLabelSize(theme, s),
+            thumbSize: Number(resolveSliderThumbSize(theme, s).width),
+            resolvedOrientation: ori,
+        }),
+    );
+
     const labelOffset = thumbSize + 20;
-    const fontSize = resolveSliderLabelSize(theme, size);
     const clampPercent = Math.min(Math.max(percent, 0), 100);
 
     return {
@@ -206,12 +280,16 @@ const ValueLabel = styled("span")<{
         flexDirection: "column",
         alignItems: "center",
         transform:
-            orientation === "horizontal"
+            resolvedOrientation === "horizontal"
                 ? "translate(-50%, 0)"
                 : "translate(-150%, 50%)",
-        left: orientation === "horizontal" ? `${clampPercent}%` : 0,
-        top: orientation === "horizontal" ? `-${labelOffset}px` : undefined,
-        bottom: orientation === "vertical" ? `${clampPercent}%` : undefined,
+        left: resolvedOrientation === "horizontal" ? `${clampPercent}%` : 0,
+        top:
+            resolvedOrientation === "horizontal"
+                ? `-${labelOffset}px`
+                : undefined,
+        bottom:
+            resolvedOrientation === "vertical" ? `${clampPercent}%` : undefined,
         fontSize,
         color: theme.typography.colors.primary,
         backgroundColor: theme.colors.neutral,
@@ -228,7 +306,7 @@ const ValueLabel = styled("span")<{
             position: "absolute",
             width: 0,
             height: 0,
-            ...(orientation === "horizontal"
+            ...(resolvedOrientation === "horizontal"
                 ? {
                       top: "100%",
                       left: "50%",
@@ -252,28 +330,34 @@ const ValueLabel = styled("span")<{
 ValueLabel.displayName = "ValueLabel";
 
 const MarkLabel = styled("span")<{
-    orientation: SliderOrientation;
+    orientation: Responsive<SliderOrientation>;
     percent: number;
-    size: Size | SizeValue | number;
+    size: Responsive<Size | SizeValue | number>;
 }>(({ theme, orientation, percent, size }) => ({
     position: "absolute",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 4,
-    left: orientation === "horizontal" ? `${percent}%` : "100%",
-    top: orientation === "vertical" ? `${100 - percent}%` : undefined,
-    transform:
-        orientation === "horizontal"
-            ? "translate(-50%, 0.75rem)"
-            : "translate(0.75rem, -50%)",
     color: theme.typography.colors.accent,
     whiteSpace: "nowrap",
-    fontSize: resolveSliderLabelSize(theme, size),
     backgroundColor: "transparent",
     pointerEvents: "none",
     userSelect: "none",
     transition: "all 0.3s ease",
+    ...resolveResponsiveMerge(
+        theme,
+        { size, orientation },
+        ({ size: s, orientation: ori }) => ({
+            fontSize: resolveSliderLabelSize(theme, s),
+            transform:
+                ori === "horizontal"
+                    ? "translate(-50%, 0.75rem)"
+                    : "translate(0.75rem, -50%)",
+            left: ori === "horizontal" ? `${percent}%` : "100%",
+            top: ori === "vertical" ? `${100 - percent}%` : undefined,
+        }),
+    ),
 }));
 
 MarkLabel.displayName = "MarkLabel";
@@ -512,7 +596,7 @@ const Slider = ({
                 {isRange ? (
                     <>
                         <TrackSegmentFilled
-                            color={color}
+                            color={color as string}
                             variant={variant}
                             start={0}
                             end={sortedPercents[0]}
@@ -525,7 +609,7 @@ const Slider = ({
                             orientation={orientation}
                         />
                         <TrackSegmentFilled
-                            color={color}
+                            color={color as string}
                             variant={variant}
                             start={sortedPercents[1]}
                             end={100}
@@ -536,7 +620,7 @@ const Slider = ({
                 ) : (
                     <>
                         <TrackSegmentFilled
-                            color={color}
+                            color={color as string}
                             variant={variant}
                             start={0}
                             end={sortedPercents[0]}
@@ -578,7 +662,7 @@ const Slider = ({
                 {currentValue.map((val, i) => (
                     <>
                         <Thumb
-                            color={color}
+                            color={color as string}
                             variant={variant}
                             size={size}
                             key={i}

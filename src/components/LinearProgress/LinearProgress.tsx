@@ -3,6 +3,7 @@ import { useTheme } from "../../hooks/useTheme";
 import styled from "@styled";
 import type { Variant } from "@ui-types";
 import { resolveColor } from "@utils/resolveColor";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     resolveLinearProgressLength,
     resolveLinearProgressStyles,
@@ -100,12 +101,28 @@ const LinearProgress = ({
 }: LinearProgressProps) => {
     const { theme } = useTheme();
 
-    const height = resolveLinearProgressThickness(theme, thickness);
-    const width = resolveLinearProgressLength(theme, length);
-
-    const background = resolveLinearProgressStyles(theme, color)[variant];
-
-    const sharedColor = resolveColor(color, theme);
+    const {
+        width,
+        height,
+        background,
+        sharedColor,
+        variant: resolvedVariant,
+    } = resolveResponsiveMerge(
+        theme,
+        {
+            thickness,
+            length,
+            color,
+            variant,
+        },
+        ({ thickness: t, length: l, color: c, variant: v }) => ({
+            thickness: resolveLinearProgressThickness(theme, t),
+            length: resolveLinearProgressLength(theme, l),
+            background: resolveLinearProgressStyles(theme, c)[v],
+            sharedColor: resolveColor(c, theme),
+            variant: v,
+        }),
+    );
 
     return (
         <ProgressWrapper
@@ -113,7 +130,7 @@ const LinearProgress = ({
             height={height}
             background={background}
             outlinedColor={sharedColor}
-            variant={variant}
+            variant={resolvedVariant}
         >
             {determinate ? (
                 <DeterminateBar barColor={sharedColor} value={value} />

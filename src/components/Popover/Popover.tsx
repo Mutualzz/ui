@@ -2,7 +2,8 @@ import { Paper } from "@components/Paper/Paper";
 import { Portal } from "@components/Portal/Portal";
 import { Stack } from "@components/Stack/Stack";
 import styled from "@styled";
-import type { Size, SizeValue } from "@ui-types";
+import type { Responsive, Size, SizeValue } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useLayoutEffect, useRef, useState } from "react";
 import { resolvePopoverSize, resolvePopoverStyles } from "./Popover.helpers";
 import type { PopoverProps } from "./Popover.types";
@@ -14,13 +15,11 @@ const PopoverRoot = styled("div")({
 
 const PopoverTrigger = styled(Stack)();
 
-// TODO: Finish the styling for colors (add helpers for it)
-
 const PopoverContent = styled(Paper)<{
     usePortal?: boolean;
     top?: number;
     left?: number;
-    size: Size | SizeValue | number;
+    size: Responsive<Size | SizeValue | number>;
 }>(
     ({
         theme,
@@ -43,8 +42,26 @@ const PopoverContent = styled(Paper)<{
         borderRadius: 4,
         zIndex: theme.zIndex.tooltip,
         whiteSpace: "nowrap",
-        ...resolvePopoverSize(theme, size),
-        ...resolvePopoverStyles(theme, color, textColor, elevation)[variant],
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                color,
+                textColor,
+                elevation,
+                variant,
+                size,
+            },
+            ({
+                color: c,
+                textColor: tc,
+                elevation: e,
+                size: s,
+                variant: v,
+            }) => ({
+                ...resolvePopoverSize(theme, s),
+                ...resolvePopoverStyles(theme, c, tc, e)[v],
+            }),
+        ),
     }),
 );
 
@@ -108,7 +125,7 @@ const Popover = ({
         <PopoverContent
             {...props}
             ref={contentRef}
-            color={color}
+            color={color as string}
             variant={variant}
             size={size}
             usePortal={usePortal}

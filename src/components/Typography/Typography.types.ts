@@ -1,10 +1,15 @@
-import type { Color, ColorLike, TypographyLevel, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    SystemProps,
+    TypographyLevel,
+    Variant,
+} from "@ui-types";
 import type { Properties } from "csstype";
-import { type HTMLAttributes } from "react";
 
 export type TypographyVariant = Variant | "none";
 
-export interface TypographyProps extends HTMLAttributes<HTMLSpanElement> {
+export interface TypographyProps extends SystemProps<HTMLSpanElement> {
     /**
      * Typography Level.
      * This can be a predefined level like "h1", "h2", and etc.

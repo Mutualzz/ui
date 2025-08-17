@@ -1,7 +1,8 @@
 import styled from "@styled";
 
 import { SelectContext } from "@components/Select/Select.context";
-import type { Size, SizeValue } from "@ui-types";
+import type { Responsive, Size, SizeValue } from "@ui-types";
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { useContext } from "react";
 import { resolveOptionSize, resolveOptionStyles } from "./Option.helpers";
 import type { OptionProps } from "./Option.types";
@@ -9,7 +10,7 @@ import type { OptionProps } from "./Option.types";
 const OptionWrapper = styled("div")<
     Omit<OptionProps, "value"> & {
         isSelected: boolean;
-        size: Size | SizeValue | number;
+        size: Responsive<Size | SizeValue | number>;
     }
 >(
     ({
@@ -20,8 +21,19 @@ const OptionWrapper = styled("div")<
         isSelected,
         size,
     }) => ({
-        ...resolveOptionStyles(theme, color, isSelected)[variant],
-        ...resolveOptionSize(theme, size),
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                color,
+                variant,
+                size,
+            },
+            ({ color: c, variant: v, size: s }) => ({
+                ...resolveOptionStyles(theme, c, isSelected)[v],
+                ...resolveOptionSize(theme, s),
+            }),
+        ),
+
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.5 : 1,
         userSelect: "none",
@@ -55,7 +67,7 @@ const Option = ({
         <OptionWrapper
             role="option"
             aria-selected={isSelected}
-            color={color}
+            color={color as string}
             variant={variant}
             size={size}
             isSelected={isSelected}
