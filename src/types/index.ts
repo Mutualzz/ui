@@ -70,7 +70,7 @@ export type ThemeMode = "light" | "dark" | "system";
 
 export type AllowNumber<T> = T | number;
 
-export type SystemProps<T> = HTMLAttributes<T> &
+export type SystemProps<T = HTMLElement> = HTMLAttributes<T> &
     HTMLBorderProps &
     HTMLDisplayProps &
     HTMLFlexboxProps &
