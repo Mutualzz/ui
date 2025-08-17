@@ -13,7 +13,7 @@ import { type PaperProps } from "./Paper.types";
 const Paper = styled("div")<PaperProps>(
     ({
         theme,
-        display,
+        display = "flex",
         variant = "elevation",
         elevation = 0,
         color = "neutral",
