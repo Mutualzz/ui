@@ -91,6 +91,7 @@ export * from "./themes";
 
 // Utils
 export * from "./utils";
+export * from "./utils/responsive";
 
 // Misc
 export * from "./CssBaseline";
