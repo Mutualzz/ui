@@ -254,7 +254,7 @@ const Modal = (
                     if (typeof ref === "function") ref(node);
                     else if (ref) ref.current = node;
                 }}
-                {...props}
+                {...(props as any)}
             >
                 {!hideBackdrop &&
                     (disableBackdropClick ? (
