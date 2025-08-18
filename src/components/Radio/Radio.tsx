@@ -11,7 +11,7 @@ import {
 } from "./Radio.helpers";
 import type { RadioProps } from "./Radio.types";
 
-const RadioWrapper = styled("label")<RadioProps>(
+const RadioWrapper = styled("div")<RadioProps>(
     ({ theme, disabled, size = "md" }) => ({
         position: "relative",
         display: "inline-flex",
@@ -56,7 +56,6 @@ const RadioControl = styled("span")<RadioProps>(({
         width: "1em",
         height: "1em",
         border: "1px solid currentColor",
-        boxSizing: "border-box" as const,
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
