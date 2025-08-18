@@ -27,6 +27,11 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                     color: theme.typography.colors.primary,
                 },
 
+                pre: {
+                    margin: 0,
+                    padding: 0,
+                },
+
                 "img, video, svg": {
                     maxWidth: "100%",
                     height: "auto",
