@@ -1,29 +1,43 @@
 import styled from "@styled";
-import type { Responsive } from "@ui-types";
+import type { Orientation, Responsive, Size, SizeValue } from "@ui-types";
+import { resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { type ChangeEvent, useState } from "react";
 import { CheckboxGroupContext } from "./CheckboxGroup.context";
 import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
-const CheckboxGroupWrapper = styled("div")<{ row?: Responsive<boolean> }>(
-    ({ theme, row }) => ({
-        display: "inline-flex",
-        ...resolveResponsiveMerge(theme, { row }, ({ row: isRow }) => ({
-            flexDirection: isRow ? "row" : "column",
-            ...(isRow
-                ? {
-                      "& > * + *": {
-                          marginLeft: "0.5rem",
-                      },
-                  }
-                : {
-                      "& > * + *": {
-                          marginTop: "0.5rem",
-                      },
-                  }),
-        })),
+export const baseSpacingMap: Record<Size, number> = {
+    sm: 4,
+    md: 8,
+    lg: 12,
+};
+
+const CheckboxGroupWrapper = styled("div")<{
+    orientation?: Responsive<Orientation>;
+    spacing?: Responsive<Size | SizeValue | number>;
+    disabled?: boolean;
+}>(({ theme, orientation, spacing = "md", disabled }) => ({
+    display: "inline-flex",
+    flexWrap: "wrap",
+    alignItems: "stretch",
+    ...(disabled && {
+        pointerEvents: "none",
+        opacity: 0.5,
+        cursor: "not-allowed",
     }),
-);
+    ...resolveResponsiveMerge(
+        theme,
+        { orientation, spacing },
+        ({ orientation: ori, spacing: sp }) => {
+            const resolvedSpacing = resolveSize(theme, sp, baseSpacingMap);
+
+            return {
+                flexDirection: ori === "horizontal" ? "row" : "column",
+                ...(resolvedSpacing > 0 && { gap: resolvedSpacing }),
+            };
+        },
+    ),
+}));
 
 CheckboxGroupWrapper.displayName = "CheckboxGroupWrapper";
 
@@ -41,7 +55,7 @@ const CheckboxGroup = ({
     defaultValue,
     onChange,
     disabled,
-    row,
+    spacing = 0,
     children,
 }: CheckboxGroupProps) => {
     const [internalValue, setInternalValue] = useState(defaultValue ?? []);
@@ -70,7 +84,9 @@ const CheckboxGroup = ({
                 disabled,
             }}
         >
-            <CheckboxGroupWrapper row={row}>{children}</CheckboxGroupWrapper>
+            <CheckboxGroupWrapper spacing={spacing}>
+                {children}
+            </CheckboxGroupWrapper>
         </CheckboxGroupContext.Provider>
     );
 };

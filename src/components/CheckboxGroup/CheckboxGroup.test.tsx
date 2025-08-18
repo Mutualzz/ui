@@ -73,9 +73,9 @@ describe("CheckboxGroup", () => {
         expect(getByLabelText("Option 2")).toBeDisabled();
     });
 
-    it("applies row layout when row prop is true", () => {
+    it("applies row layout when horizontal prop is not present", () => {
         const { container } = render(
-            <CheckboxGroup row>
+            <CheckboxGroup>
                 <Checkbox label="Option 1" value="option1" />
                 <Checkbox label="Option 2" value="option2" />
             </CheckboxGroup>,
@@ -84,9 +84,9 @@ describe("CheckboxGroup", () => {
         expect(container.firstChild).toHaveStyle("flex-direction: row");
     });
 
-    it("applies column layout when row prop is false", () => {
+    it("applies column layout when orientation prop is vertical", () => {
         const { container } = render(
-            <CheckboxGroup>
+            <CheckboxGroup orientation="vertical">
                 <Checkbox label="Option 1" value="option1" />
                 <Checkbox label="Option 2" value="option2" />
             </CheckboxGroup>,

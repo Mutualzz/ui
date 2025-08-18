@@ -1,7 +1,37 @@
-import type { Responsive } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Orientation,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { ChangeEvent, ReactNode } from "react";
 
 export interface CheckboxGroupProps {
+    /**
+     * The color of the button group, which can be a predefined color or a custom color.
+     * If not provided, the buttons will use their assigned colors.
+     *
+     * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
+     */
+    color?: Responsive<Color | ColorLike>;
+    /**
+     * The variant of the button group, which determines the style of the buttons.
+     * If not provided, the buttons will use their assigned variants.
+     *
+     * @example "solid", "outlined", "soft", "plain"
+     */
+    variant?: Responsive<Variant>;
+    /**
+     * The size of the buttons in the group, which can be a predefined size or a custom size in pixels.
+     * If not provided, the buttons will use their assigned sizes.
+     *
+     * @example "sm", "md", "lg", 20
+     */
+    size?: Responsive<Size | SizeValue | number>;
+
     /**
      * The name of the checkbox group.
      * This is used to group checkboxes together.
@@ -29,11 +59,13 @@ export interface CheckboxGroupProps {
      */
     disabled?: boolean;
     /**
-     * Makes the checkbox group into a row layout.
-     * When true, the checkboxes will be displayed in a row.
-     * When false, the checkboxes will be displayed in a column.
+     * Applies the orientation
+     * @default "horizontal"
      */
-    row?: Responsive<boolean>;
+    orientation?: Responsive<Orientation>;
+
+    spacing?: Responsive<Size | SizeValue | number>;
+
     /**
      * Checkbox items to render in the group.
      */
