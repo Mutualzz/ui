@@ -1,7 +1,13 @@
 import type { CSSObject, Theme } from "@emotion/react";
-import type { Color, ColorLike, Orientation, Variant } from "@ui-types";
+import type { Color, ColorLike, Orientation, Size, Variant } from "@ui-types";
 import { darken, resolveColor } from "@utils";
 import { formatHex8 } from "culori";
+
+export const baseSpacingMap: Record<Size, number> = {
+    sm: 4,
+    md: 8,
+    lg: 12,
+};
 
 export const resolveButtonGroupStyles = (
     theme: Theme,

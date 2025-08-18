@@ -4,16 +4,22 @@ import type {
     ColorLike,
     Orientation,
     Responsive,
+    Size,
+    SizeValue,
     Variant,
 } from "@ui-types";
+import { resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { ButtonGroupContext } from "./ButtonGroup.context";
-import { resolveButtonGroupStyles } from "./ButtonGroup.helpers";
+import {
+    baseSpacingMap,
+    resolveButtonGroupStyles,
+} from "./ButtonGroup.helpers";
 import type { ButtonGroupProps } from "./ButtonGroup.types";
 
 const ButtonGroupRoot = styled("div")<{
     orientation: Responsive<Orientation>;
-    spacing: Responsive<number>;
+    spacing: Responsive<Size | SizeValue | number>;
     color?: Responsive<Color | ColorLike>;
     variant?: Responsive<Variant>;
     separatorColor?: Responsive<Color | ColorLike>;
@@ -32,9 +38,6 @@ const ButtonGroupRoot = styled("div")<{
         flexWrap: "wrap",
         flexDirection: orientation === "vertical" ? "column" : "row",
         alignItems: "stretch",
-        ...resolveResponsiveMerge(theme, { spacing }, ({ spacing: gap }) =>
-            gap > 0 ? { gap } : {},
-        ),
         ...(disabled && {
             pointerEvents: "none",
             opacity: 0.5,
@@ -45,17 +48,27 @@ const ButtonGroupRoot = styled("div")<{
             theme,
             { spacing, orientation, color, variant, separatorColor },
             ({
-                spacing: gap,
+                spacing: sp,
                 orientation: o,
                 color: c,
                 variant: v,
                 separatorColor: sc,
-            }) => ({
-                ...(gap > 0 ? { gap } : {}),
-                ...(gap === 0 && {
-                    "& > button": resolveButtonGroupStyles(theme, o, c, v, sc),
-                }),
-            }),
+            }) => {
+                const resolvedSpacing = resolveSize(theme, sp, baseSpacingMap);
+
+                return {
+                    ...(resolvedSpacing > 0 && { gap: resolvedSpacing }),
+                    ...(resolvedSpacing === 0 && {
+                        "& > button": resolveButtonGroupStyles(
+                            theme,
+                            o,
+                            c,
+                            v,
+                            sc,
+                        ),
+                    }),
+                };
+            },
         ),
     }),
 );

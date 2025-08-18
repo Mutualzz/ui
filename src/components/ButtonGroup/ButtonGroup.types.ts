@@ -65,7 +65,7 @@ export interface ButtonGroupProps {
      * If not provided, the default spacing will be used.
      * @default 0
      */
-    spacing?: Responsive<number>;
+    spacing?: Responsive<Size | SizeValue | number>;
 
     /**
      * The children of the button group, which should be Button components.
