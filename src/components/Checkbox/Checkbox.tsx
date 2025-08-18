@@ -1,7 +1,13 @@
 import styled from "@styled";
 import { type Responsive, type Size, type SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useContext, useState, type ChangeEvent, type Ref } from "react";
+import {
+    useContext,
+    useRef,
+    useState,
+    type ChangeEvent,
+    type Ref,
+} from "react";
 import { CheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
 import {
     resolveCheckboxSize,
@@ -107,9 +113,14 @@ const CheckboxBox = styled("span")<Omit<CheckboxProps, "value">>(({
     };
 });
 
-const CheckboxLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
-    ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
-}));
+const CheckboxLabel = styled("span")<{ rtl?: boolean; disabled?: boolean }>(
+    ({ rtl, disabled }) => ({
+        ...(disabled && {
+            cursor: "not-allowed",
+        }),
+        ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
+    }),
+);
 
 CheckboxLabel.displayName = "CheckboxLabel";
 
@@ -162,6 +173,7 @@ const Checkbox = (
     const [uncontrolledChecked, setUncontrolledChecked] = useState(
         defaultChecked ?? false,
     );
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const isChecked =
         group && value
@@ -187,6 +199,12 @@ const Checkbox = (
         propOnChange?.(e);
     };
 
+    const handleWrapperClick = () => {
+        if (!disabled && inputRef.current) {
+            inputRef.current.click();
+        }
+    };
+
     const color = group?.color ?? colorProp ?? "neutral";
     const variant = group?.variant ?? variantProp ?? "solid";
     const size = group?.size ?? sizeProp ?? "md";
@@ -194,7 +212,14 @@ const Checkbox = (
     const disabled = group?.disabled ?? propDisabled;
 
     return (
-        <CheckboxWrapper disabled={disabled} size={size}>
+        <CheckboxWrapper
+            role="checkbox"
+            aria-checked={isChecked}
+            tabIndex={disabled ? -1 : 0}
+            disabled={disabled}
+            size={size}
+            onClick={handleWrapperClick}
+        >
             <HiddenCheckbox
                 type="checkbox"
                 name={name}
@@ -202,10 +227,21 @@ const Checkbox = (
                 checked={isChecked}
                 onChange={handleChange}
                 disabled={disabled}
-                ref={ref}
+                ref={(node) => {
+                    inputRef.current = node;
+                    if (typeof ref === "function") ref(node);
+                    else if (ref) ref.current = node;
+                }}
                 {...props}
+                css={{
+                    pointerEvents: "none",
+                }}
             />
-            {rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
+            {rtl && label && (
+                <CheckboxLabel disabled={disabled} rtl={rtl}>
+                    {label}
+                </CheckboxLabel>
+            )}
             <CheckboxBox
                 name={name}
                 role="checkbox"
@@ -256,7 +292,11 @@ const Checkbox = (
                     <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
                 ) : null}
             </CheckboxBox>
-            {!rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
+            {!rtl && label && (
+                <CheckboxLabel disabled={disabled} rtl={rtl}>
+                    {label}
+                </CheckboxLabel>
+            )}
         </CheckboxWrapper>
     );
 };

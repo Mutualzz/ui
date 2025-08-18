@@ -1,6 +1,12 @@
 import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
-import { type ChangeEvent, type Ref, useContext, useState } from "react";
+import {
+    type ChangeEvent,
+    type Ref,
+    useContext,
+    useRef,
+    useState,
+} from "react";
 
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { RadioGroupContext } from "../RadioGroup/RadioGroup.context";
@@ -93,9 +99,14 @@ const RadioControl = styled("span")<RadioProps>(({
 
 RadioControl.displayName = "RadioControl";
 
-const RadioLabel = styled("span")<{ rtl?: boolean }>(({ rtl }) => ({
-    ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
-}));
+const RadioLabel = styled("span")<{ rtl?: boolean; disabled?: boolean }>(
+    ({ rtl, disabled }) => ({
+        ...(disabled && {
+            cursor: "not-allowed",
+        }),
+        ...(rtl ? { marginRight: "0.5em" } : { marginLeft: "0.5em" }),
+    }),
+);
 
 RadioLabel.displayName = "RadioLabel";
 
@@ -152,6 +163,7 @@ const Radio = (
 ) => {
     const group = useContext(RadioGroupContext);
     const [internalChecked, setInternalChecked] = useState(!!defaultChecked);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     let isChecked: boolean;
     if (group && value !== undefined) isChecked = group.value === value;
@@ -172,8 +184,21 @@ const Radio = (
         propOnChange?.(e);
     };
 
+    const handleWrapperClick = () => {
+        if (!disabled && inputRef.current) {
+            inputRef.current.click();
+        }
+    };
+
     return (
-        <RadioWrapper disabled={disabled} size={size}>
+        <RadioWrapper
+            aria-checked={isChecked}
+            role="radio"
+            disabled={disabled}
+            tabIndex={disabled ? -1 : 0}
+            size={size}
+            onClick={handleWrapperClick}
+        >
             <HiddenRadio
                 type="radio"
                 name={name}
@@ -181,10 +206,21 @@ const Radio = (
                 checked={isChecked}
                 onChange={handleChange}
                 disabled={disabled}
-                ref={ref}
+                ref={(node) => {
+                    inputRef.current = node;
+                    if (typeof ref === "function") ref(node);
+                    else if (ref) ref.current = node;
+                }}
                 {...props}
+                css={{
+                    pointerEvents: "none",
+                }}
             />
-            {rtl && label && <RadioLabel>{label}</RadioLabel>}
+            {rtl && label && (
+                <RadioLabel rtl={rtl} disabled={disabled}>
+                    {label}
+                </RadioLabel>
+            )}
             <RadioControl
                 name={name}
                 role="radio"
@@ -219,7 +255,11 @@ const Radio = (
                     <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
                 ) : null}
             </RadioControl>
-            {!rtl && label && <RadioLabel>{label}</RadioLabel>}
+            {!rtl && label && (
+                <RadioLabel rtl={rtl} disabled={disabled}>
+                    {label}
+                </RadioLabel>
+            )}
         </RadioWrapper>
     );
 };
