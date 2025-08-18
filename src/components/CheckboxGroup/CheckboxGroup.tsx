@@ -54,6 +54,7 @@ const CheckboxGroup = ({
     color,
     variant,
     size,
+    orientation,
     value: controlledValue,
     defaultValue,
     onChange,
@@ -84,13 +85,14 @@ const CheckboxGroup = ({
                 color,
                 variant,
                 size,
+                orientation,
                 disabled,
                 name,
                 value: currentValue,
                 onChange: (e, _) => handleChange(e, e.target.checked),
             }}
         >
-            <CheckboxGroupWrapper spacing={spacing}>
+            <CheckboxGroupWrapper orientation={orientation} spacing={spacing}>
                 {children}
             </CheckboxGroupWrapper>
         </CheckboxGroupContext.Provider>
