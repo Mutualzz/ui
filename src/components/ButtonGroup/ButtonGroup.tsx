@@ -36,7 +36,7 @@ const ButtonGroupRoot = styled("div")<{
     }) => ({
         display: "inline-flex",
         flexWrap: "wrap",
-        flexDirection: orientation === "vertical" ? "column" : "row",
+
         alignItems: "stretch",
         ...(disabled && {
             pointerEvents: "none",
@@ -49,7 +49,7 @@ const ButtonGroupRoot = styled("div")<{
             { spacing, orientation, color, variant, separatorColor },
             ({
                 spacing: sp,
-                orientation: o,
+                orientation: ori,
                 color: c,
                 variant: v,
                 separatorColor: sc,
@@ -57,11 +57,12 @@ const ButtonGroupRoot = styled("div")<{
                 const resolvedSpacing = resolveSize(theme, sp, baseSpacingMap);
 
                 return {
+                    flexDirection: ori === "vertical" ? "column" : "row",
                     ...(resolvedSpacing > 0 && { gap: resolvedSpacing }),
                     ...(resolvedSpacing === 0 && {
                         "& > button": resolveButtonGroupStyles(
                             theme,
-                            o,
+                            ori,
                             c,
                             v,
                             sc,
