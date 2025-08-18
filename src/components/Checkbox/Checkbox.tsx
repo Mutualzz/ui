@@ -144,9 +144,9 @@ const Checkbox = (
         defaultChecked,
         label,
         disabled: propDisabled,
-        color = "neutral",
-        variant = "solid",
-        size = "md",
+        color: colorProp,
+        variant: variantProp,
+        size: sizeProp,
         name: propName,
         value,
         uncheckedIcon,
@@ -187,6 +187,9 @@ const Checkbox = (
         propOnChange?.(e);
     };
 
+    const color = group?.color ?? colorProp ?? "neutral";
+    const variant = group?.variant ?? variantProp ?? "solid";
+    const size = group?.size ?? sizeProp ?? "md";
     const name = group?.name ?? propName;
     const disabled = group?.disabled ?? propDisabled;
 
