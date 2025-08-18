@@ -179,7 +179,6 @@ const Tick = styled("div")<{
         position: "absolute",
         backgroundColor: theme.colors.common.white,
         borderRadius: "50%",
-        transition: "all 0.3s ease",
 
         ...resolveResponsiveMerge(
             theme,
@@ -230,7 +229,6 @@ const Thumb = styled("div")<{
         boxSizing: "border-box",
         transform: "translate(-50%, -50%)",
         zIndex: 1,
-        transition: "all 0.3s ease",
         ...resolveResponsiveMerge(
             theme,
             {
@@ -299,7 +297,6 @@ const ValueLabel = styled("span")<{
         zIndex: 2,
         pointerEvents: "none",
         userSelect: "none",
-        transition: "all 0.3s ease",
 
         "::after": {
             content: '""',
@@ -344,7 +341,6 @@ const MarkLabel = styled("span")<{
     backgroundColor: "transparent",
     pointerEvents: "none",
     userSelect: "none",
-    transition: "all 0.3s ease",
     ...resolveResponsiveMerge(
         theme,
         { size, orientation },
