@@ -139,9 +139,9 @@ const Radio = (
         label,
         disabled: propDisabled,
         defaultChecked,
-        color = "primary",
-        variant = "solid",
-        size = "md",
+        color: colorProp,
+        variant: variantProp,
+        size: sizeProp,
         name: propName,
         value,
         checkedIcon,
@@ -159,6 +159,9 @@ const Radio = (
     else if (controlledChecked !== undefined) isChecked = controlledChecked;
     else isChecked = internalChecked;
 
+    const color = group?.color ?? colorProp ?? "primary";
+    const variant = group?.variant ?? variantProp ?? "solid";
+    const size = group?.size ?? sizeProp ?? "md";
     const name = group?.name ?? propName;
     const disabled = group?.disabled ?? propDisabled;
 
