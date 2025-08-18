@@ -1,29 +1,43 @@
 import styled from "@styled";
-import type { Responsive } from "@ui-types";
+import type { Orientation, Responsive, Size, SizeValue } from "@ui-types";
+import { resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { type ChangeEvent, useState } from "react";
 import { RadioGroupContext } from "./RadioGroup.context";
 import type { RadioGroupProps } from "./RadioGroup.types";
 
-const RadioGroupWrapper = styled("div")<{ row?: Responsive<boolean> }>(
-    ({ theme, row }) => ({
-        display: "inline-flex",
-        ...resolveResponsiveMerge(theme, { row }, ({ row: isRow }) => ({
-            flexDirection: isRow ? "row" : "column",
-            ...(isRow
-                ? {
-                      "& > * + *": {
-                          marginLeft: "0.5rem",
-                      },
-                  }
-                : {
-                      "& > * + *": {
-                          marginTop: "0.5rem",
-                      },
-                  }),
-        })),
+const baseSpacingMap: Record<Size, number> = {
+    sm: 4,
+    md: 8,
+    lg: 12,
+};
+
+const RadioGroupWrapper = styled("div")<{
+    orientation?: Responsive<Orientation>;
+    spacing?: Responsive<Size | SizeValue | number>;
+    disabled?: boolean;
+}>(({ theme, orientation, spacing = "0.5rem", disabled }) => ({
+    display: "inline-flex",
+    flexWrap: "wrap",
+    alignItems: "stretch",
+    ...(disabled && {
+        pointerEvents: "none",
+        opacity: 0.5,
+        cursor: "not-allowed",
     }),
-);
+    ...resolveResponsiveMerge(
+        theme,
+        { orientation, spacing },
+        ({ orientation: ori, spacing: sp }) => {
+            const resolvedSpacing = resolveSize(theme, sp, baseSpacingMap);
+
+            return {
+                flexDirection: ori === "horizontal" ? "row" : "column",
+                ...(resolvedSpacing > 0 && { gap: resolvedSpacing }),
+            };
+        },
+    ),
+}));
 
 RadioGroupWrapper.displayName = "RadioGroupButtonWrapper";
 
@@ -40,11 +54,14 @@ RadioGroupWrapper.displayName = "RadioGroupButtonWrapper";
  */
 const RadioGroup = ({
     name,
+    color,
+    size,
+    variant,
     value: controlledValue,
     defaultValue,
     onChange,
     disabled,
-    row,
+    spacing = 0,
     children,
 }: RadioGroupProps) => {
     const [internalValue, setInternalValue] = useState(defaultValue ?? "");
@@ -62,13 +79,16 @@ const RadioGroup = ({
     return (
         <RadioGroupContext.Provider
             value={{
+                color,
+                size,
+                variant,
                 name,
                 value: currentValue,
                 onChange: handleChange,
                 disabled,
             }}
         >
-            <RadioGroupWrapper row={row}>{children}</RadioGroupWrapper>
+            <RadioGroupWrapper spacing={spacing}>{children}</RadioGroupWrapper>
         </RadioGroupContext.Provider>
     );
 };

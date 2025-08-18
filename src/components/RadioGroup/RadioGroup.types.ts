@@ -1,7 +1,19 @@
-import type { Responsive } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Orientation,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { ChangeEvent, ReactNode } from "react";
 
 export interface RadioGroupProps {
+    color?: Responsive<Color | ColorLike>;
+    variant?: Responsive<Variant>;
+    size?: Responsive<Size | SizeValue | number>;
+
     /**
      * The name of the radio group.
      * This is used to group radio buttons together so that only one can be selected at a time.
@@ -32,7 +44,9 @@ export interface RadioGroupProps {
      * When true, the radio buttons will be arranged horizontally.
      * @default false
      */
-    row?: Responsive<boolean>;
+    orientation?: Responsive<Orientation>;
+
+    spacing?: Responsive<Size | SizeValue | number>;
 
     /**
      * The children of the radio group.
