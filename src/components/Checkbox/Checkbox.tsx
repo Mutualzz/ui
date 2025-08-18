@@ -10,7 +10,7 @@ import {
 } from "./Checkbox.helpers";
 import { type CheckboxProps } from "./Checkbox.types";
 
-const CheckboxWrapper = styled("label")<Omit<CheckboxProps, "value">>(
+const CheckboxWrapper = styled("div")<CheckboxProps>(
     ({ theme, disabled, size = "md" }) => ({
         position: "relative",
         display: "inline-flex",
@@ -207,6 +207,8 @@ const Checkbox = (
             />
             {rtl && label && <CheckboxLabel rtl={rtl}>{label}</CheckboxLabel>}
             <CheckboxBox
+                name={name}
+                role="checkbox"
                 aria-checked={isChecked}
                 color={color as string}
                 variant={variant}

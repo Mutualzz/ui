@@ -26,7 +26,6 @@ export const resolveCheckboxSize = (
 
     return {
         fontSize: resolvedSize,
-        padding: resolvedSize * 0.2,
     };
 };
 
