@@ -1,6 +1,7 @@
 import type {
     Color,
     ColorLike,
+    Orientation,
     Responsive,
     Size,
     SizeValue,
@@ -12,6 +13,7 @@ export interface RadioGroupContextType {
     color?: Responsive<Color | ColorLike>;
     variant?: Responsive<Variant>;
     size?: Responsive<Size | SizeValue | number>;
+    orientation?: Responsive<Orientation>;
     name?: string;
     value?: string;
     onChange?: (event: ChangeEvent<HTMLInputElement>, value: string) => void;

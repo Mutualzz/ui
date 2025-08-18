@@ -58,6 +58,7 @@ const RadioGroup = ({
     size,
     variant,
     value: controlledValue,
+    orientation,
     defaultValue,
     onChange,
     disabled,
@@ -83,12 +84,19 @@ const RadioGroup = ({
                 size,
                 variant,
                 name,
+                orientation,
                 value: currentValue,
                 onChange: handleChange,
                 disabled,
             }}
         >
-            <RadioGroupWrapper spacing={spacing}>{children}</RadioGroupWrapper>
+            <RadioGroupWrapper
+                spacing={spacing}
+                orientation={orientation}
+                disabled={disabled}
+            >
+                {children}
+            </RadioGroupWrapper>
         </RadioGroupContext.Provider>
     );
 };
