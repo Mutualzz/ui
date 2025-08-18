@@ -6,7 +6,7 @@ import { type ChangeEvent, useState } from "react";
 import { CheckboxGroupContext } from "./CheckboxGroup.context";
 import type { CheckboxGroupProps } from "./CheckboxGroup.types";
 
-export const baseSpacingMap: Record<Size, number> = {
+const baseSpacingMap: Record<Size, number> = {
     sm: 4,
     md: 8,
     lg: 12,
