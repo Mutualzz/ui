@@ -51,6 +51,9 @@ CheckboxGroupWrapper.displayName = "CheckboxGroupWrapper";
  */
 const CheckboxGroup = ({
     name,
+    color,
+    variant,
+    size,
     value: controlledValue,
     defaultValue,
     onChange,
@@ -78,10 +81,13 @@ const CheckboxGroup = ({
     return (
         <CheckboxGroupContext.Provider
             value={{
+                color,
+                variant,
+                size,
+                disabled,
                 name,
                 value: currentValue,
                 onChange: (e, _) => handleChange(e, e.target.checked),
-                disabled,
             }}
         >
             <CheckboxGroupWrapper spacing={spacing}>
