@@ -205,9 +205,9 @@ const Checkbox = (
         }
     };
 
-    const color = group?.color ?? colorProp ?? "neutral";
-    const variant = group?.variant ?? variantProp ?? "solid";
-    const size = group?.size ?? sizeProp ?? "md";
+    const color = colorProp ?? group?.color ?? "neutral";
+    const variant = variantProp ?? group?.variant ?? "solid";
+    const size = sizeProp ?? group?.size ?? "md";
     const name = group?.name ?? propName;
     const disabled = group?.disabled ?? propDisabled;
 
