@@ -86,5 +86,5 @@ export interface CheckboxProps
      */
     rtl?: boolean;
 
-    value?: string;
+    value?: any;
 }
