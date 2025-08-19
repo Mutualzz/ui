@@ -1,5 +1,8 @@
 // Components
 
+export * from "./components/Avatar/Avatar";
+export * from "./components/Avatar/Avatar.types";
+
 export * from "./components/Box/Box";
 export type * from "./components/Box/Box.types";
 
