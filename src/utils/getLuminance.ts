@@ -15,7 +15,7 @@ export const getColorStops = (gradient: string): string[] => {
     return content.split(",").map((stop) => stop.trim());
 };
 
-export const getLuminance = (color: ColorLike): number => {
+export const getLuminance = (color: ColorLike): number | null => {
     const str = String(color).trim();
 
     if (isValidGradient(str)) {
@@ -42,7 +42,7 @@ export const getLuminance = (color: ColorLike): number => {
     }
 
     const rgbColor = rgb(color);
-    if (!rgbColor) return 0;
+    if (!rgbColor) return null;
     const r = toLuminance(rgbColor.r);
     const g = toLuminance(rgbColor.g);
     const b = toLuminance(rgbColor.b);
