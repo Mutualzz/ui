@@ -170,9 +170,9 @@ const Radio = (
     else if (controlledChecked !== undefined) isChecked = controlledChecked;
     else isChecked = internalChecked;
 
-    const color = group?.color ?? colorProp ?? "primary";
-    const variant = group?.variant ?? variantProp ?? "solid";
-    const size = group?.size ?? sizeProp ?? "md";
+    const color = colorProp ?? group?.color ?? "primary";
+    const variant = variantProp ?? group?.variant ?? "solid";
+    const size = sizeProp ?? group?.size ?? "md";
     const name = group?.name ?? propName;
     const disabled = group?.disabled ?? propDisabled;
 
