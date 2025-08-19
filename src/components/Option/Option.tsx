@@ -45,18 +45,18 @@ const OptionWrapper = styled("div")<
 const Option = ({
     value,
     disabled: disabledProp,
-    color: colorProp = "neutral",
-    variant: variantProp = "outlined",
-    size: sizeProp = "md",
+    color: colorProp,
+    variant: variantProp,
+    size: sizeProp,
     label,
     children,
     ...props
 }: OptionProps) => {
     const parent = useContext(SelectContext);
 
-    const color = parent?.color ?? colorProp;
-    const variant = parent?.variant ?? variantProp;
-    const size = parent?.size ?? sizeProp;
+    const color = colorProp ?? parent?.color ?? "primary";
+    const variant = variantProp ?? parent?.variant ?? "solid";
+    const size = sizeProp ?? parent?.size ?? "md";
     const disabled = parent?.disabled ?? disabledProp;
 
     const isSelected = parent?.multiple
