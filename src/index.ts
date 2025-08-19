@@ -24,6 +24,10 @@ export type * from "./components/CircularProgress/CircularProgress.types";
 export * from "./components/Divider/Divider";
 export type * from "./components/Divider/Divider.types";
 
+export * from "./components/IconButton/IconButton";
+export * from "./components/IconButton/IconButton.helpers";
+export type * from "./components/IconButton/IconButton.types";
+
 export * from "./components/Input/Input";
 export type * from "./components/Input/Input.types";
 
