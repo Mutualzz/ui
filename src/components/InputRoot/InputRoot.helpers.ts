@@ -51,7 +51,7 @@ export const resolveInputRootStyles = (
     const activeColor = error ? errorColor : resolvedColor;
     const isColorLike = isValidColorInput(parsedTextColor);
 
-    const luminance = getLuminance(activeColor);
+    const luminance = getLuminance(activeColor) ?? 0;
     const solidTextColor =
         luminance < 0.5
             ? formatHex8(colors.common.white)
