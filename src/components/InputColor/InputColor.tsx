@@ -7,14 +7,20 @@ import { Popover } from "@components/Popover/Popover";
 import { useColorInput } from "@hooks/useColorInput";
 import { useTheme } from "@hooks/useTheme";
 import styled from "@styled";
-import type { ColorLike, Responsive, Size, SizeValue } from "@ui-types";
+import type {
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import {
     hexToHsva,
     type ColorResult,
     type HsvaColor,
 } from "@uiw/color-convert";
 import Colorful from "@uiw/react-color-colorful";
-import { resolveSize } from "@utils";
+import { getLuminance, resolveColorFromLuminance, resolveSize } from "@utils";
 import { randomColor } from "@utils/randomColor";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import {
@@ -39,22 +45,32 @@ const baseIconSize = {
 interface RandomIconProps {
     color: ColorLike;
     size: Responsive<Size | SizeValue | number>;
+    variant?: Responsive<Variant>;
 }
 
-const RandomIcon = ({ color, size }: RandomIconProps) => {
+const RandomIcon = ({ color, size, variant }: RandomIconProps) => {
     const { theme } = useTheme();
 
-    const { size: resolvedSize } = resolveResponsiveMerge(
-        theme,
-        { size },
-        ({ size: s }) => ({
-            size: resolveSize(theme, s, baseIconSize),
-        }),
-    );
+    const { size: resolvedSize, variant: resolvedVariant } =
+        resolveResponsiveMerge(
+            theme,
+            { size, variant },
+            ({ size: s, variant: v }) => ({
+                size: resolveSize(theme, s, baseIconSize),
+                variant: v,
+            }),
+        );
+
+    let resolvedColor = color;
+    if (resolvedVariant === "solid") {
+        const bgLuminance = getLuminance(color);
+        const luminatedColor = resolveColorFromLuminance(bgLuminance, theme);
+        resolvedColor = luminatedColor;
+    }
 
     return (
         <svg
-            fill={color}
+            fill={resolvedColor}
             height={resolvedSize}
             width={resolvedSize}
             viewBox={`0 0 512 512`}
@@ -249,6 +265,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                                     <RandomIcon
                                         color={validatedColor}
                                         size={size}
+                                        variant={variant}
                                     />
                                 </IconButton>
                             ))}
