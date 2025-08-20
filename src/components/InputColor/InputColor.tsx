@@ -17,7 +17,7 @@ import Colorful from "@uiw/react-color-colorful";
 import { resolveSize } from "@utils";
 import { randomColor } from "@utils/randomColor";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useRef, useState, type ChangeEvent } from "react";
+import { forwardRef, useRef, useState, type ChangeEvent } from "react";
 import {
     resolveColorPickerButtonSize,
     resolveColorPickerButtonStyles,
@@ -78,162 +78,170 @@ const ColorPickerButton = styled(Button)(
     }),
 );
 
-const InputColor = ({
-    variant = "outlined",
-    size = "md",
-    startDecorator,
-    endDecorator,
-    fullWidth = false,
-    disabled = false,
-    showColorPicker = true,
-    showAlpha = false,
-    showRandom = false,
-    value: colorProp,
-    onChange,
-    onAlphaChange,
-    defaultValue,
-    ...props
-}: InputColorProps) => {
-    const { theme } = useTheme();
+const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
+    (
+        {
+            variant = "outlined",
+            size = "md",
+            startDecorator,
+            endDecorator,
+            fullWidth = false,
+            disabled = false,
+            showColorPicker = true,
+            showAlpha = false,
+            showRandom = false,
+            value: colorProp,
+            onChange,
+            onAlphaChange,
+            defaultValue,
+            ...props
+        },
+        ref,
+    ) => {
+        const { theme } = useTheme();
 
-    const [isPickerOpen, setIsPickerOpen] = useState(false);
-    const [alpha, setAlpha] = useState(100);
+        const [isPickerOpen, setIsPickerOpen] = useState(false);
+        const [alpha, setAlpha] = useState(100);
 
-    const isControlled = colorProp !== undefined;
+        const isControlled = colorProp !== undefined;
 
-    const [internalValue, setInternalValue] = useState<ColorLike>(
-        defaultValue ?? randomColor("hex", alpha),
-    );
+        const [internalValue, setInternalValue] = useState<ColorLike>(
+            defaultValue ?? randomColor("hex", alpha),
+        );
 
-    const currentValue = isControlled ? colorProp : internalValue;
-    const [pickerColor, setPickerColor] = useState<HsvaColor>(() => {
-        try {
-            return hexToHsva(currentValue);
-        } catch {
-            // If the color is invalid, fallback to a random color
-            return hexToHsva(randomColor("hex", alpha));
-        }
-    });
+        const currentValue = isControlled ? colorProp : internalValue;
+        const [pickerColor, setPickerColor] = useState<HsvaColor>(() => {
+            try {
+                return hexToHsva(currentValue);
+            } catch {
+                // If the color is invalid, fallback to a random color
+                return hexToHsva(randomColor("hex", alpha));
+            }
+        });
 
-    const popoverRef = useRef<HTMLDivElement>(null);
+        const popoverRef = useRef<HTMLDivElement>(null);
 
-    const {
-        inputValue,
-        color: validatedColor,
-        isInvalid,
-        handleChange,
-        validate,
-        setColorDirectly,
-    } = useColorInput(currentValue, alpha, "hex");
+        const {
+            inputValue,
+            color: validatedColor,
+            isInvalid,
+            handleChange,
+            validate,
+            setColorDirectly,
+        } = useColorInput(currentValue, alpha, "hex");
 
-    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value as ColorLike;
+        const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+            const newValue = e.target.value as ColorLike;
 
-        if (typeof newValue !== "string") return;
+            if (typeof newValue !== "string") return;
 
-        handleChange(newValue);
+            handleChange(newValue);
 
-        try {
-            setPickerColor(hexToHsva(newValue));
-        } catch {
-            // Ignore invalid color input
-        }
-        if (!isControlled) setInternalValue(newValue);
+            try {
+                setPickerColor(hexToHsva(newValue));
+            } catch {
+                // Ignore invalid color input
+            }
+            if (!isControlled) setInternalValue(newValue);
 
-        onChange?.(newValue);
-    };
+            onChange?.(newValue);
+        };
 
-    const togglePicker = () => {
-        setIsPickerOpen((prev) => !prev);
-    };
+        const togglePicker = () => {
+            setIsPickerOpen((prev) => !prev);
+        };
 
-    const handleNewColor = (newColor: ColorResult) => {
-        const newAlpha = Math.round(newColor.rgba.a * 100);
-        setAlpha(newAlpha);
+        const handleNewColor = (newColor: ColorResult) => {
+            const newAlpha = Math.round(newColor.rgba.a * 100);
+            setAlpha(newAlpha);
 
-        const colorValue = newAlpha < 100 ? newColor.hexa : newColor.hex;
+            const colorValue = newAlpha < 100 ? newColor.hexa : newColor.hex;
 
-        setColorDirectly(colorValue as ColorLike);
-        setPickerColor(newColor.hsva);
+            setColorDirectly(colorValue as ColorLike);
+            setPickerColor(newColor.hsva);
 
-        if (!isControlled) setInternalValue(colorValue as ColorLike);
+            if (!isControlled) setInternalValue(colorValue as ColorLike);
 
-        onChange?.(colorValue as ColorLike);
-        onAlphaChange?.(newAlpha);
-    };
+            onChange?.(colorValue as ColorLike);
+            onAlphaChange?.(newAlpha);
+        };
 
-    const handleRandomColor = () => {
-        const newColor = randomColor("hex", alpha);
-        setColorDirectly(newColor);
-        setPickerColor(hexToHsva(newColor));
-        if (!isControlled) setInternalValue(newColor);
-        onChange?.(newColor);
-    };
+        const handleRandomColor = () => {
+            const newColor = randomColor("hex", alpha);
+            setColorDirectly(newColor);
+            setPickerColor(hexToHsva(newColor));
+            if (!isControlled) setInternalValue(newColor);
+            onChange?.(newColor);
+        };
 
-    return (
-        <>
-            <InputRoot
-                color={validatedColor}
-                textColor={isInvalid ? theme.colors.danger : validatedColor}
-                variant={variant}
-                size={size}
-                fullWidth={fullWidth}
-                error={isInvalid}
-                disabled={disabled}
-            >
-                <DecoratorWrapper>
-                    {startDecorator ??
-                        (showColorPicker && !isInvalid && (
-                            <Popover
-                                content={
-                                    <Colorful
-                                        ref={popoverRef}
-                                        disableAlpha={!showAlpha}
-                                        color={pickerColor}
-                                        onChange={handleNewColor}
-                                    />
-                                }
-                                isOpen={isPickerOpen}
-                                color={validatedColor}
-                                size={size}
-                                variant={variant}
-                            >
-                                <ColorPickerButton
+        return (
+            <>
+                <InputRoot
+                    color={validatedColor}
+                    textColor={isInvalid ? theme.colors.danger : validatedColor}
+                    variant={variant}
+                    size={size}
+                    fullWidth={fullWidth}
+                    error={isInvalid}
+                    disabled={disabled}
+                >
+                    <DecoratorWrapper>
+                        {startDecorator ??
+                            (showColorPicker && !isInvalid && (
+                                <Popover
+                                    content={
+                                        <Colorful
+                                            ref={popoverRef}
+                                            disableAlpha={!showAlpha}
+                                            color={pickerColor}
+                                            onChange={handleNewColor}
+                                        />
+                                    }
+                                    isOpen={isPickerOpen}
+                                    color={validatedColor}
                                     size={size}
+                                    variant={variant}
+                                >
+                                    <ColorPickerButton
+                                        size={size}
+                                        color={validatedColor}
+                                        variant={variant}
+                                        onClick={togglePicker}
+                                    />
+                                </Popover>
+                            ))}
+                    </DecoratorWrapper>
+
+                    <InputBase
+                        {...(props as any)}
+                        type="text"
+                        value={inputValue}
+                        onChange={handleOnChange}
+                        onBlur={validate}
+                        ref={ref}
+                    />
+
+                    <DecoratorWrapper>
+                        {endDecorator ??
+                            (showRandom && (
+                                <IconButton
                                     color={validatedColor}
                                     variant={variant}
-                                    onClick={togglePicker}
-                                />
-                            </Popover>
-                        ))}
-                </DecoratorWrapper>
+                                    onClick={handleRandomColor}
+                                >
+                                    <RandomIcon
+                                        color={validatedColor}
+                                        size={size}
+                                    />
+                                </IconButton>
+                            ))}
+                    </DecoratorWrapper>
+                </InputRoot>
+            </>
+        );
+    },
+);
 
-                <InputBase
-                    {...(props as any)}
-                    type="text"
-                    value={inputValue}
-                    onChange={handleOnChange}
-                    onBlur={validate}
-                />
-
-                <DecoratorWrapper>
-                    {endDecorator ??
-                        (showRandom && (
-                            <IconButton
-                                color={validatedColor}
-                                variant={variant}
-                                onClick={handleRandomColor}
-                            >
-                                <RandomIcon
-                                    color={validatedColor}
-                                    size={size}
-                                />
-                            </IconButton>
-                        ))}
-                </DecoratorWrapper>
-            </InputRoot>
-        </>
-    );
-};
+InputColor.displayName = "InputColor";
 
 export { InputColor };

@@ -10,6 +10,7 @@ import type {
 } from "@ui-types";
 import { resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
+import { forwardRef } from "react";
 import { ButtonGroupContext } from "./ButtonGroup.context";
 import {
     baseSpacingMap,
@@ -85,39 +86,45 @@ ButtonGroupRoot.displayName = "ButtonGroupRoot";
  * The buttons in the group can inherit properties from the Button component, such as size, color, variant, and loading state.
  * The `children` prop should contain Button components or valid React elements.
  */
-const ButtonGroup = ({
-    orientation = "horizontal",
-    spacing = 0,
-    color,
-    size,
-    variant,
-    disabled,
-    loading,
-    separatorColor,
-    children,
-}: ButtonGroupProps) => {
-    return (
-        <ButtonGroupContext.Provider
-            value={{
-                color,
-                variant,
-                size,
-                disabled,
-                loading,
-            }}
-        >
-            <ButtonGroupRoot
-                spacing={spacing}
-                orientation={orientation}
-                color={color as string}
-                variant={variant}
-                separatorColor={separatorColor}
+const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
+    (
+        {
+            orientation = "horizontal",
+            spacing = 0,
+            color,
+            size,
+            variant,
+            disabled,
+            loading,
+            separatorColor,
+            children,
+        },
+        ref,
+    ) => {
+        return (
+            <ButtonGroupContext.Provider
+                value={{
+                    color,
+                    variant,
+                    size,
+                    disabled,
+                    loading,
+                }}
             >
-                {children}
-            </ButtonGroupRoot>
-        </ButtonGroupContext.Provider>
-    );
-};
+                <ButtonGroupRoot
+                    ref={ref}
+                    spacing={spacing}
+                    orientation={orientation}
+                    color={color as string}
+                    variant={variant}
+                    separatorColor={separatorColor}
+                >
+                    {children}
+                </ButtonGroupRoot>
+            </ButtonGroupContext.Provider>
+        );
+    },
+);
 
 ButtonGroup.displayName = "ButtonGroup";
 

@@ -2,7 +2,7 @@ import getReactElementRef from "@utils/getReactElementRef";
 import { setRef } from "@utils/setRef";
 import { useEnhancedEffect } from "@utils/useEnhancedEffect";
 import { useForkRef } from "@utils/useForkRef";
-import { cloneElement, isValidElement, useState, type Ref } from "react";
+import { cloneElement, forwardRef, isValidElement, useState } from "react";
 import { createPortal } from "react-dom";
 import { type PortalProps } from "./Portal.types";
 
@@ -28,48 +28,47 @@ function getContainer(
 /**
  * Portal component for rendering children into a different part of the DOM.
  */
-const Portal = (
-    { children, container, disablePortal = false }: PortalProps,
-    forwardedRef?: Ref<HTMLElement>,
-) => {
-    const [mountNode, setMountNode] = useState<ReturnType<
-        typeof getContainer
-    > | null>(null);
+const Portal = forwardRef<HTMLElement, PortalProps>(
+    ({ children, container, disablePortal = false }, ref) => {
+        const [mountNode, setMountNode] = useState<ReturnType<
+            typeof getContainer
+        > | null>(null);
 
-    const handleRef = useForkRef(
-        isValidElement(children) ? getReactElementRef(children) : null,
-        forwardedRef,
-    );
+        const handleRef = useForkRef(
+            isValidElement(children) ? getReactElementRef(children) : null,
+            ref,
+        );
 
-    useEnhancedEffect(() => {
-        if (!disablePortal) {
-            setMountNode(getContainer(container) || document.body);
+        useEnhancedEffect(() => {
+            if (!disablePortal) {
+                setMountNode(getContainer(container) || document.body);
+            }
+        }, [container, disablePortal]);
+
+        useEnhancedEffect(() => {
+            if (mountNode && !disablePortal) {
+                setRef(ref, mountNode);
+                return () => {
+                    setRef(ref, null);
+                };
+            }
+
+            return undefined;
+        }, [ref, mountNode, disablePortal]);
+
+        if (disablePortal) {
+            if (isValidElement(children)) {
+                const newProps = {
+                    ref: handleRef,
+                };
+                return cloneElement(children, newProps);
+            }
+            return children;
         }
-    }, [container, disablePortal]);
 
-    useEnhancedEffect(() => {
-        if (mountNode && !disablePortal) {
-            setRef(forwardedRef, mountNode);
-            return () => {
-                setRef(forwardedRef, null);
-            };
-        }
-
-        return undefined;
-    }, [forwardedRef, mountNode, disablePortal]);
-
-    if (disablePortal) {
-        if (isValidElement(children)) {
-            const newProps = {
-                ref: handleRef,
-            };
-            return cloneElement(children, newProps);
-        }
-        return children;
-    }
-
-    return mountNode ? createPortal(children, mountNode) : mountNode;
-};
+        return mountNode ? createPortal(children, mountNode) : mountNode;
+    },
+);
 
 Portal.displayName = "Portal";
 

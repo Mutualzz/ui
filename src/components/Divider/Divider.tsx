@@ -1,6 +1,7 @@
 import { useTheme } from "../../hooks/useTheme";
 
 import styled from "@styled";
+import { forwardRef } from "react";
 import { resolveDividerColor, resolveDividerStyles } from "./Divider.helpers";
 import type { DividerProps, DividerVariant } from "./Divider.types";
 
@@ -64,53 +65,59 @@ DividerText.displayName = "DividerText";
  * The `lineColor` and `textColor` props allow for customizing the colors of the divider line and text, respectively.
  * The `variant` prop allows for different visual styles of the divider.
  */
-const Divider = ({
-    orientation = "horizontal",
-    inset = "none",
-    lineColor = "neutral",
-    textColor = "neutral",
-    variant = "solid",
-    children,
-}: DividerProps) => {
-    const { theme } = useTheme();
+const Divider = forwardRef<HTMLDivElement, DividerProps>(
+    (
+        {
+            orientation = "horizontal",
+            inset = "none",
+            lineColor = "neutral",
+            textColor = "neutral",
+            variant = "solid",
+            children,
+        },
+        ref,
+    ) => {
+        const { theme } = useTheme();
 
-    const isVertical = orientation === "vertical";
+        const isVertical = orientation === "vertical";
 
-    const resolvedLineColor = resolveDividerColor(theme, lineColor);
-    const resolvedTextColor = resolveDividerColor(theme, textColor);
+        const resolvedLineColor = resolveDividerColor(theme, lineColor);
+        const resolvedTextColor = resolveDividerColor(theme, textColor);
 
-    return (
-        <DividerWrapper
-            isVertical={isVertical}
-            role="separator"
-            aria-orientation={isVertical ? "vertical" : "horizontal"}
-            css={{ color: resolvedLineColor }}
-        >
-            <DividerLine
+        return (
+            <DividerWrapper
+                ref={ref}
                 isVertical={isVertical}
-                lineColor={resolvedLineColor}
-                variant={variant}
-                grow={inset !== "start"}
-            />
-
-            {children && (
-                <DividerText
-                    textColor={resolvedTextColor}
+                role="separator"
+                aria-orientation={isVertical ? "vertical" : "horizontal"}
+                css={{ color: resolvedLineColor }}
+            >
+                <DividerLine
                     isVertical={isVertical}
-                >
-                    {children}
-                </DividerText>
-            )}
+                    lineColor={resolvedLineColor}
+                    variant={variant}
+                    grow={inset !== "start"}
+                />
 
-            <DividerLine
-                isVertical={isVertical}
-                lineColor={resolvedLineColor}
-                variant={variant}
-                grow={inset !== "end"}
-            />
-        </DividerWrapper>
-    );
-};
+                {children && (
+                    <DividerText
+                        textColor={resolvedTextColor}
+                        isVertical={isVertical}
+                    >
+                        {children}
+                    </DividerText>
+                )}
+
+                <DividerLine
+                    isVertical={isVertical}
+                    lineColor={resolvedLineColor}
+                    variant={variant}
+                    grow={inset !== "end"}
+                />
+            </DividerWrapper>
+        );
+    },
+);
 
 Divider.displayName = "Divider";
 

@@ -5,21 +5,24 @@ import type { InputNumberProps } from "@components/InputNumber/InputNumber.types
 import { InputPassword } from "@components/InputPassword/InputPassword";
 import type { InputPasswordProps } from "@components/InputPassword/InputPassword.types";
 import type { InputRootProps } from "@components/InputRoot/InputRoot.types";
+import { forwardRef } from "react";
 import { InputDefault } from "../InputDefault/InputDefault";
 import type { InputProps } from "./Input.types";
 
-const Input = (props: InputProps) => {
+const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     switch (props.type) {
         case "color":
-            return <InputColor {...(props as InputColorProps)} />;
+            return <InputColor ref={ref} {...(props as InputColorProps)} />;
         case "password":
-            return <InputPassword {...(props as InputPasswordProps)} />;
+            return (
+                <InputPassword ref={ref} {...(props as InputPasswordProps)} />
+            );
         case "number":
-            return <InputNumber {...(props as InputNumberProps)} />;
+            return <InputNumber ref={ref} {...(props as InputNumberProps)} />;
         default:
-            return <InputDefault {...(props as InputRootProps)} />;
+            return <InputDefault ref={ref} {...(props as InputRootProps)} />;
     }
-};
+});
 
 Input.displayName = "Input";
 

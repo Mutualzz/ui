@@ -11,8 +11,10 @@ import { darken } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { formatHex8 } from "culori";
 import {
+    forwardRef,
     useCallback,
     useEffect,
+    useImperativeHandle,
     useMemo,
     useRef,
     useState,
@@ -384,356 +386,371 @@ HiddenInput.displayName = "HiddenInput";
  * The `valueLabelDisplay` prop controls when the value label is shown.
  * The `valueLabelFormat` prop can be used to format the value label text.
  */
-const Slider = ({
-    color = "primary",
-    variant = "solid",
-    size = "md",
-    min = 0,
-    max = 100,
-    step = null,
-    defaultValue,
-    value,
-    onChange,
-    onChangeCommitted,
-    orientation = "horizontal",
-    disabled,
-    marks,
-    valueLabelDisplay = "off",
-    valueLabelFormat,
-    getAriaLabel,
-    getAriaValueText,
-    disableSwap,
-    ...rest
-}: SliderProps) => {
-    const ref = useRef<HTMLDivElement>(null);
-    const isRange = Array.isArray(value ?? defaultValue);
-    const [internalValue, setInternalValue] = useState<number[]>(
-        isRange
-            ? ((defaultValue as number[] | undefined) ?? [min, max])
-            : [(defaultValue as number | undefined) ?? min],
-    );
-    const isControlled = value !== undefined;
-    const currentValue = isControlled
-        ? Array.isArray(value)
-            ? value
-            : [value]
-        : internalValue;
-
-    const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-    const percents = currentValue.map((v) => ((v - min) / (max - min)) * 100);
-    const sortedPercents = [...percents].sort((a, b) => a - b);
-
-    const resolvedMarks: SliderMark[] = useMemo(() => {
-        if (marks === true) {
-            const s = step ?? 1;
-            const out: SliderMark[] = [];
-            for (let i = min; i <= max; i += s) {
-                out.push({ value: i });
-            }
-            return out;
-        } else if (Array.isArray(marks)) {
-            const seen = new Set<number>();
-            return marks.filter((mark) => {
-                if (seen.has(mark.value)) return false;
-                seen.add(mark.value);
-                return true;
-            });
-        }
-        return [];
-    }, [marks, min, max, step]);
-
-    const snapToMarks = useCallback(
-        (val: number) => {
-            if (!Array.isArray(marks)) return val;
-
-            const sorted = [min, max, ...marks.map((m) => m.value)]
-                .filter((v, i, a) => a.indexOf(v) === i) // deduplicate
-                .sort((a, b) => a - b);
-
-            return sorted.reduce(
-                (closest, curr) =>
-                    Math.abs(curr - val) < Math.abs(closest - val)
-                        ? curr
-                        : closest,
-                sorted[0],
-            );
-        },
-        [marks],
-    );
-
-    const updateValue = useCallback(
-        (index: number, newVal: number) => {
-            if (disabled) return;
-            if (newVal < min) newVal = min;
-            if (newVal > max) newVal = max;
-            if (step === null) newVal = snapToMarks(newVal);
-
-            if (isRange && disableSwap) {
-                if (index === 0 && newVal > currentValue[1]) return;
-                if (index === 1 && newVal < currentValue[0]) return;
-            }
-
-            const newValue: number[] = [...currentValue];
-            newValue[index] = newVal;
-            if (!isControlled) setInternalValue(newValue);
-            const fakeEvent = {
-                target: { value: isRange ? newValue : newValue[0] },
-            } as unknown as ChangeEvent<HTMLInputElement>;
-            onChange?.(fakeEvent, isRange ? newValue : newValue[0]);
-        },
-        [
-            currentValue,
-            isControlled,
-            isRange,
-            snapToMarks,
+const Slider = forwardRef<HTMLDivElement, SliderProps>(
+    (
+        {
+            color = "primary",
+            variant = "solid",
+            size = "md",
+            min = 0,
+            max = 100,
+            step = null,
+            defaultValue,
+            value,
             onChange,
+            onChangeCommitted,
+            orientation = "horizontal",
+            disabled,
+            marks,
+            valueLabelDisplay = "off",
+            valueLabelFormat,
+            getAriaLabel,
+            getAriaValueText,
             disableSwap,
-        ],
-    );
-
-    const getPositionValue = useCallback(
-        (clientX: number, clientY: number) => {
-            if (!ref.current) return null;
-            const rect = ref.current.getBoundingClientRect();
-            const pos =
-                orientation === "horizontal"
-                    ? clientX - rect.left
-                    : rect.bottom - clientY;
-            const size =
-                orientation === "horizontal" ? rect.width : rect.height;
-            const percent = Math.min(Math.max(pos / size, 0), 1);
-            const raw = percent * (max - min) + min;
-            const stepped =
-                step == null ? Math.round(raw) : Math.round(raw / step) * step;
-
-            return Math.min(Math.max(stepped, min), max);
+            ...rest
         },
-        [orientation, min, max, step],
-    );
+        ref,
+    ) => {
+        const internalRef = useRef<HTMLDivElement>(null);
+        useImperativeHandle(ref, () => internalRef.current as HTMLDivElement);
 
-    useEffect(() => {
-        const handleMove = (e: MouseEvent | TouchEvent) => {
-            if (draggingIndex === null) return;
+        const isRange = Array.isArray(value ?? defaultValue);
+        const [internalValue, setInternalValue] = useState<number[]>(
+            isRange
+                ? ((defaultValue as number[] | undefined) ?? [min, max])
+                : [(defaultValue as number | undefined) ?? min],
+        );
+        const isControlled = value !== undefined;
+        const currentValue = isControlled
+            ? Array.isArray(value)
+                ? value
+                : [value]
+            : internalValue;
+
+        const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+        const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+        const percents = currentValue.map(
+            (v) => ((v - min) / (max - min)) * 100,
+        );
+        const sortedPercents = [...percents].sort((a, b) => a - b);
+
+        const resolvedMarks: SliderMark[] = useMemo(() => {
+            if (marks === true) {
+                const s = step ?? 1;
+                const out: SliderMark[] = [];
+                for (let i = min; i <= max; i += s) {
+                    out.push({ value: i });
+                }
+                return out;
+            } else if (Array.isArray(marks)) {
+                const seen = new Set<number>();
+                return marks.filter((mark) => {
+                    if (seen.has(mark.value)) return false;
+                    seen.add(mark.value);
+                    return true;
+                });
+            }
+            return [];
+        }, [marks, min, max, step]);
+
+        const snapToMarks = useCallback(
+            (val: number) => {
+                if (!Array.isArray(marks)) return val;
+
+                const sorted = [min, max, ...marks.map((m) => m.value)]
+                    .filter((v, i, a) => a.indexOf(v) === i) // deduplicate
+                    .sort((a, b) => a - b);
+
+                return sorted.reduce(
+                    (closest, curr) =>
+                        Math.abs(curr - val) < Math.abs(closest - val)
+                            ? curr
+                            : closest,
+                    sorted[0],
+                );
+            },
+            [marks],
+        );
+
+        const updateValue = useCallback(
+            (index: number, newVal: number) => {
+                if (disabled) return;
+                if (newVal < min) newVal = min;
+                if (newVal > max) newVal = max;
+                if (step === null) newVal = snapToMarks(newVal);
+
+                if (isRange && disableSwap) {
+                    if (index === 0 && newVal > currentValue[1]) return;
+                    if (index === 1 && newVal < currentValue[0]) return;
+                }
+
+                const newValue: number[] = [...currentValue];
+                newValue[index] = newVal;
+                if (!isControlled) setInternalValue(newValue);
+                const fakeEvent = {
+                    target: { value: isRange ? newValue : newValue[0] },
+                } as unknown as ChangeEvent<HTMLInputElement>;
+                onChange?.(fakeEvent, isRange ? newValue : newValue[0]);
+            },
+            [
+                currentValue,
+                isControlled,
+                isRange,
+                snapToMarks,
+                onChange,
+                disableSwap,
+            ],
+        );
+
+        const getPositionValue = useCallback(
+            (clientX: number, clientY: number) => {
+                if (!internalRef.current) return null;
+                const rect = internalRef.current.getBoundingClientRect();
+                const pos =
+                    orientation === "horizontal"
+                        ? clientX - rect.left
+                        : rect.bottom - clientY;
+                const size =
+                    orientation === "horizontal" ? rect.width : rect.height;
+                const percent = Math.min(Math.max(pos / size, 0), 1);
+                const raw = percent * (max - min) + min;
+                const stepped =
+                    step == null
+                        ? Math.round(raw)
+                        : Math.round(raw / step) * step;
+
+                return Math.min(Math.max(stepped, min), max);
+            },
+            [orientation, min, max, step],
+        );
+
+        useEffect(() => {
+            const handleMove = (e: MouseEvent | TouchEvent) => {
+                if (draggingIndex === null) return;
+                const clientX =
+                    "touches" in e ? e.touches[0].clientX : e.clientX;
+                const clientY =
+                    "touches" in e ? e.touches[0].clientY : e.clientY;
+                const newValue = getPositionValue(clientX, clientY);
+                if (newValue !== null) updateValue(draggingIndex, newValue);
+            };
+
+            const handleUp = (e: MouseEvent | TouchEvent) => {
+                if (draggingIndex !== null) {
+                    setDraggingIndex(null);
+                    onChangeCommitted?.(
+                        e as any,
+                        isRange ? [...currentValue] : currentValue[0],
+                    );
+                }
+                window.removeEventListener("mousemove", handleMove as any);
+                window.removeEventListener("mouseup", handleUp as any);
+                window.removeEventListener("touchmove", handleMove);
+                window.removeEventListener("touchend", handleUp);
+            };
+
+            if (draggingIndex !== null) {
+                window.addEventListener("mousemove", handleMove as any);
+                window.addEventListener("mouseup", handleUp as any);
+                window.addEventListener("touchmove", handleMove);
+                window.addEventListener("touchend", handleUp);
+            }
+
+            return () => {
+                window.removeEventListener("mousemove", handleMove as any);
+                window.removeEventListener("mouseup", handleUp as any);
+                window.removeEventListener("touchmove", handleMove);
+                window.removeEventListener("touchend", handleUp);
+            };
+        }, [
+            draggingIndex,
+            currentValue,
+            updateValue,
+            getPositionValue,
+            onChangeCommitted,
+            isRange,
+        ]);
+
+        const handleTrackStart = (e: MouseEvent | TouchEvent) => {
+            e.preventDefault();
             const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
             const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-            const newValue = getPositionValue(clientX, clientY);
-            if (newValue !== null) updateValue(draggingIndex, newValue);
-        };
+            const clickedVal = getPositionValue(clientX, clientY);
+            if (clickedVal === null) return;
 
-        const handleUp = (e: MouseEvent | TouchEvent) => {
-            if (draggingIndex !== null) {
-                setDraggingIndex(null);
-                onChangeCommitted?.(
-                    e as any,
-                    isRange ? [...currentValue] : currentValue[0],
-                );
+            let indexToDrag = 0;
+
+            if (isRange) {
+                const dist = currentValue.map((v) => Math.abs(v - clickedVal));
+                indexToDrag = dist[0] <= dist[1] ? 0 : 1;
+
+                // 🔁 Update value immediately when clicking on the track
+                updateValue(indexToDrag, clickedVal);
+            } else {
+                updateValue(0, clickedVal);
             }
-            window.removeEventListener("mousemove", handleMove as any);
-            window.removeEventListener("mouseup", handleUp as any);
-            window.removeEventListener("touchmove", handleMove);
-            window.removeEventListener("touchend", handleUp);
+
+            setDraggingIndex(indexToDrag);
         };
 
-        if (draggingIndex !== null) {
-            window.addEventListener("mousemove", handleMove as any);
-            window.addEventListener("mouseup", handleUp as any);
-            window.addEventListener("touchmove", handleMove);
-            window.addEventListener("touchend", handleUp);
-        }
-
-        return () => {
-            window.removeEventListener("mousemove", handleMove as any);
-            window.removeEventListener("mouseup", handleUp as any);
-            window.removeEventListener("touchmove", handleMove);
-            window.removeEventListener("touchend", handleUp);
-        };
-    }, [
-        draggingIndex,
-        currentValue,
-        updateValue,
-        getPositionValue,
-        onChangeCommitted,
-        isRange,
-    ]);
-
-    const handleTrackStart = (e: MouseEvent | TouchEvent) => {
-        e.preventDefault();
-        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-        const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-        const clickedVal = getPositionValue(clientX, clientY);
-        if (clickedVal === null) return;
-
-        let indexToDrag = 0;
-
-        if (isRange) {
-            const dist = currentValue.map((v) => Math.abs(v - clickedVal));
-            indexToDrag = dist[0] <= dist[1] ? 0 : 1;
-
-            // 🔁 Update value immediately when clicking on the track
-            updateValue(indexToDrag, clickedVal);
-        } else {
-            updateValue(0, clickedVal);
-        }
-
-        setDraggingIndex(indexToDrag);
-    };
-
-    return (
-        <SliderRoot
-            ref={ref}
-            disabled={disabled}
-            orientation={orientation}
-            onMouseDown={handleTrackStart}
-            onTouchStart={handleTrackStart as any}
-        >
-            <TrackContainer orientation={orientation} size={size}>
-                {isRange ? (
-                    <>
-                        <TrackSegmentFilled
-                            color={color as string}
-                            variant={variant}
-                            start={0}
-                            end={sortedPercents[0]}
-                            orientation={orientation}
-                            hovered={hoveredIndex === 0}
-                        />
-                        <TrackSegment
-                            start={sortedPercents[0]}
-                            end={sortedPercents[1]}
-                            orientation={orientation}
-                        />
-                        <TrackSegmentFilled
-                            color={color as string}
-                            variant={variant}
-                            start={sortedPercents[1]}
-                            end={100}
-                            orientation={orientation}
-                            hovered={hoveredIndex === 1}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <TrackSegmentFilled
-                            color={color as string}
-                            variant={variant}
-                            start={0}
-                            end={sortedPercents[0]}
-                            orientation={orientation}
-                            hovered={hoveredIndex === 0}
-                        />
-                        <TrackSegment
-                            start={sortedPercents[0]}
-                            end={100}
-                            orientation={orientation}
-                        />
-                    </>
-                )}
-
-                {resolvedMarks.map((mark, i) => {
-                    const percent = ((mark.value - min) / (max - min)) * 100;
-                    return (
+        return (
+            <SliderRoot
+                ref={internalRef}
+                disabled={disabled}
+                orientation={orientation}
+                onMouseDown={handleTrackStart}
+                onTouchStart={handleTrackStart as any}
+            >
+                <TrackContainer orientation={orientation} size={size}>
+                    {isRange ? (
                         <>
-                            <Tick
-                                key={`tick-${i}`}
+                            <TrackSegmentFilled
+                                color={color as string}
+                                variant={variant}
+                                start={0}
+                                end={sortedPercents[0]}
                                 orientation={orientation}
-                                percent={percent}
-                                size={size}
+                                hovered={hoveredIndex === 0}
                             />
-                            {marks !== true && (
-                                <MarkLabel
-                                    percent={percent}
+                            <TrackSegment
+                                start={sortedPercents[0]}
+                                end={sortedPercents[1]}
+                                orientation={orientation}
+                            />
+                            <TrackSegmentFilled
+                                color={color as string}
+                                variant={variant}
+                                start={sortedPercents[1]}
+                                end={100}
+                                orientation={orientation}
+                                hovered={hoveredIndex === 1}
+                            />
+                        </>
+                    ) : (
+                        <>
+                            <TrackSegmentFilled
+                                color={color as string}
+                                variant={variant}
+                                start={0}
+                                end={sortedPercents[0]}
+                                orientation={orientation}
+                                hovered={hoveredIndex === 0}
+                            />
+                            <TrackSegment
+                                start={sortedPercents[0]}
+                                end={100}
+                                orientation={orientation}
+                            />
+                        </>
+                    )}
+
+                    {resolvedMarks.map((mark, i) => {
+                        const percent =
+                            ((mark.value - min) / (max - min)) * 100;
+                        return (
+                            <>
+                                <Tick
+                                    key={`tick-${i}`}
                                     orientation={orientation}
-                                    key={`markLabel-${i}`}
+                                    percent={percent}
+                                    size={size}
+                                />
+                                {marks !== true && (
+                                    <MarkLabel
+                                        percent={percent}
+                                        orientation={orientation}
+                                        key={`markLabel-${i}`}
+                                        size={size}
+                                    >
+                                        {mark.label ?? mark.value}
+                                    </MarkLabel>
+                                )}
+                            </>
+                        );
+                    })}
+
+                    {currentValue.map((val, i) => (
+                        <>
+                            <Thumb
+                                color={color as string}
+                                variant={variant}
+                                size={size}
+                                key={i}
+                                percent={percents[i]}
+                                hovered={hoveredIndex === i}
+                                onMouseEnter={() => setHoveredIndex(i)}
+                                onMouseLeave={() => setHoveredIndex(null)}
+                                orientation={orientation}
+                                onMouseDown={(e) => {
+                                    e.stopPropagation();
+                                    setDraggingIndex(i);
+                                }}
+                                onTouchStart={(e) => {
+                                    e.stopPropagation();
+                                    setDraggingIndex(i);
+                                }}
+                            />
+                            {(valueLabelDisplay === "on" ||
+                                (valueLabelDisplay === "auto" &&
+                                    (draggingIndex === i ||
+                                        hoveredIndex === i))) && (
+                                <ValueLabel
+                                    orientation={orientation}
+                                    percent={percents[i]}
                                     size={size}
                                 >
-                                    {mark.label ?? mark.value}
-                                </MarkLabel>
+                                    {(() => {
+                                        if (valueLabelFormat) {
+                                            if (
+                                                typeof valueLabelFormat ===
+                                                "function"
+                                            )
+                                                return valueLabelFormat(val, i);
+                                            else
+                                                return valueLabelFormat
+                                                    .replace(
+                                                        "{value}",
+                                                        val.toString(),
+                                                    )
+                                                    .replace(
+                                                        "{index}",
+                                                        i.toString(),
+                                                    );
+                                        }
+
+                                        if (getAriaValueText)
+                                            return getAriaValueText(val, i);
+
+                                        if (getAriaLabel)
+                                            return getAriaLabel(i);
+
+                                        return typeof val === "number"
+                                            ? val.toFixed(0)
+                                            : val;
+                                    })()}
+                                </ValueLabel>
                             )}
                         </>
-                    );
-                })}
-
-                {currentValue.map((val, i) => (
-                    <>
-                        <Thumb
-                            color={color as string}
-                            variant={variant}
-                            size={size}
-                            key={i}
-                            percent={percents[i]}
-                            hovered={hoveredIndex === i}
-                            onMouseEnter={() => setHoveredIndex(i)}
-                            onMouseLeave={() => setHoveredIndex(null)}
-                            orientation={orientation}
-                            onMouseDown={(e) => {
-                                e.stopPropagation();
-                                setDraggingIndex(i);
-                            }}
-                            onTouchStart={(e) => {
-                                e.stopPropagation();
-                                setDraggingIndex(i);
-                            }}
-                        />
-                        {(valueLabelDisplay === "on" ||
-                            (valueLabelDisplay === "auto" &&
-                                (draggingIndex === i ||
-                                    hoveredIndex === i))) && (
-                            <ValueLabel
-                                orientation={orientation}
-                                percent={percents[i]}
-                                size={size}
-                            >
-                                {(() => {
-                                    if (valueLabelFormat) {
-                                        if (
-                                            typeof valueLabelFormat ===
-                                            "function"
-                                        )
-                                            return valueLabelFormat(val, i);
-                                        else
-                                            return valueLabelFormat
-                                                .replace(
-                                                    "{value}",
-                                                    val.toString(),
-                                                )
-                                                .replace(
-                                                    "{index}",
-                                                    i.toString(),
-                                                );
-                                    }
-
-                                    if (getAriaValueText)
-                                        return getAriaValueText(val, i);
-
-                                    if (getAriaLabel) return getAriaLabel(i);
-
-                                    return typeof val === "number"
-                                        ? val.toFixed(0)
-                                        : val;
-                                })()}
-                            </ValueLabel>
-                        )}
-                    </>
-                ))}
-            </TrackContainer>
-            <HiddenInput
-                type="range"
-                min={min}
-                max={max}
-                step={step ?? 1}
-                value={isRange ? undefined : currentValue[0]}
-                onChange={(e: any) => {
-                    const newVal = parseFloat(e.target.value);
-                    updateValue(0, newVal);
-                }}
-                disabled={disabled}
-                {...rest}
-            />
-        </SliderRoot>
-    );
-};
+                    ))}
+                </TrackContainer>
+                <HiddenInput
+                    type="range"
+                    min={min}
+                    max={max}
+                    step={step ?? 1}
+                    value={isRange ? undefined : currentValue[0]}
+                    onChange={(e: any) => {
+                        const newVal = parseFloat(e.target.value);
+                        updateValue(0, newVal);
+                    }}
+                    disabled={disabled}
+                    {...rest}
+                />
+            </SliderRoot>
+        );
+    },
+);
 
 Slider.displayName = "Slider";
 

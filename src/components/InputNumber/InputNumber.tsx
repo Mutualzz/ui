@@ -6,6 +6,8 @@ import { clamp, resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { formatHex8 } from "culori";
 import {
+    forwardRef,
+    useImperativeHandle,
     useRef,
     type ChangeEvent,
     type ClipboardEvent,
@@ -140,184 +142,195 @@ SpinnerButtons.displayName = "SpinnerButtons";
  * It includes increment and decrement buttons for adjusting the value.
  * It supports various styles, sizes, and states.
  */
-const InputNumber = ({
-    color = "neutral",
-    textColor = "inherit",
-    variant = "outlined",
-    size = "md",
-    inputMode = "decimal",
-    fullWidth = false,
-    error = false,
-    disabled = false,
-    step = 1,
-    min = -Infinity,
-    max = Infinity,
-    onChange,
-    onIncrement,
-    onDecrement,
-    startDecorator,
-    endDecorator,
-    children,
-    ...props
-}: InputNumberProps) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(
+    (
+        {
+            color = "neutral",
+            textColor = "inherit",
+            variant = "outlined",
+            size = "md",
+            inputMode = "decimal",
+            fullWidth = false,
+            error = false,
+            disabled = false,
+            step = 1,
+            min = -Infinity,
+            max = Infinity,
+            onChange,
+            onIncrement,
+            onDecrement,
+            startDecorator,
+            endDecorator,
+            children,
+            ...props
+        },
+        ref,
+    ) => {
+        const inputRef = useRef<HTMLInputElement>(null);
+        useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
-    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        const { key, ctrlKey, metaKey, currentTarget } = e;
-        const cursorPos = currentTarget.selectionStart ?? 0;
-        const { value } = currentTarget;
+        const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+            const { key, ctrlKey, metaKey, currentTarget } = e;
+            const cursorPos = currentTarget.selectionStart ?? 0;
+            const { value } = currentTarget;
 
-        const allowedModifierKeys = [
-            "Backspace",
-            "Delete",
-            "Tab",
-            "Escape",
-            "Enter",
-            "ArrowLeft",
-            "ArrowRight",
-            "ArrowUp",
-            "ArrowDown",
-            "Home",
-            "End",
-        ];
+            const allowedModifierKeys = [
+                "Backspace",
+                "Delete",
+                "Tab",
+                "Escape",
+                "Enter",
+                "ArrowLeft",
+                "ArrowRight",
+                "ArrowUp",
+                "ArrowDown",
+                "Home",
+                "End",
+            ];
 
-        if (key === "ArrowUp") {
-            handleStepChange("up");
+            if (key === "ArrowUp") {
+                handleStepChange("up");
+                e.preventDefault();
+                return;
+            }
+
+            if (key === "ArrowDown") {
+                handleStepChange("down");
+                e.preventDefault();
+                return;
+            }
+
+            if (
+                allowedModifierKeys.includes(key) ||
+                /^\d$/.test(key) ||
+                ((ctrlKey || metaKey) &&
+                    ["a", "c", "v", "x"].includes(key.toLowerCase()))
+            )
+                return;
+
+            if (key === "-" && cursorPos === 0 && !value.includes("-")) return;
+            if (key === "." && !value.includes(".")) return;
+
             e.preventDefault();
-            return;
-        }
+        };
 
-        if (key === "ArrowDown") {
-            handleStepChange("down");
-            e.preventDefault();
-            return;
-        }
+        const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+            const input = e.currentTarget;
+            const value = input.value;
 
-        if (
-            allowedModifierKeys.includes(key) ||
-            /^\d$/.test(key) ||
-            ((ctrlKey || metaKey) &&
-                ["a", "c", "v", "x"].includes(key.toLowerCase()))
-        )
-            return;
+            // Don't do anything if value is empty or invalid
+            if (
+                value === "" ||
+                value === "-" ||
+                value === "." ||
+                value === "-."
+            )
+                return;
 
-        if (key === "-" && cursorPos === 0 && !value.includes("-")) return;
-        if (key === "." && !value.includes(".")) return;
+            const parsed = parseFloat(value);
+            if (isNaN(parsed)) return;
 
-        e.preventDefault();
-    };
-
-    const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-        const input = e.currentTarget;
-        const value = input.value;
-
-        // Don't do anything if value is empty or invalid
-        if (value === "" || value === "-" || value === "." || value === "-.")
-            return;
-
-        const parsed = parseFloat(value);
-        if (isNaN(parsed)) return;
-
-        const clamped = clamp(parsed, min, max);
-        if (parsed !== clamped) {
-            input.value = String(clamped);
-            input.dispatchEvent(new Event("input", { bubbles: true }));
-        }
-    };
-
-    const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
-        const pasted = e.clipboardData.getData("text").trim();
-        if (!/^-?\d*\.?\d*$/.test(pasted)) {
-            e.preventDefault();
-            return;
-        }
-
-        const parsed = parseFloat(pasted);
-        if (isNaN(parsed)) {
-            e.preventDefault();
-            return;
-        }
-
-        if (!isFinite(parsed) || parsed < min || parsed > max) {
             const clamped = clamp(parsed, min, max);
-            inputRef.current!.value = String(clamped);
-            e.preventDefault();
-            inputRef.current!.dispatchEvent(
-                new Event("input", { bubbles: true }),
-            );
-        }
-    };
+            if (parsed !== clamped) {
+                input.value = String(clamped);
+                input.dispatchEvent(new Event("input", { bubbles: true }));
+            }
+        };
 
-    const handleStepChange = (direction: "up" | "down") => {
-        if (!inputRef.current) return;
-        const input = inputRef.current;
-        const current = parseFloat(input.value) || 0;
-        const delta = direction === "up" ? step : -step;
-        const next = clamp(current + delta, min, max);
+        const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
+            const pasted = e.clipboardData.getData("text").trim();
+            if (!/^-?\d*\.?\d*$/.test(pasted)) {
+                e.preventDefault();
+                return;
+            }
 
-        const setter = Object.getOwnPropertyDescriptor(
-            HTMLInputElement.prototype,
-            "value",
-        )?.set;
-        setter?.call(input, String(next));
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-    };
+            const parsed = parseFloat(pasted);
+            if (isNaN(parsed)) {
+                e.preventDefault();
+                return;
+            }
 
-    const handleOnIncrement = () => {
-        if (onIncrement) onIncrement();
-        handleStepChange("up");
-    };
+            if (!isFinite(parsed) || parsed < min || parsed > max) {
+                const clamped = clamp(parsed, min, max);
+                inputRef.current!.value = String(clamped);
+                e.preventDefault();
+                inputRef.current!.dispatchEvent(
+                    new Event("input", { bubbles: true }),
+                );
+            }
+        };
 
-    const handleOnDecrement = () => {
-        if (onDecrement) onDecrement();
-        handleStepChange("down");
-    };
+        const handleStepChange = (direction: "up" | "down") => {
+            if (!inputRef.current) return;
+            const input = inputRef.current;
+            const current = parseFloat(input.value) || 0;
+            const delta = direction === "up" ? step : -step;
+            const next = clamp(current + delta, min, max);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange?.(e);
-    };
+            const setter = Object.getOwnPropertyDescriptor(
+                HTMLInputElement.prototype,
+                "value",
+            )?.set;
+            setter?.call(input, String(next));
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+        };
 
-    return (
-        <InputRoot
-            color={color as string}
-            textColor={textColor}
-            variant={variant}
-            size={size}
-            fullWidth={fullWidth}
-            error={error}
-            disabled={disabled}
-        >
-            {startDecorator && (
-                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
-            )}
+        const handleOnIncrement = () => {
+            if (onIncrement) onIncrement();
+            handleStepChange("up");
+        };
 
-            <InputBase
-                ref={inputRef}
-                {...props}
-                type="number"
-                inputMode={inputMode}
-                onChange={handleChange}
-                min={min}
-                max={max}
-                step={step}
-                onBlur={handleBlur}
-                onKeyDown={handleKeyDown}
-                onPaste={handlePaste}
-            />
+        const handleOnDecrement = () => {
+            if (onDecrement) onDecrement();
+            handleStepChange("down");
+        };
 
-            <DecoratorWrapper>
-                {endDecorator ?? (
-                    <SpinnerButtons
-                        size={size}
-                        onIncrement={handleOnIncrement}
-                        onDecrement={handleOnDecrement}
-                        disabled={disabled}
-                    />
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            onChange?.(e);
+        };
+
+        return (
+            <InputRoot
+                color={color as string}
+                textColor={textColor}
+                variant={variant}
+                size={size}
+                fullWidth={fullWidth}
+                error={error}
+                disabled={disabled}
+            >
+                {startDecorator && (
+                    <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
                 )}
-            </DecoratorWrapper>
-        </InputRoot>
-    );
-};
+
+                <InputBase
+                    ref={inputRef}
+                    {...props}
+                    type="number"
+                    inputMode={inputMode}
+                    onChange={handleChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    onBlur={handleBlur}
+                    onKeyDown={handleKeyDown}
+                    onPaste={handlePaste}
+                />
+
+                <DecoratorWrapper>
+                    {endDecorator ?? (
+                        <SpinnerButtons
+                            size={size}
+                            onIncrement={handleOnIncrement}
+                            onDecrement={handleOnDecrement}
+                            disabled={disabled}
+                        />
+                    )}
+                </DecoratorWrapper>
+            </InputRoot>
+        );
+    },
+);
 
 InputNumber.displayName = "InputNumber";
 

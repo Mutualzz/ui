@@ -2,7 +2,7 @@ import styled from "@styled";
 import type { Orientation, Responsive, Size, SizeValue } from "@ui-types";
 import { resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, forwardRef, useState } from "react";
 import { RadioGroupContext } from "./RadioGroup.context";
 import type { RadioGroupProps } from "./RadioGroup.types";
 
@@ -52,54 +52,60 @@ RadioGroupWrapper.displayName = "RadioGroupButtonWrapper";
  * The `defaultValue` prop can be used to set the initial selected value.
  * The `children` prop allows for passing in radio button components.
  */
-const RadioGroup = ({
-    name,
-    color,
-    size,
-    variant,
-    value: controlledValue,
-    orientation,
-    defaultValue,
-    onChange,
-    disabled,
-    spacing = 0,
-    children,
-}: RadioGroupProps) => {
-    const [internalValue, setInternalValue] = useState(defaultValue ?? "");
-    const isControlled = controlledValue !== undefined;
-    const currentValue = isControlled ? controlledValue : internalValue;
-
-    const handleChange = (
-        e: ChangeEvent<HTMLInputElement>,
-        newValue: string,
+const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
+    (
+        {
+            name,
+            color,
+            size,
+            variant,
+            value: controlledValue,
+            orientation,
+            defaultValue,
+            onChange,
+            disabled,
+            spacing = 0,
+            children,
+        },
+        ref,
     ) => {
-        if (!isControlled) setInternalValue(newValue);
-        onChange?.(e, newValue);
-    };
+        const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+        const isControlled = controlledValue !== undefined;
+        const currentValue = isControlled ? controlledValue : internalValue;
 
-    return (
-        <RadioGroupContext.Provider
-            value={{
-                color,
-                size,
-                variant,
-                name,
-                orientation,
-                value: currentValue,
-                onChange: handleChange,
-                disabled,
-            }}
-        >
-            <RadioGroupWrapper
-                spacing={spacing}
-                orientation={orientation}
-                disabled={disabled}
+        const handleChange = (
+            e: ChangeEvent<HTMLInputElement>,
+            newValue: string,
+        ) => {
+            if (!isControlled) setInternalValue(newValue);
+            onChange?.(e, newValue);
+        };
+
+        return (
+            <RadioGroupContext.Provider
+                value={{
+                    color,
+                    size,
+                    variant,
+                    name,
+                    orientation,
+                    value: currentValue,
+                    onChange: handleChange,
+                    disabled,
+                }}
             >
-                {children}
-            </RadioGroupWrapper>
-        </RadioGroupContext.Provider>
-    );
-};
+                <RadioGroupWrapper
+                    ref={ref}
+                    spacing={spacing}
+                    orientation={orientation}
+                    disabled={disabled}
+                >
+                    {children}
+                </RadioGroupWrapper>
+            </RadioGroupContext.Provider>
+        );
+    },
+);
 
 RadioGroup.displayName = "RadioGroup";
 

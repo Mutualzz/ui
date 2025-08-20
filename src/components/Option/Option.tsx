@@ -3,7 +3,7 @@ import styled from "@styled";
 import { SelectContext } from "@components/Select/Select.context";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useContext } from "react";
+import { useContext, type FC } from "react";
 import { resolveOptionSize, resolveOptionStyles } from "./Option.helpers";
 import type { OptionProps } from "./Option.types";
 
@@ -42,7 +42,7 @@ const OptionWrapper = styled("div")<
     }),
 );
 
-const Option = ({
+const Option: FC<OptionProps> = ({
     value,
     disabled: disabledProp,
     color: colorProp,
@@ -51,7 +51,7 @@ const Option = ({
     label,
     children,
     ...props
-}: OptionProps) => {
+}) => {
     const parent = useContext(SelectContext);
 
     const color = colorProp ?? parent?.color ?? "primary";

@@ -3,7 +3,7 @@ import type { Orientation, Responsive } from "@ui-types";
 import { isCssMarker } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { ListContext } from "components/List/List.context";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { NestedListContext } from "../List/NestedList.context";
 import { resolveListItemSize, resolveListItemStyles } from "./ListItem.helpers";
 import type { ListItemProps } from "./ListItem.types";
@@ -56,47 +56,54 @@ const ListItemRoot = styled("li")<
     }),
 );
 
-export const ListItem = (props: ListItemProps & { marker?: string }) => {
-    const nesting = useContext(NestedListContext);
-    const { marker, color, orientation, size, variant } =
-        useContext(ListContext);
-    const {
-        children,
-        startDecorator,
-        endDecorator,
-        color: colorOverride,
-        marker: markerOverride,
-        size: sizeOverride,
-        variant: variantOverride,
-        ...rest
-    } = props;
+const ListItem = forwardRef<HTMLLIElement, ListItemProps & { marker?: string }>(
+    (props: ListItemProps & { marker?: string }, ref) => {
+        const nesting = useContext(NestedListContext);
+        const { marker, color, orientation, size, variant } =
+            useContext(ListContext);
+        const {
+            children,
+            startDecorator,
+            endDecorator,
+            color: colorOverride,
+            marker: markerOverride,
+            size: sizeOverride,
+            variant: variantOverride,
+            ...rest
+        } = props;
 
-    let markerToUse: string | undefined;
-    if (markerOverride !== undefined) markerToUse = markerOverride;
-    else if (typeof marker === "function") markerToUse = marker(nesting);
-    else if (Array.isArray(marker))
-        markerToUse = marker[nesting] ?? marker[marker.length - 1];
-    else if (typeof marker === "string") markerToUse = marker;
+        let markerToUse: string | undefined;
+        if (markerOverride !== undefined) markerToUse = markerOverride;
+        else if (typeof marker === "function") markerToUse = marker(nesting);
+        else if (Array.isArray(marker))
+            markerToUse = marker[nesting] ?? marker[marker.length - 1];
+        else if (typeof marker === "string") markerToUse = marker;
 
-    const shouldRenderCustomMarker =
-        !isCssMarker(markerToUse) &&
-        markerToUse !== undefined &&
-        markerToUse !== "";
+        const shouldRenderCustomMarker =
+            !isCssMarker(markerToUse) &&
+            markerToUse !== undefined &&
+            markerToUse !== "";
 
-    return (
-        <ListItemRoot
-            nesting={nesting}
-            color={(colorOverride ?? color) as string}
-            variant={variantOverride ?? variant}
-            size={sizeOverride ?? size}
-            orientation={orientation}
-            marker={markerToUse}
-            {...rest}
-        >
-            {startDecorator}
-            {shouldRenderCustomMarker && <span>{markerToUse}</span>}
-            {children}
-            {endDecorator}
-        </ListItemRoot>
-    );
-};
+        return (
+            <ListItemRoot
+                ref={ref}
+                nesting={nesting}
+                color={(colorOverride ?? color) as string}
+                variant={variantOverride ?? variant}
+                size={sizeOverride ?? size}
+                orientation={orientation}
+                marker={markerToUse}
+                {...rest}
+            >
+                {startDecorator}
+                {shouldRenderCustomMarker && <span>{markerToUse}</span>}
+                {children}
+                {endDecorator}
+            </ListItemRoot>
+        );
+    },
+);
+
+ListItem.displayName = "ListItem";
+
+export { ListItem };

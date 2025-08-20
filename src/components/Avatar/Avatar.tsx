@@ -1,5 +1,6 @@
 import styled from "@styled";
 import { resolveResponsiveMerge } from "@utils/responsive";
+import { forwardRef } from "react";
 import {
     resolveAvatarShape,
     resolveAvatarSize,
@@ -45,33 +46,39 @@ const AvatarImage = styled("img")<AvatarProps>(() => ({
     borderRadius: "inherit",
 }));
 
-const Avatar = ({
-    src,
-    alt,
-    children,
-    color = "neutral",
-    shape = "circle",
-    size = "md",
-    variant = "plain",
-}: AvatarProps) => {
-    return (
-        <AvatarWrapper
-            color={color as string}
-            shape={shape}
-            size={size}
-            variant={variant}
-            hasText={!src && Boolean(children)}
-        >
-            {src ? (
-                <AvatarImage src={src} alt={alt} />
-            ) : alt ? (
-                alt.split(" ").join("")
-            ) : (
-                children
-            )}
-        </AvatarWrapper>
-    );
-};
+const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
+    (
+        {
+            src,
+            alt,
+            children,
+            color = "neutral",
+            shape = "circle",
+            size = "md",
+            variant = "plain",
+        },
+        ref,
+    ) => {
+        return (
+            <AvatarWrapper
+                ref={ref}
+                color={color as string}
+                shape={shape}
+                size={size}
+                variant={variant}
+                hasText={!src && Boolean(children)}
+            >
+                {src ? (
+                    <AvatarImage src={src} alt={alt} />
+                ) : alt ? (
+                    alt.split(" ").join("")
+                ) : (
+                    children
+                )}
+            </AvatarWrapper>
+        );
+    },
+);
 
 Avatar.displayName = "Avatar";
 

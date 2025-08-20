@@ -3,7 +3,7 @@ import { InputBase } from "@components/InputBase/InputBase";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import type { Size, SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useCallback, useEffect, useState, type Ref } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { resolvePasswordIconStyles } from "./InputPassword.helpers";
 import type { InputPasswordProps } from "./InputPassword.types";
@@ -51,116 +51,119 @@ const HidePasswordIcon = ({ size, strokeColor }: IconProps) => (
  * The component can display start and end decorators for additional content.
  * The password visibility can be toggled with a button that changes its icon based on the visibility state.
  */
-const InputPassword = (
-    {
-        color = "neutral",
-        textColor = "inherit",
-        variant = "outlined",
-        size = "md",
-        startDecorator,
-        endDecorator,
-        fullWidth = false,
-        error = false,
-        disabled = false,
-        iconVisible = true,
-        showPasswordIcon,
-        hidePasswordIcon,
-        onTogglePassword,
-        onShowPassword,
-        onHidePassword,
-        visible: visibleProp,
-        children,
-        ...props
-    }: InputPasswordProps,
-    ref?: Ref<HTMLInputElement>,
-) => {
-    const { theme } = useTheme();
-    const [visibleInternal, setVisibleInternal] = useState(false);
+const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
+    (
+        {
+            color = "neutral",
+            textColor = "inherit",
+            variant = "outlined",
+            size = "md",
+            startDecorator,
+            endDecorator,
+            fullWidth = false,
+            error = false,
+            disabled = false,
+            iconVisible = true,
+            showPasswordIcon,
+            hidePasswordIcon,
+            onTogglePassword,
+            onShowPassword,
+            onHidePassword,
+            visible: visibleProp,
+            children,
+            ...props
+        },
+        ref,
+    ) => {
+        const { theme } = useTheme();
+        const [visibleInternal, setVisibleInternal] = useState(false);
 
-    const isControlled = visibleProp !== undefined;
+        const isControlled = visibleProp !== undefined;
 
-    const visible = isControlled ? visibleProp : visibleInternal;
+        const visible = isControlled ? visibleProp : visibleInternal;
 
-    useEffect(() => {
-        if (visible) onShowPassword?.();
-        else onHidePassword?.();
-    }, [visible]);
+        useEffect(() => {
+            if (visible) onShowPassword?.();
+            else onHidePassword?.();
+        }, [visible]);
 
-    const togglePassword = useCallback(() => {
-        if (isControlled) {
-            // If controlled, notify parent only
-            onTogglePassword?.(!visible);
-        } else {
-            // If uncontrolled, update internal state and notify parent
-            setVisibleInternal((prev) => {
-                const newVisible = !prev;
-                onTogglePassword?.(newVisible);
-                return newVisible;
-            });
+        const togglePassword = useCallback(() => {
+            if (isControlled) {
+                // If controlled, notify parent only
+                onTogglePassword?.(!visible);
+            } else {
+                // If uncontrolled, update internal state and notify parent
+                setVisibleInternal((prev) => {
+                    const newVisible = !prev;
+                    onTogglePassword?.(newVisible);
+                    return newVisible;
+                });
+            }
+        }, [isControlled, visible]);
+
+        const showToggleIcon =
+            iconVisible && !(endDecorator && !showPasswordIcon);
+
+        let strokeColor = "currentColor";
+        const { strokeColor: strokeColorResolved, s: resolvedSize } =
+            resolveResponsiveMerge(
+                theme,
+                { color, variant, size },
+                ({ color: c, variant: v, size: s }) => ({
+                    strokeColor: resolvePasswordIconStyles(theme, c)[v],
+                    s,
+                }),
+            );
+        if (iconVisible && (!showPasswordIcon || !hidePasswordIcon)) {
+            strokeColor = strokeColorResolved;
         }
-    }, [isControlled, visible]);
 
-    const showToggleIcon = iconVisible && !(endDecorator && !showPasswordIcon);
+        return (
+            <InputRoot
+                color={color as string}
+                textColor={textColor}
+                variant={variant}
+                size={size}
+                fullWidth={fullWidth}
+                error={error}
+                disabled={disabled}
+            >
+                {startDecorator && (
+                    <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
+                )}
 
-    let strokeColor = "currentColor";
-    const { strokeColor: strokeColorResolved, s: resolvedSize } =
-        resolveResponsiveMerge(
-            theme,
-            { color, variant, size },
-            ({ color: c, variant: v, size: s }) => ({
-                strokeColor: resolvePasswordIconStyles(theme, c)[v],
-                s,
-            }),
+                <InputBase
+                    {...props}
+                    ref={ref}
+                    type={visible ? "text" : "password"}
+                />
+
+                {endDecorator ? (
+                    <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
+                ) : showToggleIcon ? (
+                    <DecoratorWrapper
+                        onClick={togglePassword}
+                        css={{ cursor: "pointer", userSelect: "none" }}
+                    >
+                        {visible
+                            ? (hidePasswordIcon ?? (
+                                  <HidePasswordIcon
+                                      size={resolvedSize}
+                                      strokeColor={strokeColor}
+                                  />
+                              ))
+                            : (showPasswordIcon ?? (
+                                  <ShowPasswordIcon
+                                      size={resolvedSize}
+                                      strokeColor={strokeColor}
+                                  />
+                              ))}
+                    </DecoratorWrapper>
+                ) : null}
+            </InputRoot>
         );
-    if (iconVisible && (!showPasswordIcon || !hidePasswordIcon)) {
-        strokeColor = strokeColorResolved;
-    }
-
-    return (
-        <InputRoot
-            color={color as string}
-            textColor={textColor}
-            variant={variant}
-            size={size}
-            fullWidth={fullWidth}
-            error={error}
-            disabled={disabled}
-        >
-            {startDecorator && (
-                <DecoratorWrapper>{startDecorator}</DecoratorWrapper>
-            )}
-
-            <InputBase
-                {...props}
-                ref={ref}
-                type={visible ? "text" : "password"}
-            />
-
-            {endDecorator ? (
-                <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
-            ) : showToggleIcon ? (
-                <DecoratorWrapper
-                    onClick={togglePassword}
-                    css={{ cursor: "pointer", userSelect: "none" }}
-                >
-                    {visible
-                        ? (hidePasswordIcon ?? (
-                              <HidePasswordIcon
-                                  size={resolvedSize}
-                                  strokeColor={strokeColor}
-                              />
-                          ))
-                        : (showPasswordIcon ?? (
-                              <ShowPasswordIcon
-                                  size={resolvedSize}
-                                  strokeColor={strokeColor}
-                              />
-                          ))}
-                </DecoratorWrapper>
-            ) : null}
-        </InputRoot>
-    );
-};
+    },
+);
 
 InputPassword.displayName = "InputPassword";
 

@@ -1,7 +1,7 @@
 import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import {
     resolveTextareaInputSize,
     resolveTextareaSize,
@@ -74,73 +74,86 @@ TextareaInput.displayName = "TextareaInput";
  * It automatically adjusts its height based on the content when `resizable` is false.
  * It can also have a minimum and maximum number of rows defined by `minRows` and `maxRows` props.
  */
-const Textarea = ({
-    color = "neutral",
-    textColor = "inherit",
-    variant = "outlined",
-    size = "md",
-    disabled = false,
-    resizable = false,
-    minRows = 1,
-    maxRows,
-    ...props
-}: TextareaProps) => {
-    const ref = useRef<HTMLTextAreaElement>(null);
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+    (
+        {
+            color = "neutral",
+            textColor = "inherit",
+            variant = "outlined",
+            size = "md",
+            disabled = false,
+            resizable = false,
+            minRows = 1,
+            maxRows,
+            ...props
+        },
+        ref,
+    ) => {
+        const internalRef = useRef<HTMLTextAreaElement>(null);
+        useImperativeHandle(
+            ref,
+            () => internalRef.current as HTMLTextAreaElement,
+        );
 
-    useEffect(() => {
-        if (resizable) return;
-        const el = ref.current;
-        if (!el) return;
+        useEffect(() => {
+            if (resizable) return;
+            const el = internalRef.current;
+            if (!el) return;
 
-        const updateHeight = () => {
-            const computed = getComputedStyle(el);
-            const lineHeight = parseFloat(computed.lineHeight);
+            const updateHeight = () => {
+                const computed = getComputedStyle(el);
+                const lineHeight = parseFloat(computed.lineHeight);
 
-            const minHeight = minRows ? `${lineHeight * minRows}px` : undefined;
-            const maxHeight = maxRows ? `${lineHeight * maxRows}px` : undefined;
+                const minHeight = minRows
+                    ? `${lineHeight * minRows}px`
+                    : undefined;
+                const maxHeight = maxRows
+                    ? `${lineHeight * maxRows}px`
+                    : undefined;
 
-            if (minHeight) el.style.minHeight = minHeight;
-            if (maxHeight) el.style.maxHeight = maxHeight;
+                if (minHeight) el.style.minHeight = minHeight;
+                if (maxHeight) el.style.maxHeight = maxHeight;
 
-            el.style.height = "auto";
-            el.style.height = `${el.scrollHeight}px`;
-        };
+                el.style.height = "auto";
+                el.style.height = `${el.scrollHeight}px`;
+            };
 
-        updateHeight();
-
-        el.addEventListener("input", updateHeight);
-
-        const resiveObserver = new ResizeObserver(() => {
             updateHeight();
-        });
 
-        resiveObserver.observe(el);
+            el.addEventListener("input", updateHeight);
 
-        return () => {
-            el.removeEventListener("input", updateHeight);
-            resiveObserver.disconnect();
-        };
-    }, [minRows, maxRows, resizable]);
+            const resiveObserver = new ResizeObserver(() => {
+                updateHeight();
+            });
 
-    return (
-        <TextareaRoot
-            color={color as string}
-            textColor={textColor}
-            variant={variant}
-            size={size}
-            disabled={disabled}
-        >
-            <TextareaInput
-                {...props}
-                ref={ref}
-                resizable={resizable}
+            resiveObserver.observe(el);
+
+            return () => {
+                el.removeEventListener("input", updateHeight);
+                resiveObserver.disconnect();
+            };
+        }, [minRows, maxRows, resizable]);
+
+        return (
+            <TextareaRoot
+                color={color as string}
+                textColor={textColor}
+                variant={variant}
                 size={size}
                 disabled={disabled}
-                rows={minRows}
-            />
-        </TextareaRoot>
-    );
-};
+            >
+                <TextareaInput
+                    {...props}
+                    ref={internalRef}
+                    resizable={resizable}
+                    size={size}
+                    disabled={disabled}
+                    rows={minRows}
+                />
+            </TextareaRoot>
+        );
+    },
+);
 
 Textarea.displayName = "Textarea";
 

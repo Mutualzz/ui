@@ -2,11 +2,11 @@ import styled from "@styled";
 import { type Responsive, type Size, type SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import {
+    forwardRef,
     useContext,
     useRef,
     useState,
     type ChangeEvent,
-    type Ref,
 } from "react";
 import { CheckboxGroupContext } from "../CheckboxGroup/CheckboxGroup.context";
 import {
@@ -148,158 +148,160 @@ IconWrapper.displayName = "IconWrapper";
  * The component can be controlled via props or managed internally.
  * It also supports RTL label alignment.
  */
-const Checkbox = (
-    {
-        checked: controlledChecked,
-        onChange: propOnChange,
-        defaultChecked,
-        label,
-        disabled: propDisabled,
-        color: colorProp,
-        variant: variantProp,
-        size: sizeProp,
-        name: propName,
-        value,
-        uncheckedIcon,
-        checkedIcon,
-        indeterminate,
-        indeterminateIcon,
-        rtl,
-        ...props
-    }: CheckboxProps,
-    ref?: Ref<HTMLInputElement>,
-) => {
-    const group = useContext(CheckboxGroupContext);
-    const [uncontrolledChecked, setUncontrolledChecked] = useState(
-        defaultChecked ?? false,
-    );
-    const inputRef = useRef<HTMLInputElement>(null);
+const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+    (
+        {
+            checked: controlledChecked,
+            onChange: propOnChange,
+            defaultChecked,
+            label,
+            disabled: propDisabled,
+            color: colorProp,
+            variant: variantProp,
+            size: sizeProp,
+            name: propName,
+            value,
+            uncheckedIcon,
+            checkedIcon,
+            indeterminate,
+            indeterminateIcon,
+            rtl,
+            ...props
+        }: CheckboxProps,
+        ref,
+    ) => {
+        const group = useContext(CheckboxGroupContext);
+        const [uncontrolledChecked, setUncontrolledChecked] = useState(
+            defaultChecked ?? false,
+        );
+        const inputRef = useRef<HTMLInputElement>(null);
 
-    const isChecked =
-        group && value
-            ? Array.isArray(group.value) && group.value.includes(value)
-            : controlledChecked !== undefined
-              ? controlledChecked
-              : uncontrolledChecked;
+        const isChecked =
+            group && value
+                ? Array.isArray(group.value) && group.value.includes(value)
+                : controlledChecked !== undefined
+                  ? controlledChecked
+                  : uncontrolledChecked;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (!group && controlledChecked === undefined) {
-            setUncontrolledChecked(e.target.checked);
-        }
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            if (!group && controlledChecked === undefined) {
+                setUncontrolledChecked(e.target.checked);
+            }
 
-        if (group?.onChange && value) {
-            const currentValues = group.value || [];
-            const newValues = e.target.checked
-                ? [...currentValues, value]
-                : currentValues.filter((v) => v !== value);
+            if (group?.onChange && value) {
+                const currentValues = group.value || [];
+                const newValues = e.target.checked
+                    ? [...currentValues, value]
+                    : currentValues.filter((v) => v !== value);
 
-            group.onChange(e, newValues);
-        }
+                group.onChange(e, newValues);
+            }
 
-        propOnChange?.(e);
-    };
+            propOnChange?.(e);
+        };
 
-    const handleWrapperClick = () => {
-        if (!disabled && inputRef.current) {
-            inputRef.current.click();
-        }
-    };
+        const handleWrapperClick = () => {
+            if (!disabled && inputRef.current) {
+                inputRef.current.click();
+            }
+        };
 
-    const color = colorProp ?? group?.color ?? "neutral";
-    const variant = variantProp ?? group?.variant ?? "solid";
-    const size = sizeProp ?? group?.size ?? "md";
-    const name = group?.name ?? propName;
-    const disabled = group?.disabled ?? propDisabled;
+        const color = colorProp ?? group?.color ?? "neutral";
+        const variant = variantProp ?? group?.variant ?? "solid";
+        const size = sizeProp ?? group?.size ?? "md";
+        const name = group?.name ?? propName;
+        const disabled = group?.disabled ?? propDisabled;
 
-    return (
-        <CheckboxWrapper
-            role="checkbox"
-            aria-checked={isChecked}
-            tabIndex={disabled ? -1 : 0}
-            disabled={disabled}
-            size={size}
-            onClick={handleWrapperClick}
-        >
-            <HiddenCheckbox
-                type="checkbox"
-                name={name}
-                value={value}
-                checked={isChecked}
-                onChange={handleChange}
-                disabled={disabled}
-                ref={(node) => {
-                    inputRef.current = node;
-                    if (typeof ref === "function") ref(node);
-                    else if (ref) ref.current = node;
-                }}
-                {...props}
-                css={{
-                    pointerEvents: "none",
-                }}
-            />
-            {rtl && label && (
-                <CheckboxLabel disabled={disabled} rtl={rtl}>
-                    {label}
-                </CheckboxLabel>
-            )}
-            <CheckboxBox
-                name={name}
+        return (
+            <CheckboxWrapper
                 role="checkbox"
                 aria-checked={isChecked}
-                color={color as string}
-                variant={variant}
-                checked={isChecked}
+                tabIndex={disabled ? -1 : 0}
                 disabled={disabled}
                 size={size}
+                onClick={handleWrapperClick}
             >
-                {indeterminate ? (
-                    indeterminateIcon ? (
-                        <IconWrapper size={size}>
-                            {indeterminateIcon}
-                        </IconWrapper>
-                    ) : (
-                        <IconWrapper size={size}>
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <line x1="6" y1="12" x2="18" y2="12" />
-                            </svg>
-                        </IconWrapper>
-                    )
-                ) : isChecked ? (
-                    checkedIcon ? (
-                        <IconWrapper size={size}>{checkedIcon}</IconWrapper>
-                    ) : (
-                        <IconWrapper size={size}>
-                            <svg
-                                viewBox="2 2 20 20"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <polyline points="4 12 10 18 20 6" />
-                            </svg>
-                        </IconWrapper>
-                    )
-                ) : uncheckedIcon ? (
-                    <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
-                ) : null}
-            </CheckboxBox>
-            {!rtl && label && (
-                <CheckboxLabel disabled={disabled} rtl={rtl}>
-                    {label}
-                </CheckboxLabel>
-            )}
-        </CheckboxWrapper>
-    );
-};
+                <HiddenCheckbox
+                    type="checkbox"
+                    name={name}
+                    value={value}
+                    checked={isChecked}
+                    onChange={handleChange}
+                    disabled={disabled}
+                    ref={(node) => {
+                        inputRef.current = node;
+                        if (typeof ref === "function") ref(node);
+                        else if (ref) ref.current = node;
+                    }}
+                    {...props}
+                    css={{
+                        pointerEvents: "none",
+                    }}
+                />
+                {rtl && label && (
+                    <CheckboxLabel disabled={disabled} rtl={rtl}>
+                        {label}
+                    </CheckboxLabel>
+                )}
+                <CheckboxBox
+                    name={name}
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    color={color as string}
+                    variant={variant}
+                    checked={isChecked}
+                    disabled={disabled}
+                    size={size}
+                >
+                    {indeterminate ? (
+                        indeterminateIcon ? (
+                            <IconWrapper size={size}>
+                                {indeterminateIcon}
+                            </IconWrapper>
+                        ) : (
+                            <IconWrapper size={size}>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <line x1="6" y1="12" x2="18" y2="12" />
+                                </svg>
+                            </IconWrapper>
+                        )
+                    ) : isChecked ? (
+                        checkedIcon ? (
+                            <IconWrapper size={size}>{checkedIcon}</IconWrapper>
+                        ) : (
+                            <IconWrapper size={size}>
+                                <svg
+                                    viewBox="2 2 20 20"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                >
+                                    <polyline points="4 12 10 18 20 6" />
+                                </svg>
+                            </IconWrapper>
+                        )
+                    ) : uncheckedIcon ? (
+                        <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
+                    ) : null}
+                </CheckboxBox>
+                {!rtl && label && (
+                    <CheckboxLabel disabled={disabled} rtl={rtl}>
+                        {label}
+                    </CheckboxLabel>
+                )}
+            </CheckboxWrapper>
+        );
+    },
+);
 
 Checkbox.displayName = "Checkbox";
 

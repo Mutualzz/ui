@@ -1,4 +1,4 @@
-import { useContext, type Ref } from "react";
+import { forwardRef, useContext } from "react";
 
 import { CircularProgress } from "@components/CircularProgress/CircularProgress";
 import styled from "@styled";
@@ -85,65 +85,69 @@ const SpinnerOverlay = styled("span")({
 SpinnerOverlay.displayName = "SpinnerOverlay";
 
 /**
- * Button component that renders a styled button element with various properties.
+ * IconButton component that renders a styled icon button element with various properties.
  * It supports different variants, colors, sizes, and loading states.
  * The button can also include start and end decorators for additional content.
  */
-const IconButton = (
-    {
-        variant: propVariant,
-        color: propColor,
-        size: propSize,
-        loading: propLoading,
-        loadingIndicator,
+const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+    (
+        {
+            variant: propVariant,
+            color: propColor,
+            size: propSize,
+            loading: propLoading,
+            loadingIndicator,
 
-        disabled: propDisabled,
-        children,
-        type = "button",
-        ...props
-    }: IconButtonProps,
-    ref?: Ref<HTMLButtonElement>,
-) => {
-    const group = useContext(ButtonGroupContext);
+            disabled: propDisabled,
+            children,
+            type = "button",
+            ...props
+        },
+        ref,
+    ) => {
+        const group = useContext(ButtonGroupContext);
 
-    const variant = propVariant ?? group?.variant ?? "solid";
-    const color = propColor ?? group?.color ?? "primary";
-    const size = propSize ?? group?.size ?? "md";
-    const loading = propLoading ?? group?.loading ?? false;
-    const disabled = propDisabled ?? group?.disabled ?? false;
+        const variant = propVariant ?? group?.variant ?? "solid";
+        const color = propColor ?? group?.color ?? "primary";
+        const size = propSize ?? group?.size ?? "md";
+        const loading = propLoading ?? group?.loading ?? false;
+        const disabled = propDisabled ?? group?.disabled ?? false;
 
-    return (
-        <IconButtonWrapper
-            {...props}
-            type={type}
-            ref={ref}
-            variant={variant}
-            color={color as string}
-            size={size}
-            disabled={loading || disabled}
-            loading={loading}
-        >
-            {loading && (
-                <SpinnerOverlay>
-                    {loadingIndicator ? (
-                        loadingIndicator
-                    ) : (
-                        <CircularProgress
-                            variant={
-                                variant === "solid" || variant === "soft"
-                                    ? "plain"
-                                    : "soft"
-                            }
-                            color={color}
-                            size="sm"
-                        />
-                    )}
-                </SpinnerOverlay>
-            )}
-            <IconButtonContent loading={loading}>{children}</IconButtonContent>
-        </IconButtonWrapper>
-    );
-};
+        return (
+            <IconButtonWrapper
+                {...props}
+                type={type}
+                ref={ref}
+                variant={variant}
+                color={color as string}
+                size={size}
+                disabled={loading || disabled}
+                loading={loading}
+            >
+                {loading && (
+                    <SpinnerOverlay>
+                        {loadingIndicator ? (
+                            loadingIndicator
+                        ) : (
+                            <CircularProgress
+                                variant={
+                                    variant === "solid" || variant === "soft"
+                                        ? "plain"
+                                        : "soft"
+                                }
+                                color={color}
+                                size="sm"
+                            />
+                        )}
+                    </SpinnerOverlay>
+                )}
+                <IconButtonContent loading={loading}>
+                    {children}
+                </IconButtonContent>
+            </IconButtonWrapper>
+        );
+    },
+);
 
 IconButton.displayName = "Button";
 

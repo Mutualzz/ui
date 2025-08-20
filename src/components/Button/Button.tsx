@@ -1,4 +1,4 @@
-import { useContext, type Ref } from "react";
+import { forwardRef, useContext } from "react";
 
 import { CircularProgress } from "@components/CircularProgress/CircularProgress";
 import styled from "@styled";
@@ -89,73 +89,75 @@ SpinnerOverlay.displayName = "SpinnerOverlay";
  * It supports different variants, colors, sizes, and loading states.
  * The button can also include start and end decorators for additional content.
  */
-const Button = (
-    {
-        variant: propVariant,
-        color: propColor,
-        size: propSize,
-        loading: propLoading,
-        loadingIndicator,
-        startDecorator,
-        endDecorator,
-        disabled: propDisabled,
-        children,
-        type = "button",
-        ...props
-    }: ButtonProps,
-    ref?: Ref<HTMLButtonElement>,
-) => {
-    const group = useContext(ButtonGroupContext);
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+    (
+        {
+            variant: propVariant,
+            color: propColor,
+            size: propSize,
+            loading: propLoading,
+            loadingIndicator,
+            startDecorator,
+            endDecorator,
+            disabled: propDisabled,
+            children,
+            type = "button",
+            ...props
+        },
+        ref,
+    ) => {
+        const group = useContext(ButtonGroupContext);
 
-    const variant = propVariant ?? group?.variant ?? "solid";
-    const color = propColor ?? group?.color ?? "primary";
-    const size = propSize ?? group?.size ?? "md";
-    const loading = propLoading ?? group?.loading ?? false;
-    const disabled = propDisabled ?? group?.disabled ?? false;
+        const variant = propVariant ?? group?.variant ?? "solid";
+        const color = propColor ?? group?.color ?? "primary";
+        const size = propSize ?? group?.size ?? "md";
+        const loading = propLoading ?? group?.loading ?? false;
+        const disabled = propDisabled ?? group?.disabled ?? false;
 
-    return (
-        <ButtonWrapper
-            {...props}
-            type={type}
-            ref={ref}
-            variant={variant}
-            color={color as string}
-            size={size}
-            disabled={loading || disabled}
-            loading={loading}
-        >
-            {loading && (
-                <SpinnerOverlay>
-                    {loadingIndicator ? (
-                        loadingIndicator
-                    ) : (
-                        <CircularProgress
-                            variant={
-                                variant === "solid" || variant === "soft"
-                                    ? "plain"
-                                    : "soft"
-                            }
-                            color={color}
-                            size="sm"
-                        />
-                    )}
-                </SpinnerOverlay>
-            )}
+        return (
+            <ButtonWrapper
+                {...props}
+                type={type}
+                ref={ref}
+                variant={variant}
+                color={color as string}
+                size={size}
+                disabled={loading || disabled}
+                loading={loading}
+            >
+                {loading && (
+                    <SpinnerOverlay>
+                        {loadingIndicator ? (
+                            loadingIndicator
+                        ) : (
+                            <CircularProgress
+                                variant={
+                                    variant === "solid" || variant === "soft"
+                                        ? "plain"
+                                        : "soft"
+                                }
+                                color={color}
+                                size="sm"
+                            />
+                        )}
+                    </SpinnerOverlay>
+                )}
 
-            {startDecorator && (
-                <DecoratorWrapper position="start">
-                    {startDecorator}
-                </DecoratorWrapper>
-            )}
-            <ButtonContent loading={loading}>{children}</ButtonContent>
-            {endDecorator && (
-                <DecoratorWrapper position="end">
-                    {endDecorator}
-                </DecoratorWrapper>
-            )}
-        </ButtonWrapper>
-    );
-};
+                {startDecorator && (
+                    <DecoratorWrapper position="start">
+                        {startDecorator}
+                    </DecoratorWrapper>
+                )}
+                <ButtonContent loading={loading}>{children}</ButtonContent>
+                {endDecorator && (
+                    <DecoratorWrapper position="end">
+                        {endDecorator}
+                    </DecoratorWrapper>
+                )}
+            </ButtonWrapper>
+        );
+    },
+);
 
 Button.displayName = "Button";
 

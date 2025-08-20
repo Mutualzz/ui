@@ -4,6 +4,7 @@ import styled from "@styled";
 import type { Variant } from "@ui-types";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveResponsiveMerge } from "@utils/responsive";
+import { forwardRef } from "react";
 import {
     resolveLinearProgressLength,
     resolveLinearProgressStyles,
@@ -12,7 +13,7 @@ import {
 import { bounce, scaleInOut, slide, wave } from "./LinearProgress.keyframes";
 import type { LinearProgressProps } from "./LinearProgress.types";
 
-const ProgressWrapper = styled("div")<{
+const LinearProgressWrapper = styled("div")<{
     width: string | number;
     height: string | number;
     background: string;
@@ -28,7 +29,7 @@ const ProgressWrapper = styled("div")<{
     ...(variant === "outlined" && { border: `1px solid ${outlinedColor}` }),
 }));
 
-ProgressWrapper.displayName = "ProgressWrapper";
+LinearProgressWrapper.displayName = "LinearProgressWrapper";
 
 const DeterminateBar = styled("div")<{
     barColor: string;
@@ -90,59 +91,65 @@ IndeterminateBar.displayName = "IndeterminateBar";
  * The indeterminate state shows an animated bar that indicates ongoing progress.
  * The component can be styled with different thicknesses, lengths, variants, and colors.
  */
-const LinearProgress = ({
-    thickness = "md",
-    length = "md",
-    variant = "soft",
-    color = "primary",
-    animation = "bounce",
-    determinate = false,
-    value = 0,
-}: LinearProgressProps) => {
-    const { theme } = useTheme();
-
-    const {
-        width,
-        height,
-        background,
-        sharedColor,
-        variant: resolvedVariant,
-    } = resolveResponsiveMerge(
-        theme,
+const LinearProgress = forwardRef<HTMLDivElement, LinearProgressProps>(
+    (
         {
-            thickness,
-            length,
-            color,
-            variant,
+            thickness = "md",
+            length = "md",
+            variant = "soft",
+            color = "primary",
+            animation = "bounce",
+            determinate = false,
+            value = 0,
         },
-        ({ thickness: t, length: l, color: c, variant: v }) => ({
-            thickness: resolveLinearProgressThickness(theme, t),
-            length: resolveLinearProgressLength(theme, l),
-            background: resolveLinearProgressStyles(theme, c)[v],
-            sharedColor: resolveColor(c, theme),
-            variant: v,
-        }),
-    );
+        ref,
+    ) => {
+        const { theme } = useTheme();
 
-    return (
-        <ProgressWrapper
-            width={width}
-            height={height}
-            background={background}
-            outlinedColor={sharedColor}
-            variant={resolvedVariant}
-        >
-            {determinate ? (
-                <DeterminateBar barColor={sharedColor} value={value} />
-            ) : (
-                <IndeterminateBar
-                    barColor={sharedColor}
-                    animation={animation}
-                />
-            )}
-        </ProgressWrapper>
-    );
-};
+        const {
+            width,
+            height,
+            background,
+            sharedColor,
+            variant: resolvedVariant,
+        } = resolveResponsiveMerge(
+            theme,
+            {
+                thickness,
+                length,
+                color,
+                variant,
+            },
+            ({ thickness: t, length: l, color: c, variant: v }) => ({
+                thickness: resolveLinearProgressThickness(theme, t),
+                length: resolveLinearProgressLength(theme, l),
+                background: resolveLinearProgressStyles(theme, c)[v],
+                sharedColor: resolveColor(c, theme),
+                variant: v,
+            }),
+        );
+
+        return (
+            <LinearProgressWrapper
+                ref={ref}
+                width={width}
+                height={height}
+                background={background}
+                outlinedColor={sharedColor}
+                variant={resolvedVariant}
+            >
+                {determinate ? (
+                    <DeterminateBar barColor={sharedColor} value={value} />
+                ) : (
+                    <IndeterminateBar
+                        barColor={sharedColor}
+                        animation={animation}
+                    />
+                )}
+            </LinearProgressWrapper>
+        );
+    },
+);
 
 LinearProgress.displayName = "LinearProgress";
 

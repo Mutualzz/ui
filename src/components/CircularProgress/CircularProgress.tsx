@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 import styled from "@styled";
@@ -135,101 +135,107 @@ const strokeWidthSizeMap: Record<Size, number> = {
  * The component can display children content inside the circular progress.
  * It uses SVG for rendering the progress circle and applies styles based on the provided props.
  */
-const CircularProgress = ({
-    size = "md",
-    variant = "soft",
-    color = "primary",
-    determinate = false,
-    strokeWidth: strokeWidthProp,
-    value = 0,
-    children,
-    ...props
-}: CircularProgressProps) => {
-    const { theme } = useTheme();
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [contentDiameter, setContentDiameter] = useState(0);
+const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps>(
+    (
+        {
+            size = "md",
+            variant = "soft",
+            color = "primary",
+            determinate = false,
+            strokeWidth: strokeWidthProp,
+            value = 0,
+            children,
+            ...props
+        },
+        ref,
+    ) => {
+        const { theme } = useTheme();
+        const contentRef = useRef<HTMLDivElement>(null);
+        const [contentDiameter, setContentDiameter] = useState(0);
 
-    useEffect(() => {
-        if (!contentRef.current) return;
-        const handleResize = (entry: ResizeObserverEntry) => {
-            const { width, height } = entry.contentRect;
-            setContentDiameter(Math.max(width, height));
-        };
+        useEffect(() => {
+            if (!contentRef.current) return;
+            const handleResize = (entry: ResizeObserverEntry) => {
+                const { width, height } = entry.contentRect;
+                setContentDiameter(Math.max(width, height));
+            };
 
-        const ro = new ResizeObserver((entries) => {
-            if (entries[0]) handleResize(entries[0]);
-        });
-        ro.observe(contentRef.current);
-        return () => {
-            ro.disconnect();
-        };
-    }, []);
+            const ro = new ResizeObserver((entries) => {
+                if (entries[0]) handleResize(entries[0]);
+            });
+            ro.observe(contentRef.current);
+            return () => {
+                ro.disconnect();
+            };
+        }, []);
 
-    const { size: resolvedSize, strokeWidth: resolvedStrokeWidth } =
-        resolveResponsiveMerge(
-            theme,
-            {
-                size,
-                strokeWidth: strokeWidthProp,
-            },
-            ({ size: s, strokeWidth }) => ({ s, strokeWidth }),
-        );
+        const { size: resolvedSize, strokeWidth: resolvedStrokeWidth } =
+            resolveResponsiveMerge(
+                theme,
+                {
+                    size,
+                    strokeWidth: strokeWidthProp,
+                },
+                ({ size: s, strokeWidth }) => ({ s, strokeWidth }),
+            );
 
-    const baseDiameter = resolveCircularProgressSize(theme, resolvedSize);
-    const strokeWidth = strokeWidthProp
-        ? resolveSize(theme, resolvedStrokeWidth, strokeWidthSizeMap)
-        : Math.max(2, baseDiameter * 0.1);
+        const baseDiameter = resolveCircularProgressSize(theme, resolvedSize);
+        const strokeWidth = strokeWidthProp
+            ? resolveSize(theme, resolvedStrokeWidth, strokeWidthSizeMap)
+            : Math.max(2, baseDiameter * 0.1);
 
-    const diameter = contentDiameter
-        ? contentDiameter + strokeWidth + 8 * 2
-        : baseDiameter;
+        const diameter = contentDiameter
+            ? contentDiameter + strokeWidth + 8 * 2
+            : baseDiameter;
 
-    const radius = (diameter - strokeWidth) / 2;
-    const circumference = 2 * Math.PI * radius;
-    const dashOffset = ((100 - value) / 100) * circumference;
+        const radius = (diameter - strokeWidth) / 2;
+        const circumference = 2 * Math.PI * radius;
+        const dashOffset = ((100 - value) / 100) * circumference;
 
-    return (
-        <CircularProgressWrapper
-            diameter={diameter}
-            strokeWidth={strokeWidth}
-            variant={variant}
-            color={color as string}
-        >
-            <CircularProgressContent ref={contentRef}>
-                {children}
-            </CircularProgressContent>
+        return (
+            <CircularProgressWrapper
+                ref={ref}
+                diameter={diameter}
+                strokeWidth={strokeWidth}
+                variant={variant}
+                color={color as string}
+            >
+                <CircularProgressContent ref={contentRef}>
+                    {children}
+                </CircularProgressContent>
 
-            {diameter > 0 && (
-                <CircularProgressSvg
-                    {...props}
-                    role="progressbar"
-                    diameter={diameter}
-                    determinate={determinate}
-                    viewBox={`0 0 ${diameter} ${diameter}`}
-                >
-                    <CircularProgressCircleOuter
-                        variant={variant}
-                        color={color as string}
-                        strokeWidth={strokeWidth}
-                        cx={diameter / 2}
-                        cy={diameter / 2}
-                        r={radius}
-                    />
-                    <CircularProgressCircleInner
-                        color={color as string}
-                        strokeWidth={strokeWidth}
+                {diameter > 0 && (
+                    <CircularProgressSvg
+                        {...props}
+                        role="progressbar"
+                        diameter={diameter}
                         determinate={determinate}
-                        circumference={circumference}
-                        dashOffset={dashOffset}
-                        cx={diameter / 2}
-                        cy={diameter / 2}
-                        r={radius}
-                    />
-                </CircularProgressSvg>
-            )}
-        </CircularProgressWrapper>
-    );
-};
+                        viewBox={`0 0 ${diameter} ${diameter}`}
+                    >
+                        <CircularProgressCircleOuter
+                            variant={variant}
+                            color={color as string}
+                            strokeWidth={strokeWidth}
+                            cx={diameter / 2}
+                            cy={diameter / 2}
+                            r={radius}
+                        />
+                        <CircularProgressCircleInner
+                            color={color as string}
+                            strokeWidth={strokeWidth}
+                            determinate={determinate}
+                            circumference={circumference}
+                            dashOffset={dashOffset}
+                            cx={diameter / 2}
+                            cy={diameter / 2}
+                            r={radius}
+                        />
+                    </CircularProgressSvg>
+                )}
+            </CircularProgressWrapper>
+        );
+    },
+);
 
 CircularProgress.displayName = "CircularProgress";
 

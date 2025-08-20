@@ -4,7 +4,7 @@ import { Stack } from "@components/Stack/Stack";
 import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useLayoutEffect, useRef, useState } from "react";
+import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { resolvePopoverSize, resolvePopoverStyles } from "./Popover.helpers";
 import type { PopoverProps } from "./Popover.types";
 
@@ -65,90 +65,95 @@ const PopoverContent = styled(Paper)<{
     }),
 );
 
-const Popover = ({
-    color = "neutral",
-    variant = "solid",
-    size = "md",
-    content,
-    children,
-    isOpen: isOpenProp,
-    usePortal = true,
-    ...props
-}: PopoverProps) => {
-    const [visible, setVisible] = useState(false);
-    const [position, setPosition] = useState({ top: 0, left: 0 });
-    const triggerRef = useRef<HTMLDivElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
+const Popover = forwardRef<HTMLDivElement, PopoverProps>(
+    (
+        {
+            color = "neutral",
+            variant = "solid",
+            size = "md",
+            content,
+            children,
+            isOpen: isOpenProp,
+            usePortal = true,
+            ...props
+        },
+        ref,
+    ) => {
+        const [visible, setVisible] = useState(false);
+        const [position, setPosition] = useState({ top: 0, left: 0 });
+        const triggerRef = useRef<HTMLDivElement>(null);
+        const contentRef = useRef<HTMLDivElement>(null);
 
-    const isControlled = isOpenProp !== undefined;
-    const isOpen = isControlled ? isOpenProp : visible;
+        const isControlled = isOpenProp !== undefined;
+        const isOpen = isControlled ? isOpenProp : visible;
 
-    const updatePosition = () => {
-        if (triggerRef.current) {
-            const rect = triggerRef.current.getBoundingClientRect();
-            const scrollTop =
-                window.pageYOffset || document.documentElement.scrollTop;
-            const scrollLeft =
-                window.pageXOffset || document.documentElement.scrollLeft;
+        const updatePosition = () => {
+            if (triggerRef.current) {
+                const rect = triggerRef.current.getBoundingClientRect();
+                const scrollTop =
+                    window.pageYOffset || document.documentElement.scrollTop;
+                const scrollLeft =
+                    window.pageXOffset || document.documentElement.scrollLeft;
 
-            setPosition({
-                top: rect.bottom + scrollTop + 10,
-                left: rect.left + scrollLeft + rect.width / 2,
-            });
-        }
-    };
+                setPosition({
+                    top: rect.bottom + scrollTop + 10,
+                    left: rect.left + scrollLeft + rect.width / 2,
+                });
+            }
+        };
 
-    useLayoutEffect(() => {
-        if (isOpen && usePortal) {
-            updatePosition();
+        useLayoutEffect(() => {
+            if (isOpen && usePortal) {
+                updatePosition();
 
-            const handleScroll = () => updatePosition();
-            const handleResize = () => updatePosition();
+                const handleScroll = () => updatePosition();
+                const handleResize = () => updatePosition();
 
-            window.addEventListener("scroll", handleScroll, true);
-            window.addEventListener("resize", handleResize);
+                window.addEventListener("scroll", handleScroll, true);
+                window.addEventListener("resize", handleResize);
 
-            return () => {
-                window.removeEventListener("scroll", handleScroll, true);
-                window.removeEventListener("resize", handleResize);
-            };
-        }
-    }, [isOpen, usePortal]);
+                return () => {
+                    window.removeEventListener("scroll", handleScroll, true);
+                    window.removeEventListener("resize", handleResize);
+                };
+            }
+        }, [isOpen, usePortal]);
 
-    const toggleVisibility = () => {
-        if (!isControlled) {
-            setVisible((prev) => !prev);
-        }
-    };
+        const toggleVisibility = () => {
+            if (!isControlled) {
+                setVisible((prev) => !prev);
+            }
+        };
 
-    const popoverContent = isOpen && (
-        <PopoverContent
-            {...props}
-            ref={contentRef}
-            color={color as string}
-            variant={variant}
-            size={size}
-            usePortal={usePortal}
-            top={position.top}
-            left={position.left}
-        >
-            {content}
-        </PopoverContent>
-    );
+        const popoverContent = isOpen && (
+            <PopoverContent
+                {...props}
+                ref={contentRef}
+                color={color as string}
+                variant={variant}
+                size={size}
+                usePortal={usePortal}
+                top={position.top}
+                left={position.left}
+            >
+                {content}
+            </PopoverContent>
+        );
 
-    return (
-        <PopoverRoot>
-            <PopoverTrigger ref={triggerRef} onClick={toggleVisibility}>
-                {children}
-            </PopoverTrigger>
-            {usePortal ? (
-                <Portal disablePortal={!isOpen}>{popoverContent}</Portal>
-            ) : (
-                popoverContent
-            )}
-        </PopoverRoot>
-    );
-};
+        return (
+            <PopoverRoot ref={ref}>
+                <PopoverTrigger ref={triggerRef} onClick={toggleVisibility}>
+                    {children}
+                </PopoverTrigger>
+                {usePortal ? (
+                    <Portal disablePortal={!isOpen}>{popoverContent}</Portal>
+                ) : (
+                    popoverContent
+                )}
+            </PopoverRoot>
+        );
+    },
+);
 
 Popover.displayName = "Popover";
 

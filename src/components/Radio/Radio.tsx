@@ -2,7 +2,7 @@ import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import {
     type ChangeEvent,
-    type Ref,
+    forwardRef,
     useContext,
     useRef,
     useState,
@@ -142,127 +142,130 @@ IconWrapper.displayName = "IconWrapper";
  *  to be displayed in the checked and unchecked states, respectively.
  *  The `rtl` prop can be used to control the layout direction.
  */
-const Radio = (
-    {
-        checked: controlledChecked,
-        onChange: propOnChange,
-        label,
-        disabled: propDisabled,
-        defaultChecked,
-        color: colorProp,
-        variant: variantProp,
-        size: sizeProp,
-        name: propName,
-        value,
-        checkedIcon,
-        uncheckedIcon,
-        rtl,
-        ...props
-    }: RadioProps,
-    ref?: Ref<HTMLInputElement>,
-) => {
-    const group = useContext(RadioGroupContext);
-    const [internalChecked, setInternalChecked] = useState(!!defaultChecked);
-    const inputRef = useRef<HTMLInputElement>(null);
+const Radio = forwardRef<HTMLInputElement, RadioProps>(
+    (
+        {
+            checked: controlledChecked,
+            onChange: propOnChange,
+            label,
+            disabled: propDisabled,
+            defaultChecked,
+            color: colorProp,
+            variant: variantProp,
+            size: sizeProp,
+            name: propName,
+            value,
+            checkedIcon,
+            uncheckedIcon,
+            rtl,
+            ...props
+        },
+        ref,
+    ) => {
+        const group = useContext(RadioGroupContext);
+        const [internalChecked, setInternalChecked] =
+            useState(!!defaultChecked);
+        const inputRef = useRef<HTMLInputElement>(null);
 
-    let isChecked: boolean;
-    if (group && value !== undefined) isChecked = group.value === value;
-    else if (controlledChecked !== undefined) isChecked = controlledChecked;
-    else isChecked = internalChecked;
+        let isChecked: boolean;
+        if (group && value !== undefined) isChecked = group.value === value;
+        else if (controlledChecked !== undefined) isChecked = controlledChecked;
+        else isChecked = internalChecked;
 
-    const color = colorProp ?? group?.color ?? "primary";
-    const variant = variantProp ?? group?.variant ?? "solid";
-    const size = sizeProp ?? group?.size ?? "md";
-    const name = group?.name ?? propName;
-    const disabled = group?.disabled ?? propDisabled;
+        const color = colorProp ?? group?.color ?? "primary";
+        const variant = variantProp ?? group?.variant ?? "solid";
+        const size = sizeProp ?? group?.size ?? "md";
+        const name = group?.name ?? propName;
+        const disabled = group?.disabled ?? propDisabled;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (group && value !== undefined) group.onChange?.(e, value);
-        else if (controlledChecked === undefined)
-            setInternalChecked(e.target.checked);
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            if (group && value !== undefined) group.onChange?.(e, value);
+            else if (controlledChecked === undefined)
+                setInternalChecked(e.target.checked);
 
-        propOnChange?.(e);
-    };
+            propOnChange?.(e);
+        };
 
-    const handleWrapperClick = () => {
-        if (!disabled && inputRef.current) {
-            inputRef.current.click();
-        }
-    };
+        const handleWrapperClick = () => {
+            if (!disabled && inputRef.current) {
+                inputRef.current.click();
+            }
+        };
 
-    return (
-        <RadioWrapper
-            aria-checked={isChecked}
-            role="radio"
-            disabled={disabled}
-            tabIndex={disabled ? -1 : 0}
-            size={size}
-            onClick={handleWrapperClick}
-        >
-            <HiddenRadio
-                type="radio"
-                name={name}
-                value={value}
-                checked={isChecked}
-                onChange={handleChange}
-                disabled={disabled}
-                ref={(node) => {
-                    inputRef.current = node;
-                    if (typeof ref === "function") ref(node);
-                    else if (ref) ref.current = node;
-                }}
-                {...props}
-                css={{
-                    pointerEvents: "none",
-                }}
-            />
-            {rtl && label && (
-                <RadioLabel rtl={rtl} disabled={disabled}>
-                    {label}
-                </RadioLabel>
-            )}
-            <RadioControl
-                name={name}
-                role="radio"
+        return (
+            <RadioWrapper
                 aria-checked={isChecked}
-                color={color as string}
-                variant={variant}
-                checked={isChecked}
+                role="radio"
                 disabled={disabled}
+                tabIndex={disabled ? -1 : 0}
                 size={size}
+                onClick={handleWrapperClick}
             >
-                {isChecked ? (
-                    checkedIcon ? (
-                        <IconWrapper size={size}>{checkedIcon}</IconWrapper>
-                    ) : (
-                        <IconWrapper size={size}>
-                            <svg
-                                viewBox="0 0 24 24"
-                                css={{
-                                    fill: "currentColor",
-                                    width: "100%",
-                                    height: "100%",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <circle cx="12" cy="12" r={8} />
-                            </svg>
-                        </IconWrapper>
-                    )
-                ) : uncheckedIcon ? (
-                    <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
-                ) : null}
-            </RadioControl>
-            {!rtl && label && (
-                <RadioLabel rtl={rtl} disabled={disabled}>
-                    {label}
-                </RadioLabel>
-            )}
-        </RadioWrapper>
-    );
-};
+                <HiddenRadio
+                    type="radio"
+                    name={name}
+                    value={value}
+                    checked={isChecked}
+                    onChange={handleChange}
+                    disabled={disabled}
+                    ref={(node) => {
+                        inputRef.current = node;
+                        if (typeof ref === "function") ref(node);
+                        else if (ref) ref.current = node;
+                    }}
+                    {...props}
+                    css={{
+                        pointerEvents: "none",
+                    }}
+                />
+                {rtl && label && (
+                    <RadioLabel rtl={rtl} disabled={disabled}>
+                        {label}
+                    </RadioLabel>
+                )}
+                <RadioControl
+                    name={name}
+                    role="radio"
+                    aria-checked={isChecked}
+                    color={color as string}
+                    variant={variant}
+                    checked={isChecked}
+                    disabled={disabled}
+                    size={size}
+                >
+                    {isChecked ? (
+                        checkedIcon ? (
+                            <IconWrapper size={size}>{checkedIcon}</IconWrapper>
+                        ) : (
+                            <IconWrapper size={size}>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    css={{
+                                        fill: "currentColor",
+                                        width: "100%",
+                                        height: "100%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                    }}
+                                >
+                                    <circle cx="12" cy="12" r={8} />
+                                </svg>
+                            </IconWrapper>
+                        )
+                    ) : uncheckedIcon ? (
+                        <IconWrapper size={size}>{uncheckedIcon}</IconWrapper>
+                    ) : null}
+                </RadioControl>
+                {!rtl && label && (
+                    <RadioLabel rtl={rtl} disabled={disabled}>
+                        {label}
+                    </RadioLabel>
+                )}
+            </RadioWrapper>
+        );
+    },
+);
 
 Radio.displayName = "Radio";
 

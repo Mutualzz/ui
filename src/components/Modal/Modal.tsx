@@ -5,12 +5,12 @@ import { Portal } from "@components/Portal/Portal";
 import styled from "@styled";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import {
+    forwardRef,
     useCallback,
     useEffect,
     useRef,
     type KeyboardEvent as ReactKeyboardEvent,
     type ReactNode,
-    type Ref,
 } from "react";
 import type { ModalProps } from "./Modal.types";
 
@@ -172,125 +172,127 @@ const FocusTrap = ({
     return <div ref={rootRef}>{children}</div>;
 };
 
-const Modal = (
-    {
-        children,
-        container,
-        disableAutoFocus = false,
-        disableEnforceFocus = false,
-        disableEscapeKeyDown = false,
-        disablePortal = false,
-        disableRestoreFocus = false,
-        disableScrollLock = false,
-        disableBackdropClick = false,
-        hideBackdrop = false,
-        keepMounted = false,
-        layout = "center",
-        showCloseButton = true,
-        closeButton,
-        onClose,
-        onKeyDown,
-        open,
-        ...props
-    }: ModalProps,
-    ref?: Ref<HTMLDivElement>,
-) => {
-    const modalRef = useRef<HTMLDivElement>(null);
-    const lastFocusedElementRef = useRef<Element | null>(null);
+const Modal = forwardRef<HTMLDivElement, ModalProps>(
+    (
+        {
+            children,
+            container,
+            disableAutoFocus = false,
+            disableEnforceFocus = false,
+            disableEscapeKeyDown = false,
+            disablePortal = false,
+            disableRestoreFocus = false,
+            disableScrollLock = false,
+            disableBackdropClick = false,
+            hideBackdrop = false,
+            keepMounted = false,
+            layout = "center",
+            showCloseButton = true,
+            closeButton,
+            onClose,
+            onKeyDown,
+            open,
+            ...props
+        }: ModalProps,
+        ref,
+    ) => {
+        const modalRef = useRef<HTMLDivElement>(null);
+        const lastFocusedElementRef = useRef<Element | null>(null);
 
-    useEffect(() => {
-        if (open) {
-            lastFocusedElementRef.current = document.activeElement;
-        }
-    }, [open]);
-
-    useEffect(() => {
-        if (!open && !disableRestoreFocus) {
-            if (lastFocusedElementRef.current instanceof HTMLElement) {
-                lastFocusedElementRef.current.focus();
+        useEffect(() => {
+            if (open) {
+                lastFocusedElementRef.current = document.activeElement;
             }
-        }
-    }, [open, disableRestoreFocus]);
+        }, [open]);
 
-    useEffect(() => {
-        if (open && !disableAutoFocus) {
-            modalRef.current?.focus();
-        }
-    }, [open, disableAutoFocus]);
-
-    useEffect(() => {
-        if (open && !disableScrollLock) {
-            const originalOverflow = document.body.style.overflow;
-            document.body.style.overflow = "hidden";
-            return () => {
-                document.body.style.overflow = originalOverflow;
-            };
-        }
-    }, [open, disableScrollLock]);
-
-    const handleKeyDown = useCallback(
-        (e: ReactKeyboardEvent<HTMLDivElement>) => {
-            if (!disableEscapeKeyDown && e.key === "Escape") {
-                onClose?.();
+        useEffect(() => {
+            if (!open && !disableRestoreFocus) {
+                if (lastFocusedElementRef.current instanceof HTMLElement) {
+                    lastFocusedElementRef.current.focus();
+                }
             }
-            onKeyDown?.(e);
-        },
-        [disableEscapeKeyDown, onClose, onKeyDown],
-    );
+        }, [open, disableRestoreFocus]);
 
-    if (!open && !keepMounted) return null;
+        useEffect(() => {
+            if (open && !disableAutoFocus) {
+                modalRef.current?.focus();
+            }
+        }, [open, disableAutoFocus]);
 
-    const modalContent = (
-        <FocusTrap active={open} disableEnforceFocus={disableEnforceFocus}>
-            <ModalRoot
-                layout={layout}
-                open={open}
-                role="dialog"
-                aria-modal="true"
-                tabIndex={-1}
-                onKeyDown={handleKeyDown}
-                ref={(node: HTMLDivElement | null) => {
-                    modalRef.current = node;
-                    if (typeof ref === "function") ref(node);
-                    else if (ref) ref.current = node;
-                }}
-                {...(props as any)}
-            >
-                {!hideBackdrop &&
-                    (disableBackdropClick ? (
-                        <ModalBackdrop />
-                    ) : (
-                        <ModalBackdrop onClick={onClose} />
-                    ))}
-                <ModalContainer layout={layout}>
-                    {showCloseButton &&
-                        onClose &&
-                        (closeButton ? (
-                            closeButton
+        useEffect(() => {
+            if (open && !disableScrollLock) {
+                const originalOverflow = document.body.style.overflow;
+                document.body.style.overflow = "hidden";
+                return () => {
+                    document.body.style.overflow = originalOverflow;
+                };
+            }
+        }, [open, disableScrollLock]);
+
+        const handleKeyDown = useCallback(
+            (e: ReactKeyboardEvent<HTMLDivElement>) => {
+                if (!disableEscapeKeyDown && e.key === "Escape") {
+                    onClose?.();
+                }
+                onKeyDown?.(e);
+            },
+            [disableEscapeKeyDown, onClose, onKeyDown],
+        );
+
+        if (!open && !keepMounted) return null;
+
+        const modalContent = (
+            <FocusTrap active={open} disableEnforceFocus={disableEnforceFocus}>
+                <ModalRoot
+                    layout={layout}
+                    open={open}
+                    role="dialog"
+                    aria-modal="true"
+                    tabIndex={-1}
+                    onKeyDown={handleKeyDown}
+                    ref={(node: HTMLDivElement | null) => {
+                        modalRef.current = node;
+                        if (typeof ref === "function") ref(node);
+                        else if (ref) ref.current = node;
+                    }}
+                    {...(props as any)}
+                >
+                    {!hideBackdrop &&
+                        (disableBackdropClick ? (
+                            <ModalBackdrop />
                         ) : (
-                            <ModalCloseButton
-                                color="neutral"
-                                variant="outlined"
-                                layout={layout}
-                                onClick={onClose}
-                                aria-label="Close modal"
-                            />
+                            <ModalBackdrop onClick={onClose} />
                         ))}
-                    {children}
-                </ModalContainer>
-            </ModalRoot>
-        </FocusTrap>
-    );
+                    <ModalContainer layout={layout}>
+                        {showCloseButton &&
+                            onClose &&
+                            (closeButton ? (
+                                closeButton
+                            ) : (
+                                <ModalCloseButton
+                                    color="neutral"
+                                    variant="outlined"
+                                    layout={layout}
+                                    onClick={onClose}
+                                    aria-label="Close modal"
+                                />
+                            ))}
+                        {children}
+                    </ModalContainer>
+                </ModalRoot>
+            </FocusTrap>
+        );
 
-    return (
-        <>
-            {!disableScrollLock && open && <ScrollLock />}
-            <Portal container={container} disablePortal={disablePortal}>
-                {modalContent}
-            </Portal>
-        </>
-    );
-};
+        return (
+            <>
+                {!disableScrollLock && open && <ScrollLock />}
+                <Portal container={container} disablePortal={disablePortal}>
+                    {modalContent}
+                </Portal>
+            </>
+        );
+    },
+);
 
 Modal.displayName = "Modal";
 

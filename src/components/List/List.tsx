@@ -1,5 +1,5 @@
 import styled from "@styled";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 
 import { isCssMarker } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
@@ -42,31 +42,39 @@ const ListRoot = styled("ul")<
     }),
 );
 
-export const List = (props: ListProps) => {
-    const { marker, children, orientation, color, variant, size } = props;
+const List = forwardRef<HTMLUListElement, ListProps>(
+    (
+        { marker, children, orientation, color, variant, size, ...props },
+        ref,
+    ) => {
+        const parentNesting = useContext(NestedListContext);
 
-    const parentNesting = useContext(NestedListContext);
+        const cssMarker = typeof marker === "string" && isCssMarker(marker);
 
-    const cssMarker = typeof marker === "string" && isCssMarker(marker);
-
-    return (
-        <ListContext.Provider
-            value={{
-                color,
-                variant,
-                size,
-                orientation,
-                nesting: parentNesting + 1,
-                marker,
-            }}
-        >
-            <ListRoot
-                {...(props as any)}
-                nesting={parentNesting}
-                cssMarker={cssMarker}
+        return (
+            <ListContext.Provider
+                value={{
+                    color,
+                    variant,
+                    size,
+                    orientation,
+                    nesting: parentNesting + 1,
+                    marker,
+                }}
             >
-                {children}
-            </ListRoot>
-        </ListContext.Provider>
-    );
-};
+                <ListRoot
+                    {...(props as any)}
+                    ref={ref}
+                    nesting={parentNesting}
+                    cssMarker={cssMarker}
+                >
+                    {children}
+                </ListRoot>
+            </ListContext.Provider>
+        );
+    },
+);
+
+List.displayName = "List";
+
+export { List };

@@ -1,7 +1,7 @@
 import styled from "@styled";
 import type { Orientation, Responsive } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { DecoratorWrapper } from "../DecoratorWrapper/DecoratorWrapper";
 import { ListContext } from "../List/List.context";
 import { NestedListContext } from "../List/NestedList.context";
@@ -56,40 +56,47 @@ const ListItemButtonContent = styled("span")({
     transition: "all 0.3s ease",
 });
 
-export const ListItemButton = (props: ListItemButtonProps) => {
-    const nesting = useContext(NestedListContext);
+const ListItemButton = forwardRef<HTMLButtonElement, ListItemButtonProps>(
+    (props, ref) => {
+        const nesting = useContext(NestedListContext);
 
-    const { color, orientation, size, variant } = useContext(ListContext);
-    const {
-        children,
-        startDecorator,
-        endDecorator,
-        color: colorOverride,
-        size: sizeOverride,
-        variant: variantOverride,
-        ...rest
-    } = props;
+        const { color, orientation, size, variant } = useContext(ListContext);
+        const {
+            children,
+            startDecorator,
+            endDecorator,
+            color: colorOverride,
+            size: sizeOverride,
+            variant: variantOverride,
+            ...rest
+        } = props;
 
-    return (
-        <ListItemButtonRoot
-            nesting={nesting}
-            color={(colorOverride ?? color) as string}
-            variant={variantOverride ?? variant}
-            size={sizeOverride ?? size}
-            orientation={orientation}
-            {...rest}
-        >
-            {startDecorator && (
-                <DecoratorWrapper position="start">
-                    {startDecorator}
-                </DecoratorWrapper>
-            )}
-            <ListItemButtonContent>{children}</ListItemButtonContent>
-            {endDecorator && (
-                <DecoratorWrapper position="end">
-                    {endDecorator}
-                </DecoratorWrapper>
-            )}
-        </ListItemButtonRoot>
-    );
-};
+        return (
+            <ListItemButtonRoot
+                ref={ref}
+                nesting={nesting}
+                color={(colorOverride ?? color) as string}
+                variant={variantOverride ?? variant}
+                size={sizeOverride ?? size}
+                orientation={orientation}
+                {...rest}
+            >
+                {startDecorator && (
+                    <DecoratorWrapper position="start">
+                        {startDecorator}
+                    </DecoratorWrapper>
+                )}
+                <ListItemButtonContent>{children}</ListItemButtonContent>
+                {endDecorator && (
+                    <DecoratorWrapper position="end">
+                        {endDecorator}
+                    </DecoratorWrapper>
+                )}
+            </ListItemButtonRoot>
+        );
+    },
+);
+
+ListItemButton.displayName = "ListItemButton";
+
+export { ListItemButton };
