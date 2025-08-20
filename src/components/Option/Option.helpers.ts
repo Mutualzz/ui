@@ -29,7 +29,6 @@ export const resolveOptionSize = (
     };
 };
 
-// ...existing code...
 export const resolveOptionStyles = (
     theme: Theme,
     color: Color | ColorLike,

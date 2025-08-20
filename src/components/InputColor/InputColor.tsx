@@ -122,7 +122,6 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
     ) => {
         const { theme } = useTheme();
 
-        const [isPickerOpen, setIsPickerOpen] = useState(false);
         const [alpha, setAlpha] = useState(100);
 
         const isControlled = colorProp !== undefined;
@@ -167,10 +166,6 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             if (!isControlled) setInternalValue(newValue);
 
             onChange?.(newValue);
-        };
-
-        const togglePicker = () => {
-            setIsPickerOpen((prev) => !prev);
         };
 
         const handleNewColor = (newColor: ColorResult) => {
@@ -230,7 +225,6 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                                             onChange={handleNewColor}
                                         />
                                     }
-                                    isOpen={isPickerOpen}
                                     color={validatedColor}
                                     size={size}
                                     variant={variant}
@@ -239,7 +233,6 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                                         size={size}
                                         color={validatedColor}
                                         variant={variant}
-                                        onClick={togglePicker}
                                     />
                                 </Popover>
                             ))}
