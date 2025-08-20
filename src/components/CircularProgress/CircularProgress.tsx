@@ -7,6 +7,7 @@ import { resolveSize } from "@utils";
 import { resolveColor } from "@utils/resolveColors";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import {
+    baseSizeMap,
     resolveCircularProgressOuterStroke,
     resolveCircularProgressSize,
 } from "./CircularProgress.helpers";
@@ -176,7 +177,14 @@ const CircularProgress = forwardRef<HTMLDivElement, CircularProgressProps>(
                     size,
                     strokeWidth: strokeWidthProp,
                 },
-                ({ size: s, strokeWidth }) => ({ s, strokeWidth }),
+                ({ size: s, strokeWidth = "md" }) => ({
+                    size: resolveSize(theme, s, baseSizeMap),
+                    strokeWidth: resolveSize(
+                        theme,
+                        strokeWidth,
+                        strokeWidthSizeMap,
+                    ),
+                }),
             );
 
         const baseDiameter = resolveCircularProgressSize(theme, resolvedSize);
