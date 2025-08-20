@@ -11,7 +11,7 @@ import { DecoratorWrapper } from "../DecoratorWrapper/DecoratorWrapper";
 import { resolveButtonStyles } from "./Button.helpers";
 import { type ButtonProps } from "./Button.types";
 
-export const baseSizeMap: Record<Size, number> = {
+const baseSizeMap: Record<Size, number> = {
     sm: 12,
     md: 14,
     lg: 16,
