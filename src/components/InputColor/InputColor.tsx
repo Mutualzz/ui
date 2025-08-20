@@ -17,7 +17,13 @@ import Colorful from "@uiw/react-color-colorful";
 import { resolveSize } from "@utils";
 import { randomColor } from "@utils/randomColor";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { forwardRef, useRef, useState, type ChangeEvent } from "react";
+import {
+    forwardRef,
+    useEffect,
+    useRef,
+    useState,
+    type ChangeEvent,
+} from "react";
 import {
     resolveColorPickerButtonSize,
     resolveColorPickerButtonStyles,
@@ -173,6 +179,17 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             if (!isControlled) setInternalValue(newColor);
             onChange?.(newColor);
         };
+
+        useEffect(() => {
+            if (isControlled) {
+                setColorDirectly(currentValue);
+                try {
+                    setPickerColor(hexToHsva(currentValue as string));
+                } catch {
+                    // Ignore invalid color input
+                }
+            }
+        }, [currentValue]);
 
         return (
             <>
