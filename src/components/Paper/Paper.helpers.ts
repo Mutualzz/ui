@@ -1,7 +1,11 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike, type TypographyColor } from "@ui-types";
 import { alpha, dynamicElevation, getLuminance } from "@utils";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
+import {
+    resolveColor,
+    resolveColorFromLuminance,
+    resolveTypographyColor,
+} from "@utils/resolveColors";
 import { formatHex8 } from "culori";
 
 export const resolvePaperStyles = (
@@ -11,9 +15,7 @@ export const resolvePaperStyles = (
     elevation: number,
 ) => {
     const { colors } = theme;
-
     const resolvedColor = resolveColor(color, theme);
-
     const bgLuminance = getLuminance(resolvedColor);
 
     const resolvedTextColor =
@@ -21,13 +23,9 @@ export const resolvePaperStyles = (
             ? resolvedColor
             : resolveTypographyColor(textColor, theme);
 
-    const solidTextColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
-
+    const solidTextColor = resolveColorFromLuminance(bgLuminance, theme);
     const textColorWithFallback =
-        formatHex8(resolvedTextColor) ?? theme.typography.colors.primary;
+        formatHex8(resolvedTextColor) ?? theme.typography.colors.muted;
 
     return {
         elevation: {

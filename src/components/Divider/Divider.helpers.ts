@@ -5,7 +5,7 @@ import {
     isTypographyColor,
     resolveColor,
     resolveTypographyColor,
-} from "@utils/resolveColor";
+} from "@utils/resolveColors";
 import { formatHex8 } from "culori";
 
 export const resolveDividerColor = (

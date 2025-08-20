@@ -9,7 +9,7 @@ import type {
 } from "@ui-types";
 import { alpha, darken, getLuminance } from "@utils";
 import { isValidColorInput } from "@utils/colorRegex";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
+import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 

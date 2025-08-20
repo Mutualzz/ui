@@ -8,7 +8,11 @@ import type {
     Variant,
 } from "@ui-types";
 import { alpha, getLuminance } from "@utils";
-import { resolveColor, resolveTypographyColor } from "@utils/resolveColor";
+import {
+    resolveColor,
+    resolveColorFromLuminance,
+    resolveTypographyColor,
+} from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
@@ -56,10 +60,7 @@ export const resolveTextareaStyles = (
             ? resolvedColor
             : resolveTypographyColor(textColor, theme);
 
-    const solidTextColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
+    const solidTextColor = resolveColorFromLuminance(bgLuminance, theme);
 
     const textColorWithFallback =
         formatHex8(resolvedTextColor) ?? theme.typography.colors.primary;

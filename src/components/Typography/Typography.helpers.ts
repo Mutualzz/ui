@@ -1,22 +1,16 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike } from "@ui-types";
 import { alpha, getLuminance } from "@utils";
-import { resolveColor } from "@utils/resolveColor";
+import { resolveColor, resolveColorFromLuminance } from "@utils/resolveColors";
 import { formatHex8 } from "culori";
 
 export const resolveTypographStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ) => {
-    const { colors } = theme;
-
     const resolvedColor = resolveColor(color, theme);
-
     const bgLuminance = getLuminance(resolvedColor);
-    const textColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
+    const textColor = resolveColorFromLuminance(bgLuminance, theme);
 
     return {
         solid: {

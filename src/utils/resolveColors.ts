@@ -1,5 +1,6 @@
 import type { Theme } from "@emotion/react";
 import { type Color, type ColorLike, type TypographyColor } from "@ui-types";
+import { formatHex } from "culori";
 import { useTheme } from "../hooks/useTheme";
 
 export const isThemeColor = (
@@ -40,4 +41,15 @@ export const useResolvedTypographyColor = (
 ): TypographyColor | ColorLike => {
     const { theme } = useTheme();
     return resolveTypographyColor(color, theme);
+};
+
+export const resolveColorFromLuminance = (
+    luminance: number | null,
+    theme: Theme,
+) => {
+    if (!luminance) return theme.typography.colors.muted;
+
+    return formatHex(
+        luminance < 0.5 ? theme.colors.common.white : theme.colors.common.black,
+    ) as ColorLike;
 };

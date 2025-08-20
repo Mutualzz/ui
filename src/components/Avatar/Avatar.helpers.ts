@@ -1,6 +1,12 @@
 import type { Theme } from "@emotion/react";
 import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
-import { alpha, getLuminance, resolveColor, resolveSize } from "@utils";
+import {
+    alpha,
+    getLuminance,
+    resolveColor,
+    resolveColorFromLuminance,
+    resolveSize,
+} from "@utils";
 import { formatHex8 } from "culori";
 import type { AvatarShape } from "./Avatar.types";
 
@@ -60,16 +66,9 @@ export const resolveAvatarStyles = (
     color: Color | ColorLike,
     hasText: boolean,
 ) => {
-    const { colors } = theme;
-
     const resolvedColor = resolveColor(color, theme);
-
     const bgLuminance = getLuminance(resolvedColor);
-    const textColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
-
+    const textColor = resolveColorFromLuminance(bgLuminance, theme);
     const hexColor = formatHex8(resolvedColor);
 
     return {

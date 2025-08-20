@@ -5,6 +5,7 @@ import {
     getLuminance,
     lighten,
     resolveColor,
+    resolveColorFromLuminance,
     resolveSize,
 } from "@utils";
 import { formatHex, formatHex8 } from "culori";
@@ -34,12 +35,9 @@ export const resolveOptionStyles = (
     color: Color | ColorLike,
     isSelected: boolean,
 ): Record<Variant, CSSObject> => {
-    const { colors } = theme;
     const resolvedColor = resolveColor(color, theme);
-
     const bgLuminance = getLuminance(resolvedColor);
-    const textColor =
-        bgLuminance < 0.5 ? colors.common.white : colors.common.black;
+    const textColor = resolveColorFromLuminance(bgLuminance, theme);
 
     return {
         solid: {

@@ -1,6 +1,12 @@
 import type { Theme } from "@emotion/react";
 import type { Color, ColorLike, Size, SizeValue } from "@ui-types";
-import { alpha, getLuminance, resolveColor, resolveSize } from "@utils";
+import {
+    alpha,
+    getLuminance,
+    resolveColor,
+    resolveColorFromLuminance,
+    resolveSize,
+} from "@utils";
 import { formatHex8 } from "culori";
 
 const baseSizeMap: Record<Size, number> = {
@@ -29,16 +35,9 @@ export const resolveColorPickerButtonStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ) => {
-    const { colors } = theme;
-
     const resolvedColor = resolveColor(color, theme);
     const bgLuminance = getLuminance(resolvedColor);
-
-    const contrastColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
-
+    const contrastColor = resolveColorFromLuminance(bgLuminance, theme);
     const hexColor = formatHex8(resolvedColor);
 
     return {

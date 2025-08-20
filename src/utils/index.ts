@@ -12,8 +12,9 @@ import {
     isThemeColor,
     isTypographyColor,
     resolveColor,
+    resolveColorFromLuminance,
     resolveTypographyColor,
-} from "./resolveColor";
+} from "./resolveColors";
 import { cssUnitRegex, resolveSize } from "./resolveSize";
 import { setRef } from "./setRef";
 import { useEnhancedEffect } from "./useEnhancedEffect";
@@ -32,6 +33,7 @@ export {
     isTypographyColor,
     randomColor,
     resolveColor,
+    resolveColorFromLuminance,
     resolveSize,
     resolveTypographyColor,
     setRef,

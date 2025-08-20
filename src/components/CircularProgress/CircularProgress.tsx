@@ -4,7 +4,7 @@ import { useTheme } from "../../hooks/useTheme";
 import styled from "@styled";
 import type { Color, ColorLike, Responsive, Size, Variant } from "@ui-types";
 import { resolveSize } from "@utils";
-import { resolveColor } from "@utils/resolveColor";
+import { resolveColor } from "@utils/resolveColors";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     resolveCircularProgressOuterStroke,

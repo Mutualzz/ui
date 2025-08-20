@@ -1,7 +1,7 @@
 import type { CSSObject, Theme } from "@emotion/react";
 import type { Color, ColorLike, Size, SizeValue, Variant } from "@ui-types";
 import { alpha, lighten } from "@utils";
-import { resolveColor } from "@utils/resolveColor";
+import { resolveColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 

@@ -11,6 +11,7 @@ import {
     dynamicElevation,
     getLuminance,
     resolveColor,
+    resolveColorFromLuminance,
     resolveSize,
     resolveTypographyColor,
 } from "@utils";
@@ -49,13 +50,9 @@ export const resolvePopoverStyles = (
             ? "inherit"
             : resolveTypographyColor(textColor, theme);
 
-    const solidTextColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
-
+    const solidTextColor = resolveColorFromLuminance(bgLuminance, theme);
     const textColorWithFallback =
-        formatHex8(resolvedTextColor) ?? theme.typography.colors.primary;
+        formatHex8(resolvedTextColor) ?? theme.typography.colors.muted;
 
     return {
         elevation: {

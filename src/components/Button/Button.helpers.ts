@@ -4,22 +4,15 @@ import { formatHex8 } from "culori";
 
 import type { Color, ColorLike, Variant } from "@ui-types";
 import { alpha, getLuminance } from "@utils";
-import { resolveColor } from "@utils/resolveColor";
+import { resolveColor, resolveColorFromLuminance } from "@utils/resolveColors";
 
 export const resolveButtonStyles = (
     theme: Theme,
     color: Color | ColorLike,
 ): Record<Variant, CSSObject> => {
-    const { colors } = theme;
-
     const resolvedColor = resolveColor(color, theme);
-
     const bgLuminance = getLuminance(resolvedColor);
-    const textColor =
-        formatHex8(
-            bgLuminance < 0.5 ? colors.common.white : colors.common.black,
-        ) ?? theme.typography.colors.primary;
-
+    const textColor = resolveColorFromLuminance(bgLuminance, theme);
     const hexColor = formatHex8(resolvedColor);
 
     return {
