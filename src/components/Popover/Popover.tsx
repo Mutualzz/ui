@@ -1,6 +1,7 @@
 import { Paper } from "@components/Paper/Paper";
 import { Portal } from "@components/Portal/Portal";
 import { Stack } from "@components/Stack/Stack";
+import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
@@ -38,7 +39,6 @@ const PopoverContent = styled(Paper)<{
         transform: "translateX(-50%)",
         marginTop: usePortal ? 0 : 10,
         transition: "all 0.3s ease",
-
         borderRadius: 4,
         zIndex: theme.zIndex.tooltip,
         whiteSpace: "nowrap",
@@ -75,6 +75,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             children,
             isOpen: isOpenProp,
             usePortal = true,
+            closeOnClickOutside = true,
             ...props
         },
         ref,
@@ -124,6 +125,10 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 setVisible((prev) => !prev);
             }
         };
+
+        useOnClickOutside([contentRef, triggerRef] as any[], () => {
+            if (closeOnClickOutside) setVisible(false);
+        });
 
         const popoverContent = isOpen && (
             <PopoverContent
