@@ -67,6 +67,7 @@ const List = forwardRef<HTMLUListElement, ListProps>(
                     ref={ref}
                     nesting={parentNesting}
                     cssMarker={cssMarker}
+                    orientation={orientation}
                 >
                     {children}
                 </ListRoot>
