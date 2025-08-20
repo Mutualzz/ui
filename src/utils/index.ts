@@ -5,7 +5,6 @@ import { alpha } from "./alpha";
 import { blendOver } from "./blendOver";
 import { isValidGradient } from "./colorRegex";
 import { dynamicElevation } from "./dynamicElevation";
-import { getContrastRatio } from "./getContrastRatio";
 import { getLuminance } from "./getLuminance";
 import { randomColor } from "./randomColor";
 import {
@@ -27,7 +26,6 @@ export {
     blendOver,
     cssUnitRegex,
     dynamicElevation,
-    getContrastRatio,
     getLuminance,
     isThemeColor,
     isTypographyColor,
