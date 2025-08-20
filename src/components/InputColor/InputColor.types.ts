@@ -21,6 +21,12 @@ export interface InputColorProps
     showColorPicker?: boolean;
 
     /**
+     * Whether to show a random color button.
+     * @default false
+     */
+    showRandom?: boolean;
+
+    /**
      * Whether to show the alpha channel slider.
      * @default true
      */

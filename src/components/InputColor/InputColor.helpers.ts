@@ -21,6 +21,7 @@ export const resolveColorPickerButtonSize = (
         minWidth: resolvedSize,
         minHeight: resolvedSize,
         borderRadius: resolvedSize * 0.25,
+        padding: 0,
     };
 };
 

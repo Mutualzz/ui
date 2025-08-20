@@ -1,18 +1,20 @@
 import { Button } from "@components/Button/Button";
 import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
+import { IconButton } from "@components/IconButton/IconButton";
 import { InputBase } from "@components/InputBase/InputBase";
 import { InputRoot } from "@components/InputRoot/InputRoot";
 import { Popover } from "@components/Popover/Popover";
 import { useColorInput } from "@hooks/useColorInput";
 import { useTheme } from "@hooks/useTheme";
 import styled from "@styled";
-import type { ColorLike } from "@ui-types";
+import type { ColorLike, Responsive, Size, SizeValue } from "@ui-types";
 import {
     hexToHsva,
     type ColorResult,
     type HsvaColor,
 } from "@uiw/color-convert";
 import Colorful from "@uiw/react-color-colorful";
+import { resolveSize } from "@utils";
 import { randomColor } from "@utils/randomColor";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { useRef, useState, type ChangeEvent } from "react";
@@ -21,6 +23,45 @@ import {
     resolveColorPickerButtonStyles,
 } from "./InputColor.helpers";
 import type { InputColorProps } from "./InputColor.types";
+
+const baseIconSize = {
+    sm: 8,
+    md: 12,
+    lg: 16,
+};
+
+interface RandomIconProps {
+    color: ColorLike;
+    size: Responsive<Size | SizeValue | number>;
+}
+
+const RandomIcon = ({ color, size }: RandomIconProps) => {
+    const { theme } = useTheme();
+
+    const { size: resolvedSize } = resolveResponsiveMerge(
+        theme,
+        { size },
+        ({ size: s }) => ({
+            size: resolveSize(theme, s, baseIconSize),
+        }),
+    );
+
+    return (
+        <svg
+            fill={color}
+            height={resolvedSize}
+            width={resolvedSize}
+            viewBox={`0 0 512 512`}
+            style={{ display: "block" }}
+        >
+            <g strokeWidth="0"></g>
+            <g strokeLinecap="round" strokeLinejoin="round"></g>
+            <g>
+                <path d="M341.3,28.3v85.3H128c-70.7,0-128,57.3-128,128c0,21.5,5.8,41.4,15.2,59.2L68,263.2c-2.4-6.8-4-13.9-4-21.5 c0-35.4,28.7-64,64-64h213.3V263L512,156.3V135L341.3,28.3z M444,262.8c2.4,6.8,4,13.9,4,21.5c0,35.4-28.6,64-64,64H170.7V263 L0,369.7V391l170.7,106.7v-85.3H384c70.7,0,128-57.3,128-128c0-21.5-5.8-41.4-15.2-59.2L444,262.8z"></path>
+            </g>
+        </svg>
+    );
+};
 
 const ColorPickerButton = styled(Button)(
     ({ theme, color = "neutral", variant = "solid", size = "md" }) => ({
@@ -46,6 +87,7 @@ const InputColor = ({
     disabled = false,
     showColorPicker = true,
     showAlpha = false,
+    showRandom = false,
     value: colorProp,
     onChange,
     onAlphaChange,
@@ -120,6 +162,14 @@ const InputColor = ({
         onAlphaChange?.(newAlpha);
     };
 
+    const handleRandomColor = () => {
+        const newColor = randomColor("hex", alpha);
+        setColorDirectly(newColor);
+        setPickerColor(hexToHsva(newColor));
+        if (!isControlled) setInternalValue(newColor);
+        onChange?.(newColor);
+    };
+
     return (
         <>
             <InputRoot
@@ -166,9 +216,21 @@ const InputColor = ({
                     onBlur={validate}
                 />
 
-                {endDecorator && (
-                    <DecoratorWrapper>{endDecorator}</DecoratorWrapper>
-                )}
+                <DecoratorWrapper>
+                    {endDecorator ??
+                        (showRandom && (
+                            <IconButton
+                                color={validatedColor}
+                                variant={variant}
+                                onClick={handleRandomColor}
+                            >
+                                <RandomIcon
+                                    color={validatedColor}
+                                    size={size}
+                                />
+                            </IconButton>
+                        ))}
+                </DecoratorWrapper>
             </InputRoot>
         </>
     );
