@@ -2,10 +2,10 @@ import type { ColorLike } from "@ui-types";
 import { clampChroma, formatHex, lch } from "culori";
 import { adjustLightness } from "./adjustLightness";
 import { alpha } from "./alpha";
-import { blendOver } from "./blendOver";
 import { isValidGradient } from "./colorRegex";
 import { dynamicElevation } from "./dynamicElevation";
 import { getLuminance } from "./getLuminance";
+import { extractGradientStops, reconstructGradient } from "./gradients";
 import { randomColor } from "./randomColor";
 import {
     isThemeColor,
@@ -23,7 +23,6 @@ import visuallyHidden from "./visuallyHidden";
 export {
     adjustLightness,
     alpha,
-    blendOver,
     cssUnitRegex,
     dynamicElevation,
     getLuminance,
@@ -42,24 +41,16 @@ export {
 
 export function darken(color: ColorLike, factor: number) {
     if (isValidGradient(color)) {
-        const match = color.match(/^(\w+-gradient)\((.+)\)$/i);
-        if (!match) return color;
-        const [, type, content] = match;
-        const stops = content.split(",").map((stop) => stop.trim());
+        const stops = extractGradientStops(color);
 
         const stopsDarkened = stops.map((stop) => {
-            const colorMatch = stop.match(
-                /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)|\w+)/,
-            );
-            if (!colorMatch) return stop;
-            const colorPart = colorMatch[0];
-            const colorLch = lch(colorPart);
+            const colorLch = lch(stop);
             if (!colorLch) return stop;
             colorLch.l = Math.max(0, colorLch.l * (1 - factor));
-            return stop.replace(colorPart, formatHex(clampChroma(colorLch)));
+            return formatHex(clampChroma(colorLch));
         });
 
-        return `${type}(${stopsDarkened.join(", ")})`;
+        return reconstructGradient(color, stopsDarkened);
     }
 
     const colorLch = lch(color);
@@ -72,27 +63,19 @@ export function darken(color: ColorLike, factor: number) {
 
 export const lighten = (color: ColorLike, factor: number) => {
     if (isValidGradient(color)) {
-        const match = color.match(/^(\w+-gradient)\((.+)\)$/i);
-        if (!match) return color;
-        const [, type, content] = match;
-        const stops = content.split(",").map((stop) => stop.trim());
+        const stops = extractGradientStops(color);
 
         const stopsLightened = stops.map((stop) => {
-            const colorMatch = stop.match(
-                /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)|hsla?\([^)]+\)|\w+)/,
-            );
-            if (!colorMatch) return stop;
-            const colorPart = colorMatch[0];
-            const colorLch = lch(colorPart);
+            const colorLch = lch(stop);
             if (!colorLch) return stop;
             colorLch.l = Math.min(
                 100,
                 colorLch.l + (100 - colorLch.l) * factor,
             );
-            return stop.replace(colorPart, formatHex(clampChroma(colorLch)));
+            return formatHex(clampChroma(colorLch));
         });
 
-        return `${type}(${stopsLightened.join(", ")})`;
+        return reconstructGradient(color, stopsLightened);
     }
 
     const colorLch = lch(color);

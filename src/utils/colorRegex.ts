@@ -1,10 +1,26 @@
 import { parse } from "culori";
 
+// Helper to trim and remove trailing semicolon
+const cleanInput = (value: string) => value.trim().replace(/;$/, "");
+
+// Regex patterns
+export const hexRegex = /^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+export const rgbRegex = /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/;
+export const rgbaRegex =
+    /^rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*(0|1|0?\.\d+)\s*\)$/;
+export const hslRegex = /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*\)$/;
+export const hslaRegex =
+    /^hsla\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*,\s*(0|1|0?\.\d+)\s*\)$/;
+export const linearGradientRegex = /^linear-gradient\((.+)\)$/i;
+export const radialGradientRegex = /^radial-gradient\((.+)\)$/i;
+export const conicGradientRegex = /^conic-gradient\((.+)\)$/i;
+export const gradientRegex = /^(linear|radial|conic)-gradient\((.+)\)$/i;
+
 /**
  * Checks if the input is a valid hex color.
  */
 export const isValidHex = (value: string): boolean =>
-    /^#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(value.trim());
+    hexRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid RGB color.
@@ -12,7 +28,7 @@ export const isValidHex = (value: string): boolean =>
  * where r, g, b are integers between 0 and 255.
  */
 export const isValidRgb = (value: string): boolean =>
-    /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/.test(value.trim());
+    rgbRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid RGBA color.
@@ -21,9 +37,7 @@ export const isValidRgb = (value: string): boolean =>
  * and a is a number between 0 and 1 (inclusive).
  */
 export const isValidRgba = (value: string): boolean =>
-    /^rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*(0|1|0?\.\d+)\s*\)$/.test(
-        value.trim(),
-    );
+    rgbaRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid HSL color.
@@ -31,8 +45,8 @@ export const isValidRgba = (value: string): boolean =>
  * where h is an integer between 0 and 360,
  * s and l are percentages between 0% and 100%.
  */
-const isValidHsl = (value: string): boolean =>
-    /^hsl\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*\)$/.test(value.trim());
+export const isValidHsl = (value: string): boolean =>
+    hslRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid HSLA color.
@@ -42,29 +56,25 @@ const isValidHsl = (value: string): boolean =>
  * and a is a number between 0 and 1 (inclusive).
  */
 export const isValidHsla = (value: string): boolean =>
-    /^hsla\(\s*\d{1,3}\s*,\s*\d{1,3}%\s*,\s*\d{1,3}%\s*,\s*(0|1|0?\.\d+)\s*\)$/.test(
-        value.trim(),
-    );
+    hslaRegex.test(cleanInput(value));
 
 export const isValidLinearGradient = (value: string): boolean =>
-    /^linear-gradient\((.+)\)$/i.test(value.trim());
+    linearGradientRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid radial-gradient string.
  */
 export const isValidRadialGradient = (value: string): boolean =>
-    /^radial-gradient\((.+)\)$/i.test(value.trim());
+    radialGradientRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid conic-gradient string.
  */
 export const isValidConicGradient = (value: string): boolean =>
-    /^conic-gradient\((.+)\)$/i.test(value.trim());
+    conicGradientRegex.test(cleanInput(value));
 
 export const isValidGradient = (value: string): boolean =>
-    isValidLinearGradient(value) ||
-    isValidRadialGradient(value) ||
-    isValidConicGradient(value);
+    gradientRegex.test(cleanInput(value));
 
 /**
  * Checks if the input is a valid color input.
@@ -73,7 +83,7 @@ export const isValidGradient = (value: string): boolean =>
  */
 export const isValidColorInput = (value: string): boolean => {
     // First check the existing regex patterns for performance
-    const trimmed = value.trim();
+    const trimmed = cleanInput(value);
 
     if (isValidGradient(trimmed)) return true;
 
