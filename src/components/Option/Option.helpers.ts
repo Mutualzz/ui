@@ -92,4 +92,3 @@ export const resolveOptionStyles = (
         },
     };
 };
-// ...existing code...
