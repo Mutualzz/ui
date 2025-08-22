@@ -107,8 +107,8 @@ const LinearProgress = forwardRef<HTMLDivElement, LinearProgressProps>(
         const { theme } = useTheme();
 
         const {
-            width,
-            height,
+            thickness: height,
+            length: width,
             background,
             sharedColor,
             variant: resolvedVariant,
