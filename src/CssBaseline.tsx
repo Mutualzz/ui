@@ -1,6 +1,5 @@
 import { Global } from "@emotion/react";
 import { lighten } from "@utils";
-import { formatHex } from "culori";
 import { useTheme } from "./hooks/useTheme";
 
 interface CssBaselineProps {
@@ -23,7 +22,7 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                     fontFamily: theme.typography.fontFamily,
                     fontSize: theme.typography.levels["body-md"].fontSize,
                     lineHeight: theme.typography.levels["body-md"].lineHeight,
-                    backgroundColor: theme.colors.background,
+                    background: theme.colors.background,
                     color: theme.typography.colors.primary,
                 },
 
@@ -52,16 +51,14 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                         height: 8,
                     },
                     "::-webkit-scrollbar-thumb": {
-                        backgroundColor: theme.colors.neutral,
+                        background: theme.colors.neutral,
                         borderRadius: 4,
                     },
                     "::-webkit-scrollbar-track": {
-                        backgroundColor: theme.colors.primary,
+                        background: theme.colors.primary,
                     },
                     "::-webkit-scrollbar-thumb:hover": {
-                        backgroundColor: formatHex(
-                            lighten(theme.colors.neutral, 0.2),
-                        ),
+                        background: lighten(theme.colors.neutral, 0.2),
                     },
                 }),
             }}
