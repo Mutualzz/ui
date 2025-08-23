@@ -25,6 +25,7 @@ export const useColorInput = <T = ColorLike>(
     initialColor = randomColor(),
     alpha = 100,
     type: ColorType = "hex",
+    allowGradient = false,
 ) => {
     const [inputValue, setInputValue] = useState<ColorLike>(initialColor);
     const [color, setColor] = useState<ColorLike>(initialColor);
@@ -38,7 +39,7 @@ export const useColorInput = <T = ColorLike>(
         const trimmed = inputValue.trim();
 
         if (isValidColorInput(trimmed)) {
-            if (isValidGradient(trimmed)) {
+            if (allowGradient && isValidGradient(trimmed)) {
                 setColor(trimmed as ColorLike);
                 setIsInvalid(false);
                 return;

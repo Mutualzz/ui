@@ -146,7 +146,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             handleChange,
             validate,
             setColorDirectly,
-        } = useColorInput(currentValue, alpha, "hex");
+        } = useColorInput(currentValue, alpha, "hex", allowGradient);
 
         const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value as ColorLike;
