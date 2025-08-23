@@ -86,7 +86,6 @@ export const resolvePopoverSize = (
 
     return {
         fontSize: resolvedSize,
-        padding: `${resolvedSize * 0.6}px ${resolvedSize * 0.8}px`,
     };
 };
 
