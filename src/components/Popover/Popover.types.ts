@@ -2,6 +2,8 @@ import type { PaperProps } from "@components/Paper/Paper.types";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import type { ReactNode } from "react";
 
+export type PopoverPlacement = "top" | "bottom" | "left" | "right";
+
 export interface PopoverProps extends Omit<PaperProps, "content"> {
     size?: Responsive<Size | SizeValue | number>;
     content?: ReactNode;
@@ -11,4 +13,6 @@ export interface PopoverProps extends Omit<PaperProps, "content"> {
     usePortal?: boolean;
 
     closeOnClickOutside?: boolean;
+
+    placement?: PopoverPlacement;
 }
