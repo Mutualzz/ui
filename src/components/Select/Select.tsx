@@ -2,6 +2,7 @@ import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper"
 import { Portal } from "@components/Portal/Portal";
 import { Typography } from "@components/Typography/Typography";
 import styled from "@styled";
+import { getScrollableAncestors } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import {
     forwardRef,
@@ -10,6 +11,7 @@ import {
     useRef,
     useState,
     type ChangeEvent,
+    type FocusEvent,
 } from "react";
 import { SelectContext } from "./Select.context";
 import {
@@ -121,7 +123,13 @@ const DropdownIcon = styled("svg")({
 const SelectContent = styled("div")<
     SelectProps & {
         isOpen: boolean;
-        portalPosition?: { top: number; left: number; width: number };
+        portalPosition?: {
+            top?: number;
+            bottom?: number;
+            left: number;
+            width: number;
+        };
+        placement?: "top" | "bottom";
     }
 >(
     ({
@@ -130,6 +138,7 @@ const SelectContent = styled("div")<
         variant = "outlined",
         isOpen,
         portalPosition,
+        placement = "bottom",
     }) => ({
         ...resolveResponsiveMerge(
             theme,
@@ -141,7 +150,10 @@ const SelectContent = styled("div")<
         position: "fixed",
         paddingBlock: 4,
 
-        top: portalPosition?.top ?? 0,
+        ...(portalPosition?.top !== undefined && { top: portalPosition.top }),
+        ...(portalPosition?.bottom !== undefined && {
+            bottom: portalPosition.bottom,
+        }),
         left: portalPosition?.left ?? 0,
         width: portalPosition?.width ?? 200,
 
@@ -152,9 +164,11 @@ const SelectContent = styled("div")<
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
         fontSize: "inherit",
 
+        display: "flex",
+        flexDirection: placement === "top" ? "column-reverse" : "column",
+
         opacity: isOpen ? 1 : 0,
         visibility: isOpen ? "visible" : "hidden",
-        transform: isOpen ? "translateY(0)" : "translateY(-8px)",
         transition: "all 0.2s ease",
         pointerEvents: isOpen ? "auto" : "none",
     }),
@@ -197,6 +211,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             left: 0,
             width: 0,
         });
+        const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
 
         const currentValue = isControlled ? value : internalValue;
         const [isOpen, setIsOpen] = useState(false);
@@ -204,35 +219,77 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         const updateDropdownPosition = useCallback(() => {
             if (selectRef.current) {
                 const rect = selectRef.current.getBoundingClientRect();
-                setDropdownPosition({
-                    top: rect.bottom + window.scrollY + 5,
+                const dropdownHeight =
+                    selectContentRef.current?.offsetHeight ?? 200; // fallback height
+                const spaceBelow = window.innerHeight - rect.bottom;
+                const spaceAbove = rect.top;
+
+                const offset = 5;
+                let positionStyles: any = {
                     left: rect.left + window.scrollX,
                     width: rect.width,
-                });
+                };
+                let newPlacement: "top" | "bottom" = "bottom";
+
+                if (
+                    spaceBelow < dropdownHeight &&
+                    spaceAbove > dropdownHeight
+                ) {
+                    // Place the dropdown just above the select, with a small gap
+                    positionStyles = {
+                        ...positionStyles,
+                        bottom:
+                            window.innerHeight -
+                            rect.top +
+                            offset +
+                            window.scrollY,
+                    };
+                    newPlacement = "top";
+                } else {
+                    positionStyles = {
+                        ...positionStyles,
+                        top: rect.bottom + window.scrollY + offset,
+                    };
+                }
+
+                setDropdownPosition(positionStyles);
+                setPlacement(newPlacement);
             }
         }, []);
 
         useEffect(() => {
             updateDropdownPosition();
-        }, [updateDropdownPosition]);
+        }, []);
 
         useEffect(() => {
-            if (isOpen) {
+            if (isOpen && selectRef.current) {
                 updateDropdownPosition();
 
-                // Update position on scroll/resize
-                const handlePositionUpdate = () => updateDropdownPosition();
-                window.addEventListener("scroll", handlePositionUpdate, {
-                    passive: true,
-                });
-                window.addEventListener("resize", handlePositionUpdate);
+                const handleResize = () => updateDropdownPosition();
+                const handleScroll = () => {
+                    setIsOpen(false);
+                    setFocusedIndex(-1);
+                };
+
+                window.addEventListener("resize", handleResize);
+
+                const scrollableAncestors = getScrollableAncestors(
+                    selectRef.current,
+                );
+                scrollableAncestors.forEach((ancestor) =>
+                    ancestor.addEventListener("scroll", handleScroll, {
+                        passive: true,
+                    }),
+                );
 
                 return () => {
-                    window.removeEventListener("scroll", handlePositionUpdate);
-                    window.removeEventListener("resize", handlePositionUpdate);
+                    window.removeEventListener("resize", handleResize);
+                    scrollableAncestors.forEach((ancestor) =>
+                        ancestor.removeEventListener("scroll", handleScroll),
+                    );
                 };
             }
-        }, [isOpen, updateDropdownPosition]);
+        }, [isOpen]);
 
         useEffect(() => {
             if (!isOpen) setFocusedIndex(-1);
@@ -311,7 +368,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         );
 
         const handleBlur = useCallback(
-            (event: React.FocusEvent<HTMLSelectElement>) => {
+            (event: FocusEvent<HTMLSelectElement>) => {
                 setIsOpen(false);
                 onBlur?.(event);
             },
@@ -473,6 +530,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
                     {isOpen && (
                         <Portal>
                             <SelectContent
+                                placement={placement}
                                 ref={selectContentRef}
                                 color={color as string}
                                 variant={variant}
