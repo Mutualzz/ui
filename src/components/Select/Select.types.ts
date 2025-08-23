@@ -31,4 +31,6 @@ export interface SelectProps<T = string | number>
     defaultValue?: T | T[];
 
     onValueChange?: (value: T | T[]) => void;
+
+    closeOnClickOutside?: boolean;
 }

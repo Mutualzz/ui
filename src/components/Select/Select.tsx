@@ -1,6 +1,7 @@
 import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
 import { Portal } from "@components/Portal/Portal";
 import { Typography } from "@components/Typography/Typography";
+import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import styled from "@styled";
 import { getScrollableAncestors } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
@@ -194,6 +195,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
             onFocus,
             onBlur,
             children,
+            closeOnClickOutside = true,
             ...props
         },
         ref,
@@ -260,6 +262,12 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
         useEffect(() => {
             updateDropdownPosition();
         }, []);
+
+        useOnClickOutside(selectRef as any, () => {
+            if (!closeOnClickOutside) return;
+            setIsOpen(false);
+            setFocusedIndex(-1);
+        });
 
         useEffect(() => {
             if (isOpen && selectRef.current) {
