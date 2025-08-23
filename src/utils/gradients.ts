@@ -1,7 +1,7 @@
 import { parse } from "culori";
 
 export const extractGradientStops = (gradient: string): string[] => {
-    const match = gradient.match(/\((.*)\)/);
+    const match = gradient.match(/^[a-zA-Z-]+-gradient\(([\s\S]*)\)$/);
     if (!match) return [];
 
     // Split by commas, but ignore commas inside parentheses (e.g., rgb(…))
@@ -20,8 +20,15 @@ export const extractGradientStops = (gradient: string): string[] => {
     }
     if (buffer) stops.push(buffer.trim());
 
+    // Check if the first stop is an angle or direction
+    const angleRegex = /^(\d+deg|\d+rad|\d+grad|\d+turn|to\b.*)$/i;
+    let startIdx = 0;
+    if (stops.length && angleRegex.test(stops[0])) {
+        startIdx = 1;
+    }
+
     // Extract color part from each stop (ignore position for now)
-    return stops.map((stop) => {
+    return stops.slice(startIdx).map((stop) => {
         // Split by space, but only the first part is the color
         const [color] = stop.split(/\s+(?![^(]*\))/);
         return color;
