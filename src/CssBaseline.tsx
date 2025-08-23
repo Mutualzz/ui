@@ -1,5 +1,6 @@
 import { Global } from "@emotion/react";
 import { lighten } from "@utils";
+import { isValidGradient } from "@utils/colorRegex";
 import { useTheme } from "./hooks/useTheme";
 
 interface CssBaselineProps {
@@ -44,7 +45,7 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                 ...(adaptiveScrollbar && {
                     "*": {
                         scrollbarWidth: "auto",
-                        scrollbarColor: `${theme.colors.primary} ${theme.colors.surface}`,
+                        scrollbarColor: `${theme.colors.primary} ${isValidGradient(theme.colors.surface) ? theme.colors.primary : theme.colors.surface}`,
                     },
                     "::-webkit-scrollbar": {
                         width: 8,
