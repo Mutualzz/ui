@@ -1,5 +1,6 @@
 import styled from "@styled";
 
+import { resolveResponsiveMerge } from "@utils/responsive";
 import { resolveTypographStyles } from "./Typography.helpers";
 import { type TypographyProps } from "./Typography.types";
 
@@ -16,9 +17,20 @@ const Typography = styled("span")<TypographyProps>(
         variant = "none",
         weight,
     }) => ({
-        ...(level === "inherit" ? {} : theme.typography.levels[level]),
-        ...resolveTypographStyles(theme, color)[variant],
-        fontWeight: weight,
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                level,
+                color,
+                variant,
+                weight,
+            },
+            ({ level: l, color: c, variant: v, weight: w }) => ({
+                ...(l === "inherit" ? {} : theme.typography.levels[l]),
+                ...resolveTypographStyles(theme, c)[v],
+                fontWeight: w,
+            }),
+        ),
         transition: "all 0.3s ease",
     }),
 );

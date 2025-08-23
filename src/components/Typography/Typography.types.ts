@@ -1,6 +1,7 @@
 import type {
     Color,
     ColorLike,
+    Responsive,
     SystemProps,
     TypographyLevel,
     Variant,
@@ -9,7 +10,8 @@ import type { Properties } from "csstype";
 
 export type TypographyVariant = Variant | "none";
 
-export interface TypographyProps extends SystemProps<HTMLSpanElement> {
+export interface TypographyProps
+    extends Omit<SystemProps<HTMLSpanElement>, "color"> {
     /**
      * Typography Level.
      * This can be a predefined level like "h1", "h2", and etc.
@@ -17,7 +19,7 @@ export interface TypographyProps extends SystemProps<HTMLSpanElement> {
      * @default "inherit"
      * @example "h1", "h2", "h3", "inherit"
      */
-    level?: TypographyLevel | "inherit";
+    level?: Responsive<TypographyLevel | "inherit">;
     /**
      * Font weight.
      * This can be a predefined weight like "light", "normal", "medium", "bold", or a custom number.
@@ -26,7 +28,7 @@ export interface TypographyProps extends SystemProps<HTMLSpanElement> {
      * @default "normal"
      * @example "light", "normal", "medium", "bold", 400
      */
-    weight?: Properties["fontWeight"];
+    weight?: Responsive<Properties["fontWeight"]>;
     /**
      * Color or color-like value for the typography.
      * This can be a color name, hex code, or any valid color format, doesn't apply on "none" variant.
@@ -34,7 +36,7 @@ export interface TypographyProps extends SystemProps<HTMLSpanElement> {
      * @default "neutral"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Color | ColorLike;
+    color?: Responsive<Color | ColorLike>;
     /**
      * Variant of the typography.
      * This can be "solid", "outlined", "soft", "plain", or "none".
@@ -45,5 +47,5 @@ export interface TypographyProps extends SystemProps<HTMLSpanElement> {
      * @default "none"
      * @example "solid", "outlined", "soft", "plain", "none"
      */
-    variant?: TypographyVariant;
+    variant?: Responsive<TypographyVariant>;
 }
