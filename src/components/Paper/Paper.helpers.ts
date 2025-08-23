@@ -31,7 +31,7 @@ export const resolvePaperStyles = (
     return {
         elevation: {
             background: isValidGradient(colors.surface)
-                ? "transparent"
+                ? alpha(colors.surface, 0.2)
                 : dynamicElevation(colors.surface, elevation),
             boxShadow: `0 ${2 + elevation}px ${8 + elevation * 2}px rgba(0,0,0,${0.1 + elevation * 0.05})`,
             backdropFilter: `blur(${6 + elevation * 2}px)`,
