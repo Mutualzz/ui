@@ -38,11 +38,10 @@ export const resolveColorPickerButtonStyles = (
     const resolvedColor = resolveColor(color, theme);
     const bgLuminance = getLuminance(resolvedColor);
     const contrastColor = resolveColorFromLuminance(bgLuminance, theme);
-    const hexColor = formatHex8(resolvedColor);
 
     return {
         solid: {
-            backgroundColor: hexColor,
+            background: resolvedColor,
             border: `2px solid ${contrastColor}`,
             "&:hover": {
                 backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
@@ -53,7 +52,7 @@ export const resolveColorPickerButtonStyles = (
             },
         },
         outlined: {
-            backgroundColor: hexColor,
+            background: resolvedColor,
             border: `2px solid ${formatHex8(alpha(resolvedColor, 0.6))}`,
             "&:hover": {
                 backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
@@ -64,7 +63,7 @@ export const resolveColorPickerButtonStyles = (
             },
         },
         soft: {
-            backgroundColor: hexColor,
+            background: resolvedColor,
             border: `2px solid ${formatHex8(alpha(contrastColor, 0.3))}`,
             "&:hover": {
                 backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),
@@ -75,7 +74,7 @@ export const resolveColorPickerButtonStyles = (
             },
         },
         plain: {
-            backgroundColor: hexColor,
+            background: resolvedColor,
             border: "2px solid transparent",
             "&:hover": {
                 backgroundColor: formatHex8(alpha(resolvedColor, 0.9)),

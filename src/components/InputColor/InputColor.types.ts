@@ -27,22 +27,10 @@ export interface InputColorProps
     showRandom?: boolean;
 
     /**
-     * Whether to show the alpha channel slider.
-     * @default true
-     */
-    showAlpha?: boolean;
-
-    /**
      * Whether to allow gradient colors.
      * @default false
      */
     allowGradient?: boolean;
-
-    /**
-     * The current alpha value (0-100)
-     * @default 100
-     */
-    alpha?: number;
 
     /**
      * The current color value.
@@ -52,5 +40,4 @@ export interface InputColorProps
     defaultValue?: ColorLike;
 
     onChange?: (color: ColorLike) => void;
-    onAlphaChange?: (alpha: number) => void;
 }

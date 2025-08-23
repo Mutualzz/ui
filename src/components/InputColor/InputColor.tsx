@@ -1,3 +1,4 @@
+import { Box } from "@components/Box/Box";
 import { Button } from "@components/Button/Button";
 import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
 import { IconButton } from "@components/IconButton/IconButton";
@@ -15,12 +16,14 @@ import type {
     Variant,
 } from "@ui-types";
 import { getLuminance, resolveColorFromLuminance, resolveSize } from "@utils";
+import { isValidGradient } from "@utils/colorRegex";
 import { randomColor } from "@utils/randomColor";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { formatHex, formatHex8, rgb } from "culori";
+import { formatHex } from "culori";
 import {
     forwardRef,
     useEffect,
+    useId,
     useRef,
     useState,
     type ChangeEvent,
@@ -106,25 +109,22 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             fullWidth = false,
             disabled = false,
             showColorPicker = true,
-            showAlpha = false,
             showRandom = false,
             value: colorProp,
             allowGradient = false,
             onChange,
-            onAlphaChange,
             defaultValue,
             ...props
         },
         ref,
     ) => {
         const { theme } = useTheme();
-
-        const [alpha, setAlpha] = useState(100);
+        const id = useId();
 
         const isControlled = colorProp !== undefined;
 
         const [internalValue, setInternalValue] = useState<ColorLike>(
-            defaultValue ?? randomColor("hex", alpha),
+            defaultValue ?? randomColor("hex"),
         );
 
         const currentValue = isControlled ? colorProp : internalValue;
@@ -133,7 +133,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                 return formatHex(currentValue) ?? "#fff";
             } catch {
                 // If the color is invalid, fallback to a random color
-                return randomColor("hex", alpha);
+                return randomColor("hex");
             }
         });
 
@@ -146,7 +146,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             handleChange,
             validate,
             setColorDirectly,
-        } = useColorInput(currentValue, alpha, "hex", allowGradient);
+        } = useColorInput(currentValue, 100, "hex", allowGradient);
 
         const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value as ColorLike;
@@ -166,30 +166,18 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
         };
 
         const handleNewColor = (newColor: string) => {
-            const newColorRgb = rgb(newColor);
-            if (!newColorRgb) return;
-
-            let colorValue: string | undefined = undefined;
-            let newAlpha = 0;
-            if (newColorRgb.alpha) {
-                newAlpha = Math.round(newColorRgb.alpha * 100);
-                setAlpha(newAlpha);
-                if (newAlpha < 100) colorValue = formatHex8(newColorRgb);
-            } else colorValue = formatHex(newColorRgb);
-
-            if (!colorValue) return;
-
-            setColorDirectly(colorValue as ColorLike);
+            setColorDirectly(newColor as ColorLike);
             setPickerColor(newColor);
 
-            if (!isControlled) setInternalValue(colorValue as ColorLike);
+            if (!isControlled) setInternalValue(newColor as ColorLike);
 
-            onChange?.(colorValue as ColorLike);
-            onAlphaChange?.(newAlpha);
+            onChange?.(newColor as ColorLike);
         };
 
         const handleRandomColor = () => {
-            const newColor = randomColor("hex", alpha);
+            let newColor = randomColor("hex");
+            if (isValidGradient(pickerColor))
+                newColor = randomColor("linear-gradient");
             setColorDirectly(newColor);
             setPickerColor(newColor);
             if (!isControlled) setInternalValue(newColor);
@@ -223,22 +211,23 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                             (showColorPicker && !isInvalid && (
                                 <Popover
                                     content={
-                                        <div ref={popoverRef}>
+                                        <Box ref={popoverRef}>
                                             <ColorPicker
                                                 hidePresets
                                                 hideInputs
                                                 hideInputType
+                                                hideEyeDrop
+                                                hideOpacity
+                                                hideAdvancedSliders
                                                 hideColorTypeBtns={
                                                     !allowGradient
                                                 }
-                                                hideEyeDrop
-                                                hideOpacity={!showAlpha}
-                                                hideAdvancedSliders
                                                 hideColorGuide
                                                 value={pickerColor}
                                                 onChange={handleNewColor}
+                                                idSuffix={id}
                                             />
-                                        </div>
+                                        </Box>
                                     }
                                     color={validatedColor}
                                     size={size}
