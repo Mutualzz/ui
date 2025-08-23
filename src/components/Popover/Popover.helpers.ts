@@ -15,6 +15,7 @@ import {
     resolveSize,
     resolveTypographyColor,
 } from "@utils";
+import { isValidGradient } from "@utils/colorRegex";
 import { formatHex8 } from "culori";
 
 const baseSizeMap: Record<Size, number> = {
@@ -110,7 +111,9 @@ export const resolvePopoverStyles = (
 
     return {
         elevation: {
-            backgroundColor: dynamicElevation(colors.surface, elevation),
+            background: isValidGradient(colors.surface)
+                ? alpha(colors.surface, 0.2)
+                : dynamicElevation(colors.surface, elevation),
             boxShadow: `0 ${elevation + 1}px ${elevation * 2}px rgba(0,0,0,${elevation * 0.1})`,
         },
         solid: {
