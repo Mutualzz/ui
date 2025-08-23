@@ -13,8 +13,11 @@ export interface DrawerProps
 
     anchor?: Responsive<DrawerAnchor>;
     hideBackdrop?: Responsive<boolean>;
+    onOpen?: () => void;
     onClose?: () => void;
-    open: boolean;
+    open?: boolean;
 
     consistency?: Responsive<DrawerConsistency>;
+
+    swipeable?: boolean;
 }

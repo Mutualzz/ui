@@ -12,6 +12,9 @@ export type * from "./components/Button/Button.types";
 export * from "./components/ButtonGroup/ButtonGroup";
 export type * from "./components/ButtonGroup/ButtonGroup.types";
 
+export * from "./components/Drawer/Drawer";
+export type * from "./components/Drawer/Drawer.types";
+
 export * from "./components/Checkbox/Checkbox";
 export type * from "./components/Checkbox/Checkbox.types";
 

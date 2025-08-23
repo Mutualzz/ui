@@ -1,10 +1,15 @@
 import { resolvePaperStyles } from "@components/Paper/Paper.helpers";
 import { Portal } from "@components/Portal/Portal";
+import { useTheme } from "@hooks/useTheme";
 import type { Color, ColorLike, Responsive, Variant } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import styled from "@utils/styled";
 import { forwardRef, useEffect, useRef } from "react";
-import { resolveAnchorStyles } from "./Drawer.helpers";
+import {
+    resolveAnchorStyles,
+    resolveSwipeAreaStyles,
+    useSwipeableDrawer,
+} from "./Drawer.helpers";
 import type { DrawerAnchor, DrawerProps } from "./Drawer.types";
 
 const DrawerRoot = styled("div")<{
@@ -91,6 +96,12 @@ const FocusTrap = ({
     return <div ref={ref}>{children}</div>;
 };
 
+const SwipeableArea = styled("div")<{
+    anchor: DrawerAnchor;
+}>(({ theme, anchor }) => ({
+    ...resolveSwipeAreaStyles(theme, anchor),
+}));
+
 const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
     (
         {
@@ -99,13 +110,17 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
             open = false,
             elevation = 16,
             hideBackdrop,
+            onOpen,
             onClose,
             anchor = "left",
+            swipeable = true,
             children,
             ...props
         },
         ref,
     ) => {
+        const { theme } = useTheme();
+
         useEffect(() => {
             if (open) {
                 const original = document.body.style.overflow;
@@ -116,28 +131,55 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
             }
         }, [open]);
 
-        if (!open) return null;
+        const {
+            resolvedAnchor,
+            handleTouchStart,
+            handleTouchEnd,
+            handleSwipeOpenStart,
+            handleSwipeOpenEnd,
+        } = useSwipeableDrawer({
+            theme,
+            anchor,
+            swipeable,
+            open,
+            onOpen,
+            onClose,
+        });
 
         return (
-            <Portal>
-                {!hideBackdrop && <DrawerBackdrop onClick={onClose} />}
-                <FocusTrap active={open}>
-                    <DrawerRoot
-                        elevation={elevation}
-                        color={color as string}
-                        variant={variant}
-                        open={open}
-                        anchor={anchor}
-                        tabIndex={-1}
-                        ref={ref}
-                        role="dialog"
-                        aria-modal="true"
-                        {...props}
-                    >
-                        {children}
-                    </DrawerRoot>
-                </FocusTrap>
-            </Portal>
+            <>
+                {!open && swipeable && (
+                    <SwipeableArea
+                        anchor={resolvedAnchor}
+                        onTouchStart={handleSwipeOpenStart}
+                        onTouchEnd={handleSwipeOpenEnd}
+                        aria-hidden
+                    />
+                )}
+                <Portal>
+                    {!hideBackdrop && open && (
+                        <DrawerBackdrop onClick={onClose} />
+                    )}
+                    <FocusTrap active={open}>
+                        <DrawerRoot
+                            elevation={elevation}
+                            color={color as string}
+                            variant={variant}
+                            open={open}
+                            anchor={anchor}
+                            tabIndex={-1}
+                            ref={ref}
+                            role="dialog"
+                            aria-modal="true"
+                            onTouchStart={handleTouchStart}
+                            onTouchEnd={handleTouchEnd}
+                            {...props}
+                        >
+                            {children}
+                        </DrawerRoot>
+                    </FocusTrap>
+                </Portal>
+            </>
         );
     },
 );
