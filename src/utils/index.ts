@@ -61,6 +61,25 @@ export function darken(color: ColorLike, factor: number) {
     return formatHex(clampChroma(colorLch));
 }
 
+export function getScrollableAncestors(
+    node: HTMLElement | null,
+): (HTMLElement | Window)[] {
+    const ancestors: (HTMLElement | Window)[] = [window];
+    let current = node?.parentElement;
+    while (current) {
+        const style = getComputedStyle(current);
+        if (
+            /(auto|scroll)/.test(
+                style.overflow + style.overflowY + style.overflowX,
+            )
+        ) {
+            ancestors.push(current);
+        }
+        current = current.parentElement;
+    }
+    return ancestors;
+}
+
 export const lighten = (color: ColorLike, factor: number) => {
     if (isValidGradient(color)) {
         const stops = extractGradientStops(color);
