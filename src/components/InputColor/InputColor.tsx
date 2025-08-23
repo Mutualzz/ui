@@ -14,15 +14,10 @@ import type {
     SizeValue,
     Variant,
 } from "@ui-types";
-import {
-    hexToHsva,
-    type ColorResult,
-    type HsvaColor,
-} from "@uiw/color-convert";
-import Colorful from "@uiw/react-color-colorful";
 import { getLuminance, resolveColorFromLuminance, resolveSize } from "@utils";
 import { randomColor } from "@utils/randomColor";
 import { resolveResponsiveMerge } from "@utils/responsive";
+import { formatHex, formatHex8, rgb } from "culori";
 import {
     forwardRef,
     useEffect,
@@ -30,6 +25,7 @@ import {
     useState,
     type ChangeEvent,
 } from "react";
+import ColorPicker from "react-best-gradient-color-picker";
 import {
     resolveColorPickerButtonSize,
     resolveColorPickerButtonStyles,
@@ -113,6 +109,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             showAlpha = false,
             showRandom = false,
             value: colorProp,
+            allowGradient = false,
             onChange,
             onAlphaChange,
             defaultValue,
@@ -131,12 +128,12 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
         );
 
         const currentValue = isControlled ? colorProp : internalValue;
-        const [pickerColor, setPickerColor] = useState<HsvaColor>(() => {
+        const [pickerColor, setPickerColor] = useState<string>(() => {
             try {
-                return hexToHsva(currentValue);
+                return formatHex(currentValue) ?? "#fff";
             } catch {
                 // If the color is invalid, fallback to a random color
-                return hexToHsva(randomColor("hex", alpha));
+                return randomColor("hex", alpha);
             }
         });
 
@@ -159,7 +156,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             handleChange(newValue);
 
             try {
-                setPickerColor(hexToHsva(newValue));
+                setPickerColor(newValue);
             } catch {
                 // Ignore invalid color input
             }
@@ -168,14 +165,22 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             onChange?.(newValue);
         };
 
-        const handleNewColor = (newColor: ColorResult) => {
-            const newAlpha = Math.round(newColor.rgba.a * 100);
-            setAlpha(newAlpha);
+        const handleNewColor = (newColor: string) => {
+            const newColorRgb = rgb(newColor);
+            if (!newColorRgb) return;
 
-            const colorValue = newAlpha < 100 ? newColor.hexa : newColor.hex;
+            let colorValue: string | undefined = undefined;
+            let newAlpha = 0;
+            if (newColorRgb.alpha) {
+                newAlpha = Math.round(newColorRgb.alpha * 100);
+                setAlpha(newAlpha);
+                if (newAlpha < 100) colorValue = formatHex8(newColorRgb);
+            } else colorValue = formatHex(newColorRgb);
+
+            if (!colorValue) return;
 
             setColorDirectly(colorValue as ColorLike);
-            setPickerColor(newColor.hsva);
+            setPickerColor(newColor);
 
             if (!isControlled) setInternalValue(colorValue as ColorLike);
 
@@ -186,7 +191,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
         const handleRandomColor = () => {
             const newColor = randomColor("hex", alpha);
             setColorDirectly(newColor);
-            setPickerColor(hexToHsva(newColor));
+            setPickerColor(newColor);
             if (!isControlled) setInternalValue(newColor);
             onChange?.(newColor);
         };
@@ -195,7 +200,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             if (isControlled) {
                 setColorDirectly(currentValue);
                 try {
-                    setPickerColor(hexToHsva(currentValue as string));
+                    setPickerColor(currentValue as string);
                 } catch {
                     // Ignore invalid color input
                 }
@@ -218,12 +223,22 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                             (showColorPicker && !isInvalid && (
                                 <Popover
                                     content={
-                                        <Colorful
-                                            ref={popoverRef}
-                                            disableAlpha={!showAlpha}
-                                            color={pickerColor}
-                                            onChange={handleNewColor}
-                                        />
+                                        <div ref={popoverRef}>
+                                            <ColorPicker
+                                                hidePresets
+                                                hideInputs
+                                                hideInputType
+                                                hideColorTypeBtns={
+                                                    !allowGradient
+                                                }
+                                                hideEyeDrop
+                                                hideOpacity={!showAlpha}
+                                                hideAdvancedSliders
+                                                hideColorGuide
+                                                value={pickerColor}
+                                                onChange={handleNewColor}
+                                            />
+                                        </div>
                                     }
                                     color={validatedColor}
                                     size={size}
@@ -270,5 +285,3 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
 );
 
 InputColor.displayName = "InputColor";
-
-export { InputColor };

@@ -6,7 +6,8 @@
         "@uiw/color-convert": "^2.7.3",
         "@uiw/react-color-colorful": "^2.7.3",
         "@uiw/react-color-sketch": "^2.7.3",
-        "culori": "^4.0.2"
+        "culori": "^4.0.2",
+        "react-best-gradient-color-picker": "^3.0.14"
     },
     "devDependencies": {
         "@happy-dom/global-registrator": "^18.0.1",

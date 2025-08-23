@@ -33,6 +33,12 @@ export interface InputColorProps
     showAlpha?: boolean;
 
     /**
+     * Whether to allow gradient colors.
+     * @default false
+     */
+    allowGradient?: boolean;
+
+    /**
      * The current alpha value (0-100)
      * @default 100
      */
