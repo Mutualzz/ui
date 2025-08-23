@@ -285,3 +285,5 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
 );
 
 InputColor.displayName = "InputColor";
+
+export { InputColor };
