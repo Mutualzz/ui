@@ -6,6 +6,7 @@ export const baseLightTheme: Theme = {
     name: "Silken Dawn",
     description: "Default Light Theme",
     type: "light",
+    mode: "normal",
     colors: {
         common: { white: "#FFFFFF", black: "#121212" },
         primary: "#8C2F4A",

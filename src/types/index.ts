@@ -114,6 +114,7 @@ export interface MZTheme {
     name: string;
     description: string;
     type: "light" | "dark";
+    mode: "normal" | "gradient";
     colors: {
         common: {
             white: ColorLike;

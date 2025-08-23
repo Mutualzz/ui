@@ -6,6 +6,7 @@ export const baseDarkTheme: Theme = {
     name: "Ashen Dusk",
     description: "Default Dark Theme",
     type: "dark",
+    mode: "normal",
     colors: {
         common: { white: "#F4F4F4", black: "#181820" },
         primary: "#5C5C7A",
