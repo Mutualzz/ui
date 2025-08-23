@@ -79,13 +79,71 @@ export const randomHslColor = (alpha?: number): HSL | HSLA => {
 };
 
 /**
+ * Generate a random linear gradient
+ * @returns {ColorLike} Random linear-gradient CSS string
+ */
+export const randomLinearGradient = (): ColorLike => {
+    // Generate two random colors
+    const color1 = randomHexColor();
+    const color2 = randomHexColor();
+    // Random angle (0-360deg)
+    const angle = Math.floor(Math.random() * 361);
+    return `linear-gradient(${angle}deg, ${color1}, ${color2})`;
+};
+
+/**
+ * Generate a random radial gradient
+ * @returns {ColorLike} Random radial-gradient CSS string
+ */
+export const randomRadialGradient = (): ColorLike => {
+    const color1 = randomHexColor();
+    const color2 = randomHexColor();
+    return `radial-gradient(circle, ${color1}, ${color2})`;
+};
+
+/**
+ * Generate a random conic gradient
+ * @returns {ColorLike} Random conic-gradient CSS string
+ */
+export const randomConicGradient = (): ColorLike => {
+    const color1 = randomHexColor();
+    const color2 = randomHexColor();
+    const angle = Math.floor(Math.random() * 361);
+    return `conic-gradient(from ${angle}deg, ${color1}, ${color2})`;
+};
+
+/**
+ * Generate a random gradient in the specified format
+ * @param type - The gradient type to generate
+ * @returns Gradient string in the specified format
+ */
+export const randomGradient = (
+    type: "linear" | "radial" | "conic" = "linear",
+): ColorLike => {
+    switch (type) {
+        case "linear":
+            return randomLinearGradient();
+        case "radial":
+            return randomRadialGradient();
+        case "conic":
+            return randomConicGradient();
+        default:
+            return randomLinearGradient();
+    }
+};
+
+/**
  * Generate a random color in the specified format
  * @param format - The color format to generate
  * @param alpha - Alpha value between 0 and 1 (optional)
  * @returns Color string in the specified format
  */
 export const randomColor = (
-    type: ColorType = "hex",
+    type:
+        | ColorType
+        | "linear-gradient"
+        | "radial-gradient"
+        | "conic-gradient" = "hex",
     alpha?: number,
 ): ColorLike => {
     switch (type) {
@@ -95,6 +153,12 @@ export const randomColor = (
             return randomRgbColor(alpha);
         case "hsl":
             return randomHslColor(alpha);
+        case "linear-gradient":
+            return randomLinearGradient();
+        case "radial-gradient":
+            return randomRadialGradient();
+        case "conic-gradient":
+            return randomConicGradient();
         default:
             return randomHexColor(alpha);
     }
