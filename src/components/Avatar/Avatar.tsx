@@ -71,7 +71,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
                 hasText={!src && Boolean(children)}
             >
                 {src ? (
-                    <AvatarImage src={src} alt={alt} />
+                    <AvatarImage {...props} src={src} alt={alt} />
                 ) : alt ? (
                     alt.split(" ").join("")
                 ) : (
