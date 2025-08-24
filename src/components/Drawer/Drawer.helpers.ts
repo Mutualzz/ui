@@ -1,19 +1,32 @@
 import type { CSSObject, Theme } from "@emotion/react";
-import type { Responsive } from "@ui-types";
+import type { Responsive, Size, SizeValue } from "@ui-types";
+import { resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { useCallback, useRef } from "react";
 import type { DrawerAnchor } from "./Drawer.types";
 
 const SWIPE_THRESHOLD = 60;
 
-export const resolveAnchorStyles = (anchor: DrawerAnchor) => {
+const baseSizeMap: Record<Size, number> = {
+    sm: 240,
+    md: 320,
+    lg: 360,
+};
+
+export const resolveAnchorStyles = (
+    theme: Theme,
+    anchor: DrawerAnchor,
+    size: Size | SizeValue | number,
+) => {
+    const resolvedSize = resolveSize(theme, size, baseSizeMap);
+
     switch (anchor) {
         case "left":
             return {
                 top: 0,
                 left: 0,
                 height: "100%",
-                width: 320,
+                width: resolvedSize,
                 transform: "translateX(-100%)",
             };
         case "right":
@@ -21,7 +34,7 @@ export const resolveAnchorStyles = (anchor: DrawerAnchor) => {
                 top: 0,
                 right: 0,
                 height: "100%",
-                width: 320,
+                width: resolvedSize,
                 transform: "translateX(100%)",
             };
         case "top":
@@ -38,7 +51,7 @@ export const resolveAnchorStyles = (anchor: DrawerAnchor) => {
                 bottom: 0,
                 left: 0,
                 width: "100%",
-                height: 320,
+                height: resolvedSize,
                 transform: "translateY(100%)",
             };
     }

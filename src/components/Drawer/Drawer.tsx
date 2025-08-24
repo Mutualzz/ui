@@ -1,6 +1,13 @@
 import { resolvePaperStyles } from "@components/Paper/Paper.helpers";
 import { useTheme } from "@hooks/useTheme";
-import type { Color, ColorLike, Responsive, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import styled from "@utils/styled";
 import { forwardRef, useEffect, useRef } from "react";
@@ -17,7 +24,8 @@ const DrawerRoot = styled("div")<{
     open: boolean;
     anchor: Responsive<DrawerAnchor>;
     elevation: Responsive<number>;
-}>(({ theme, open, anchor, color, variant, elevation }) => ({
+    size: Responsive<number | Size | SizeValue>;
+}>(({ theme, open, anchor, color, variant, elevation, size }) => ({
     position: "fixed",
     zIndex: theme.zIndex.drawer,
     background: theme.colors.surface,
@@ -33,9 +41,10 @@ const DrawerRoot = styled("div")<{
             color,
             variant,
             elevation,
+            size,
         },
-        ({ anchor: a, color: c, variant: v, elevation: e }) => ({
-            ...resolveAnchorStyles(a),
+        ({ anchor: a, color: c, variant: v, elevation: e, size: s }) => ({
+            ...resolveAnchorStyles(theme, a, s),
             ...resolvePaperStyles(theme, c, "primary", e)[v],
             flexDirection: a === "left" || a === "right" ? "column" : "row",
             ...(open && {
@@ -107,6 +116,7 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
         {
             color = "primary",
             variant = "elevation",
+            size = "md",
             open,
             elevation = 0,
             hideBackdrop,
@@ -161,6 +171,7 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
                     <DrawerRoot
                         elevation={elevation}
                         color={color as string}
+                        size={size}
                         variant={variant}
                         open={open}
                         anchor={anchor}

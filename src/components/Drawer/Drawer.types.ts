@@ -1,4 +1,11 @@
-import type { Color, ColorLike, Responsive, Variant } from "@ui-types";
+import type {
+    Color,
+    ColorLike,
+    Responsive,
+    Size,
+    SizeValue,
+    Variant,
+} from "@ui-types";
 import type { HTMLAttributes } from "react";
 
 export type DrawerAnchor = "left" | "right" | "top" | "bottom";
@@ -8,6 +15,7 @@ export interface DrawerProps
     extends Omit<HTMLAttributes<HTMLDivElement>, "color"> {
     color?: Responsive<Color | ColorLike>;
     variant?: Responsive<Variant | "elevation">;
+    size?: Responsive<Size | SizeValue | number>;
 
     elevation?: Responsive<number>;
 
