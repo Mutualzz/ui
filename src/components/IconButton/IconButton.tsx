@@ -11,9 +11,9 @@ import { resolveIconButtonStyles } from "./IconButton.helpers";
 import { type IconButtonProps } from "./IconButton.types";
 
 const baseSizeMap: Record<Size, number> = {
-    sm: 12,
-    md: 14,
-    lg: 16,
+    sm: 16,
+    md: 20,
+    lg: 24,
 };
 
 const IconButtonWrapper = styled("button")<IconButtonProps>(
@@ -47,7 +47,6 @@ const IconButtonWrapper = styled("button")<IconButtonProps>(
 
                 return {
                     fontSize: resolvedSize,
-                    padding: `${resolvedSize * 0.5}px`,
                     ...resolveIconButtonStyles(theme, c)[v],
                 };
             },
