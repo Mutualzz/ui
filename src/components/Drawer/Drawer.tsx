@@ -1,4 +1,5 @@
 import { resolvePaperStyles } from "@components/Paper/Paper.helpers";
+import { Portal } from "@components/Portal/Portal";
 import { useTheme } from "@hooks/useTheme";
 import type {
     Color,
@@ -166,26 +167,30 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
                         aria-hidden
                     />
                 )}
-                {!hideBackdrop && open && <DrawerBackdrop onClick={onClose} />}
-                <FocusTrap active={open}>
-                    <DrawerRoot
-                        elevation={elevation}
-                        color={color as string}
-                        size={size}
-                        variant={variant}
-                        open={open}
-                        anchor={anchor}
-                        tabIndex={-1}
-                        ref={ref}
-                        role="dialog"
-                        aria-modal="true"
-                        onTouchStart={handleTouchStart}
-                        onTouchEnd={handleTouchEnd}
-                        {...props}
-                    >
-                        {children}
-                    </DrawerRoot>
-                </FocusTrap>
+                <Portal>
+                    {!hideBackdrop && open && (
+                        <DrawerBackdrop onClick={onClose} />
+                    )}
+                    <FocusTrap active={open}>
+                        <DrawerRoot
+                            elevation={elevation}
+                            color={color as string}
+                            size={size}
+                            variant={variant}
+                            open={open}
+                            anchor={anchor}
+                            tabIndex={-1}
+                            ref={ref}
+                            role="dialog"
+                            aria-modal="true"
+                            onTouchStart={handleTouchStart}
+                            onTouchEnd={handleTouchEnd}
+                            {...props}
+                        >
+                            {children}
+                        </DrawerRoot>
+                    </FocusTrap>
+                </Portal>
             </>
         );
     },
