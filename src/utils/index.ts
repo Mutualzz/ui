@@ -1,43 +1,7 @@
 import type { ColorLike } from "@ui-types";
 import { clampChroma, formatHex, lch } from "culori";
-import { adjustLightness } from "./adjustLightness";
-import { alpha } from "./alpha";
 import { isValidGradient } from "./colorRegex";
-import { dynamicElevation } from "./dynamicElevation";
-import { getLuminance } from "./getLuminance";
 import { extractGradientStops, reconstructGradient } from "./gradients";
-import { randomColor } from "./randomColor";
-import {
-    isThemeColor,
-    isTypographyColor,
-    resolveColor,
-    resolveColorFromLuminance,
-    resolveTypographyColor,
-} from "./resolveColors";
-import { cssUnitRegex, resolveSize } from "./resolveSize";
-import { setRef } from "./setRef";
-import { useEnhancedEffect } from "./useEnhancedEffect";
-import { useForkRef } from "./useForkRef";
-import visuallyHidden from "./visuallyHidden";
-
-export {
-    adjustLightness,
-    alpha,
-    cssUnitRegex,
-    dynamicElevation,
-    getLuminance,
-    isThemeColor,
-    isTypographyColor,
-    randomColor,
-    resolveColor,
-    resolveColorFromLuminance,
-    resolveSize,
-    resolveTypographyColor,
-    setRef,
-    useEnhancedEffect,
-    useForkRef,
-    visuallyHidden,
-};
 
 export function darken(color: ColorLike, factor: number) {
     if (isValidGradient(color)) {
@@ -61,9 +25,9 @@ export function darken(color: ColorLike, factor: number) {
     return formatHex(clampChroma(colorLch));
 }
 
-export function getScrollableAncestors(
+export const getScrollableAncestors = (
     node: HTMLElement | null,
-): (HTMLElement | Window)[] {
+): (HTMLElement | Window)[] => {
     const ancestors: (HTMLElement | Window)[] = [window];
     let current = node?.parentElement;
     while (current) {
@@ -78,7 +42,7 @@ export function getScrollableAncestors(
         current = current.parentElement;
     }
     return ancestors;
-}
+};
 
 export const lighten = (color: ColorLike, factor: number) => {
     if (isValidGradient(color)) {
@@ -160,3 +124,19 @@ export const round = (
 ): number => {
     return Math.round(base * number) / base;
 };
+
+export * from "./adjustLightness";
+export * from "./alpha";
+export * from "./colorRegex";
+export * from "./dynamicElevation";
+export * from "./getLuminance";
+export * from "./getReactElementRef";
+export * from "./gradients";
+export * from "./randomColor";
+export * from "./resolveColors";
+export * from "./resolveSize";
+export * from "./responsive";
+export * from "./setRef";
+export * from "./useEnhancedEffect";
+export * from "./useForkRef";
+export * from "./visuallyHidden";
