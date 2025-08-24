@@ -56,11 +56,13 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
             shape = "circle",
             size = "md",
             variant = "plain",
+            ...props
         },
         ref,
     ) => {
         return (
             <AvatarWrapper
+                {...props}
                 ref={ref}
                 color={color as string}
                 shape={shape}
