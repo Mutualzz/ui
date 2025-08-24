@@ -53,6 +53,9 @@ const LinkWrapper = styled("a")<LinkProps>(
             }),
         ),
         transition: "all 0.3s ease",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
     }),
 );
 
