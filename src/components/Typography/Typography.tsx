@@ -13,7 +13,8 @@ const Typography = styled("span")<TypographyProps>(
     ({
         theme,
         level = "inherit",
-        color = "#fff",
+        color = "primary",
+        textColor = "primary",
         variant = "none",
         weight,
     }) => ({
@@ -24,10 +25,11 @@ const Typography = styled("span")<TypographyProps>(
                 color,
                 variant,
                 weight,
+                textColor,
             },
-            ({ level: l, color: c, variant: v, weight: w }) => ({
+            ({ level: l, color: c, variant: v, weight: w, textColor: tc }) => ({
                 ...(l === "inherit" ? {} : theme.typography.levels[l]),
-                ...resolveTypographStyles(theme, c)[v],
+                ...resolveTypographStyles(theme, c, tc)[v],
                 fontWeight: w,
             }),
         ),

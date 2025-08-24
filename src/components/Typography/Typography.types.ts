@@ -3,6 +3,7 @@ import type {
     ColorLike,
     Responsive,
     SystemProps,
+    TypographyColor,
     TypographyLevel,
     Variant,
 } from "@ui-types";
@@ -37,6 +38,7 @@ export interface TypographyProps
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
     color?: Responsive<Color | ColorLike>;
+    textColor?: Responsive<TypographyColor | ColorLike | "inherit">;
     /**
      * Variant of the typography.
      * This can be "solid", "outlined", "soft", "plain", or "none".
