@@ -1,5 +1,4 @@
 import { resolvePaperStyles } from "@components/Paper/Paper.helpers";
-import { Portal } from "@components/Portal/Portal";
 import { useTheme } from "@hooks/useTheme";
 import type { Color, ColorLike, Responsive, Variant } from "@ui-types";
 import { resolveResponsiveMerge } from "@utils/responsive";
@@ -25,9 +24,7 @@ const DrawerRoot = styled("div")<{
     boxShadow: theme.shadows[4],
     transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
     outline: 0,
-    ...(open && {
-        transform: "none",
-    }),
+    overflowY: "auto",
 
     ...resolveResponsiveMerge(
         theme,
@@ -41,6 +38,9 @@ const DrawerRoot = styled("div")<{
             ...resolveAnchorStyles(a),
             ...resolvePaperStyles(theme, c, "primary", e)[v],
             flexDirection: a === "left" || a === "right" ? "column" : "row",
+            ...(open && {
+                transform: "none",
+            }),
         }),
     ),
 }));
@@ -107,8 +107,8 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
         {
             color = "primary",
             variant = "elevation",
-            open = false,
-            elevation = 16,
+            open,
+            elevation = 0,
             hideBackdrop,
             onOpen,
             onClose,
@@ -156,29 +156,25 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
                         aria-hidden
                     />
                 )}
-                <Portal>
-                    {!hideBackdrop && open && (
-                        <DrawerBackdrop onClick={onClose} />
-                    )}
-                    <FocusTrap active={open}>
-                        <DrawerRoot
-                            elevation={elevation}
-                            color={color as string}
-                            variant={variant}
-                            open={open}
-                            anchor={anchor}
-                            tabIndex={-1}
-                            ref={ref}
-                            role="dialog"
-                            aria-modal="true"
-                            onTouchStart={handleTouchStart}
-                            onTouchEnd={handleTouchEnd}
-                            {...props}
-                        >
-                            {children}
-                        </DrawerRoot>
-                    </FocusTrap>
-                </Portal>
+                {!hideBackdrop && open && <DrawerBackdrop onClick={onClose} />}
+                <FocusTrap active={open}>
+                    <DrawerRoot
+                        elevation={elevation}
+                        color={color as string}
+                        variant={variant}
+                        open={open}
+                        anchor={anchor}
+                        tabIndex={-1}
+                        ref={ref}
+                        role="dialog"
+                        aria-modal="true"
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                        {...props}
+                    >
+                        {children}
+                    </DrawerRoot>
+                </FocusTrap>
             </>
         );
     },

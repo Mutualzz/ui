@@ -107,8 +107,8 @@ export const useSwipeableDrawer = ({
     anchor: Responsive<DrawerAnchor>;
     swipeable?: boolean;
     open: boolean;
-    onOpen?: () => void;
-    onClose?: () => void;
+    onOpen: () => void;
+    onClose: () => void;
 }) => {
     const touchStart = useRef<{ x: number; y: number } | null>(null);
 
@@ -145,7 +145,7 @@ export const useSwipeableDrawer = ({
             if (resolvedAnchor === "bottom" && dy > SWIPE_THRESHOLD)
                 shouldClose = true;
 
-            if (shouldClose && onClose) onClose();
+            if (shouldClose) onClose();
             touchStart.current = null;
         },
         [resolvedAnchor, swipeable, open, onClose],
@@ -178,7 +178,7 @@ export const useSwipeableDrawer = ({
             if (resolvedAnchor === "bottom" && dy < -SWIPE_THRESHOLD)
                 shouldOpen = true;
 
-            if (shouldOpen && onOpen) onOpen();
+            if (shouldOpen) onOpen();
             touchStart.current = null;
         },
         [resolvedAnchor, swipeable, open, onOpen],
