@@ -36,12 +36,12 @@ export const resolveTypographStyles = (
         },
         outlined: {
             backgroundColor: "transparent",
-            color: textColorFinal,
+            color: formatHex8(resolvedColor),
             border: `1px solid ${formatHex8(resolvedColor)}`,
         },
         plain: {
             backgroundColor: "transparent",
-            color: textColorFinal,
+            color: formatHex8(resolvedColor),
             border: "none",
         },
         soft: {
@@ -52,6 +52,7 @@ export const resolveTypographStyles = (
         none: {
             backgroundColor: "transparent",
             border: "none",
+            color: textColorFinal,
         },
     };
 };
