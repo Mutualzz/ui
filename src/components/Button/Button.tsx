@@ -47,7 +47,7 @@ const ButtonWrapper = styled("button")<ButtonProps>(
                 const resolvedSize = resolveSize(theme, s, baseSizeMap);
                 return {
                     fontSize: resolvedSize,
-                    padding: `${resolvedSize * 0.6}px ${resolvedSize * 1.2}px`,
+                    padding: resolvedSize * 0.6,
                     ...resolveButtonStyles(theme, c)[v],
                 };
             },
