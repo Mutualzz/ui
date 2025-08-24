@@ -38,6 +38,11 @@ export const CssBaseline = ({ adaptiveScrollbar }: CssBaselineProps) => {
                     display: "block",
                 },
 
+                a: {
+                    textDecoration: "none",
+                    color: "inherit",
+                },
+
                 "button, input, textarea, select": {
                     fontFamily: "inherit",
                 },
