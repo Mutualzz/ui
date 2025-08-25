@@ -67,6 +67,9 @@ export type * from "./components/Modal/Modal.types";
 export * from "./components/Paper/Paper";
 export type * from "./components/Paper/Paper.types";
 
+export * from "./components/Popover/Popover";
+export type * from "./components/Popover/Popover.types";
+
 export * from "./components/Portal/Portal";
 export type * from "./components/Portal/Portal.types";
 
