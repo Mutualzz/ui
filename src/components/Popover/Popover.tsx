@@ -24,14 +24,15 @@ const PopoverRoot = styled("div")({
 const PopoverTrigger = styled(Stack)();
 
 const PopoverContent = styled(Paper)<{
-    usePortal?: boolean;
+    disablePortal?: boolean;
     top?: number;
     left?: number;
     placement?: "top" | "bottom" | "left" | "right";
     size: Responsive<Size | SizeValue | number>;
+    nonTranslucent?: Responsive<boolean>;
 }>(({
     theme,
-    usePortal,
+    disablePortal,
     top,
     left,
     size,
@@ -40,6 +41,7 @@ const PopoverContent = styled(Paper)<{
     variant = "elevation",
     elevation = 0,
     placement = "bottom",
+    nonTranslucent = false,
 }) => {
     const baseStyles: CSSObject = {
         position: "absolute",
@@ -50,7 +52,7 @@ const PopoverContent = styled(Paper)<{
         whiteSpace: "nowrap",
     };
 
-    if (usePortal) {
+    if (!disablePortal) {
         if (placement === "top" || placement === "bottom") {
             baseStyles.top = top;
             baseStyles.left = left;
@@ -63,18 +65,22 @@ const PopoverContent = styled(Paper)<{
             baseStyles.top = "100%";
             baseStyles.left = "50%";
             baseStyles.marginTop = 10;
+            baseStyles.transform = "translateX(-50%)";
         } else if (placement === "top") {
             baseStyles.bottom = "100%";
             baseStyles.left = "50%";
             baseStyles.marginBottom = 10;
+            baseStyles.transform = "translateX(-50%)";
         } else if (placement === "left") {
             baseStyles.top = "50%";
             baseStyles.right = "100%";
             baseStyles.marginRight = 10;
+            baseStyles.transform = "translateY(-50%)";
         } else {
             baseStyles.top = "50%";
             baseStyles.left = "100%";
             baseStyles.marginLeft = 10;
+            baseStyles.transform = "translateY(-50%)";
         }
     }
 
@@ -88,6 +94,7 @@ const PopoverContent = styled(Paper)<{
                 elevation,
                 variant,
                 size,
+                nonTranslucent,
             },
             ({
                 color: c,
@@ -95,9 +102,10 @@ const PopoverContent = styled(Paper)<{
                 elevation: e,
                 size: s,
                 variant: v,
+                nonTranslucent: trans,
             }) => ({
                 ...resolvePopoverSize(theme, s),
-                ...resolvePopoverStyles(theme, c, tc, e)[v],
+                ...resolvePopoverStyles(theme, c, tc, e, trans)[v],
             }),
         ),
     };
@@ -112,7 +120,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             trigger,
             children,
             isOpen: isOpenProp,
-            usePortal = true,
+            disablePortal = false,
             closeOnClickOutside = true,
             placement: placementProp,
             elevation = 0,
@@ -176,7 +184,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         };
 
         useLayoutEffect(() => {
-            if (isOpen && usePortal) {
+            if (isOpen && !disablePortal) {
                 updatePosition();
                 const handleScroll = () => updatePosition();
                 const handleResize = () => updatePosition();
@@ -187,13 +195,13 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                     window.removeEventListener("resize", handleResize);
                 };
             }
-        }, [isOpen, usePortal]);
+        }, [isOpen, disablePortal]);
 
         useLayoutEffect(() => {
             requestAnimationFrame(() => {
                 updatePosition();
             });
-        }, [usePortal, trigger]);
+        }, [disablePortal, trigger]);
 
         const toggleVisibility = () => {
             if (!isControlled) setVisible((prev) => !prev);
@@ -210,7 +218,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 color={color as string}
                 variant={variant}
                 size={size}
-                usePortal={usePortal}
+                disablePortal={disablePortal}
                 top={position.top}
                 elevation={elevation}
                 left={position.left}
@@ -225,7 +233,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 <PopoverTrigger ref={triggerRef} onClick={toggleVisibility}>
                     {trigger}
                 </PopoverTrigger>
-                {usePortal ? (
+                {!disablePortal ? (
                     <Portal disablePortal={!isOpen}>{popoverContent}</Portal>
                 ) : (
                     popoverContent
