@@ -26,34 +26,54 @@ const DrawerRoot = styled("div")<{
     anchor: Responsive<DrawerAnchor>;
     elevation: Responsive<number>;
     size: Responsive<number | Size | SizeValue>;
-}>(({ theme, open, anchor, color, variant, elevation, size }) => ({
-    position: "fixed",
-    zIndex: theme.zIndex.drawer,
-    background: theme.colors.surface,
-    boxShadow: theme.shadows[4],
-    transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
-    outline: 0,
-    overflowY: "auto",
-
-    ...resolveResponsiveMerge(
+    nonTranslucent: Responsive<boolean>;
+}>(
+    ({
         theme,
-        {
-            anchor,
-            color,
-            variant,
-            elevation,
-            size,
-        },
-        ({ anchor: a, color: c, variant: v, elevation: e, size: s }) => ({
-            ...resolveAnchorStyles(theme, a, s),
-            ...resolvePaperStyles(theme, c, "primary", e)[v],
-            flexDirection: a === "left" || a === "right" ? "column" : "row",
-            ...(open && {
-                transform: "none",
+        open,
+        anchor,
+        color,
+        variant,
+        elevation,
+        size,
+        nonTranslucent,
+    }) => ({
+        position: "fixed",
+        zIndex: theme.zIndex.drawer,
+        background: theme.colors.surface,
+        boxShadow: theme.shadows[4],
+        transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
+        outline: 0,
+        overflowY: "auto",
+
+        ...resolveResponsiveMerge(
+            theme,
+            {
+                anchor,
+                color,
+                variant,
+                elevation,
+                size,
+                nonTranslucent,
+            },
+            ({
+                anchor: a,
+                color: c,
+                variant: v,
+                elevation: e,
+                size: s,
+                nonTranslucent: trans,
+            }) => ({
+                ...resolveAnchorStyles(theme, a, s),
+                ...resolvePaperStyles(theme, c, "primary", e, trans)[v],
+                flexDirection: a === "left" || a === "right" ? "column" : "row",
+                ...(open && {
+                    transform: "none",
+                }),
             }),
-        }),
-    ),
-}));
+        ),
+    }),
+);
 
 const DrawerBackdrop = styled("div")(({ theme }) => ({
     position: "fixed",
@@ -125,6 +145,8 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
             onClose,
             anchor = "left",
             swipeable = true,
+            nonTranslucent = false,
+            disablePortal = false,
             children,
             ...props
         },
@@ -157,6 +179,32 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
             onClose,
         });
 
+        const DrawerContent = (
+            <>
+                {!hideBackdrop && open && <DrawerBackdrop onClick={onClose} />}
+                <FocusTrap active={open}>
+                    <DrawerRoot
+                        nonTranslucent={nonTranslucent}
+                        elevation={elevation}
+                        color={color as string}
+                        size={size}
+                        variant={variant}
+                        open={open}
+                        anchor={anchor}
+                        tabIndex={-1}
+                        ref={ref}
+                        role="dialog"
+                        aria-modal="true"
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                        {...props}
+                    >
+                        {children}
+                    </DrawerRoot>
+                </FocusTrap>
+            </>
+        );
+
         return (
             <>
                 {!open && swipeable && (
@@ -167,30 +215,11 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
                         aria-hidden
                     />
                 )}
-                <Portal>
-                    {!hideBackdrop && open && (
-                        <DrawerBackdrop onClick={onClose} />
-                    )}
-                    <FocusTrap active={open}>
-                        <DrawerRoot
-                            elevation={elevation}
-                            color={color as string}
-                            size={size}
-                            variant={variant}
-                            open={open}
-                            anchor={anchor}
-                            tabIndex={-1}
-                            ref={ref}
-                            role="dialog"
-                            aria-modal="true"
-                            onTouchStart={handleTouchStart}
-                            onTouchEnd={handleTouchEnd}
-                            {...props}
-                        >
-                            {children}
-                        </DrawerRoot>
-                    </FocusTrap>
-                </Portal>
+                {disablePortal ? (
+                    <>{DrawerContent}</>
+                ) : (
+                    <Portal>{DrawerContent}</Portal>
+                )}
             </>
         );
     },

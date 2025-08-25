@@ -28,4 +28,8 @@ export interface DrawerProps
     consistency?: Responsive<DrawerConsistency>;
 
     swipeable?: boolean;
+
+    disablePortal?: boolean;
+
+    nonTranslucent?: Responsive<boolean>;
 }
