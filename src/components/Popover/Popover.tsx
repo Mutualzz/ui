@@ -114,7 +114,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             color = "neutral",
             variant = "solid",
             size = "md",
-            content,
+            trigger,
             children,
             isOpen: isOpenProp,
             usePortal = true,
@@ -187,7 +187,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                     updatePosition();
                 });
             }
-        }, [isOpen, usePortal, content]);
+        }, [isOpen, usePortal, trigger]);
 
         const toggleVisibility = () => {
             if (!isControlled) setVisible((prev) => !prev);
@@ -209,14 +209,14 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 left={position.left}
                 placement={placement}
             >
-                {content}
+                {children}
             </PopoverContent>
         );
 
         return (
             <PopoverRoot ref={ref}>
                 <PopoverTrigger ref={triggerRef} onClick={toggleVisibility}>
-                    {children}
+                    {trigger}
                 </PopoverTrigger>
                 {usePortal ? (
                     <Portal disablePortal={!isOpen}>{popoverContent}</Portal>

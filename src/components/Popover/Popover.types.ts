@@ -6,7 +6,7 @@ export type PopoverPlacement = "top" | "bottom" | "left" | "right";
 
 export interface PopoverProps extends Omit<PaperProps, "content"> {
     size?: Responsive<Size | SizeValue | number>;
-    content?: ReactNode;
+    trigger?: ReactNode;
 
     isOpen?: boolean;
 
