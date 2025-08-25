@@ -210,34 +210,32 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                         {startDecorator ??
                             (showColorPicker && !isInvalid && (
                                 <Popover
-                                    content={
-                                        <Box ref={popoverRef}>
-                                            <ColorPicker
-                                                hidePresets
-                                                hideInputs
-                                                hideInputType
-                                                hideEyeDrop
-                                                hideOpacity
-                                                hideAdvancedSliders
-                                                hideColorTypeBtns={
-                                                    !allowGradient
-                                                }
-                                                hideColorGuide
-                                                value={pickerColor}
-                                                onChange={handleNewColor}
-                                                idSuffix={id}
-                                            />
-                                        </Box>
+                                    trigger={
+                                        <ColorPickerButton
+                                            size={size}
+                                            color={validatedColor}
+                                            variant={variant}
+                                        />
                                     }
                                     color={validatedColor}
                                     size={size}
                                     variant={variant}
                                 >
-                                    <ColorPickerButton
-                                        size={size}
-                                        color={validatedColor}
-                                        variant={variant}
-                                    />
+                                    <Box ref={popoverRef}>
+                                        <ColorPicker
+                                            hidePresets
+                                            hideInputs
+                                            hideInputType
+                                            hideEyeDrop
+                                            hideOpacity
+                                            hideAdvancedSliders
+                                            hideColorTypeBtns={!allowGradient}
+                                            hideColorGuide
+                                            value={pickerColor}
+                                            onChange={handleNewColor}
+                                            idSuffix={id}
+                                        />
+                                    </Box>
                                 </Popover>
                             ))}
                     </DecoratorWrapper>
@@ -258,6 +256,9 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                                     color={validatedColor}
                                     variant={variant}
                                     onClick={handleRandomColor}
+                                    css={{
+                                        padding: 4,
+                                    }}
                                 >
                                     <RandomIcon
                                         color={validatedColor}
