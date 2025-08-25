@@ -5,6 +5,7 @@ import type { CSSObject } from "@emotion/react";
 import { useOnClickOutside } from "@hooks/useOnClickOutside";
 import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
+import { clamp } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import {
@@ -53,32 +54,26 @@ const PopoverContent = styled(Paper)<{
         if (placement === "top" || placement === "bottom") {
             baseStyles.top = top;
             baseStyles.left = left;
-            baseStyles.transform = "translateX(-50%)";
         } else {
             baseStyles.top = top;
             baseStyles.left = left;
-            baseStyles.transform = "translateY(-50%)";
         }
     } else {
         if (placement === "bottom") {
             baseStyles.top = "100%";
             baseStyles.left = "50%";
-            baseStyles.transform = "translateX(-50%)";
             baseStyles.marginTop = 10;
         } else if (placement === "top") {
             baseStyles.bottom = "100%";
             baseStyles.left = "50%";
-            baseStyles.transform = "translateX(-50%)";
             baseStyles.marginBottom = 10;
         } else if (placement === "left") {
             baseStyles.top = "50%";
             baseStyles.right = "100%";
-            baseStyles.transform = "translateY(-50%)";
             baseStyles.marginRight = 10;
         } else {
             baseStyles.top = "50%";
             baseStyles.left = "100%";
-            baseStyles.transform = "translateY(-50%)";
             baseStyles.marginLeft = 10;
         }
     }
@@ -155,15 +150,28 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             );
             setInternalPlacement(bestPlacement);
 
-            setPosition(
-                getPopoverPosition(
-                    bestPlacement,
-                    triggerRect,
-                    popoverRect,
-                    scrollTop,
-                    scrollLeft,
-                ),
+            const bestPosition = getPopoverPosition(
+                bestPlacement,
+                triggerRect,
+                popoverRect,
+                scrollTop,
+                scrollLeft,
             );
+
+            const clampedPosition = {
+                top: clamp(
+                    bestPosition.top,
+                    0,
+                    viewportHeight - popoverRect.height,
+                ),
+                left: clamp(
+                    bestPosition.left,
+                    0,
+                    viewportWidth - popoverRect.width,
+                ),
+            };
+
+            setPosition(clampedPosition);
         };
 
         useLayoutEffect(() => {

@@ -56,21 +56,34 @@ export const getPopoverPosition = (
         case "bottom":
             return {
                 top: triggerRect.bottom + scrollTop + offset,
-                left: triggerRect.left + scrollLeft + triggerRect.width / 2,
+                // Center popover over trigger
+                left:
+                    triggerRect.left +
+                    scrollLeft +
+                    (triggerRect.width - popoverRect.width) / 2,
             };
         case "top":
             return {
                 top: triggerRect.top + scrollTop - popoverRect.height - offset,
-                left: triggerRect.left + scrollLeft + triggerRect.width / 2,
+                left:
+                    triggerRect.left +
+                    scrollLeft +
+                    (triggerRect.width - popoverRect.width) / 2,
             };
         case "right":
             return {
-                top: triggerRect.top + scrollTop + triggerRect.height / 2,
+                top:
+                    triggerRect.top +
+                    scrollTop +
+                    (triggerRect.height - popoverRect.height) / 2,
                 left: triggerRect.right + scrollLeft + offset,
             };
         case "left":
             return {
-                top: triggerRect.top + scrollTop + triggerRect.height / 2,
+                top:
+                    triggerRect.top +
+                    scrollTop +
+                    (triggerRect.height - popoverRect.height) / 2,
                 left:
                     triggerRect.left + scrollLeft - popoverRect.width - offset,
             };
