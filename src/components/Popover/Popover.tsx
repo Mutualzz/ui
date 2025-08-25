@@ -189,13 +189,10 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         }, [isOpen, usePortal]);
 
         useLayoutEffect(() => {
-            if (isOpen) {
-                // Wait for the popover content to be rendered, then measure
-                requestAnimationFrame(() => {
-                    updatePosition();
-                });
-            }
-        }, [isOpen, usePortal, trigger]);
+            requestAnimationFrame(() => {
+                updatePosition();
+            });
+        }, [usePortal, trigger]);
 
         const toggleVisibility = () => {
             if (!isControlled) setVisible((prev) => !prev);
