@@ -106,8 +106,8 @@ const PopoverContent = styled(Paper)<{
 const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     (
         {
-            color = "neutral",
-            variant = "solid",
+            color = "primary",
+            variant = "elevation",
             size = "md",
             trigger,
             children,
@@ -115,6 +115,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             usePortal = true,
             closeOnClickOutside = true,
             placement: placementProp,
+            elevation = 0,
             ...props
         },
         ref,
@@ -211,6 +212,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 size={size}
                 usePortal={usePortal}
                 top={position.top}
+                elevation={elevation}
                 left={position.left}
                 placement={placement}
             >
