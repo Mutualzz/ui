@@ -36,4 +36,11 @@ export interface PaperProps extends Omit<BoxProps, "color"> {
      * @default 0
      */
     elevation?: Responsive<number>;
+
+    /**
+     * If true, the Paper will not have a translucent background.
+     * Only applicable when a gradient theme is preset
+     * @default false
+     */
+    nonTranslucent?: Responsive<boolean>;
 }
