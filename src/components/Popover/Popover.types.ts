@@ -13,6 +13,7 @@ export interface PopoverProps extends Omit<PaperProps, "content"> {
     disablePortal?: boolean;
 
     closeOnClickOutside?: boolean;
+    closeOnInteract?: boolean;
 
     placement?: PopoverPlacement;
 

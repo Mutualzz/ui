@@ -7,7 +7,13 @@ import styled from "@styled";
 import type { Responsive, Size, SizeValue } from "@ui-types";
 import { clamp } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
-import { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import {
+    forwardRef,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import {
     getBestPlacement,
     getPopoverPosition,
@@ -122,6 +128,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             isOpen: isOpenProp,
             disablePortal = false,
             closeOnClickOutside = true,
+            closeOnInteract = false,
             placement: placementProp,
             elevation = 0,
             ...props
@@ -130,6 +137,7 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
     ) => {
         const [visible, setVisible] = useState(false);
         const [position, setPosition] = useState({ top: 0, left: 0 });
+        const [measured, setMeasured] = useState(false);
         const [internalPlacement, setInternalPlacement] =
             useState<PopoverPlacement>("bottom");
         const triggerRef = useRef<HTMLDivElement>(null);
@@ -137,13 +145,19 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
 
         const isControlled = isOpenProp !== undefined;
         const isOpen = isControlled ? isOpenProp : visible;
-
         const placement = placementProp ?? internalPlacement;
 
         const updatePosition = () => {
             if (!triggerRef.current || !contentRef.current) return;
             const triggerRect = triggerRef.current.getBoundingClientRect();
             const popoverRect = contentRef.current.getBoundingClientRect();
+
+            if (
+                (popoverRect.width === 0 && popoverRect.height === 0) ||
+                (triggerRect.width === 0 && triggerRect.height === 0)
+            )
+                return;
+
             const scrollTop =
                 window.pageYOffset || document.documentElement.scrollTop;
             const scrollLeft =
@@ -181,35 +195,52 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
             };
 
             setPosition(clampedPosition);
+            setMeasured(true);
         };
 
         useLayoutEffect(() => {
-            if (isOpen && !disablePortal) {
-                updatePosition();
-                const handleScroll = () => updatePosition();
-                const handleResize = () => updatePosition();
-                window.addEventListener("scroll", handleScroll, true);
-                window.addEventListener("resize", handleResize);
-                return () => {
-                    window.removeEventListener("scroll", handleScroll, true);
-                    window.removeEventListener("resize", handleResize);
-                };
+            if (!isOpen) {
+                setMeasured(false);
+                return;
             }
-        }, [isOpen, disablePortal]);
+            requestAnimationFrame(() =>
+                requestAnimationFrame(() => {
+                    updatePosition();
+                }),
+            );
+        }, [isOpen, updatePosition]);
 
-        useLayoutEffect(() => {
-            requestAnimationFrame(() => {
-                updatePosition();
-            });
-        }, [disablePortal, trigger]);
+        useEffect(() => {
+            if (!isOpen) return;
+            const handleScroll = () => updatePosition();
+            const handleResize = () => updatePosition();
+            window.addEventListener("scroll", handleScroll, true);
+            window.addEventListener("resize", handleResize);
+            return () => {
+                window.removeEventListener("scroll", handleScroll, true);
+                window.removeEventListener("resize", handleResize);
+            };
+        }, [isOpen, updatePosition]);
+
+        useEffect(() => {
+            if (!isOpen || !contentRef.current) return;
+            const ro = new ResizeObserver(() => updatePosition());
+            ro.observe(contentRef.current);
+            return () => ro.disconnect();
+        }, [isOpen, updatePosition]);
 
         const toggleVisibility = () => {
             if (!isControlled) setVisible((prev) => !prev);
         };
 
-        useOnClickOutside([contentRef, triggerRef] as any[], () => {
-            if (closeOnClickOutside) setVisible(false);
+        useOnClickOutside([triggerRef, contentRef] as any[], () => {
+            if (!closeOnClickOutside) return;
+            setVisible(false);
         });
+
+        const handleContentClick = () => {
+            if (closeOnInteract) setVisible(false);
+        };
 
         const popoverContent = isOpen && (
             <PopoverContent
@@ -223,6 +254,8 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 elevation={elevation}
                 left={position.left}
                 placement={placement}
+                onClick={handleContentClick}
+                css={{ visibility: measured ? "visible" : "hidden" }}
             >
                 {children}
             </PopoverContent>
@@ -233,8 +266,9 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
                 <PopoverTrigger ref={triggerRef} onClick={toggleVisibility}>
                     {trigger}
                 </PopoverTrigger>
+
                 {!disablePortal ? (
-                    <Portal disablePortal={!isOpen}>{popoverContent}</Portal>
+                    <Portal>{popoverContent}</Portal>
                 ) : (
                     popoverContent
                 )}
