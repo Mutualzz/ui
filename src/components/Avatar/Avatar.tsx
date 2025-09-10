@@ -69,6 +69,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
                 size={size}
                 variant={variant}
                 hasText={!src && Boolean(children)}
+                tabIndex={0}
             >
                 {src ? (
                     <AvatarImage {...props} src={src} alt={alt} />
