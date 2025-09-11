@@ -112,6 +112,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
             showRandom = false,
             value: colorProp,
             allowGradient = false,
+            allowAlpha = false,
             onChange,
             defaultValue,
             ...props
@@ -227,7 +228,7 @@ const InputColor = forwardRef<HTMLInputElement, InputColorProps>(
                                             hideInputs
                                             hideInputType
                                             hideEyeDrop
-                                            hideOpacity
+                                            hideOpacity={!allowAlpha}
                                             hideAdvancedSliders
                                             hideColorTypeBtns={!allowGradient}
                                             hideColorGuide

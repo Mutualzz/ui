@@ -33,6 +33,12 @@ export interface InputColorProps
     allowGradient?: boolean;
 
     /**
+     * Whether to allow alpha channel in colors.
+     * @default false
+     */
+    allowAlpha?: boolean;
+
+    /**
      * The current color value.
      */
     value?: ColorLike;
