@@ -20,9 +20,15 @@ const InputRoot = styled("div")<InputRootProps>(
     }) => ({
         ...resolveResponsiveMerge(
             theme,
-            { color, textColor, size, variant },
-            ({ color: c, textColor: tc, variant: v, size: s }) => ({
-                ...resolveInputRootSize(theme, s),
+            { color, textColor, size, variant, fullWidth },
+            ({
+                color: c,
+                textColor: tc,
+                variant: v,
+                size: s,
+                fullWidth: fw,
+            }) => ({
+                ...resolveInputRootSize(theme, s, fw),
                 ...resolveInputRootStyles(theme, c, tc, error)[v],
             }),
         ),
@@ -31,8 +37,6 @@ const InputRoot = styled("div")<InputRootProps>(
         display: "flex",
         alignItems: "center",
 
-        width: fullWidth ? "100%" : "auto",
-        maxWidth: "100%",
         minWidth: 0,
         flexShrink: 1,
         flexGrow: fullWidth ? 1 : 0,

@@ -22,10 +22,13 @@ const baseSizeMap: Record<Size, number> = {
 export const resolveInputRootSize = (
     theme: Theme,
     size: Size | SizeValue | number,
+    fullWidth?: boolean,
 ) => {
     const resolvedSize = resolveSize(theme, size, baseSizeMap);
 
     return {
+        width: fullWidth ? "100%" : resolvedSize * 16,
+        maxWidth: "100%",
         fontSize: resolvedSize,
         lineHeight: 1.2,
         minHeight: resolvedSize * 2.2,
