@@ -13,7 +13,7 @@ import { resolveColor, resolveTypographyColor } from "@utils/resolveColors";
 import { resolveSize } from "@utils/resolveSize";
 import { formatHex8 } from "culori";
 
-const baseSizeMap: Record<Size, number> = {
+export const baseSizeMap: Record<Size, number> = {
     sm: 12,
     md: 14,
     lg: 16,

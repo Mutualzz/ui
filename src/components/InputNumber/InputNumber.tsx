@@ -1,7 +1,7 @@
 import { DecoratorWrapper } from "@components/DecoratorWrapper/DecoratorWrapper";
 import { InputBase } from "@components/InputBase/InputBase";
 import { InputRoot } from "@components/InputRoot/InputRoot";
-import type { Size } from "@ui-types";
+import { baseSizeMap } from "@components/InputRoot/InputRoot.helpers";
 import { clamp, resolveSize } from "@utils";
 import { resolveResponsiveMerge } from "@utils/responsive";
 import { formatHex8 } from "culori";
@@ -18,18 +18,6 @@ import { useTheme } from "../../hooks/useTheme";
 import { Stack } from "../Stack/Stack";
 import type { InputNumberProps } from "./InputNumber.types";
 
-const widthSizeMap: Record<Size, number> = {
-    sm: 12,
-    md: 14,
-    lg: 18,
-} as const;
-
-const fontSizeMap: Record<Size, number> = {
-    sm: 8,
-    md: 9.6,
-    lg: 12,
-} as const;
-
 const SpinnerButtons = ({
     onIncrement,
     onDecrement,
@@ -38,27 +26,30 @@ const SpinnerButtons = ({
 }: InputNumberProps) => {
     const { theme } = useTheme();
 
-    const { width, fontSize } = resolveResponsiveMerge(
+    const { resolvedSize } = resolveResponsiveMerge(
         theme,
         { size },
         ({ size: s }) => ({
-            width: resolveSize(theme, s, widthSizeMap),
-            fontSize: resolveSize(theme, s, fontSizeMap),
+            resolvedSize: resolveSize(theme, s, baseSizeMap),
         }),
     );
+
+    const spinnerHeight = resolvedSize * 1.6;
+    const spinnerWidth = resolvedSize * 1.2;
+    const fontSize = resolvedSize * 0.8;
 
     return (
         <Stack
             direction="column"
             justifyContent="center"
             alignItems="center"
-            height="100%"
+            height={spinnerHeight}
+            width={spinnerWidth}
             flexShrink={0}
+            overflow="hidden"
+            borderRadius={4}
             css={{
                 marginInlineStart: 4,
-                width,
-                borderRadius: 4,
-                overflow: "hidden",
             }}
         >
             <button
