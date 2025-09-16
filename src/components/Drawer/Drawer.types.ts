@@ -32,4 +32,7 @@ export interface DrawerProps
     disablePortal?: boolean;
 
     nonTranslucent?: Responsive<boolean>;
+
+    swipeArea?: Responsive<number | Size | SizeValue>;
+    threshold?: Responsive<number | Size | SizeValue>;
 }

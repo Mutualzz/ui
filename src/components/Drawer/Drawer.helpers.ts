@@ -5,12 +5,22 @@ import { resolveResponsiveMerge } from "@utils/responsive";
 import { useCallback, useRef } from "react";
 import type { DrawerAnchor } from "./Drawer.types";
 
-const SWIPE_THRESHOLD = 60;
-
 const baseSizeMap: Record<Size, number> = {
     sm: 240,
     md: 320,
     lg: 360,
+};
+
+const swipeAreaMap: Record<Size, number> = {
+    sm: 64,
+    md: 96,
+    lg: 128,
+};
+
+const swipeThresholdMap: Record<Size, number> = {
+    sm: 24,
+    md: 40,
+    lg: 56,
 };
 
 export const resolveAnchorStyles = (
@@ -28,6 +38,7 @@ export const resolveAnchorStyles = (
                 height: "100%",
                 width: resolvedSize,
                 transform: "translateX(-100%)",
+                touchAction: "pan-y",
             };
         case "right":
             return {
@@ -36,6 +47,7 @@ export const resolveAnchorStyles = (
                 height: "100%",
                 width: resolvedSize,
                 transform: "translateX(100%)",
+                touchAction: "pan-y",
             };
         case "top":
             return {
@@ -44,6 +56,7 @@ export const resolveAnchorStyles = (
                 width: "100%",
                 height: 320,
                 transform: "translateY(-100%)",
+                touchAction: "pan-x",
             };
         case "bottom":
         default:
@@ -53,6 +66,7 @@ export const resolveAnchorStyles = (
                 width: "100%",
                 height: resolvedSize,
                 transform: "translateY(100%)",
+                touchAction: "pan-x",
             };
     }
 };
@@ -60,8 +74,9 @@ export const resolveAnchorStyles = (
 export const resolveSwipeAreaStyles = (
     theme: Theme,
     anchor: DrawerAnchor,
+    swipeArea: number | Size | SizeValue,
 ): CSSObject => {
-    const size = 24;
+    const size = swipeArea;
 
     switch (anchor) {
         case "left":
@@ -111,6 +126,8 @@ export const resolveSwipeAreaStyles = (
 export const useSwipeableDrawer = ({
     theme,
     anchor,
+    swipeArea,
+    threshold,
     swipeable,
     open,
     onOpen,
@@ -118,6 +135,8 @@ export const useSwipeableDrawer = ({
 }: {
     theme: Theme;
     anchor: Responsive<DrawerAnchor>;
+    swipeArea: Responsive<number | Size | SizeValue>;
+    threshold: Responsive<number | Size | SizeValue>;
     swipeable?: boolean;
     open: boolean;
     onOpen: () => void;
@@ -125,11 +144,16 @@ export const useSwipeableDrawer = ({
 }) => {
     const touchStart = useRef<{ x: number; y: number } | null>(null);
 
-    const { resolvedAnchor } = resolveResponsiveMerge(
-        theme,
-        { anchor },
-        ({ anchor: a }) => ({ resolvedAnchor: a }),
-    );
+    const { resolvedAnchor, resolvedArea, resolvedThreshold } =
+        resolveResponsiveMerge(
+            theme,
+            { anchor, swipeArea, threshold },
+            ({ anchor: a, swipeArea: sa, threshold: st }) => ({
+                resolvedAnchor: a,
+                resolvedArea: resolveSize(theme, sa, swipeAreaMap),
+                resolvedThreshold: resolveSize(theme, st, swipeThresholdMap),
+            }),
+        );
 
     // For swipe-to-close (when open)
     const handleTouchStart = useCallback(
@@ -149,13 +173,13 @@ export const useSwipeableDrawer = ({
             const dy = touch.clientY - touchStart.current.y;
 
             let shouldClose = false;
-            if (resolvedAnchor === "left" && dx < -SWIPE_THRESHOLD)
+            if (resolvedAnchor === "left" && dx < -resolvedThreshold)
                 shouldClose = true;
-            if (resolvedAnchor === "right" && dx > SWIPE_THRESHOLD)
+            if (resolvedAnchor === "right" && dx > resolvedThreshold)
                 shouldClose = true;
-            if (resolvedAnchor === "top" && dy < -SWIPE_THRESHOLD)
+            if (resolvedAnchor === "top" && dy < -resolvedThreshold)
                 shouldClose = true;
-            if (resolvedAnchor === "bottom" && dy > SWIPE_THRESHOLD)
+            if (resolvedAnchor === "bottom" && dy > resolvedThreshold)
                 shouldClose = true;
 
             if (shouldClose) onClose();
@@ -182,13 +206,13 @@ export const useSwipeableDrawer = ({
             const dy = touch.clientY - touchStart.current.y;
 
             let shouldOpen = false;
-            if (resolvedAnchor === "left" && dx > SWIPE_THRESHOLD)
+            if (resolvedAnchor === "left" && dx > resolvedThreshold)
                 shouldOpen = true;
-            if (resolvedAnchor === "right" && dx < -SWIPE_THRESHOLD)
+            if (resolvedAnchor === "right" && dx < -resolvedThreshold)
                 shouldOpen = true;
-            if (resolvedAnchor === "top" && dy > SWIPE_THRESHOLD)
+            if (resolvedAnchor === "top" && dy > resolvedThreshold)
                 shouldOpen = true;
-            if (resolvedAnchor === "bottom" && dy < -SWIPE_THRESHOLD)
+            if (resolvedAnchor === "bottom" && dy < -resolvedThreshold)
                 shouldOpen = true;
 
             if (shouldOpen) onOpen();
@@ -199,6 +223,7 @@ export const useSwipeableDrawer = ({
 
     return {
         resolvedAnchor,
+        resolvedArea,
         handleTouchStart,
         handleTouchEnd,
         handleSwipeOpenStart,

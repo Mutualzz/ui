@@ -128,8 +128,9 @@ const FocusTrap = ({
 
 const SwipeableArea = styled("div")<{
     anchor: DrawerAnchor;
-}>(({ theme, anchor }) => ({
-    ...resolveSwipeAreaStyles(theme, anchor),
+    swipeArea: number;
+}>(({ theme, anchor, swipeArea }) => ({
+    ...resolveSwipeAreaStyles(theme, anchor, swipeArea),
 }));
 
 const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
@@ -147,6 +148,8 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
             swipeable = true,
             nonTranslucent = false,
             disablePortal = false,
+            swipeArea = "md",
+            threshold = "md",
             children,
             ...props
         },
@@ -166,6 +169,7 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
 
         const {
             resolvedAnchor,
+            resolvedArea,
             handleTouchStart,
             handleTouchEnd,
             handleSwipeOpenStart,
@@ -173,6 +177,8 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
         } = useSwipeableDrawer({
             theme,
             anchor,
+            swipeArea,
+            threshold,
             swipeable,
             open,
             onOpen,
@@ -210,6 +216,7 @@ const Drawer = forwardRef<HTMLDivElement, DrawerProps>(
                 {!open && swipeable && (
                     <SwipeableArea
                         anchor={resolvedAnchor}
+                        swipeArea={resolvedArea}
                         onTouchStart={handleSwipeOpenStart}
                         onTouchEnd={handleSwipeOpenEnd}
                         aria-hidden
