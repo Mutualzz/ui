@@ -3,6 +3,7 @@
         "url": "https://github.com/Mutualzz/ui/issues"
     },
     "dependencies": {
+        "@emotion/native": "^11.11.0",
         "culori": "^4.0.2",
         "react-best-gradient-color-picker": "^3.0.14"
     },
