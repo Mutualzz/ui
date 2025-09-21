@@ -25,7 +25,7 @@ export const resolveAvatarSize = (
 
     const base = {
         width: resolvedSize,
-        height: resolveSize,
+        height: resolvedSize,
     };
 
     if (hasText) {
