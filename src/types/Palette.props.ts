@@ -1,5 +1,5 @@
 import type { Properties } from "csstype";
-import type { Color, ColorLike, Responsive, TypographyColor } from "../index";
+import type { Color, ColorLike, Responsive, TypographyColor } from "../";
 
 export interface HTMLPalleteProps {
     color?: Responsive<
