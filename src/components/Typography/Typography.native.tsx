@@ -19,3 +19,7 @@ const Typography = styled(Text)<TypographyProps<"native">>(
         ...resolveTypographStyles(theme, color, textColor)[variant],
     }),
 );
+
+Typography.displayName = "Typography";
+
+export { Typography };
