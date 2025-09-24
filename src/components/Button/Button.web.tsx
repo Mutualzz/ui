@@ -15,7 +15,7 @@ const baseSizeMap: Record<Size, number> = {
     lg: 16,
 };
 
-const ButtonWrapper = styled("button")<ButtonProps>(
+const ButtonWrapper = styled("button")<ButtonProps<"web">>(
     ({
         disabled,
         size = "md",
@@ -87,7 +87,7 @@ SpinnerOverlay.displayName = "SpinnerOverlay";
  * It supports different variants, colors, sizes, and loading states.
  * The button can also include start and end decorators for additional content.
  */
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps<"web">>(
     (
         {
             variant: propVariant,

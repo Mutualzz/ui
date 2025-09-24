@@ -1,33 +1,36 @@
 import {
     type Color,
     type ColorLike,
+    type ComponentEnvironment,
     type Responsive,
     type Size,
     type SizeValue,
     type Variant,
 } from "@ui-types";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
+import type { PressableProps } from "react-native";
 
-export interface ButtonProps
-    extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color" | "size"> {
+export interface ButtonPropsBase<T extends ComponentEnvironment> {
     /**
      * The variant of the button, which determines its style.
      * @default "solid"
      * @example "solid", "outlined", "soft", "plain"
      */
-    variant?: Responsive<Variant>;
+    variant?: T extends "web" ? Responsive<Variant> : Variant;
     /**
      * The color of the button, which can be a predefined color or a custom color.
      * @default "primary"
      * @example "primary", "neutral", "success", "info", "warning", "danger", "#ff5733"
      */
-    color?: Responsive<Color | ColorLike>;
+    color?: T extends "web" ? Responsive<Color | ColorLike> : Color | ColorLike;
     /**
      * The size of the button, which can be a predefined size or a custom size in pixels.
      * @default "md"
      * @example "sm", "md", "lg", 20
      */
-    size?: Responsive<Size | SizeValue | number>;
+    size?: T extends "web"
+        ? Responsive<Size | SizeValue | number>
+        : Size | SizeValue | number;
 
     /**
      * Indicates whether the button is in a loading state.
@@ -55,3 +58,8 @@ export interface ButtonProps
      */
     children?: ReactNode;
 }
+
+export type ButtonProps<T extends ComponentEnvironment> = ButtonPropsBase<T> &
+    (T extends "web"
+        ? Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color" | "size">
+        : PressableProps);
