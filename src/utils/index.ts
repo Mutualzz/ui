@@ -1,4 +1,4 @@
-import type { ColorLike } from "@ui-types";
+import type { ColorLike, TypographyLevelObj } from "@ui-types";
 import { clampChroma, formatHex, lch } from "culori";
 import { isValidGradient } from "./colorRegex";
 import { extractGradientStops, reconstructGradient } from "./gradients";
@@ -42,6 +42,34 @@ export const getScrollableAncestors = (
         current = current.parentElement;
     }
     return ancestors;
+};
+
+export const normalizeTypography = (level: TypographyLevelObj) => {
+    const { fontSize } = level;
+
+    const lineHeight =
+        typeof level.lineHeight === "number" &&
+        level.lineHeight > 0 &&
+        level.lineHeight < 4
+            ? Math.round(fontSize * level.lineHeight)
+            : level.lineHeight;
+
+    const letterSpacing =
+        typeof level.letterSpacing === "string"
+            ? fontSize * parseFloat(level.letterSpacing)
+            : level.letterSpacing;
+
+    const fontWeight =
+        typeof level.fontWeight === "number"
+            ? String(level.fontWeight)
+            : level.fontWeight;
+
+    return {
+        ...level,
+        lineHeight,
+        letterSpacing,
+        fontWeight,
+    };
 };
 
 export const lighten = (color: ColorLike, factor: number) => {

@@ -24,6 +24,8 @@ export type ColorLike = Hex | RGB | RGBA | HSL | HSLA | Gradient;
 
 export type ColorType = "hex" | "rgb" | "hsl";
 
+export type ComponentEnvironment = "web" | "native";
+
 export type Color =
     | "primary"
     | "neutral"
