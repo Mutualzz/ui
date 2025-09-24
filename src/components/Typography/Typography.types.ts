@@ -9,7 +9,7 @@ import type {
     Variant,
 } from "@ui-types";
 import type { Properties } from "csstype";
-import type { TextStyle } from "react-native";
+import type { TextProps, TextStyle } from "react-native";
 
 export type TypographyVariant = Variant | "none";
 
@@ -69,4 +69,4 @@ export type TypographyProps<T extends ComponentEnvironment> =
     TypographyPropsBase<T> &
         (T extends "web"
             ? Omit<SystemProps<HTMLSpanElement>, "color">
-            : TextStyle);
+            : TextProps);
