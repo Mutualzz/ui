@@ -54,6 +54,8 @@ export type * from "./components/web/InputPassword/InputPassword.types";
 export * from "./components/web/LinearProgress/LinearProgress";
 export type * from "./components/web/LinearProgress/LinearProgress.types";
 
+export * from "./components/web/List/List";
+export type * from "./components/web/List/List.types";
 export * from "./components/web/ListItem/ListItem";
 export type * from "./components/web/ListItem/ListItem.types";
 export * from "./components/web/ListItemButton/ListItemButton";
