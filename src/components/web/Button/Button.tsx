@@ -82,7 +82,6 @@ const ButtonContent = styled("span")<ButtonProps>(
                 const resolvedSize = resolveSize(theme, s, baseSizeMap);
                 return {
                     fontSize: resolvedSize,
-                    padding: resolvedSize * 0.6,
                     ...resolveButtonTextStyles(theme, c)[v],
                 };
             },
